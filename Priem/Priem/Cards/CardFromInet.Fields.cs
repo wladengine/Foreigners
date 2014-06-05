@@ -178,10 +178,16 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbCountryEduc); }
             set { ComboServ.SetComboId(cbCountryEduc, value); }
         }
-        public bool HasEkvivEduc
+
+        public bool IsEqual
         {
             get { return chbEkvivEduc.Checked; }
             set { chbEkvivEduc.Checked = value; }
+        }
+        public string EqualDocumentNumber
+        {
+            get { return tbEqualDocumentNumber.Text.Trim(); }
+            set { tbEqualDocumentNumber.Text = value; }
         }
 
         public string AttestatRegion

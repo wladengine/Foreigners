@@ -223,6 +223,37 @@ namespace Priem
             }
         }
 
+        private void UpdateCommitCompetition(ShortCompetition comp)
+        {
+            int ind = LstCompetitions.FindIndex(x => comp.Id == x.Id);
+            if (ind > -1)
+            {
+                LstCompetitions[ind].HasCompetition = true;
+                LstCompetitions[ind].CompetitionId = comp.CompetitionId;
+                LstCompetitions[ind].CompetitionName = comp.CompetitionName;
+                LstCompetitions[ind].FacultyId = comp.FacultyId;
+                LstCompetitions[ind].FacultyName = comp.FacultyName;
+                LstCompetitions[ind].LicenseProgramId = comp.LicenseProgramId;
+                LstCompetitions[ind].LicenseProgramName = comp.LicenseProgramName;
+                LstCompetitions[ind].ObrazProgramId = comp.ObrazProgramId;
+                LstCompetitions[ind].ObrazProgramName = comp.ObrazProgramName;
+                LstCompetitions[ind].ProfileId = comp.ProfileId;
+                LstCompetitions[ind].ProfileName = comp.ProfileName;
+
+                LstCompetitions[ind].StudyFormId = comp.StudyFormId;
+                LstCompetitions[ind].StudyFormName = comp.StudyFormName;
+                LstCompetitions[ind].StudyBasisId = comp.StudyBasisId;
+                LstCompetitions[ind].StudyBasisName = comp.StudyBasisName;
+                LstCompetitions[ind].StudyLevelId = comp.StudyLevelId;
+                LstCompetitions[ind].StudyLevelName = comp.StudyLevelName;
+
+                LstCompetitions[ind].HasCompetition = comp.HasCompetition;
+                LstCompetitions[ind].ChangeEntry();
+
+                UpdateApplicationGrid();
+            }
+        }
+
         private void FillFiles()
         {
             List<KeyValuePair<string, string>> lstFiles = _docs.UpdateFiles();
@@ -320,8 +351,10 @@ namespace Priem
                 House = person.House;
                 Korpus = person.Korpus;
                 Flat = person.Flat;
-                HostelAbit = person.HostelAbit ?? false;                
+                HostelAbit = person.HostelAbit ?? false;
+                HostelEduc = person.HostelEduc ?? false;
                 IsExcellent = person.IsExcellent ?? false;
+                
                 LanguageId = person.LanguageId;
                 SchoolCity = person.SchoolCity;
                 SchoolTypeId = person.SchoolTypeId;
@@ -329,7 +362,7 @@ namespace Priem
                 SchoolNum = person.SchoolNum;
                 SchoolExitYear = person.SchoolExitYear;
                 CountryEducId = person.CountryEducId;
-                HasEkvivEduc = person.HasEkvivEduc ?? false;
+                IsEqual = person.HasEkvivEduc ?? false;
                 AttestatRegion = person.AttestatRegion;
                 AttestatSeries = person.AttestatSeries;
                 AttestatNum = person.AttestatNum;
@@ -428,7 +461,6 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
 
                 //if (_closeAbit || _abitBarc == null)
                 //    return;
-                               
                 //qAbiturient abit = load.GetAbitByBarcode(_abitBarc.Value);
                 
                 //if (abit == null)
@@ -457,13 +489,25 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
 
         private void UpdateApplicationGrid()
         {
-            dgvApplications.DataSource = LstCompetitions.Select(x => new { x.Id, x.LicenseProgramName, x.ObrazProgramName, x.ProfileName, x.StudyFormName, x.StudyBasisName }).ToList();
+            dgvApplications.DataSource = LstCompetitions.Select(x => new { x.Id, x.LicenseProgramName, x.ObrazProgramName, x.ProfileName, x.StudyFormName, x.StudyBasisName, x.HasCompetition }).ToList();
             dgvApplications.Columns["Id"].Visible = false;
             dgvApplications.Columns["LicenseProgramName"].HeaderText = "Направление";
             dgvApplications.Columns["ObrazProgramName"].HeaderText = "Образ. программа";
             dgvApplications.Columns["ProfileName"].HeaderText = "Профиль";
             dgvApplications.Columns["StudyFormName"].HeaderText = "Форма обуч";
             dgvApplications.Columns["StudyBasisName"].HeaderText = "Основа обуч";
+            dgvApplications.Columns["HasCompetition"].Visible = false;
+        }
+        private void dgvApplications_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                if ((bool)dgvApplications["HasCompetition", e.RowIndex].Value)
+                {
+                    e.CellStyle.BackColor = Color.Cyan;
+                    e.CellStyle.SelectionBackColor = Color.Cyan;
+                }
+            }
         }
 
         protected override void SetReadOnlyFieldsAfterFill()
@@ -491,20 +535,6 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
 
         #region Save
 
-        //Вроде как эта функция пережёвывает апострофы в понятные серверу символы. Типа как mysql_escape_string()
-        private string GetOConnorString(string source)
-        {
-            string res = "";
-            foreach (char ch in source.ToCharArray())
-            {
-                if (ch == '\'')
-                    res += '\\' + '\'';
-                else
-                    res += ch;
-            }
-            return res;
-        }
-
         // проверка на уникальность абитуриента
         private bool CheckIdent()
         {
@@ -513,9 +543,9 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                 ObjectParameter boolPar = new ObjectParameter("result", typeof(bool));
 
                 if(_Id == null)
-                    context.CheckPersonIdent(GetOConnorString(Surname), PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatRegion, AttestatSeries, AttestatNum, boolPar);
+                    context.CheckPersonIdent(Surname, PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatRegion, AttestatSeries, AttestatNum, boolPar);
                 else
-                    context.CheckPersonIdentWithId(GetOConnorString(Surname), PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatRegion, AttestatSeries, AttestatNum, GuidId, boolPar);
+                    context.CheckPersonIdentWithId(Surname, PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatRegion, AttestatSeries, AttestatNum, GuidId, boolPar);
 
                 return Convert.ToBoolean(boolPar.Value);
             }
@@ -574,33 +604,33 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                 SecondName = SecondName.Replace("-", "");
             }
 
-            // проверка на англ. буквы
-            if (!Util.IsRussianString(PersonName))
-            {
-                epError.SetError(tbName, "Имя содержит английские символы, используйте только русскую раскладку");
-                tabCard.SelectedIndex = 0;
-                return false;
-            }
-            else
-                epError.Clear();
+            //// проверка на англ. буквы
+            //if (!Util.IsRussianString(PersonName))
+            //{
+            //    epError.SetError(tbName, "Имя содержит английские символы, используйте только русскую раскладку");
+            //    tabCard.SelectedIndex = 0;
+            //    return false;
+            //}
+            //else
+            //    epError.Clear();
 
-            if (!Util.IsRussianString(Surname))
-            {
-                epError.SetError(tbSurname, "Фамилия содержит английские символы, используйте только русскую раскладку");
-                tabCard.SelectedIndex = 0;
-                return false;
-            }
-            else
-                epError.Clear();
+            //if (!Util.IsRussianString(Surname))
+            //{
+            //    epError.SetError(tbSurname, "Фамилия содержит английские символы, используйте только русскую раскладку");
+            //    tabCard.SelectedIndex = 0;
+            //    return false;
+            //}
+            //else
+            //    epError.Clear();
 
-            if (!Util.IsRussianString(SecondName))
-            {
-                epError.SetError(tbSecondName, "Отчество содержит английские символы, используйте только русскую раскладку");
-                tabCard.SelectedIndex = 0;
-                return false;
-            }
-            else
-                epError.Clear();
+            //if (!Util.IsRussianString(SecondName))
+            //{
+            //    epError.SetError(tbSecondName, "Отчество содержит английские символы, используйте только русскую раскладку");
+            //    tabCard.SelectedIndex = 0;
+            //    return false;
+            //}
+            //else
+            //    epError.Clear();
 
             if (BirthDate == null)
             {
@@ -740,41 +770,41 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
             //else
             //    epError.Clear();
 
-            if (tbScienceWork.Text.Length >= 2000)
-            {
-                epError.SetError(tbScienceWork, "Длина поля превышает 2000 символов. Укажите только самое основное.");
-                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-                return false;
-            }
-            else
-                epError.Clear();
+            //if (tbScienceWork.Text.Length >= 2000)
+            //{
+            //    epError.SetError(tbScienceWork, "Длина поля превышает 2000 символов. Укажите только самое основное.");
+            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+            //    return false;
+            //}
+            //else
+            //    epError.Clear();
 
-            if (tbExtraInfo.Text.Length >= 1000)
-            {
-                epError.SetError(tbExtraInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
-                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-                return false;
-            }
-            else
-                epError.Clear();
+            //if (tbExtraInfo.Text.Length >= 1000)
+            //{
+            //    epError.SetError(tbExtraInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
+            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+            //    return false;
+            //}
+            //else
+            //    epError.Clear();
 
-            if (tbPersonInfo.Text.Length > 1000)
-            {
-                epError.SetError(tbPersonInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
-                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-                return false;
-            }
-            else
-                epError.Clear();
+            //if (tbPersonInfo.Text.Length > 1000)
+            //{
+            //    epError.SetError(tbPersonInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
+            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+            //    return false;
+            //}
+            //else
+            //    epError.Clear();
 
-            if (tbWorkPlace.Text.Length > 1000)
-            {
-                epError.SetError(tbWorkPlace, "Длина поля превышает 1000 символов. Укажите только самое основное.");
-                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-                return false;
-            }
-            else
-                epError.Clear();
+            //if (tbWorkPlace.Text.Length > 1000)
+            //{
+            //    epError.SetError(tbWorkPlace, "Длина поля превышает 1000 символов. Укажите только самое основное.");
+            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+            //    return false;
+            //}
+            //else
+            //    epError.Clear();
 
             if (!CheckIdent())
             {
@@ -792,7 +822,16 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                 if (!chbHostelEducYes.Checked && !chbHostelEducNo.Checked)
                 {
                     epError.SetError(chbHostelEducNo, "Не указаны данные о предоставлении общежития");
-                    tabCard.SelectedIndex = 0;
+                    tabCard.SelectedIndex = 1;
+                    return false;
+                }
+                else
+                    epError.Clear();
+
+                if (LstCompetitions.Where(x => !x.HasCompetition).Count() > 0)
+                {
+                    epError.SetError(dgvApplications, "Не по всем конкурсным позициям указаны типы конкурсов");
+                    tabCard.SelectedIndex = 5;
                     return false;
                 }
                 else
@@ -826,7 +865,7 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                                 context.Person_Foreign_insert(_personBarc, PersonName, SecondName, Surname, BirthDate, BirthPlace, PassportTypeId, PassportSeries, PassportNumber,
                                     PassportAuthor, PassportDate, Sex, CountryId, NationalityId, RegionId, Phone, Mobiles, Email, Code, City, Street, House, Korpus, Flat, HostelAbit, false,
                                     null, false, null, IsExcellent, LanguageId, SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear,
-                                    SchoolAVG, CountryEducId, HasEkvivEduc, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
+                                    SchoolAVG, CountryEducId, IsEqual, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
                                     HEQualification, HEEntryYear, HEExitYear, HEStudyFormId, HEWork, Stag, WorkPlace, Privileges, PassportCode,
                                     PersonalCode, PersonInfo, ExtraInfo, ScienceWork, StartEnglish, EnglishMark, entId);
 
@@ -882,12 +921,20 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                     {
                         ObjectParameter entId = new ObjectParameter("id", typeof(Guid));
 
+                        foreach (var Comp in LstCompetitions)
+                        {
+                            context.Abiturient_InsertDirectly(Comp.PersonId, Comp.EntryId, Comp.CompetitionId, Comp.IsListener, 
+                                null, false, false, null, Comp.DocDate, Comp.DocInsertDate, Comp.HasOriginals,
+                                null, false, false, null, Comp.OtherCompetitionId, Comp.CelCompetitionId, Comp.CelCompetitionText, 
+                                LanguageId, Comp.HasOriginals, Comp.Priority, Comp.Barcode, Comp.CommitId, _abitBarc, Comp.Id);
+                        }
+
                         //context.Abiturient_Insert(personId, EntryId, CompetitionId, HostelEduc, IsListener, WithHE, false, false, null, DocDate, DateTime.Now,
                         //AttDocOrigin, EgeDocOrigin, false, false, null, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, false,
                         //Priority, _abitBarc, entId);
                     }
 
-                    _bdcInet.ExecuteQuery("UPDATE Application SET IsImported = 1 WHERE Application.Barcode = " + _abitBarc);
+                    _bdcInet.ExecuteQuery("UPDATE Application SET IsImported = 1 WHERE Application.CommitId = (SELECT Id FROM ApplicationCommit WHERE IntNumber = '" + _abitBarc + "' )");
 
                     trans.Complete();
                     return true;
@@ -978,17 +1025,16 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
         private void dgvApplications_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rwNum = e.RowIndex;
-            if (rwNum >= 0)
-            {
-                var ent = GetCompFromGrid(rwNum);
-                if (ent != null)
-                {
-                    var crd = new CardCompetitionInInet(ent);
-                    crd.Show();
-                }
-            }
+            OpenCardCompetitionInInet(rwNum);
         }
+        private void btnOpenCompetition_Click(object sender, EventArgs e)
+        {
+            if (dgvApplications.SelectedCells.Count == 0)
+                return;
 
+            int rwNum = dgvApplications.SelectedCells[0].RowIndex;
+            OpenCardCompetitionInInet(rwNum);
+        }
         private ShortCompetition GetCompFromGrid(int rwNum)
         {
             if (rwNum < 0)
@@ -996,6 +1042,19 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
 
             Guid Id = (Guid)dgvApplications["Id", rwNum].Value;
             return LstCompetitions.Where(x => x.Id == Id).FirstOrDefault();
+        }
+        private void OpenCardCompetitionInInet(int rwNum)
+        {
+            if (rwNum >= 0)
+            {
+                var ent = GetCompFromGrid(rwNum);
+                if (ent != null)
+                {
+                    var crd = new CardCompetitionInInet(ent);
+                    crd.OnUpdate += UpdateCommitCompetition;
+                    crd.Show();
+                }
+            }
         }
     }
 }

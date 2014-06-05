@@ -9,7 +9,7 @@ namespace Priem
     {
         public Guid Id { get; private set; }
         public Guid PersonId { get; private set; }
-        public Guid EntryId { get; set; }
+        public Guid EntryId { get; private set; }
         public Guid CommitId { get; private set; }
 
         public int StudyLevelId { get; set; }
@@ -32,12 +32,44 @@ namespace Priem
         public int CompetitionId { get; set; }
         public string CompetitionName { get; set; }
 
+        public int Priority { get; set; }
+        public int? OtherCompetitionId { get; set; }
+        public int? CelCompetitionId { get; set; }
+        public string CelCompetitionText { get; set; }
+
+        public DateTime DocDate { get; set; }
+        public DateTime DocInsertDate { get; set; }
+
+        public bool HasOriginals { get; set; }
+
+        public bool IsListener { get; set; }
+        public bool IsSecond { get; set; }
+
+        public int Barcode { get; private set; }
+
         public ShortCompetition(Guid _Id, Guid _CommitId, Guid _EntryId, Guid _PersonId)
         {
             Id = _Id;
             CommitId = _CommitId;
             EntryId = _EntryId;
             PersonId = _PersonId;
+        }
+
+        public void ChangeEntry()
+        {
+            using (PriemEntities context = new PriemEntities())
+            {
+                var Entry = context.Entry
+                    .Where(x => x.LicenseProgramId == LicenseProgramId
+                        && x.ObrazProgramId == ObrazProgramId
+                        && x.StudyLevelId == StudyLevelId
+                        && x.StudyFormId == StudyFormId
+                        && x.StudyBasisId == StudyBasisId
+                        && (ProfileId.HasValue ? x.ProfileId == ProfileId : x.ProfileId == null)).FirstOrDefault();
+
+                if (Entry != null)
+                    EntryId = Entry.Id;
+            }
         }
     }
 }

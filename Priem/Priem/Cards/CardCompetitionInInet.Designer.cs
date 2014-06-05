@@ -62,6 +62,7 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.epError = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btnSave = new System.Windows.Forms.Button();
             this.gbDocs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).BeginInit();
             this.SuspendLayout();
@@ -76,7 +77,7 @@
             this.cbStudyLevel.FormattingEnabled = true;
             this.cbStudyLevel.Location = new System.Drawing.Point(121, 55);
             this.cbStudyLevel.Name = "cbStudyLevel";
-            this.cbStudyLevel.Size = new System.Drawing.Size(335, 21);
+            this.cbStudyLevel.Size = new System.Drawing.Size(329, 21);
             this.cbStudyLevel.TabIndex = 189;
             // 
             // label52
@@ -116,7 +117,7 @@
             // 
             // dtDocInsertDate
             // 
-            this.dtDocInsertDate.Location = new System.Drawing.Point(23, 462);
+            this.dtDocInsertDate.Location = new System.Drawing.Point(25, 442);
             this.dtDocInsertDate.Name = "dtDocInsertDate";
             this.dtDocInsertDate.Size = new System.Drawing.Size(183, 20);
             this.dtDocInsertDate.TabIndex = 184;
@@ -124,7 +125,7 @@
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(20, 445);
+            this.label67.Location = new System.Drawing.Point(22, 425);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(136, 13);
             this.label67.TabIndex = 185;
@@ -133,7 +134,7 @@
             // gbDocs
             // 
             this.gbDocs.Controls.Add(this.chbAttOriginal);
-            this.gbDocs.Location = new System.Drawing.Point(224, 409);
+            this.gbDocs.Location = new System.Drawing.Point(226, 389);
             this.gbDocs.Name = "gbDocs";
             this.gbDocs.Size = new System.Drawing.Size(232, 73);
             this.gbDocs.TabIndex = 183;
@@ -164,7 +165,8 @@
             // 
             // dtDocDate
             // 
-            this.dtDocDate.Location = new System.Drawing.Point(23, 409);
+            this.dtDocDate.Enabled = false;
+            this.dtDocDate.Location = new System.Drawing.Point(25, 389);
             this.dtDocDate.Name = "dtDocDate";
             this.dtDocDate.Size = new System.Drawing.Size(183, 20);
             this.dtDocDate.TabIndex = 180;
@@ -172,7 +174,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(20, 392);
+            this.label34.Location = new System.Drawing.Point(22, 372);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(134, 13);
             this.label34.TabIndex = 181;
@@ -188,7 +190,7 @@
             this.cbOtherCompetition.FormattingEnabled = true;
             this.cbOtherCompetition.Location = new System.Drawing.Point(196, 293);
             this.cbOtherCompetition.Name = "cbOtherCompetition";
-            this.cbOtherCompetition.Size = new System.Drawing.Size(170, 21);
+            this.cbOtherCompetition.Size = new System.Drawing.Size(164, 21);
             this.cbOtherCompetition.TabIndex = 179;
             // 
             // cbCelCompetition
@@ -199,22 +201,22 @@
             this.cbCelCompetition.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCelCompetition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCelCompetition.FormattingEnabled = true;
-            this.cbCelCompetition.Location = new System.Drawing.Point(25, 340);
+            this.cbCelCompetition.Location = new System.Drawing.Point(25, 332);
             this.cbCelCompetition.Name = "cbCelCompetition";
-            this.cbCelCompetition.Size = new System.Drawing.Size(165, 21);
+            this.cbCelCompetition.Size = new System.Drawing.Size(159, 21);
             this.cbCelCompetition.TabIndex = 178;
             // 
             // tbCelCompetitionText
             // 
-            this.tbCelCompetitionText.Location = new System.Drawing.Point(196, 340);
+            this.tbCelCompetitionText.Location = new System.Drawing.Point(196, 332);
             this.tbCelCompetitionText.Name = "tbCelCompetitionText";
-            this.tbCelCompetitionText.Size = new System.Drawing.Size(93, 20);
+            this.tbCelCompetitionText.Size = new System.Drawing.Size(170, 20);
             this.tbCelCompetitionText.TabIndex = 177;
             // 
             // lblCelCompetition
             // 
             this.lblCelCompetition.AutoSize = true;
-            this.lblCelCompetition.Location = new System.Drawing.Point(22, 325);
+            this.lblCelCompetition.Location = new System.Drawing.Point(22, 317);
             this.lblCelCompetition.Name = "lblCelCompetition";
             this.lblCelCompetition.Size = new System.Drawing.Size(138, 13);
             this.lblCelCompetition.TabIndex = 176;
@@ -232,7 +234,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(397, 325);
+            this.label26.Location = new System.Drawing.Point(389, 214);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 13);
             this.label26.TabIndex = 174;
@@ -240,7 +242,7 @@
             // 
             // tbPriority
             // 
-            this.tbPriority.Location = new System.Drawing.Point(414, 341);
+            this.tbPriority.Location = new System.Drawing.Point(405, 230);
             this.tbPriority.Name = "tbPriority";
             this.tbPriority.Size = new System.Drawing.Size(45, 20);
             this.tbPriority.TabIndex = 173;
@@ -255,7 +257,7 @@
             this.cbCompetition.FormattingEnabled = true;
             this.cbCompetition.Location = new System.Drawing.Point(25, 293);
             this.cbCompetition.Name = "cbCompetition";
-            this.cbCompetition.Size = new System.Drawing.Size(165, 21);
+            this.cbCompetition.Size = new System.Drawing.Size(159, 21);
             this.cbCompetition.TabIndex = 172;
             // 
             // cbStudyBasis
@@ -268,7 +270,7 @@
             this.cbStudyBasis.FormattingEnabled = true;
             this.cbStudyBasis.Location = new System.Drawing.Point(121, 229);
             this.cbStudyBasis.Name = "cbStudyBasis";
-            this.cbStudyBasis.Size = new System.Drawing.Size(240, 21);
+            this.cbStudyBasis.Size = new System.Drawing.Size(234, 21);
             this.cbStudyBasis.TabIndex = 171;
             // 
             // cbFaculty
@@ -281,7 +283,7 @@
             this.cbFaculty.FormattingEnabled = true;
             this.cbFaculty.Location = new System.Drawing.Point(121, 163);
             this.cbFaculty.Name = "cbFaculty";
-            this.cbFaculty.Size = new System.Drawing.Size(335, 21);
+            this.cbFaculty.Size = new System.Drawing.Size(329, 21);
             this.cbFaculty.TabIndex = 170;
             // 
             // cbStudyForm
@@ -294,7 +296,7 @@
             this.cbStudyForm.FormattingEnabled = true;
             this.cbStudyForm.Location = new System.Drawing.Point(121, 202);
             this.cbStudyForm.Name = "cbStudyForm";
-            this.cbStudyForm.Size = new System.Drawing.Size(240, 21);
+            this.cbStudyForm.Size = new System.Drawing.Size(234, 21);
             this.cbStudyForm.TabIndex = 169;
             // 
             // cbObrazProgram
@@ -307,7 +309,7 @@
             this.cbObrazProgram.FormattingEnabled = true;
             this.cbObrazProgram.Location = new System.Drawing.Point(121, 109);
             this.cbObrazProgram.Name = "cbObrazProgram";
-            this.cbObrazProgram.Size = new System.Drawing.Size(335, 21);
+            this.cbObrazProgram.Size = new System.Drawing.Size(329, 21);
             this.cbObrazProgram.TabIndex = 168;
             // 
             // cbProfile
@@ -320,7 +322,7 @@
             this.cbProfile.FormattingEnabled = true;
             this.cbProfile.Location = new System.Drawing.Point(121, 136);
             this.cbProfile.Name = "cbProfile";
-            this.cbProfile.Size = new System.Drawing.Size(335, 21);
+            this.cbProfile.Size = new System.Drawing.Size(329, 21);
             this.cbProfile.TabIndex = 167;
             // 
             // cbLicenseProgram
@@ -333,7 +335,7 @@
             this.cbLicenseProgram.FormattingEnabled = true;
             this.cbLicenseProgram.Location = new System.Drawing.Point(121, 82);
             this.cbLicenseProgram.Name = "cbLicenseProgram";
-            this.cbLicenseProgram.Size = new System.Drawing.Size(335, 21);
+            this.cbLicenseProgram.Size = new System.Drawing.Size(329, 21);
             this.cbLicenseProgram.TabIndex = 166;
             // 
             // lblObrazProgram
@@ -409,11 +411,22 @@
             // 
             this.epError.ContainerControl = this;
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(25, 474);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 190;
+            this.btnSave.Text = "Сохранить";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // CardCompetitionInInet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 601);
+            this.ClientSize = new System.Drawing.Size(476, 509);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.cbStudyLevel);
             this.Controls.Add(this.label52);
             this.Controls.Add(this.chbIsSecond);
@@ -490,5 +503,6 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.ErrorProvider epError;
+        private System.Windows.Forms.Button btnSave;
     }
 }

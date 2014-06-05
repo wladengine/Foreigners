@@ -3110,8 +3110,9 @@ namespace Priem
         /// <param name="startEnglish">No Metadata Documentation available.</param>
         /// <param name="englishMark">No Metadata Documentation available.</param>
         /// <param name="egeInSpbgu">No Metadata Documentation available.</param>
+        /// <param name="sNILS">No Metadata Documentation available.</param>
         /// <param name="id">No Metadata Documentation available.</param>
-        public int Person_insert(Nullable<global::System.Int32> barcode, global::System.String name, global::System.String secondName, global::System.String surname, Nullable<global::System.DateTime> birthDate, global::System.String birthPlace, Nullable<global::System.Int32> passportTypeId, global::System.String passportSeries, global::System.String passportNumber, global::System.String passportAuthor, Nullable<global::System.DateTime> passportDate, Nullable<global::System.Boolean> sex, Nullable<global::System.Int32> countryId, Nullable<global::System.Int32> nationalityId, Nullable<global::System.Int32> regionId, global::System.String phone, global::System.String mobiles, global::System.String email, global::System.String code, global::System.String city, global::System.String street, global::System.String house, global::System.String korpus, global::System.String flat, global::System.String codeReal, global::System.String cityReal, global::System.String streetReal, global::System.String houseReal, global::System.String korpusReal, global::System.String flatReal, Nullable<global::System.Boolean> hostelAbit, Nullable<global::System.Boolean> hasAssignToHostel, Nullable<global::System.Int32> hostelFacultyId, Nullable<global::System.Boolean> hasExamPass, Nullable<global::System.Int32> examPassFacultyId, Nullable<global::System.Boolean> isExcellent, Nullable<global::System.Int32> languageId, global::System.String schoolCity, Nullable<global::System.Int32> schoolTypeId, global::System.String schoolName, global::System.String schoolNum, Nullable<global::System.Int32> schoolExitYear, Nullable<global::System.Double> schoolAVG, Nullable<global::System.Int32> countryEducId, Nullable<global::System.Boolean> hasEkvivEduc, global::System.String attestatRegion, global::System.String attestatSeries, global::System.String attestatNum, global::System.String diplomSeries, global::System.String diplomNum, global::System.String highEducation, global::System.String hEProfession, global::System.String hEQualification, Nullable<global::System.Int32> hEEntryYear, Nullable<global::System.Int32> hEExitYear, Nullable<global::System.Int32> hEStudyFormId, global::System.String hEWork, global::System.String stag, global::System.String workPlace, global::System.String mSVuz, global::System.String mSCourse, Nullable<global::System.Int32> mSStudyFormId, Nullable<global::System.Int32> privileges, global::System.String passportCode, global::System.String personalCode, global::System.String personInfo, global::System.String extraInfo, global::System.String scienceWork, Nullable<global::System.Boolean> startEnglish, Nullable<global::System.Int32> englishMark, Nullable<global::System.Boolean> egeInSpbgu, ObjectParameter id)
+        public int Person_insert(Nullable<global::System.Int32> barcode, global::System.String name, global::System.String secondName, global::System.String surname, Nullable<global::System.DateTime> birthDate, global::System.String birthPlace, Nullable<global::System.Int32> passportTypeId, global::System.String passportSeries, global::System.String passportNumber, global::System.String passportAuthor, Nullable<global::System.DateTime> passportDate, Nullable<global::System.Boolean> sex, Nullable<global::System.Int32> countryId, Nullable<global::System.Int32> nationalityId, Nullable<global::System.Int32> regionId, global::System.String phone, global::System.String mobiles, global::System.String email, global::System.String code, global::System.String city, global::System.String street, global::System.String house, global::System.String korpus, global::System.String flat, global::System.String codeReal, global::System.String cityReal, global::System.String streetReal, global::System.String houseReal, global::System.String korpusReal, global::System.String flatReal, Nullable<global::System.Boolean> hostelAbit, Nullable<global::System.Boolean> hasAssignToHostel, Nullable<global::System.Int32> hostelFacultyId, Nullable<global::System.Boolean> hasExamPass, Nullable<global::System.Int32> examPassFacultyId, Nullable<global::System.Boolean> isExcellent, Nullable<global::System.Int32> languageId, global::System.String schoolCity, Nullable<global::System.Int32> schoolTypeId, global::System.String schoolName, global::System.String schoolNum, Nullable<global::System.Int32> schoolExitYear, Nullable<global::System.Double> schoolAVG, Nullable<global::System.Int32> countryEducId, Nullable<global::System.Boolean> hasEkvivEduc, global::System.String attestatRegion, global::System.String attestatSeries, global::System.String attestatNum, global::System.String diplomSeries, global::System.String diplomNum, global::System.String highEducation, global::System.String hEProfession, global::System.String hEQualification, Nullable<global::System.Int32> hEEntryYear, Nullable<global::System.Int32> hEExitYear, Nullable<global::System.Int32> hEStudyFormId, global::System.String hEWork, global::System.String stag, global::System.String workPlace, global::System.String mSVuz, global::System.String mSCourse, Nullable<global::System.Int32> mSStudyFormId, Nullable<global::System.Int32> privileges, global::System.String passportCode, global::System.String personalCode, global::System.String personInfo, global::System.String extraInfo, global::System.String scienceWork, Nullable<global::System.Boolean> startEnglish, Nullable<global::System.Int32> englishMark, Nullable<global::System.Boolean> egeInSpbgu, global::System.String sNILS, ObjectParameter id)
         {
             ObjectParameter barcodeParameter;
             if (barcode.HasValue)
@@ -3823,7 +3824,17 @@ namespace Priem
                 egeInSpbguParameter = new ObjectParameter("EgeInSpbgu", typeof(global::System.Boolean));
             }
     
-            return base.ExecuteFunction("Person_insert", barcodeParameter, nameParameter, secondNameParameter, surnameParameter, birthDateParameter, birthPlaceParameter, passportTypeIdParameter, passportSeriesParameter, passportNumberParameter, passportAuthorParameter, passportDateParameter, sexParameter, countryIdParameter, nationalityIdParameter, regionIdParameter, phoneParameter, mobilesParameter, emailParameter, codeParameter, cityParameter, streetParameter, houseParameter, korpusParameter, flatParameter, codeRealParameter, cityRealParameter, streetRealParameter, houseRealParameter, korpusRealParameter, flatRealParameter, hostelAbitParameter, hasAssignToHostelParameter, hostelFacultyIdParameter, hasExamPassParameter, examPassFacultyIdParameter, isExcellentParameter, languageIdParameter, schoolCityParameter, schoolTypeIdParameter, schoolNameParameter, schoolNumParameter, schoolExitYearParameter, schoolAVGParameter, countryEducIdParameter, hasEkvivEducParameter, attestatRegionParameter, attestatSeriesParameter, attestatNumParameter, diplomSeriesParameter, diplomNumParameter, highEducationParameter, hEProfessionParameter, hEQualificationParameter, hEEntryYearParameter, hEExitYearParameter, hEStudyFormIdParameter, hEWorkParameter, stagParameter, workPlaceParameter, mSVuzParameter, mSCourseParameter, mSStudyFormIdParameter, privilegesParameter, passportCodeParameter, personalCodeParameter, personInfoParameter, extraInfoParameter, scienceWorkParameter, startEnglishParameter, englishMarkParameter, egeInSpbguParameter, id);
+            ObjectParameter sNILSParameter;
+            if (sNILS != null)
+            {
+                sNILSParameter = new ObjectParameter("SNILS", sNILS);
+            }
+            else
+            {
+                sNILSParameter = new ObjectParameter("SNILS", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("Person_insert", barcodeParameter, nameParameter, secondNameParameter, surnameParameter, birthDateParameter, birthPlaceParameter, passportTypeIdParameter, passportSeriesParameter, passportNumberParameter, passportAuthorParameter, passportDateParameter, sexParameter, countryIdParameter, nationalityIdParameter, regionIdParameter, phoneParameter, mobilesParameter, emailParameter, codeParameter, cityParameter, streetParameter, houseParameter, korpusParameter, flatParameter, codeRealParameter, cityRealParameter, streetRealParameter, houseRealParameter, korpusRealParameter, flatRealParameter, hostelAbitParameter, hasAssignToHostelParameter, hostelFacultyIdParameter, hasExamPassParameter, examPassFacultyIdParameter, isExcellentParameter, languageIdParameter, schoolCityParameter, schoolTypeIdParameter, schoolNameParameter, schoolNumParameter, schoolExitYearParameter, schoolAVGParameter, countryEducIdParameter, hasEkvivEducParameter, attestatRegionParameter, attestatSeriesParameter, attestatNumParameter, diplomSeriesParameter, diplomNumParameter, highEducationParameter, hEProfessionParameter, hEQualificationParameter, hEEntryYearParameter, hEExitYearParameter, hEStudyFormIdParameter, hEWorkParameter, stagParameter, workPlaceParameter, mSVuzParameter, mSCourseParameter, mSStudyFormIdParameter, privilegesParameter, passportCodeParameter, personalCodeParameter, personInfoParameter, extraInfoParameter, scienceWorkParameter, startEnglishParameter, englishMarkParameter, egeInSpbguParameter, sNILSParameter, id);
         }
     
         /// <summary>
@@ -3842,8 +3853,9 @@ namespace Priem
         /// <param name="attestatSeries">No Metadata Documentation available.</param>
         /// <param name="attestatNum">No Metadata Documentation available.</param>
         /// <param name="privileges">No Metadata Documentation available.</param>
+        /// <param name="sNILS">No Metadata Documentation available.</param>
         /// <param name="id">No Metadata Documentation available.</param>
-        public int Person_UpdateMain(global::System.String name, global::System.String secondName, global::System.String surname, Nullable<global::System.DateTime> birthDate, Nullable<global::System.Int32> passportTypeId, global::System.String passportSeries, global::System.String passportNumber, global::System.String passportAuthor, Nullable<global::System.DateTime> passportDate, global::System.String attestatRegion, global::System.String attestatSeries, global::System.String attestatNum, Nullable<global::System.Int32> privileges, Nullable<global::System.Guid> id)
+        public int Person_UpdateMain(global::System.String name, global::System.String secondName, global::System.String surname, Nullable<global::System.DateTime> birthDate, Nullable<global::System.Int32> passportTypeId, global::System.String passportSeries, global::System.String passportNumber, global::System.String passportAuthor, Nullable<global::System.DateTime> passportDate, global::System.String attestatRegion, global::System.String attestatSeries, global::System.String attestatNum, Nullable<global::System.Int32> privileges, global::System.String sNILS, Nullable<global::System.Guid> id)
         {
             ObjectParameter nameParameter;
             if (name != null)
@@ -3975,6 +3987,16 @@ namespace Priem
                 privilegesParameter = new ObjectParameter("Privileges", typeof(global::System.Int32));
             }
     
+            ObjectParameter sNILSParameter;
+            if (sNILS != null)
+            {
+                sNILSParameter = new ObjectParameter("SNILS", sNILS);
+            }
+            else
+            {
+                sNILSParameter = new ObjectParameter("SNILS", typeof(global::System.String));
+            }
+    
             ObjectParameter idParameter;
             if (id.HasValue)
             {
@@ -3985,7 +4007,7 @@ namespace Priem
                 idParameter = new ObjectParameter("id", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction("Person_UpdateMain", nameParameter, secondNameParameter, surnameParameter, birthDateParameter, passportTypeIdParameter, passportSeriesParameter, passportNumberParameter, passportAuthorParameter, passportDateParameter, attestatRegionParameter, attestatSeriesParameter, attestatNumParameter, privilegesParameter, idParameter);
+            return base.ExecuteFunction("Person_UpdateMain", nameParameter, secondNameParameter, surnameParameter, birthDateParameter, passportTypeIdParameter, passportSeriesParameter, passportNumberParameter, passportAuthorParameter, passportDateParameter, attestatRegionParameter, attestatSeriesParameter, attestatNumParameter, privilegesParameter, sNILSParameter, idParameter);
         }
     
         /// <summary>
@@ -6737,8 +6759,9 @@ namespace Priem
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="olympSubjName">No Metadata Documentation available.</param>
+        /// <param name="nameDative">No Metadata Documentation available.</param>
         /// <param name="id">No Metadata Documentation available.</param>
-        public int OlympSubject_Insert(global::System.String olympSubjName, ObjectParameter id)
+        public int OlympSubject_Insert(global::System.String olympSubjName, global::System.String nameDative, ObjectParameter id)
         {
             ObjectParameter olympSubjNameParameter;
             if (olympSubjName != null)
@@ -6750,7 +6773,17 @@ namespace Priem
                 olympSubjNameParameter = new ObjectParameter("OlympSubjName", typeof(global::System.String));
             }
     
-            return base.ExecuteFunction("OlympSubject_Insert", olympSubjNameParameter, id);
+            ObjectParameter nameDativeParameter;
+            if (nameDative != null)
+            {
+                nameDativeParameter = new ObjectParameter("NameDative", nameDative);
+            }
+            else
+            {
+                nameDativeParameter = new ObjectParameter("NameDative", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("OlympSubject_Insert", olympSubjNameParameter, nameDativeParameter, id);
         }
     
         /// <summary>
@@ -12524,6 +12557,289 @@ namespace Priem
     
             return base.ExecuteFunction("PersonVisaInfo_update", personIdParameter, startParameter, endParameter, enterInRussiaDateParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="personId">No Metadata Documentation available.</param>
+        /// <param name="entryId">No Metadata Documentation available.</param>
+        /// <param name="competitionId">No Metadata Documentation available.</param>
+        /// <param name="isListener">No Metadata Documentation available.</param>
+        /// <param name="withHE">No Metadata Documentation available.</param>
+        /// <param name="isPaid">No Metadata Documentation available.</param>
+        /// <param name="backDoc">No Metadata Documentation available.</param>
+        /// <param name="backDocDate">No Metadata Documentation available.</param>
+        /// <param name="docDate">No Metadata Documentation available.</param>
+        /// <param name="docInsertDate">No Metadata Documentation available.</param>
+        /// <param name="attDocOrigin">No Metadata Documentation available.</param>
+        /// <param name="egeDocOrigin">No Metadata Documentation available.</param>
+        /// <param name="checked">No Metadata Documentation available.</param>
+        /// <param name="notEnabled">No Metadata Documentation available.</param>
+        /// <param name="coefficient">No Metadata Documentation available.</param>
+        /// <param name="otherCompetitionId">No Metadata Documentation available.</param>
+        /// <param name="celCompetitionId">No Metadata Documentation available.</param>
+        /// <param name="celCompetitionText">No Metadata Documentation available.</param>
+        /// <param name="languageId">No Metadata Documentation available.</param>
+        /// <param name="hasOriginals">No Metadata Documentation available.</param>
+        /// <param name="priority">No Metadata Documentation available.</param>
+        /// <param name="barcode">No Metadata Documentation available.</param>
+        /// <param name="commitId">No Metadata Documentation available.</param>
+        /// <param name="commitNumber">No Metadata Documentation available.</param>
+        /// <param name="id">No Metadata Documentation available.</param>
+        public int Abiturient_InsertDirectly(Nullable<global::System.Guid> personId, Nullable<global::System.Guid> entryId, Nullable<global::System.Int32> competitionId, Nullable<global::System.Boolean> isListener, Nullable<global::System.Boolean> withHE, Nullable<global::System.Boolean> isPaid, Nullable<global::System.Boolean> backDoc, Nullable<global::System.DateTime> backDocDate, Nullable<global::System.DateTime> docDate, Nullable<global::System.DateTime> docInsertDate, Nullable<global::System.Boolean> attDocOrigin, Nullable<global::System.Boolean> egeDocOrigin, Nullable<global::System.Boolean> @checked, Nullable<global::System.Boolean> notEnabled, Nullable<global::System.Double> coefficient, Nullable<global::System.Int32> otherCompetitionId, Nullable<global::System.Int32> celCompetitionId, global::System.String celCompetitionText, Nullable<global::System.Int32> languageId, Nullable<global::System.Boolean> hasOriginals, Nullable<global::System.Double> priority, Nullable<global::System.Int32> barcode, Nullable<global::System.Guid> commitId, Nullable<global::System.Int32> commitNumber, Nullable<global::System.Guid> id)
+        {
+            ObjectParameter personIdParameter;
+            if (personId.HasValue)
+            {
+                personIdParameter = new ObjectParameter("PersonId", personId);
+            }
+            else
+            {
+                personIdParameter = new ObjectParameter("PersonId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter entryIdParameter;
+            if (entryId.HasValue)
+            {
+                entryIdParameter = new ObjectParameter("EntryId", entryId);
+            }
+            else
+            {
+                entryIdParameter = new ObjectParameter("EntryId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter competitionIdParameter;
+            if (competitionId.HasValue)
+            {
+                competitionIdParameter = new ObjectParameter("CompetitionId", competitionId);
+            }
+            else
+            {
+                competitionIdParameter = new ObjectParameter("CompetitionId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter isListenerParameter;
+            if (isListener.HasValue)
+            {
+                isListenerParameter = new ObjectParameter("IsListener", isListener);
+            }
+            else
+            {
+                isListenerParameter = new ObjectParameter("IsListener", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter withHEParameter;
+            if (withHE.HasValue)
+            {
+                withHEParameter = new ObjectParameter("WithHE", withHE);
+            }
+            else
+            {
+                withHEParameter = new ObjectParameter("WithHE", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter isPaidParameter;
+            if (isPaid.HasValue)
+            {
+                isPaidParameter = new ObjectParameter("IsPaid", isPaid);
+            }
+            else
+            {
+                isPaidParameter = new ObjectParameter("IsPaid", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter backDocParameter;
+            if (backDoc.HasValue)
+            {
+                backDocParameter = new ObjectParameter("BackDoc", backDoc);
+            }
+            else
+            {
+                backDocParameter = new ObjectParameter("BackDoc", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter backDocDateParameter;
+            if (backDocDate.HasValue)
+            {
+                backDocDateParameter = new ObjectParameter("BackDocDate", backDocDate);
+            }
+            else
+            {
+                backDocDateParameter = new ObjectParameter("BackDocDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter docDateParameter;
+            if (docDate.HasValue)
+            {
+                docDateParameter = new ObjectParameter("DocDate", docDate);
+            }
+            else
+            {
+                docDateParameter = new ObjectParameter("DocDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter docInsertDateParameter;
+            if (docInsertDate.HasValue)
+            {
+                docInsertDateParameter = new ObjectParameter("DocInsertDate", docInsertDate);
+            }
+            else
+            {
+                docInsertDateParameter = new ObjectParameter("DocInsertDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter attDocOriginParameter;
+            if (attDocOrigin.HasValue)
+            {
+                attDocOriginParameter = new ObjectParameter("AttDocOrigin", attDocOrigin);
+            }
+            else
+            {
+                attDocOriginParameter = new ObjectParameter("AttDocOrigin", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter egeDocOriginParameter;
+            if (egeDocOrigin.HasValue)
+            {
+                egeDocOriginParameter = new ObjectParameter("EgeDocOrigin", egeDocOrigin);
+            }
+            else
+            {
+                egeDocOriginParameter = new ObjectParameter("EgeDocOrigin", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter checkedParameter;
+            if (@checked.HasValue)
+            {
+                checkedParameter = new ObjectParameter("Checked", @checked);
+            }
+            else
+            {
+                checkedParameter = new ObjectParameter("Checked", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter notEnabledParameter;
+            if (notEnabled.HasValue)
+            {
+                notEnabledParameter = new ObjectParameter("NotEnabled", notEnabled);
+            }
+            else
+            {
+                notEnabledParameter = new ObjectParameter("NotEnabled", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter coefficientParameter;
+            if (coefficient.HasValue)
+            {
+                coefficientParameter = new ObjectParameter("Coefficient", coefficient);
+            }
+            else
+            {
+                coefficientParameter = new ObjectParameter("Coefficient", typeof(global::System.Double));
+            }
+    
+            ObjectParameter otherCompetitionIdParameter;
+            if (otherCompetitionId.HasValue)
+            {
+                otherCompetitionIdParameter = new ObjectParameter("OtherCompetitionId", otherCompetitionId);
+            }
+            else
+            {
+                otherCompetitionIdParameter = new ObjectParameter("OtherCompetitionId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter celCompetitionIdParameter;
+            if (celCompetitionId.HasValue)
+            {
+                celCompetitionIdParameter = new ObjectParameter("CelCompetitionId", celCompetitionId);
+            }
+            else
+            {
+                celCompetitionIdParameter = new ObjectParameter("CelCompetitionId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter celCompetitionTextParameter;
+            if (celCompetitionText != null)
+            {
+                celCompetitionTextParameter = new ObjectParameter("CelCompetitionText", celCompetitionText);
+            }
+            else
+            {
+                celCompetitionTextParameter = new ObjectParameter("CelCompetitionText", typeof(global::System.String));
+            }
+    
+            ObjectParameter languageIdParameter;
+            if (languageId.HasValue)
+            {
+                languageIdParameter = new ObjectParameter("LanguageId", languageId);
+            }
+            else
+            {
+                languageIdParameter = new ObjectParameter("LanguageId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter hasOriginalsParameter;
+            if (hasOriginals.HasValue)
+            {
+                hasOriginalsParameter = new ObjectParameter("HasOriginals", hasOriginals);
+            }
+            else
+            {
+                hasOriginalsParameter = new ObjectParameter("HasOriginals", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter priorityParameter;
+            if (priority.HasValue)
+            {
+                priorityParameter = new ObjectParameter("Priority", priority);
+            }
+            else
+            {
+                priorityParameter = new ObjectParameter("Priority", typeof(global::System.Double));
+            }
+    
+            ObjectParameter barcodeParameter;
+            if (barcode.HasValue)
+            {
+                barcodeParameter = new ObjectParameter("Barcode", barcode);
+            }
+            else
+            {
+                barcodeParameter = new ObjectParameter("Barcode", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter commitIdParameter;
+            if (commitId.HasValue)
+            {
+                commitIdParameter = new ObjectParameter("CommitId", commitId);
+            }
+            else
+            {
+                commitIdParameter = new ObjectParameter("CommitId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter commitNumberParameter;
+            if (commitNumber.HasValue)
+            {
+                commitNumberParameter = new ObjectParameter("CommitNumber", commitNumber);
+            }
+            else
+            {
+                commitNumberParameter = new ObjectParameter("CommitNumber", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter idParameter;
+            if (id.HasValue)
+            {
+                idParameter = new ObjectParameter("id", id);
+            }
+            else
+            {
+                idParameter = new ObjectParameter("id", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("Abiturient_InsertDirectly", personIdParameter, entryIdParameter, competitionIdParameter, isListenerParameter, withHEParameter, isPaidParameter, backDocParameter, backDocDateParameter, docDateParameter, docInsertDateParameter, attDocOriginParameter, egeDocOriginParameter, checkedParameter, notEnabledParameter, coefficientParameter, otherCompetitionIdParameter, celCompetitionIdParameter, celCompetitionTextParameter, languageIdParameter, hasOriginalsParameter, priorityParameter, barcodeParameter, commitIdParameter, commitNumberParameter, idParameter);
+        }
 
         #endregion
 
@@ -13509,6 +13825,54 @@ namespace Priem
         private Nullable<global::System.Boolean> _IsCommitedToFIS;
         partial void OnIsCommitedToFISChanging(Nullable<global::System.Boolean> value);
         partial void OnIsCommitedToFISChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> CommitId
+        {
+            get
+            {
+                return _CommitId;
+            }
+            set
+            {
+                OnCommitIdChanging(value);
+                ReportPropertyChanging("CommitId");
+                _CommitId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CommitId");
+                OnCommitIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _CommitId;
+        partial void OnCommitIdChanging(Nullable<global::System.Guid> value);
+        partial void OnCommitIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> CommitNumber
+        {
+            get
+            {
+                return _CommitNumber;
+            }
+            set
+            {
+                OnCommitNumberChanging(value);
+                ReportPropertyChanging("CommitNumber");
+                _CommitNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CommitNumber");
+                OnCommitNumberChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _CommitNumber;
+        partial void OnCommitNumberChanging(Nullable<global::System.Int32> value);
+        partial void OnCommitNumberChanged();
 
         #endregion
 
@@ -31191,6 +31555,30 @@ namespace Priem
         private global::System.String _Flat;
         partial void OnFlatChanging(global::System.String value);
         partial void OnFlatChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> HostelEduc
+        {
+            get
+            {
+                return _HostelEduc;
+            }
+            set
+            {
+                OnHostelEducChanging(value);
+                ReportPropertyChanging("HostelEduc");
+                _HostelEduc = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("HostelEduc");
+                OnHostelEducChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _HostelEduc;
+        partial void OnHostelEducChanging(Nullable<global::System.Boolean> value);
+        partial void OnHostelEducChanged();
 
         #endregion
 
@@ -33307,6 +33695,54 @@ namespace Priem
         private Nullable<global::System.Boolean> _HasGrant;
         partial void OnHasGrantChanging(Nullable<global::System.Boolean> value);
         partial void OnHasGrantChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> HostelEduc
+        {
+            get
+            {
+                return _HostelEduc;
+            }
+            set
+            {
+                OnHostelEducChanging(value);
+                ReportPropertyChanging("HostelEduc");
+                _HostelEduc = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("HostelEduc");
+                OnHostelEducChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _HostelEduc;
+        partial void OnHostelEducChanging(Nullable<global::System.Boolean> value);
+        partial void OnHostelEducChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SNILS
+        {
+            get
+            {
+                return _SNILS;
+            }
+            set
+            {
+                OnSNILSChanging(value);
+                ReportPropertyChanging("SNILS");
+                _SNILS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SNILS");
+                OnSNILSChanged();
+            }
+        }
+        private global::System.String _SNILS;
+        partial void OnSNILSChanging(global::System.String value);
+        partial void OnSNILSChanged();
 
         #endregion
 
@@ -37511,11 +37947,13 @@ namespace Priem
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static OlympLevel CreateOlympLevel(global::System.Int32 id, global::System.String name)
+        /// <param name="isOpen">Initial value of the IsOpen property.</param>
+        public static OlympLevel CreateOlympLevel(global::System.Int32 id, global::System.String name, global::System.Boolean isOpen)
         {
             OlympLevel olympLevel = new OlympLevel();
             olympLevel.Id = id;
             olympLevel.Name = name;
+            olympLevel.IsOpen = isOpen;
             return olympLevel;
         }
 
@@ -37573,6 +38011,54 @@ namespace Priem
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                OnIsOpenChanging(value);
+                ReportPropertyChanging("IsOpen");
+                _IsOpen = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpen");
+                OnIsOpenChanged();
+            }
+        }
+        private global::System.Boolean _IsOpen;
+        partial void OnIsOpenChanging(global::System.Boolean value);
+        partial void OnIsOpenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Holder
+        {
+            get
+            {
+                return _Holder;
+            }
+            set
+            {
+                OnHolderChanging(value);
+                ReportPropertyChanging("Holder");
+                _Holder = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Holder");
+                OnHolderChanged();
+            }
+        }
+        private global::System.String _Holder;
+        partial void OnHolderChanging(global::System.String value);
+        partial void OnHolderChanged();
 
         #endregion
 
@@ -37642,11 +38128,13 @@ namespace Priem
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static OlympName CreateOlympName(global::System.Int32 id, global::System.String name)
+        /// <param name="isOpen">Initial value of the IsOpen property.</param>
+        public static OlympName CreateOlympName(global::System.Int32 id, global::System.String name, global::System.Boolean isOpen)
         {
             OlympName olympName = new OlympName();
             olympName.Id = id;
             olympName.Name = name;
+            olympName.IsOpen = isOpen;
             return olympName;
         }
 
@@ -37728,6 +38216,54 @@ namespace Priem
         private Nullable<global::System.Int32> _Number;
         partial void OnNumberChanging(Nullable<global::System.Int32> value);
         partial void OnNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                OnIsOpenChanging(value);
+                ReportPropertyChanging("IsOpen");
+                _IsOpen = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpen");
+                OnIsOpenChanged();
+            }
+        }
+        private global::System.Boolean _IsOpen;
+        partial void OnIsOpenChanging(global::System.Boolean value);
+        partial void OnIsOpenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Holder
+        {
+            get
+            {
+                return _Holder;
+            }
+            set
+            {
+                OnHolderChanging(value);
+                ReportPropertyChanging("Holder");
+                _Holder = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Holder");
+                OnHolderChanged();
+            }
+        }
+        private global::System.String _Holder;
+        partial void OnHolderChanging(global::System.String value);
+        partial void OnHolderChanged();
 
         #endregion
 
@@ -37775,11 +38311,13 @@ namespace Priem
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static OlympSubject CreateOlympSubject(global::System.Int32 id, global::System.String name)
+        /// <param name="isOpen">Initial value of the IsOpen property.</param>
+        public static OlympSubject CreateOlympSubject(global::System.Int32 id, global::System.String name, global::System.Boolean isOpen)
         {
             OlympSubject olympSubject = new OlympSubject();
             olympSubject.Id = id;
             olympSubject.Name = name;
+            olympSubject.IsOpen = isOpen;
             return olympSubject;
         }
 
@@ -37861,6 +38399,54 @@ namespace Priem
         private global::System.String _NameDative;
         partial void OnNameDativeChanging(global::System.String value);
         partial void OnNameDativeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                OnIsOpenChanging(value);
+                ReportPropertyChanging("IsOpen");
+                _IsOpen = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpen");
+                OnIsOpenChanged();
+            }
+        }
+        private global::System.Boolean _IsOpen;
+        partial void OnIsOpenChanging(global::System.Boolean value);
+        partial void OnIsOpenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Holder
+        {
+            get
+            {
+                return _Holder;
+            }
+            set
+            {
+                OnHolderChanging(value);
+                ReportPropertyChanging("Holder");
+                _Holder = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Holder");
+                OnHolderChanged();
+            }
+        }
+        private global::System.String _Holder;
+        partial void OnHolderChanging(global::System.String value);
+        partial void OnHolderChanged();
 
         #endregion
 
@@ -37930,11 +38516,13 @@ namespace Priem
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static OlympType CreateOlympType(global::System.Int32 id, global::System.String name)
+        /// <param name="isOpen">Initial value of the IsOpen property.</param>
+        public static OlympType CreateOlympType(global::System.Int32 id, global::System.String name, global::System.Boolean isOpen)
         {
             OlympType olympType = new OlympType();
             olympType.Id = id;
             olympType.Name = name;
+            olympType.IsOpen = isOpen;
             return olympType;
         }
 
@@ -37992,6 +38580,54 @@ namespace Priem
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                OnIsOpenChanging(value);
+                ReportPropertyChanging("IsOpen");
+                _IsOpen = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpen");
+                OnIsOpenChanged();
+            }
+        }
+        private global::System.Boolean _IsOpen;
+        partial void OnIsOpenChanging(global::System.Boolean value);
+        partial void OnIsOpenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Holder
+        {
+            get
+            {
+                return _Holder;
+            }
+            set
+            {
+                OnHolderChanging(value);
+                ReportPropertyChanging("Holder");
+                _Holder = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Holder");
+                OnHolderChanged();
+            }
+        }
+        private global::System.String _Holder;
+        partial void OnHolderChanging(global::System.String value);
+        partial void OnHolderChanged();
 
         #endregion
 
@@ -38061,11 +38697,13 @@ namespace Priem
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static OlympValue CreateOlympValue(global::System.Int32 id, global::System.String name)
+        /// <param name="isOpen">Initial value of the IsOpen property.</param>
+        public static OlympValue CreateOlympValue(global::System.Int32 id, global::System.String name, global::System.Boolean isOpen)
         {
             OlympValue olympValue = new OlympValue();
             olympValue.Id = id;
             olympValue.Name = name;
+            olympValue.IsOpen = isOpen;
             return olympValue;
         }
 
@@ -38171,6 +38809,54 @@ namespace Priem
         private global::System.String _Acronym;
         partial void OnAcronymChanging(global::System.String value);
         partial void OnAcronymChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsOpen
+        {
+            get
+            {
+                return _IsOpen;
+            }
+            set
+            {
+                OnIsOpenChanging(value);
+                ReportPropertyChanging("IsOpen");
+                _IsOpen = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsOpen");
+                OnIsOpenChanged();
+            }
+        }
+        private global::System.Boolean _IsOpen;
+        partial void OnIsOpenChanging(global::System.Boolean value);
+        partial void OnIsOpenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Holder
+        {
+            get
+            {
+                return _Holder;
+            }
+            set
+            {
+                OnHolderChanging(value);
+                ReportPropertyChanging("Holder");
+                _Holder = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Holder");
+                OnHolderChanged();
+            }
+        }
+        private global::System.String _Holder;
+        partial void OnHolderChanging(global::System.String value);
+        partial void OnHolderChanged();
 
         #endregion
 
@@ -40612,6 +41298,30 @@ namespace Priem
         private Nullable<global::System.Int32> _AdditionalPersonTypeId;
         partial void OnAdditionalPersonTypeIdChanging(Nullable<global::System.Int32> value);
         partial void OnAdditionalPersonTypeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String SNILS
+        {
+            get
+            {
+                return _SNILS;
+            }
+            set
+            {
+                OnSNILSChanging(value);
+                ReportPropertyChanging("SNILS");
+                _SNILS = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("SNILS");
+                OnSNILSChanged();
+            }
+        }
+        private global::System.String _SNILS;
+        partial void OnSNILSChanging(global::System.String value);
+        partial void OnSNILSChanged();
 
         #endregion
 
@@ -40914,10 +41624,14 @@ namespace Priem
         /// Create a new Person_AdditionalInfo object.
         /// </summary>
         /// <param name="personId">Initial value of the PersonId property.</param>
-        public static Person_AdditionalInfo CreatePerson_AdditionalInfo(global::System.Guid personId)
+        /// <param name="hostelAbit">Initial value of the HostelAbit property.</param>
+        /// <param name="hostelEduc">Initial value of the HostelEduc property.</param>
+        public static Person_AdditionalInfo CreatePerson_AdditionalInfo(global::System.Guid personId, global::System.Boolean hostelAbit, global::System.Boolean hostelEduc)
         {
             Person_AdditionalInfo person_AdditionalInfo = new Person_AdditionalInfo();
             person_AdditionalInfo.PersonId = personId;
+            person_AdditionalInfo.HostelAbit = hostelAbit;
+            person_AdditionalInfo.HostelEduc = hostelEduc;
             return person_AdditionalInfo;
         }
 
@@ -40955,9 +41669,9 @@ namespace Priem
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> HostelAbit
+        public global::System.Boolean HostelAbit
         {
             get
             {
@@ -40972,8 +41686,8 @@ namespace Priem
                 OnHostelAbitChanged();
             }
         }
-        private Nullable<global::System.Boolean> _HostelAbit;
-        partial void OnHostelAbitChanging(Nullable<global::System.Boolean> value);
+        private global::System.Boolean _HostelAbit;
+        partial void OnHostelAbitChanging(global::System.Boolean value);
         partial void OnHostelAbitChanged();
     
         /// <summary>
@@ -41287,6 +42001,30 @@ namespace Priem
         private global::System.String _WorkPlace;
         partial void OnWorkPlaceChanging(global::System.String value);
         partial void OnWorkPlaceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean HostelEduc
+        {
+            get
+            {
+                return _HostelEduc;
+            }
+            set
+            {
+                OnHostelEducChanging(value);
+                ReportPropertyChanging("HostelEduc");
+                _HostelEduc = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("HostelEduc");
+                OnHostelEducChanged();
+            }
+        }
+        private global::System.Boolean _HostelEduc;
+        partial void OnHostelEducChanging(global::System.Boolean value);
+        partial void OnHostelEducChanged();
 
         #endregion
 

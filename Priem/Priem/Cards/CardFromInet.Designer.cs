@@ -194,6 +194,11 @@
             this.btnOpenCompetition = new System.Windows.Forms.Button();
             this.dgvApplications = new System.Windows.Forms.DataGridView();
             this.lblBarcode = new System.Windows.Forms.Label();
+            this.tbEqualDocumentNumber = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.tbNumTRKI = new System.Windows.Forms.TextBox();
+            this.chbHasTRKI = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).BeginInit();
             this.tabCard.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -224,15 +229,15 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(397, 572);
+            this.btnClose.Location = new System.Drawing.Point(397, 590);
             // 
             // btnSaveChange
             // 
-            this.btnSaveChange.Location = new System.Drawing.Point(4, 572);
+            this.btnSaveChange.Location = new System.Drawing.Point(4, 590);
             // 
             // btnSaveAsNew
             // 
-            this.btnSaveAsNew.Location = new System.Drawing.Point(246, 572);
+            this.btnSaveAsNew.Location = new System.Drawing.Point(246, 590);
             // 
             // tabCard
             // 
@@ -249,7 +254,7 @@
             this.tabCard.Multiline = true;
             this.tabCard.Name = "tabCard";
             this.tabCard.SelectedIndex = 0;
-            this.tabCard.Size = new System.Drawing.Size(478, 531);
+            this.tabCard.Size = new System.Drawing.Size(478, 549);
             this.tabCard.TabIndex = 40;
             // 
             // tabPage1
@@ -336,7 +341,7 @@
             // tbNum
             // 
             this.tbNum.BackColor = System.Drawing.Color.Gainsboro;
-            this.tbNum.Location = new System.Drawing.Point(276, 6);
+            this.tbNum.Location = new System.Drawing.Point(273, 16);
             this.tbNum.Name = "tbNum";
             this.tbNum.ReadOnly = true;
             this.tbNum.Size = new System.Drawing.Size(122, 20);
@@ -345,7 +350,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(121, 9);
+            this.label2.Location = new System.Drawing.Point(118, 19);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(149, 13);
             this.label2.TabIndex = 98;
@@ -658,7 +663,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(470, 505);
+            this.tabPage2.Size = new System.Drawing.Size(470, 523);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Адрес";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -703,7 +708,7 @@
             this.groupBox1.Controls.Add(this.dtpVisaEnd);
             this.groupBox1.Location = new System.Drawing.Point(20, 314);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(411, 110);
+            this.groupBox1.Size = new System.Drawing.Size(444, 110);
             this.groupBox1.TabIndex = 119;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Виза";
@@ -776,7 +781,7 @@
             this.groupBox4.Controls.Add(this.tbEducationDirectionNumber);
             this.groupBox4.Location = new System.Drawing.Point(20, 251);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(411, 57);
+            this.groupBox4.Size = new System.Drawing.Size(444, 57);
             this.groupBox4.TabIndex = 118;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Направление на обучение:";
@@ -830,7 +835,7 @@
             this.groupBox6.Controls.Add(this.tbCode);
             this.groupBox6.Location = new System.Drawing.Point(20, 113);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(411, 132);
+            this.groupBox6.Size = new System.Drawing.Size(444, 132);
             this.groupBox6.TabIndex = 117;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Адрес регистрации(прописки)";
@@ -1021,13 +1026,18 @@
             this.tabPage3.Controls.Add(this.gbFinishStudy);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(470, 505);
+            this.tabPage3.Size = new System.Drawing.Size(470, 523);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "Образование";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // gbEduc
             // 
+            this.gbEduc.Controls.Add(this.label20);
+            this.gbEduc.Controls.Add(this.tbNumTRKI);
+            this.gbEduc.Controls.Add(this.chbHasTRKI);
+            this.gbEduc.Controls.Add(this.label19);
+            this.gbEduc.Controls.Add(this.tbEqualDocumentNumber);
             this.gbEduc.Controls.Add(this.gbAtt);
             this.gbEduc.Controls.Add(this.cbLanguage);
             this.gbEduc.Controls.Add(this.cbCountryEduc);
@@ -1042,7 +1052,7 @@
             this.gbEduc.Controls.Add(this.gbDipl);
             this.gbEduc.Location = new System.Drawing.Point(10, 93);
             this.gbEduc.Name = "gbEduc";
-            this.gbEduc.Size = new System.Drawing.Size(433, 209);
+            this.gbEduc.Size = new System.Drawing.Size(456, 234);
             this.gbEduc.TabIndex = 97;
             this.gbEduc.TabStop = false;
             // 
@@ -1054,7 +1064,7 @@
             this.gbAtt.Controls.Add(this.label30);
             this.gbAtt.Controls.Add(this.label29);
             this.gbAtt.Controls.Add(this.tbAttestatNum);
-            this.gbAtt.Location = new System.Drawing.Point(12, 123);
+            this.gbAtt.Location = new System.Drawing.Point(6, 157);
             this.gbAtt.Name = "gbAtt";
             this.gbAtt.Size = new System.Drawing.Size(239, 71);
             this.gbAtt.TabIndex = 73;
@@ -1126,7 +1136,7 @@
             this.cbLanguage.FormattingEnabled = true;
             this.cbLanguage.Location = new System.Drawing.Point(189, 20);
             this.cbLanguage.Name = "cbLanguage";
-            this.cbLanguage.Size = new System.Drawing.Size(231, 21);
+            this.cbLanguage.Size = new System.Drawing.Size(254, 21);
             this.cbLanguage.TabIndex = 115;
             // 
             // cbCountryEduc
@@ -1139,12 +1149,12 @@
             this.cbCountryEduc.FormattingEnabled = true;
             this.cbCountryEduc.Location = new System.Drawing.Point(189, 47);
             this.cbCountryEduc.Name = "cbCountryEduc";
-            this.cbCountryEduc.Size = new System.Drawing.Size(231, 21);
+            this.cbCountryEduc.Size = new System.Drawing.Size(254, 21);
             this.cbCountryEduc.TabIndex = 114;
             // 
             // btnAttMarks
             // 
-            this.btnAttMarks.Location = new System.Drawing.Point(335, 171);
+            this.btnAttMarks.Location = new System.Drawing.Point(375, 205);
             this.btnAttMarks.Name = "btnAttMarks";
             this.btnAttMarks.Size = new System.Drawing.Size(75, 23);
             this.btnAttMarks.TabIndex = 8;
@@ -1154,7 +1164,7 @@
             // label45
             // 
             this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(332, 126);
+            this.label45.Location = new System.Drawing.Point(372, 163);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(77, 13);
             this.label45.TabIndex = 94;
@@ -1162,20 +1172,19 @@
             // 
             // tbSchoolAVG
             // 
-            this.tbSchoolAVG.Location = new System.Drawing.Point(335, 142);
+            this.tbSchoolAVG.Location = new System.Drawing.Point(375, 179);
             this.tbSchoolAVG.Name = "tbSchoolAVG";
             this.tbSchoolAVG.Size = new System.Drawing.Size(75, 20);
             this.tbSchoolAVG.TabIndex = 93;
             // 
             // chbIsExcellent
             // 
-            this.chbIsExcellent.AutoSize = true;
             this.chbIsExcellent.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbIsExcellent.Location = new System.Drawing.Point(12, 100);
+            this.chbIsExcellent.Location = new System.Drawing.Point(286, 169);
             this.chbIsExcellent.Name = "chbIsExcellent";
-            this.chbIsExcellent.Size = new System.Drawing.Size(128, 17);
+            this.chbIsExcellent.Size = new System.Drawing.Size(83, 41);
             this.chbIsExcellent.TabIndex = 7;
-            this.chbIsExcellent.Text = "Медалист(отличник)";
+            this.chbIsExcellent.Text = "Медалист (отличник)";
             this.chbIsExcellent.UseVisualStyleBackColor = true;
             // 
             // label28
@@ -1199,7 +1208,7 @@
             // chbEkvivEduc
             // 
             this.chbEkvivEduc.AutoSize = true;
-            this.chbEkvivEduc.Location = new System.Drawing.Point(189, 77);
+            this.chbEkvivEduc.Location = new System.Drawing.Point(18, 95);
             this.chbEkvivEduc.Name = "chbEkvivEduc";
             this.chbEkvivEduc.Size = new System.Drawing.Size(209, 17);
             this.chbEkvivEduc.TabIndex = 89;
@@ -1221,7 +1230,7 @@
             this.gbDipl.Controls.Add(this.tbDiplomSeries);
             this.gbDipl.Controls.Add(this.label50);
             this.gbDipl.Controls.Add(this.tbDiplomNum);
-            this.gbDipl.Location = new System.Drawing.Point(12, 121);
+            this.gbDipl.Location = new System.Drawing.Point(6, 155);
             this.gbDipl.Name = "gbDipl";
             this.gbDipl.Size = new System.Drawing.Size(239, 73);
             this.gbDipl.TabIndex = 80;
@@ -1276,7 +1285,7 @@
             this.gbSchool.Controls.Add(this.label47);
             this.gbSchool.Location = new System.Drawing.Point(10, 10);
             this.gbSchool.Name = "gbSchool";
-            this.gbSchool.Size = new System.Drawing.Size(433, 77);
+            this.gbSchool.Size = new System.Drawing.Size(456, 77);
             this.gbSchool.TabIndex = 99;
             this.gbSchool.TabStop = false;
             this.gbSchool.Text = "Основное образование";
@@ -1290,7 +1299,7 @@
             this.cbSchoolCity.FormattingEnabled = true;
             this.cbSchoolCity.Location = new System.Drawing.Point(76, 45);
             this.cbSchoolCity.Name = "cbSchoolCity";
-            this.cbSchoolCity.Size = new System.Drawing.Size(231, 21);
+            this.cbSchoolCity.Size = new System.Drawing.Size(259, 21);
             this.cbSchoolCity.TabIndex = 115;
             // 
             // cbSchoolType
@@ -1303,12 +1312,12 @@
             this.cbSchoolType.FormattingEnabled = true;
             this.cbSchoolType.Location = new System.Drawing.Point(76, 17);
             this.cbSchoolType.Name = "cbSchoolType";
-            this.cbSchoolType.Size = new System.Drawing.Size(64, 21);
+            this.cbSchoolType.Size = new System.Drawing.Size(87, 21);
             this.cbSchoolType.TabIndex = 114;
             // 
             // tbSchoolExitYear
             // 
-            this.tbSchoolExitYear.Location = new System.Drawing.Point(330, 45);
+            this.tbSchoolExitYear.Location = new System.Drawing.Point(358, 45);
             this.tbSchoolExitYear.MaxLength = 4;
             this.tbSchoolExitYear.Name = "tbSchoolExitYear";
             this.tbSchoolExitYear.Size = new System.Drawing.Size(57, 20);
@@ -1316,7 +1325,7 @@
             // 
             // tbSchoolName
             // 
-            this.tbSchoolName.Location = new System.Drawing.Point(146, 18);
+            this.tbSchoolName.Location = new System.Drawing.Point(169, 18);
             this.tbSchoolName.MaxLength = 200;
             this.tbSchoolName.Name = "tbSchoolName";
             this.tbSchoolName.Size = new System.Drawing.Size(217, 20);
@@ -1324,7 +1333,7 @@
             // 
             // tbSchoolNum
             // 
-            this.tbSchoolNum.Location = new System.Drawing.Point(390, 19);
+            this.tbSchoolNum.Location = new System.Drawing.Point(413, 17);
             this.tbSchoolNum.MaxLength = 50;
             this.tbSchoolNum.Name = "tbSchoolNum";
             this.tbSchoolNum.Size = new System.Drawing.Size(37, 20);
@@ -1351,7 +1360,7 @@
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(311, 48);
+            this.label46.Location = new System.Drawing.Point(341, 49);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(13, 13);
             this.label46.TabIndex = 83;
@@ -1360,7 +1369,7 @@
             // lblSchoolNum
             // 
             this.lblSchoolNum.AutoSize = true;
-            this.lblSchoolNum.Location = new System.Drawing.Point(369, 22);
+            this.lblSchoolNum.Location = new System.Drawing.Point(392, 20);
             this.lblSchoolNum.Name = "lblSchoolNum";
             this.lblSchoolNum.Size = new System.Drawing.Size(18, 13);
             this.lblSchoolNum.TabIndex = 84;
@@ -1369,7 +1378,7 @@
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(393, 48);
+            this.label47.Location = new System.Drawing.Point(421, 49);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(29, 13);
             this.label47.TabIndex = 86;
@@ -1391,9 +1400,9 @@
             this.gbFinishStudy.Controls.Add(this.lblHighEducProf);
             this.gbFinishStudy.Controls.Add(this.tbHighEducation);
             this.gbFinishStudy.Controls.Add(this.tbHEProfession);
-            this.gbFinishStudy.Location = new System.Drawing.Point(10, 308);
+            this.gbFinishStudy.Location = new System.Drawing.Point(10, 333);
             this.gbFinishStudy.Name = "gbFinishStudy";
-            this.gbFinishStudy.Size = new System.Drawing.Size(433, 187);
+            this.gbFinishStudy.Size = new System.Drawing.Size(456, 187);
             this.gbFinishStudy.TabIndex = 98;
             this.gbFinishStudy.TabStop = false;
             this.gbFinishStudy.Text = "Высшее (среднее специальное) профессиональное образование";
@@ -1408,7 +1417,7 @@
             this.cbHEStudyForm.FormattingEnabled = true;
             this.cbHEStudyForm.Location = new System.Drawing.Point(295, 112);
             this.cbHEStudyForm.Name = "cbHEStudyForm";
-            this.cbHEStudyForm.Size = new System.Drawing.Size(132, 21);
+            this.cbHEStudyForm.Size = new System.Drawing.Size(155, 21);
             this.cbHEStudyForm.TabIndex = 115;
             // 
             // cbHEQualification
@@ -1420,7 +1429,7 @@
             this.cbHEQualification.FormattingEnabled = true;
             this.cbHEQualification.Location = new System.Drawing.Point(295, 73);
             this.cbHEQualification.Name = "cbHEQualification";
-            this.cbHEQualification.Size = new System.Drawing.Size(132, 21);
+            this.cbHEQualification.Size = new System.Drawing.Size(155, 21);
             this.cbHEQualification.TabIndex = 114;
             // 
             // label60
@@ -1454,7 +1463,7 @@
             this.tbHEWork.Location = new System.Drawing.Point(6, 155);
             this.tbHEWork.MaxLength = 1000;
             this.tbHEWork.Name = "tbHEWork";
-            this.tbHEWork.Size = new System.Drawing.Size(421, 20);
+            this.tbHEWork.Size = new System.Drawing.Size(444, 20);
             this.tbHEWork.TabIndex = 102;
             // 
             // label58
@@ -1515,7 +1524,7 @@
             this.tbHighEducation.Location = new System.Drawing.Point(6, 35);
             this.tbHighEducation.MaxLength = 1000;
             this.tbHighEducation.Name = "tbHighEducation";
-            this.tbHighEducation.Size = new System.Drawing.Size(421, 20);
+            this.tbHighEducation.Size = new System.Drawing.Size(444, 20);
             this.tbHighEducation.TabIndex = 0;
             // 
             // tbHEProfession
@@ -1535,7 +1544,7 @@
             this.tabPage5.Controls.Add(this.gbStag);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(470, 505);
+            this.tabPage5.Size = new System.Drawing.Size(470, 523);
             this.tabPage5.TabIndex = 2;
             this.tabPage5.Text = "Льготы и доп. информация";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1547,7 +1556,7 @@
             this.groupBox3.Controls.Add(this.label68);
             this.groupBox3.Location = new System.Drawing.Point(269, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(175, 137);
+            this.groupBox3.Size = new System.Drawing.Size(197, 137);
             this.groupBox3.TabIndex = 120;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Английский язык";
@@ -1689,18 +1698,18 @@
             // gbMotivateText
             // 
             this.gbMotivateText.Controls.Add(this.tbScienceWork);
-            this.gbMotivateText.Location = new System.Drawing.Point(8, 399);
+            this.gbMotivateText.Location = new System.Drawing.Point(8, 419);
             this.gbMotivateText.Name = "gbMotivateText";
-            this.gbMotivateText.Size = new System.Drawing.Size(436, 93);
+            this.gbMotivateText.Size = new System.Drawing.Size(458, 101);
             this.gbMotivateText.TabIndex = 114;
             this.gbMotivateText.TabStop = false;
-            this.gbMotivateText.Text = "Участие в научно-исследовательской работе  (max 2000 знаков)";
+            this.gbMotivateText.Text = "Участие в научно-исследовательской работе  ";
             // 
             // tbScienceWork
             // 
             this.tbScienceWork.AcceptsReturn = true;
             this.tbScienceWork.AcceptsTab = true;
-            this.tbScienceWork.Location = new System.Drawing.Point(10, 19);
+            this.tbScienceWork.Location = new System.Drawing.Point(6, 19);
             this.tbScienceWork.Multiline = true;
             this.tbScienceWork.Name = "tbScienceWork";
             this.tbScienceWork.Size = new System.Drawing.Size(420, 68);
@@ -1714,7 +1723,7 @@
             this.gbPersonInfo.Controls.Add(this.tbExtraInfo);
             this.gbPersonInfo.Location = new System.Drawing.Point(8, 261);
             this.gbPersonInfo.Name = "gbPersonInfo";
-            this.gbPersonInfo.Size = new System.Drawing.Size(436, 132);
+            this.gbPersonInfo.Size = new System.Drawing.Size(458, 152);
             this.gbPersonInfo.TabIndex = 94;
             this.gbPersonInfo.TabStop = false;
             this.gbPersonInfo.Text = "Дополнительная информация";
@@ -1724,18 +1733,18 @@
             this.label62.AutoSize = true;
             this.label62.Location = new System.Drawing.Point(7, 70);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(266, 13);
+            this.label62.Size = new System.Drawing.Size(175, 13);
             this.label62.TabIndex = 8;
-            this.label62.Text = "О себе дополнительно сообщаю (max 1000 знаков)";
+            this.label62.Text = "О себе дополнительно сообщаю ";
             // 
             // label61
             // 
             this.label61.AutoSize = true;
             this.label61.Location = new System.Drawing.Point(7, 16);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(394, 13);
+            this.label61.Size = new System.Drawing.Size(300, 13);
             this.label61.TabIndex = 7;
-            this.label61.Text = "Лицо, с которым можно связаться в экстренных случаях (max 1000 знаков)";
+            this.label61.Text = "Лицо, с которым можно связаться в экстренных случаях";
             // 
             // tbPersonInfo
             // 
@@ -1757,7 +1766,7 @@
             this.tbExtraInfo.Multiline = true;
             this.tbExtraInfo.Name = "tbExtraInfo";
             this.tbExtraInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbExtraInfo.Size = new System.Drawing.Size(420, 39);
+            this.tbExtraInfo.Size = new System.Drawing.Size(420, 60);
             this.tbExtraInfo.TabIndex = 1;
             // 
             // gbStag
@@ -1768,7 +1777,7 @@
             this.gbStag.Controls.Add(this.tbStag);
             this.gbStag.Location = new System.Drawing.Point(8, 155);
             this.gbStag.Name = "gbStag";
-            this.gbStag.Size = new System.Drawing.Size(436, 100);
+            this.gbStag.Size = new System.Drawing.Size(458, 100);
             this.gbStag.TabIndex = 93;
             this.gbStag.TabStop = false;
             this.gbStag.Text = "Трудовой стаж";
@@ -1778,9 +1787,9 @@
             this.label44.AutoSize = true;
             this.label44.Location = new System.Drawing.Point(7, 42);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(234, 13);
+            this.label44.Size = new System.Drawing.Size(140, 13);
             this.label44.TabIndex = 6;
-            this.label44.Text = "Место работы, должность (max 1000 знаков)";
+            this.label44.Text = "Место работы, должность";
             // 
             // tbWorkPlace
             // 
@@ -1901,6 +1910,7 @@
             this.btnOpenCompetition.TabIndex = 1;
             this.btnOpenCompetition.Text = "Открыть";
             this.btnOpenCompetition.UseVisualStyleBackColor = true;
+            this.btnOpenCompetition.Click += new System.EventHandler(this.btnOpenCompetition_Click);
             // 
             // dgvApplications
             // 
@@ -1913,6 +1923,7 @@
             this.dgvApplications.Size = new System.Drawing.Size(446, 323);
             this.dgvApplications.TabIndex = 0;
             this.dgvApplications.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvApplications_CellDoubleClick);
+            this.dgvApplications.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvApplications_CellFormatting);
             // 
             // lblBarcode
             // 
@@ -1924,11 +1935,55 @@
             this.lblBarcode.Size = new System.Drawing.Size(0, 13);
             this.lblBarcode.TabIndex = 41;
             // 
+            // tbEkvivEducNumber
+            // 
+            this.tbEqualDocumentNumber.Location = new System.Drawing.Point(41, 112);
+            this.tbEqualDocumentNumber.MaxLength = 15;
+            this.tbEqualDocumentNumber.Name = "tbEkvivEducNumber";
+            this.tbEqualDocumentNumber.Size = new System.Drawing.Size(182, 20);
+            this.tbEqualDocumentNumber.TabIndex = 116;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(17, 115);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(18, 13);
+            this.label19.TabIndex = 117;
+            this.label19.Text = "№";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(236, 114);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(18, 13);
+            this.label20.TabIndex = 120;
+            this.label20.Text = "№";
+            // 
+            // tbNumTRKI
+            // 
+            this.tbNumTRKI.Location = new System.Drawing.Point(260, 112);
+            this.tbNumTRKI.MaxLength = 15;
+            this.tbNumTRKI.Name = "tbNumTRKI";
+            this.tbNumTRKI.Size = new System.Drawing.Size(162, 20);
+            this.tbNumTRKI.TabIndex = 119;
+            // 
+            // chbHasTRKI
+            // 
+            this.chbHasTRKI.AutoSize = true;
+            this.chbHasTRKI.Location = new System.Drawing.Point(239, 94);
+            this.chbHasTRKI.Name = "chbHasTRKI";
+            this.chbHasTRKI.Size = new System.Drawing.Size(135, 17);
+            this.chbHasTRKI.TabIndex = 118;
+            this.chbHasTRKI.Text = "Свидетельство ТРКИ";
+            this.chbHasTRKI.UseVisualStyleBackColor = true;
+            // 
             // CardFromInet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 601);
+            this.ClientSize = new System.Drawing.Size(482, 619);
             this.Controls.Add(this.lblBarcode);
             this.Controls.Add(this.tabCard);
             this.Name = "CardFromInet";
@@ -2156,5 +2211,10 @@
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.DataGridView dgvApplications;
         private System.Windows.Forms.Button btnOpenCompetition;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox tbEqualDocumentNumber;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox tbNumTRKI;
+        private System.Windows.Forms.CheckBox chbHasTRKI;
     }
 }

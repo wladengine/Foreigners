@@ -919,7 +919,7 @@ namespace Priem
 
             if (MainClass.RightsSov_SovMain_FacMain() || MainClass.IsPasha())
                 context.Person_UpdateMain(PersonName, SecondName, Surname, BirthDate, PassportTypeId, PassportSeries, PassportNumber,
-                PassportAuthor, PassportDate, AttestatRegion, AttestatSeries, AttestatNum, Privileges, id);
+                PassportAuthor, PassportDate, AttestatRegion, AttestatSeries, AttestatNum, Privileges, null, id);
 
             context.PersonVisaInfo_update(id, VisaStart, VisaEnd, EnterInRussiaDate);
             context.PersonEducationDirection_update(id, EducationDirectionDate, EducationDirectionNumber);

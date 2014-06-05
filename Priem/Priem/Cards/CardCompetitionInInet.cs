@@ -11,8 +11,10 @@ using System.Windows.Forms;
 
 namespace Priem
 {
+    public delegate void UpdateCompetitionListHandler(ShortCompetition c);
     public partial class CardCompetitionInInet : Form
     {
+        public event UpdateCompetitionListHandler OnUpdate;
         private ShortCompetition _competition;
         public CardCompetitionInInet(ShortCompetition c)
         {
@@ -39,6 +41,7 @@ namespace Priem
             StudyBasisId = _competition.StudyBasisId;
             FillCompetition();
             ComboServ.FillCombo(cbCelCompetition, HelpClass.GetComboListByTable("ed.CelCompetition"), true, false);
+            CompetitionId = _competition.CompetitionId;
             UpdateAfterCompetition();
 
             InitHandlers();
@@ -425,6 +428,26 @@ namespace Priem
         private bool CheckThreeAbits(PriemEntities context)
         {
             return SomeMethodsClass.CheckThreeAbits(context, _competition.PersonId, LicenseProgramId, ObrazProgramId, ProfileId);
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (Check())
+            {
+                if (LicenseProgramId.HasValue)
+                    _competition.LicenseProgramId = LicenseProgramId.Value;
+                if (ObrazProgramId.HasValue)
+                    _competition.ObrazProgramId = ObrazProgramId.Value;
+                _competition.ProfileId = ProfileId;
+                if (CompetitionId.HasValue)
+                    _competition.CompetitionId = CompetitionId.Value;
+                _competition.CompetitionName = cbCompetition.Text;
+                _competition.ChangeEntry();
+                if (OnUpdate != null)
+                    OnUpdate(_competition);
+
+                this.Close();
+            }
         }
     }
 }

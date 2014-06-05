@@ -558,7 +558,8 @@
       [extForeignPerson].[Street] AS [Street], 
       [extForeignPerson].[House] AS [House], 
       [extForeignPerson].[Korpus] AS [Korpus], 
-      [extForeignPerson].[Flat] AS [Flat]
+      [extForeignPerson].[Flat] AS [Flat], 
+      [extForeignPerson].[HostelEduc] AS [HostelEduc]
       FROM [ed].[extForeignPerson] AS [extForeignPerson]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="extOlympBook" EntityType="Priem2012Model.Store.extOlympBook" store:Type="Views" store:Schema="ed" store:Name="extOlympBook">
@@ -700,7 +701,9 @@
       [extPersonAll].[VAKPublCount] AS [VAKPublCount], 
       [extPersonAll].[TotalPublCount] AS [TotalPublCount], 
       [extPersonAll].[CompetitionWinner] AS [CompetitionWinner], 
-      [extPersonAll].[HasGrant] AS [HasGrant]
+      [extPersonAll].[HasGrant] AS [HasGrant], 
+      [extPersonAll].[HostelEduc] AS [HostelEduc], 
+      [extPersonAll].[SNILS] AS [SNILS]
       FROM [ed].[extPersonAll] AS [extPersonAll]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="extProtocol" EntityType="Priem2012Model.Store.extProtocol" store:Type="Views" store:Schema="ed" store:Name="extProtocol">
@@ -1220,10 +1223,6 @@
             <End Role="OlympLevel" EntitySet="OlympLevel" />
             <End Role="OlympBook" EntitySet="OlympBook" />
           </AssociationSet>
-          <AssociationSet Name="FK_OlympBook_OlympName" Association="Priem2012Model.Store.FK_OlympBook_OlympName">
-            <End Role="OlympName" EntitySet="OlympName" />
-            <End Role="OlympBook" EntitySet="OlympBook" />
-          </AssociationSet>
           <AssociationSet Name="fk_OlympBook_OlympSubject" Association="Priem2012Model.Store.fk_OlympBook_OlympSubject">
             <End Role="OlympSubject" EntitySet="OlympSubject" />
             <End Role="OlympBook" EntitySet="OlympBook" />
@@ -1455,6 +1454,8 @@
           <Property Name="Holder" Type="nvarchar" MaxLength="100" />
           <Property Name="IsImportedToFIS" Type="bit" />
           <Property Name="IsCommitedToFIS" Type="bit" />
+          <Property Name="CommitId" Type="uniqueidentifier" />
+          <Property Name="CommitNumber" Type="int" />
         </EntityType>
         <EntityType Name="Age">
           <Key>
@@ -1865,6 +1866,8 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsOpen" Type="bit" Nullable="false" />
+          <Property Name="Holder" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="OlympName">
           <Key>
@@ -1873,6 +1876,8 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="2000" />
           <Property Name="Number" Type="int" />
+          <Property Name="IsOpen" Type="bit" Nullable="false" />
+          <Property Name="Holder" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="OlympSubject">
           <Key>
@@ -1881,6 +1886,8 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="NameDative" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsOpen" Type="bit" Nullable="false" />
+          <Property Name="Holder" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="OlympType">
           <Key>
@@ -1888,6 +1895,8 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsOpen" Type="bit" Nullable="false" />
+          <Property Name="Holder" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="OlympValue">
           <Key>
@@ -1897,6 +1906,8 @@
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="SortOrder" Type="int" />
           <Property Name="Acronym" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsOpen" Type="bit" Nullable="false" />
+          <Property Name="Holder" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="OrderNumbers">
           <Key>
@@ -2018,13 +2029,15 @@
           <Property Name="AdditionalPersonTypeId" Type="int" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
           <Property Name="Holder" Type="nvarchar" MaxLength="150" />
+          <Property Name="SNILS" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Person_AdditionalInfo">
           <Key>
             <PropertyRef Name="PersonId" />
           </Key>
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="HostelAbit" Type="bit" />
+          <Property Name="HostelAbit" Type="bit" Nullable="false" />
+          <Property Name="HostelEduc" Type="bit" Nullable="false" />
           <Property Name="HasAssignToHostel" Type="bit" />
           <Property Name="HasExamPass" Type="bit" />
           <Property Name="HostelFacultyId" Type="int" />
@@ -2896,6 +2909,7 @@
           <Property Name="House" Type="nvarchar" MaxLength="10" />
           <Property Name="Korpus" Type="nvarchar" MaxLength="10" />
           <Property Name="Flat" Type="nvarchar" MaxLength="10" />
+          <Property Name="HostelEduc" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Priem.ed.extOlympBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3069,6 +3083,8 @@
           <Property Name="TotalPublCount" Type="int" />
           <Property Name="CompetitionWinner" Type="bit" />
           <Property Name="HasGrant" Type="bit" />
+          <Property Name="HostelEduc" Type="bit" />
+          <Property Name="SNILS" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Priem.ed.extProtocol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -4050,20 +4066,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OlympBook_OlympName">
-          <End Role="OlympName" Type="Priem2012Model.Store.OlympName" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="OlympBook" Type="Priem2012Model.Store.OlympBook" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OlympName">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="OlympBook">
-              <PropertyRef Name="OlympNameId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_OlympBook_OlympSubject">
           <End Role="OlympSubject" Type="Priem2012Model.Store.OlympSubject" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -4559,6 +4561,33 @@
           <Parameter Name="Priority" Type="float" Mode="In" />
           <Parameter Name="Barcode" Type="int" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
+        </Function>
+        <Function Name="Abiturient_InsertDirectly" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
+          <Parameter Name="PersonId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="EntryId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="CompetitionId" Type="int" Mode="In" />
+          <Parameter Name="IsListener" Type="bit" Mode="In" />
+          <Parameter Name="WithHE" Type="bit" Mode="In" />
+          <Parameter Name="IsPaid" Type="bit" Mode="In" />
+          <Parameter Name="BackDoc" Type="bit" Mode="In" />
+          <Parameter Name="BackDocDate" Type="smalldatetime" Mode="In" />
+          <Parameter Name="DocDate" Type="smalldatetime" Mode="In" />
+          <Parameter Name="DocInsertDate" Type="smalldatetime" Mode="In" />
+          <Parameter Name="AttDocOrigin" Type="bit" Mode="In" />
+          <Parameter Name="EgeDocOrigin" Type="bit" Mode="In" />
+          <Parameter Name="Checked" Type="bit" Mode="In" />
+          <Parameter Name="NotEnabled" Type="bit" Mode="In" />
+          <Parameter Name="Coefficient" Type="float" Mode="In" />
+          <Parameter Name="OtherCompetitionId" Type="int" Mode="In" />
+          <Parameter Name="CelCompetitionId" Type="int" Mode="In" />
+          <Parameter Name="CelCompetitionText" Type="nvarchar" Mode="In" />
+          <Parameter Name="LanguageId" Type="int" Mode="In" />
+          <Parameter Name="HasOriginals" Type="bit" Mode="In" />
+          <Parameter Name="Priority" Type="float" Mode="In" />
+          <Parameter Name="Barcode" Type="int" Mode="In" />
+          <Parameter Name="CommitId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="CommitNumber" Type="int" Mode="In" />
+          <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
         </Function>
         <Function Name="Abiturient_UpdateBackDoc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
           <Parameter Name="BackDoc" Type="bit" Mode="In" />
@@ -5103,6 +5132,7 @@
         </Function>
         <Function Name="OlympSubject_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
           <Parameter Name="OlympSubjName" Type="nvarchar" Mode="In" />
+          <Parameter Name="NameDative" Type="nvarchar" Mode="In" />
           <Parameter Name="id" Type="int" Mode="InOut" />
         </Function>
         <Function Name="OrderNumbers_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
@@ -5387,6 +5417,7 @@
           <Parameter Name="StartEnglish" Type="bit" Mode="In" />
           <Parameter Name="EnglishMark" Type="int" Mode="In" />
           <Parameter Name="EgeInSpbgu" Type="bit" Mode="In" />
+          <Parameter Name="SNILS" Type="nvarchar" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
         <Function Name="Person_UpdateExamPass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
@@ -5413,6 +5444,7 @@
           <Parameter Name="AttestatSeries" Type="nvarchar" Mode="In" />
           <Parameter Name="AttestatNum" Type="nvarchar" Mode="In" />
           <Parameter Name="Privileges" Type="int" Mode="In" />
+          <Parameter Name="SNILS" Type="nvarchar" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
         </Function>
         <Function Name="Person_UpdateWithoutMain" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
@@ -5768,6 +5800,7 @@
             <Parameter Name="StartEnglish" Mode="In" Type="Boolean" />
             <Parameter Name="EnglishMark" Mode="In" Type="Int32" />
             <Parameter Name="EgeInSpbgu" Mode="In" Type="Boolean" />
+            <Parameter Name="SNILS" Mode="In" Type="String" />
             <Parameter Name="id" Mode="InOut" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="Person_UpdateMain">
@@ -5784,6 +5817,7 @@
             <Parameter Name="AttestatSeries" Mode="In" Type="String" />
             <Parameter Name="AttestatNum" Mode="In" Type="String" />
             <Parameter Name="Privileges" Mode="In" Type="Int32" />
+            <Parameter Name="SNILS" Mode="In" Type="String" />
             <Parameter Name="id" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="Person_UpdateWithoutMain">
@@ -6188,6 +6222,7 @@
           </FunctionImport>
           <FunctionImport Name="OlympSubject_Insert">
             <Parameter Name="OlympSubjName" Mode="In" Type="String" />
+            <Parameter Name="NameDative" Mode="In" Type="String" />
             <Parameter Name="id" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="PersonChanges" EntityType="Priem2012Model.PersonChanges" />
@@ -7095,6 +7130,33 @@
             <Parameter Name="End" Mode="In" Type="DateTime" />
             <Parameter Name="EnterInRussiaDate" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <FunctionImport Name="Abiturient_InsertDirectly">
+            <Parameter Name="PersonId" Mode="In" Type="Guid" />
+            <Parameter Name="EntryId" Mode="In" Type="Guid" />
+            <Parameter Name="CompetitionId" Mode="In" Type="Int32" />
+            <Parameter Name="IsListener" Mode="In" Type="Boolean" />
+            <Parameter Name="WithHE" Mode="In" Type="Boolean" />
+            <Parameter Name="IsPaid" Mode="In" Type="Boolean" />
+            <Parameter Name="BackDoc" Mode="In" Type="Boolean" />
+            <Parameter Name="BackDocDate" Mode="In" Type="DateTime" />
+            <Parameter Name="DocDate" Mode="In" Type="DateTime" />
+            <Parameter Name="DocInsertDate" Mode="In" Type="DateTime" />
+            <Parameter Name="AttDocOrigin" Mode="In" Type="Boolean" />
+            <Parameter Name="EgeDocOrigin" Mode="In" Type="Boolean" />
+            <Parameter Name="Checked" Mode="In" Type="Boolean" />
+            <Parameter Name="NotEnabled" Mode="In" Type="Boolean" />
+            <Parameter Name="Coefficient" Mode="In" Type="Double" />
+            <Parameter Name="OtherCompetitionId" Mode="In" Type="Int32" />
+            <Parameter Name="CelCompetitionId" Mode="In" Type="Int32" />
+            <Parameter Name="CelCompetitionText" Mode="In" Type="String" />
+            <Parameter Name="LanguageId" Mode="In" Type="Int32" />
+            <Parameter Name="HasOriginals" Mode="In" Type="Boolean" />
+            <Parameter Name="Priority" Mode="In" Type="Double" />
+            <Parameter Name="Barcode" Mode="In" Type="Int32" />
+            <Parameter Name="CommitId" Mode="In" Type="Guid" />
+            <Parameter Name="CommitNumber" Mode="In" Type="Int32" />
+            <Parameter Name="id" Mode="In" Type="Guid" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="C_SettingRoles">
           <Key>
@@ -7479,6 +7541,8 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OlympBook" Relationship="Priem2012Model.fk_OlympBook_OlympLevel" FromRole="OlympLevel" ToRole="OlympBook" />
           <NavigationProperty Name="Olympiads" Relationship="Priem2012Model.fk_Olympiads_OlympLevel" FromRole="OlympLevel" ToRole="Olympiads" />
+          <Property Type="Boolean" Name="IsOpen" Nullable="false" />
+          <Property Type="String" Name="Holder" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OlympSubject">
           <Key>
@@ -7489,6 +7553,8 @@
           <Property Type="String" Name="NameDative" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OlympBook" Relationship="Priem2012Model.fk_OlympBook_OlympSubject" FromRole="OlympSubject" ToRole="OlympBook" />
           <NavigationProperty Name="Olympiads" Relationship="Priem2012Model.fk_Olympiads_OlympSubject" FromRole="OlympSubject" ToRole="Olympiads" />
+          <Property Type="Boolean" Name="IsOpen" Nullable="false" />
+          <Property Type="String" Name="Holder" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OlympValue">
           <Key>
@@ -7499,6 +7565,8 @@
           <NavigationProperty Name="Olympiads" Relationship="Priem2012Model.fk_Olympiads_OlympValue" FromRole="OlympValue" ToRole="Olympiads" />
           <Property Type="Int32" Name="SortOrder" />
           <Property Type="String" Name="Acronym" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsOpen" Nullable="false" />
+          <Property Type="String" Name="Holder" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PaidData">
           <Key>
@@ -7865,6 +7933,8 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OlympBook" Relationship="Priem2012Model.FK_OlympBook_OlympType" FromRole="OlympType" ToRole="OlympBook" />
           <NavigationProperty Name="Olympiads" Relationship="Priem2012Model.FK_Olympiads_OlympType" FromRole="OlympType" ToRole="Olympiads" />
+          <Property Type="Boolean" Name="IsOpen" Nullable="false" />
+          <Property Type="String" Name="Holder" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_OlympBook_OlympType">
           <End Type="Priem2012Model.OlympType" Role="OlympType" Multiplicity="0..1" />
@@ -8021,6 +8091,8 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Number" />
           <NavigationProperty Name="OlympBook" Relationship="Priem2012Model.FK_OlympBook_OlympName" FromRole="OlympName" ToRole="OlympBook" />
+          <Property Type="Boolean" Name="IsOpen" Nullable="false" />
+          <Property Type="String" Name="Holder" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ExamsVed">
           <Key>
@@ -8118,6 +8190,8 @@
           <NavigationProperty Name="Person" Relationship="Priem2012Model.FK_Abiturient_Person" FromRole="Abiturient" ToRole="Person" />
           <Property Type="Boolean" Name="IsImportedToFIS" />
           <Property Type="Boolean" Name="IsCommitedToFIS" />
+          <Property Type="Guid" Name="CommitId" />
+          <Property Type="Int32" Name="CommitNumber" />
         </EntityType>
         <EntityType Name="Protocol">
           <Key>
@@ -9336,13 +9410,14 @@
           <NavigationProperty Name="PersonBenefitDocument" Relationship="Priem2012Model.FK_PersonBenefitDocument_Person" FromRole="Person" ToRole="PersonBenefitDocument" />
           <Property Type="Int32" Name="ForeignNationalityId" />
           <Property Type="Int32" Name="AdditionalPersonTypeId" />
+          <Property Type="String" Name="SNILS" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Person_AdditionalInfo">
           <Key>
             <PropertyRef Name="PersonId" />
           </Key>
           <Property Type="Guid" Name="PersonId" Nullable="false" />
-          <Property Type="Boolean" Name="HostelAbit" />
+          <Property Type="Boolean" Name="HostelAbit" Nullable="false" />
           <Property Type="Boolean" Name="HasAssignToHostel" />
           <Property Type="Int32" Name="HostelFacultyId" />
           <Property Type="Boolean" Name="HasExamPass" />
@@ -9359,6 +9434,7 @@
           <Property Type="String" Name="MSCourse" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Stag" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="WorkPlace" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="HostelEduc" Nullable="false" />
         </EntityType>
         <EntityType Name="Person_Contacts">
           <Key>
@@ -9859,6 +9935,8 @@
           <Property Type="Int32" Name="TotalPublCount" />
           <Property Type="Boolean" Name="CompetitionWinner" />
           <Property Type="Boolean" Name="HasGrant" />
+          <Property Type="Boolean" Name="HostelEduc" />
+          <Property Type="String" Name="SNILS" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="StudyLevelGroup">
           <Key>
@@ -10193,6 +10271,7 @@
           <Property Type="String" Name="House" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Korpus" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Flat" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="HostelEduc" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -10410,6 +10489,8 @@
           <EntitySetMapping Name="OlympLevel">
             <EntityTypeMapping TypeName="Priem2012Model.OlympLevel">
               <MappingFragment StoreEntitySet="OlympLevel">
+                <ScalarProperty Name="Holder" ColumnName="Holder" />
+                <ScalarProperty Name="IsOpen" ColumnName="IsOpen" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -10418,6 +10499,8 @@
           <EntitySetMapping Name="OlympSubject">
             <EntityTypeMapping TypeName="Priem2012Model.OlympSubject">
               <MappingFragment StoreEntitySet="OlympSubject">
+                <ScalarProperty Name="Holder" ColumnName="Holder" />
+                <ScalarProperty Name="IsOpen" ColumnName="IsOpen" />
                 <ScalarProperty Name="NameDative" ColumnName="NameDative" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -10427,6 +10510,8 @@
           <EntitySetMapping Name="OlympValue">
             <EntityTypeMapping TypeName="Priem2012Model.OlympValue">
               <MappingFragment StoreEntitySet="OlympValue">
+                <ScalarProperty Name="Holder" ColumnName="Holder" />
+                <ScalarProperty Name="IsOpen" ColumnName="IsOpen" />
                 <ScalarProperty Name="Acronym" ColumnName="Acronym" />
                 <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -10645,6 +10730,8 @@
           <EntitySetMapping Name="OlympType">
             <EntityTypeMapping TypeName="Priem2012Model.OlympType">
               <MappingFragment StoreEntitySet="OlympType">
+                <ScalarProperty Name="Holder" ColumnName="Holder" />
+                <ScalarProperty Name="IsOpen" ColumnName="IsOpen" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -10747,6 +10834,8 @@
           <EntitySetMapping Name="OlympName">
             <EntityTypeMapping TypeName="Priem2012Model.OlympName">
               <MappingFragment StoreEntitySet="OlympName">
+                <ScalarProperty Name="Holder" ColumnName="Holder" />
+                <ScalarProperty Name="IsOpen" ColumnName="IsOpen" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -10826,6 +10915,8 @@
           <EntitySetMapping Name="Abiturient">
             <EntityTypeMapping TypeName="Priem2012Model.Abiturient">
               <MappingFragment StoreEntitySet="Abiturient">
+                <ScalarProperty Name="CommitNumber" ColumnName="CommitNumber" />
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
                 <ScalarProperty Name="IsCommitedToFIS" ColumnName="IsCommitedToFIS" />
                 <ScalarProperty Name="IsImportedToFIS" ColumnName="IsImportedToFIS" />
                 <ScalarProperty Name="Holder" ColumnName="Holder" />
@@ -11642,6 +11733,7 @@
           <EntitySetMapping Name="Person">
             <EntityTypeMapping TypeName="Priem2012Model.Person">
               <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="SNILS" ColumnName="SNILS" />
                 <ScalarProperty Name="AdditionalPersonTypeId" ColumnName="AdditionalPersonTypeId" />
                 <ScalarProperty Name="ForeignNationalityId" ColumnName="ForeignNationalityId" />
                 <ScalarProperty Name="PersonTypeId" ColumnName="PersonTypeId" />
@@ -11670,6 +11762,7 @@
           <EntitySetMapping Name="Person_AdditionalInfo">
             <EntityTypeMapping TypeName="Priem2012Model.Person_AdditionalInfo">
               <MappingFragment StoreEntitySet="Person_AdditionalInfo">
+                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="WorkPlace" ColumnName="WorkPlace" />
                 <ScalarProperty Name="Stag" ColumnName="Stag" />
                 <ScalarProperty Name="MSCourse" ColumnName="MSCourse" />
@@ -11854,6 +11947,8 @@
           <EntitySetMapping Name="extPersonAll">
             <EntityTypeMapping TypeName="Priem2012Model.extPersonAll">
               <MappingFragment StoreEntitySet="extPersonAll">
+                <ScalarProperty Name="SNILS" ColumnName="SNILS" />
+                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="HasGrant" ColumnName="HasGrant" />
                 <ScalarProperty Name="CompetitionWinner" ColumnName="CompetitionWinner" />
                 <ScalarProperty Name="TotalPublCount" ColumnName="TotalPublCount" />
@@ -12115,6 +12210,7 @@
           <EntitySetMapping Name="extForeignPerson">
             <EntityTypeMapping TypeName="Priem2012Model.extPerson">
               <MappingFragment StoreEntitySet="extForeignPerson">
+                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="Flat" ColumnName="Flat" />
                 <ScalarProperty Name="Korpus" ColumnName="Korpus" />
                 <ScalarProperty Name="House" ColumnName="House" />
@@ -12206,6 +12302,7 @@
           <FunctionImportMapping FunctionImportName="PersonVisaInfo_delete" FunctionName="Priem2012Model.Store.PersonVisaInfo_delete" />
           <FunctionImportMapping FunctionImportName="PersonVisaInfo_insert" FunctionName="Priem2012Model.Store.PersonVisaInfo_insert" />
           <FunctionImportMapping FunctionImportName="PersonVisaInfo_update" FunctionName="Priem2012Model.Store.PersonVisaInfo_update" />
+          <FunctionImportMapping FunctionImportName="Abiturient_InsertDirectly" FunctionName="Priem2012Model.Store.Abiturient_InsertDirectly" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

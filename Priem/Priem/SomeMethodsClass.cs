@@ -89,7 +89,7 @@ namespace Priem
                             else
                             {
                                 ObjectParameter sbEnt = new ObjectParameter("id", typeof(Int32));
-                                context.OlympSubject_Insert(subjName, sbEnt);
+                                context.OlympSubject_Insert(subjName, "", sbEnt);
                                 subjId = (int)sbEnt.Value;
                             } 
 

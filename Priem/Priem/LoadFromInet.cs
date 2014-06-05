@@ -69,7 +69,8 @@ namespace Priem
                             EducationDocumentSeries AS DiplomSeries, EducationDocumentNumber AS DiplomNum, AvgMark AS SchoolAVG,
                             (case when SchoolTypeId=1 then '' else SchoolName end) AS HighEducation, HEProfession AS HEProfession, 
                             HEQualification AS HEQualification, DiplomaTheme AS HEWork,
-                            EducationStart AS HEEntryYear, HEExitYear, HEStudyFormId, Parents AS PersonInfo, AddInfo AS ExtraInfo
+                            EducationStart AS HEEntryYear, HEExitYear, HEStudyFormId, Parents AS PersonInfo, AddInfo AS ExtraInfo,
+                            HostelEduc
                             FROM extForeignPerson
                             WHERE 0=0";
 
@@ -109,6 +110,7 @@ namespace Priem
                 pers.Korpus = row["Korpus"].ToString();
                 pers.Flat = row["Flat"].ToString();
                 pers.HostelAbit = QueryServ.ToBoolValue(row["HostelAbit"]);
+                pers.HostelEduc = QueryServ.ToBoolValue(row["HostelEduc"]);
                 pers.HasAssignToHostel = false;
                 pers.HasExamPass = false;
                 pers.IsExcellent = QueryServ.ToBoolValue(row["IsExcellent"]);
@@ -127,6 +129,7 @@ namespace Priem
                 pers.DiplomSeries = row["DiplomSeries"].ToString();
                 pers.DiplomNum = row["DiplomNum"].ToString();
                 
+
                 double avg;                
                 if(!double.TryParse(row["SchoolAVG"].ToString(), out avg))
                     pers.SchoolAVG = null;

@@ -44,6 +44,7 @@
             this.lblLicenseprogram = new System.Windows.Forms.Label();
             this.tabCard = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.chbIsGosLine = new System.Windows.Forms.CheckBox();
             this.cbStudyLevel = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.gbSecondType = new System.Windows.Forms.GroupBox();
@@ -72,9 +73,6 @@
             this.tbRegNum = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.chbChecked = new System.Windows.Forms.CheckBox();
-            this.chbHostelEducNo = new System.Windows.Forms.CheckBox();
-            this.chbHostelEducYes = new System.Windows.Forms.CheckBox();
-            this.label52 = new System.Windows.Forms.Label();
             this.chbIsListener = new System.Windows.Forms.CheckBox();
             this.dtBackDocDate = new System.Windows.Forms.DateTimePicker();
             this.chbBackDoc = new System.Windows.Forms.CheckBox();
@@ -92,9 +90,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tbEnabledProtocol = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.gbDocs = new System.Windows.Forms.GroupBox();
-            this.chbEgeDocOriginal = new System.Windows.Forms.CheckBox();
-            this.chbAttOriginal = new System.Windows.Forms.CheckBox();
             this.dtDocDate = new System.Windows.Forms.DateTimePicker();
             this.label21 = new System.Windows.Forms.Label();
             this.tpOlymps = new System.Windows.Forms.TabPage();
@@ -127,7 +122,6 @@
             this.gbSecondType.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.gbDocs.SuspendLayout();
             this.tpOlymps.SuspendLayout();
             this.gbOlymps.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOlimps)).BeginInit();
@@ -232,6 +226,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.chbIsGosLine);
             this.tabPage1.Controls.Add(this.cbStudyLevel);
             this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.gbSecondType);
@@ -257,9 +252,6 @@
             this.tabPage1.Controls.Add(this.tbRegNum);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.chbChecked);
-            this.tabPage1.Controls.Add(this.chbHostelEducNo);
-            this.tabPage1.Controls.Add(this.chbHostelEducYes);
-            this.tabPage1.Controls.Add(this.label52);
             this.tabPage1.Controls.Add(this.chbIsListener);
             this.tabPage1.Controls.Add(this.dtBackDocDate);
             this.tabPage1.Controls.Add(this.chbBackDoc);
@@ -280,6 +272,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Основное";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // chbIsGosLine
+            // 
+            this.chbIsGosLine.AutoSize = true;
+            this.chbIsGosLine.Location = new System.Drawing.Point(348, 95);
+            this.chbIsGosLine.Name = "chbIsGosLine";
+            this.chbIsGosLine.Size = new System.Drawing.Size(155, 17);
+            this.chbIsGosLine.TabIndex = 127;
+            this.chbIsGosLine.Text = "поступление по гослинии";
+            this.chbIsGosLine.UseVisualStyleBackColor = true;
             // 
             // cbStudyLevel
             // 
@@ -590,37 +592,6 @@
             this.chbChecked.UseVisualStyleBackColor = true;
             this.chbChecked.CheckedChanged += new System.EventHandler(this.chbChecked_CheckedChanged);
             // 
-            // chbHostelEducNo
-            // 
-            this.chbHostelEducNo.AutoSize = true;
-            this.chbHostelEducNo.Location = new System.Drawing.Point(57, 456);
-            this.chbHostelEducNo.Name = "chbHostelEducNo";
-            this.chbHostelEducNo.Size = new System.Drawing.Size(45, 17);
-            this.chbHostelEducNo.TabIndex = 11;
-            this.chbHostelEducNo.Text = "Нет";
-            this.chbHostelEducNo.UseVisualStyleBackColor = true;
-            this.chbHostelEducNo.CheckedChanged += new System.EventHandler(this.chbHostelEducNo_CheckedChanged);
-            // 
-            // chbHostelEducYes
-            // 
-            this.chbHostelEducYes.AutoSize = true;
-            this.chbHostelEducYes.Location = new System.Drawing.Point(7, 456);
-            this.chbHostelEducYes.Name = "chbHostelEducYes";
-            this.chbHostelEducYes.Size = new System.Drawing.Size(41, 17);
-            this.chbHostelEducYes.TabIndex = 10;
-            this.chbHostelEducYes.Text = "Да";
-            this.chbHostelEducYes.UseVisualStyleBackColor = true;
-            this.chbHostelEducYes.CheckedChanged += new System.EventHandler(this.chbHostelEducYes_CheckedChanged);
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(4, 440);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(245, 13);
-            this.label52.TabIndex = 56;
-            this.label52.Text = "Предоставлять общежитие на время обучения";
-            // 
             // chbIsListener
             // 
             this.chbIsListener.AutoSize = true;
@@ -704,7 +675,6 @@
             this.tabPage2.Controls.Add(this.dtDocInsertDate);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.groupBox1);
-            this.tabPage2.Controls.Add(this.gbDocs);
             this.tabPage2.Controls.Add(this.dtDocDate);
             this.tabPage2.Controls.Add(this.label21);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -760,7 +730,7 @@
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.tbEnabledProtocol);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(17, 206);
+            this.groupBox1.Location = new System.Drawing.Point(17, 112);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(248, 100);
             this.groupBox1.TabIndex = 1;
@@ -800,37 +770,6 @@
             this.label5.Size = new System.Drawing.Size(109, 13);
             this.label5.TabIndex = 0;
             this.label5.Text = "Протокол о допуске";
-            // 
-            // gbDocs
-            // 
-            this.gbDocs.Controls.Add(this.chbEgeDocOriginal);
-            this.gbDocs.Controls.Add(this.chbAttOriginal);
-            this.gbDocs.Location = new System.Drawing.Point(17, 129);
-            this.gbDocs.Name = "gbDocs";
-            this.gbDocs.Size = new System.Drawing.Size(293, 71);
-            this.gbDocs.TabIndex = 25;
-            this.gbDocs.TabStop = false;
-            this.gbDocs.Text = "Документы";
-            // 
-            // chbEgeDocOriginal
-            // 
-            this.chbEgeDocOriginal.AutoSize = true;
-            this.chbEgeDocOriginal.Location = new System.Drawing.Point(6, 42);
-            this.chbEgeDocOriginal.Name = "chbEgeDocOriginal";
-            this.chbEgeDocOriginal.Size = new System.Drawing.Size(281, 17);
-            this.chbEgeDocOriginal.TabIndex = 1;
-            this.chbEgeDocOriginal.Text = "Подлинники всех необходимых свидетельств ЕГЭ";
-            this.chbEgeDocOriginal.UseVisualStyleBackColor = true;
-            // 
-            // chbAttOriginal
-            // 
-            this.chbAttOriginal.AutoSize = true;
-            this.chbAttOriginal.Location = new System.Drawing.Point(6, 19);
-            this.chbAttOriginal.Name = "chbAttOriginal";
-            this.chbAttOriginal.Size = new System.Drawing.Size(223, 17);
-            this.chbAttOriginal.TabIndex = 0;
-            this.chbAttOriginal.Text = "Подлинник документа об образовании";
-            this.chbAttOriginal.UseVisualStyleBackColor = true;
             // 
             // dtDocDate
             // 
@@ -1180,8 +1119,6 @@
             this.tabPage2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.gbDocs.ResumeLayout(false);
-            this.gbDocs.PerformLayout();
             this.tpOlymps.ResumeLayout(false);
             this.gbOlymps.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOlimps)).EndInit();
@@ -1217,12 +1154,7 @@
         private System.Windows.Forms.CheckBox chbBackDoc;
         private System.Windows.Forms.Button btnPaidData;
         private System.Windows.Forms.CheckBox chbIsPaid;
-        private System.Windows.Forms.CheckBox chbHostelEducNo;
-        private System.Windows.Forms.CheckBox chbHostelEducYes;
-        private System.Windows.Forms.Label label52;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.GroupBox gbDocs;
-        private System.Windows.Forms.CheckBox chbAttOriginal;
         private System.Windows.Forms.DateTimePicker dtDocDate;
         private System.Windows.Forms.Label label21;       
         private System.Windows.Forms.Label label35;
@@ -1245,7 +1177,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbEnabledProtocol;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox chbEgeDocOriginal;
         private System.Windows.Forms.Label lblCompFromOlymp;
         private System.Windows.Forms.CheckBox chbNotEnabled;
         private System.Windows.Forms.Label label28;
@@ -1290,5 +1221,6 @@
         private System.Windows.Forms.Button btnDocInventory;
         private System.Windows.Forms.ComboBox cbStudyLevel;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox chbIsGosLine;
     }
 }

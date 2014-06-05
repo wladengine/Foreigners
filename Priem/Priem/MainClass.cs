@@ -35,7 +35,7 @@ namespace Priem
         public static int pasptypeRFId;
         public static int olympSpbguId;
 
-        public const string PriemYear = "2013";
+        public const string PriemYear = "2014";
 
         public static QueryBuilder qBuilder;
 

@@ -12,6 +12,9 @@ namespace Priem
         public Guid EntryId { get; private set; }
         public Guid CommitId { get; private set; }
 
+        public int? VersionNum { get; private set; }
+        public DateTime? VersionDate { get; private set; }
+
         public int StudyLevelId { get; set; }
         public string StudyLevelName { get; set; }
         public int LicenseProgramId { get; set; }
@@ -44,15 +47,18 @@ namespace Priem
 
         public bool IsListener { get; set; }
         public bool IsSecond { get; set; }
+        public bool IsGosLine { get; set; }
 
         public int Barcode { get; private set; }
 
-        public ShortCompetition(Guid _Id, Guid _CommitId, Guid _EntryId, Guid _PersonId)
+        public ShortCompetition(Guid _Id, Guid _CommitId, Guid _EntryId, Guid _PersonId, int? _VersionNum, DateTime? _VersionDate)
         {
             Id = _Id;
             CommitId = _CommitId;
             EntryId = _EntryId;
             PersonId = _PersonId;
+            VersionNum = _VersionNum;
+            VersionDate = _VersionDate;
         }
 
         public void ChangeEntry()

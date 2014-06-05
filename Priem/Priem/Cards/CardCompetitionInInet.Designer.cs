@@ -63,6 +63,7 @@
             this.label37 = new System.Windows.Forms.Label();
             this.epError = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnSave = new System.Windows.Forms.Button();
+            this.chbIsGosLine = new System.Windows.Forms.CheckBox();
             this.gbDocs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).BeginInit();
             this.SuspendLayout();
@@ -75,7 +76,7 @@
             this.cbStudyLevel.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyLevel.FormattingEnabled = true;
-            this.cbStudyLevel.Location = new System.Drawing.Point(121, 55);
+            this.cbStudyLevel.Location = new System.Drawing.Point(121, 75);
             this.cbStudyLevel.Name = "cbStudyLevel";
             this.cbStudyLevel.Size = new System.Drawing.Size(329, 21);
             this.cbStudyLevel.TabIndex = 189;
@@ -83,7 +84,7 @@
             // label52
             // 
             this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(64, 58);
+            this.label52.Location = new System.Drawing.Point(64, 78);
             this.label52.Name = "label52";
             this.label52.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label52.Size = new System.Drawing.Size(51, 13);
@@ -117,7 +118,7 @@
             // 
             // dtDocInsertDate
             // 
-            this.dtDocInsertDate.Location = new System.Drawing.Point(25, 442);
+            this.dtDocInsertDate.Location = new System.Drawing.Point(25, 462);
             this.dtDocInsertDate.Name = "dtDocInsertDate";
             this.dtDocInsertDate.Size = new System.Drawing.Size(183, 20);
             this.dtDocInsertDate.TabIndex = 184;
@@ -125,7 +126,7 @@
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(22, 425);
+            this.label67.Location = new System.Drawing.Point(22, 445);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(136, 13);
             this.label67.TabIndex = 185;
@@ -134,7 +135,7 @@
             // gbDocs
             // 
             this.gbDocs.Controls.Add(this.chbAttOriginal);
-            this.gbDocs.Location = new System.Drawing.Point(226, 389);
+            this.gbDocs.Location = new System.Drawing.Point(226, 409);
             this.gbDocs.Name = "gbDocs";
             this.gbDocs.Size = new System.Drawing.Size(232, 73);
             this.gbDocs.TabIndex = 183;
@@ -166,7 +167,7 @@
             // dtDocDate
             // 
             this.dtDocDate.Enabled = false;
-            this.dtDocDate.Location = new System.Drawing.Point(25, 389);
+            this.dtDocDate.Location = new System.Drawing.Point(25, 409);
             this.dtDocDate.Name = "dtDocDate";
             this.dtDocDate.Size = new System.Drawing.Size(183, 20);
             this.dtDocDate.TabIndex = 180;
@@ -174,7 +175,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(22, 372);
+            this.label34.Location = new System.Drawing.Point(22, 392);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(134, 13);
             this.label34.TabIndex = 181;
@@ -188,7 +189,7 @@
             this.cbOtherCompetition.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbOtherCompetition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbOtherCompetition.FormattingEnabled = true;
-            this.cbOtherCompetition.Location = new System.Drawing.Point(196, 293);
+            this.cbOtherCompetition.Location = new System.Drawing.Point(196, 313);
             this.cbOtherCompetition.Name = "cbOtherCompetition";
             this.cbOtherCompetition.Size = new System.Drawing.Size(164, 21);
             this.cbOtherCompetition.TabIndex = 179;
@@ -201,14 +202,14 @@
             this.cbCelCompetition.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCelCompetition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCelCompetition.FormattingEnabled = true;
-            this.cbCelCompetition.Location = new System.Drawing.Point(25, 332);
+            this.cbCelCompetition.Location = new System.Drawing.Point(25, 352);
             this.cbCelCompetition.Name = "cbCelCompetition";
             this.cbCelCompetition.Size = new System.Drawing.Size(159, 21);
             this.cbCelCompetition.TabIndex = 178;
             // 
             // tbCelCompetitionText
             // 
-            this.tbCelCompetitionText.Location = new System.Drawing.Point(196, 332);
+            this.tbCelCompetitionText.Location = new System.Drawing.Point(196, 352);
             this.tbCelCompetitionText.Name = "tbCelCompetitionText";
             this.tbCelCompetitionText.Size = new System.Drawing.Size(170, 20);
             this.tbCelCompetitionText.TabIndex = 177;
@@ -216,7 +217,7 @@
             // lblCelCompetition
             // 
             this.lblCelCompetition.AutoSize = true;
-            this.lblCelCompetition.Location = new System.Drawing.Point(22, 317);
+            this.lblCelCompetition.Location = new System.Drawing.Point(22, 337);
             this.lblCelCompetition.Name = "lblCelCompetition";
             this.lblCelCompetition.Size = new System.Drawing.Size(138, 13);
             this.lblCelCompetition.TabIndex = 176;
@@ -225,7 +226,7 @@
             // lblOtherCompetition
             // 
             this.lblOtherCompetition.AutoSize = true;
-            this.lblOtherCompetition.Location = new System.Drawing.Point(193, 277);
+            this.lblOtherCompetition.Location = new System.Drawing.Point(193, 297);
             this.lblOtherCompetition.Name = "lblOtherCompetition";
             this.lblOtherCompetition.Size = new System.Drawing.Size(165, 13);
             this.lblOtherCompetition.TabIndex = 175;
@@ -234,7 +235,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(389, 214);
+            this.label26.Location = new System.Drawing.Point(389, 234);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 13);
             this.label26.TabIndex = 174;
@@ -242,7 +243,7 @@
             // 
             // tbPriority
             // 
-            this.tbPriority.Location = new System.Drawing.Point(405, 230);
+            this.tbPriority.Location = new System.Drawing.Point(405, 250);
             this.tbPriority.Name = "tbPriority";
             this.tbPriority.Size = new System.Drawing.Size(45, 20);
             this.tbPriority.TabIndex = 173;
@@ -255,7 +256,7 @@
             this.cbCompetition.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCompetition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCompetition.FormattingEnabled = true;
-            this.cbCompetition.Location = new System.Drawing.Point(25, 293);
+            this.cbCompetition.Location = new System.Drawing.Point(25, 313);
             this.cbCompetition.Name = "cbCompetition";
             this.cbCompetition.Size = new System.Drawing.Size(159, 21);
             this.cbCompetition.TabIndex = 172;
@@ -268,7 +269,7 @@
             this.cbStudyBasis.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyBasis.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyBasis.FormattingEnabled = true;
-            this.cbStudyBasis.Location = new System.Drawing.Point(121, 229);
+            this.cbStudyBasis.Location = new System.Drawing.Point(121, 249);
             this.cbStudyBasis.Name = "cbStudyBasis";
             this.cbStudyBasis.Size = new System.Drawing.Size(234, 21);
             this.cbStudyBasis.TabIndex = 171;
@@ -281,7 +282,7 @@
             this.cbFaculty.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbFaculty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFaculty.FormattingEnabled = true;
-            this.cbFaculty.Location = new System.Drawing.Point(121, 163);
+            this.cbFaculty.Location = new System.Drawing.Point(121, 183);
             this.cbFaculty.Name = "cbFaculty";
             this.cbFaculty.Size = new System.Drawing.Size(329, 21);
             this.cbFaculty.TabIndex = 170;
@@ -294,7 +295,7 @@
             this.cbStudyForm.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyForm.FormattingEnabled = true;
-            this.cbStudyForm.Location = new System.Drawing.Point(121, 202);
+            this.cbStudyForm.Location = new System.Drawing.Point(121, 222);
             this.cbStudyForm.Name = "cbStudyForm";
             this.cbStudyForm.Size = new System.Drawing.Size(234, 21);
             this.cbStudyForm.TabIndex = 169;
@@ -307,7 +308,7 @@
             this.cbObrazProgram.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbObrazProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbObrazProgram.FormattingEnabled = true;
-            this.cbObrazProgram.Location = new System.Drawing.Point(121, 109);
+            this.cbObrazProgram.Location = new System.Drawing.Point(121, 129);
             this.cbObrazProgram.Name = "cbObrazProgram";
             this.cbObrazProgram.Size = new System.Drawing.Size(329, 21);
             this.cbObrazProgram.TabIndex = 168;
@@ -320,7 +321,7 @@
             this.cbProfile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbProfile.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProfile.FormattingEnabled = true;
-            this.cbProfile.Location = new System.Drawing.Point(121, 136);
+            this.cbProfile.Location = new System.Drawing.Point(121, 156);
             this.cbProfile.Name = "cbProfile";
             this.cbProfile.Size = new System.Drawing.Size(329, 21);
             this.cbProfile.TabIndex = 167;
@@ -333,7 +334,7 @@
             this.cbLicenseProgram.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbLicenseProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLicenseProgram.FormattingEnabled = true;
-            this.cbLicenseProgram.Location = new System.Drawing.Point(121, 82);
+            this.cbLicenseProgram.Location = new System.Drawing.Point(121, 102);
             this.cbLicenseProgram.Name = "cbLicenseProgram";
             this.cbLicenseProgram.Size = new System.Drawing.Size(329, 21);
             this.cbLicenseProgram.TabIndex = 166;
@@ -341,7 +342,7 @@
             // lblObrazProgram
             // 
             this.lblObrazProgram.AutoSize = true;
-            this.lblObrazProgram.Location = new System.Drawing.Point(20, 106);
+            this.lblObrazProgram.Location = new System.Drawing.Point(20, 126);
             this.lblObrazProgram.Name = "lblObrazProgram";
             this.lblObrazProgram.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblObrazProgram.Size = new System.Drawing.Size(98, 26);
@@ -352,7 +353,7 @@
             // lblLicenseprogram
             // 
             this.lblLicenseprogram.AutoSize = true;
-            this.lblLicenseprogram.Location = new System.Drawing.Point(21, 85);
+            this.lblLicenseprogram.Location = new System.Drawing.Point(21, 105);
             this.lblLicenseprogram.Name = "lblLicenseprogram";
             this.lblLicenseprogram.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblLicenseprogram.Size = new System.Drawing.Size(75, 13);
@@ -363,7 +364,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(17, 166);
+            this.label36.Location = new System.Drawing.Point(17, 186);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(63, 13);
             this.label36.TabIndex = 159;
@@ -372,7 +373,7 @@
             // lblProfile
             // 
             this.lblProfile.AutoSize = true;
-            this.lblProfile.Location = new System.Drawing.Point(20, 135);
+            this.lblProfile.Location = new System.Drawing.Point(20, 155);
             this.lblProfile.Name = "lblProfile";
             this.lblProfile.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblProfile.Size = new System.Drawing.Size(80, 26);
@@ -383,7 +384,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(18, 232);
+            this.label19.Location = new System.Drawing.Point(18, 252);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(94, 13);
             this.label19.TabIndex = 163;
@@ -392,7 +393,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(22, 277);
+            this.label20.Location = new System.Drawing.Point(22, 297);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(76, 13);
             this.label20.TabIndex = 164;
@@ -401,7 +402,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(18, 205);
+            this.label37.Location = new System.Drawing.Point(18, 225);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(93, 13);
             this.label37.TabIndex = 160;
@@ -413,7 +414,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(25, 474);
+            this.btnSave.Location = new System.Drawing.Point(25, 494);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 190;
@@ -421,11 +422,23 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // chbIsGosLine
+            // 
+            this.chbIsGosLine.AutoSize = true;
+            this.chbIsGosLine.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chbIsGosLine.Location = new System.Drawing.Point(299, 48);
+            this.chbIsGosLine.Name = "chbIsGosLine";
+            this.chbIsGosLine.Size = new System.Drawing.Size(157, 17);
+            this.chbIsGosLine.TabIndex = 191;
+            this.chbIsGosLine.Text = "Поступление по гослинии";
+            this.chbIsGosLine.UseVisualStyleBackColor = true;
+            // 
             // CardCompetitionInInet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(476, 509);
+            this.ClientSize = new System.Drawing.Size(476, 529);
+            this.Controls.Add(this.chbIsGosLine);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.cbStudyLevel);
             this.Controls.Add(this.label52);
@@ -459,7 +472,7 @@
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label37);
             this.Name = "CardCompetitionInInet";
-            this.Text = "CardCompetitionInInet";
+            this.Text = "Проверка конкурсных данных";
             this.gbDocs.ResumeLayout(false);
             this.gbDocs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).EndInit();
@@ -504,5 +517,6 @@
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.ErrorProvider epError;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.CheckBox chbIsGosLine;
     }
 }

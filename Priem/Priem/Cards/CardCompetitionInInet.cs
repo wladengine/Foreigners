@@ -44,6 +44,10 @@ namespace Priem
             CompetitionId = _competition.CompetitionId;
             UpdateAfterCompetition();
 
+            Priority = _competition.Priority;
+            DocDate = _competition.DocDate;
+            IsGosLine = _competition.IsGosLine;
+
             InitHandlers();
         }
 
@@ -442,6 +446,13 @@ namespace Priem
                 if (CompetitionId.HasValue)
                     _competition.CompetitionId = CompetitionId.Value;
                 _competition.CompetitionName = cbCompetition.Text;
+
+
+                _competition.DocInsertDate = DocInsertDate ?? DateTime.Now;
+                _competition.IsGosLine = IsGosLine;
+                _competition.IsListener = IsListener;
+                _competition.IsSecond = IsSecond;
+
                 _competition.ChangeEntry();
                 if (OnUpdate != null)
                     OnUpdate(_competition);

@@ -51,25 +51,14 @@ namespace Priem
             switch (dbName)
             {
                 case "Priem":
-                    _titleString = " на первый курс";
-                    MainClass.dbType = PriemType.Priem;
+                    _titleString = " иностранцев";
+                    MainClass.dbType = PriemType.PriemForeigners;
                     break;
                 
-                case "PriemMAG":
-                    _titleString = " в магистратуру";
-                    MainClass.dbType = PriemType.PriemMag;
-                    break;
-
                 case "Priem_FAC":
-                    _titleString = " рабочая 1 курс superman";
+                    _titleString = " иностранцев рабочая superman";
                     MainClass.connString = DBConstants.CS_PRIEM_FAC;
-
-                    MainClass.dbType = PriemType.Priem;
-                    break;
-                case "PriemMAG_FAC":
-                    _titleString = " рабочая магистратура superman";
-                    MainClass.connString = DBConstants.CS_PRIEM_FAC;
-                    MainClass.dbType = PriemType.PriemMag;
+                    MainClass.dbType = PriemType.PriemForeigners;
                     break;
 
                 default:
@@ -111,7 +100,7 @@ namespace Priem
                     return;
 
                 // магистратура!
-                if (MainClass.dbType == PriemType.PriemMag)
+                if (MainClass.dbType == PriemType.PriemMag || MainClass.dbType == PriemType.PriemForeigners)
                 {
                     smiOlympAbitList.Visible = false;
                     smiOlymps.Visible = false;
@@ -284,6 +273,9 @@ namespace Priem
 
         private void ShowProtocolWarning()
         {
+            if (MainClass.dbType == PriemType.PriemForeigners)
+                return;
+
             DateTime dtNow = DateTime.Now.Date;
             DateTime dtYesterday = DateTime.Now.AddDays(-1).Date;
             
@@ -343,7 +335,7 @@ namespace Priem
 
         private void smiLoad_Click(object sender, EventArgs e)
         {
-            if (MainClass.dbType == PriemType.PriemMag)
+            if (MainClass.dbType == PriemType.PriemMag || MainClass.dbType == PriemType.PriemForeigners)
                 new ApplicationInetList().Show();
             else
                 new PersonInetList().Show();

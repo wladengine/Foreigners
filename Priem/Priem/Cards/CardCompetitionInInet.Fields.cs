@@ -104,6 +104,11 @@ namespace Priem
             get { return chbIsListener.Checked; }
             set { chbIsListener.Checked = value; }
         }
+        public bool IsGosLine
+        {
+            get { return chbIsGosLine.Checked; }
+            set { chbIsGosLine.Checked = value; }
+        }
 
         public DateTime? DocDate
         {

@@ -90,14 +90,10 @@ namespace Priem
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
 
-        public bool HostelEduc
+        public bool IsGosLine
         {
-            get { return chbHostelEducYes.Checked; }
-            set
-            {
-                chbHostelEducYes.Checked = value;
-                chbHostelEducNo.Checked = !value;
-            }        
+            get { return chbIsGosLine.Checked; }
+            set { chbIsGosLine.Checked = value; }
         }
 
         public int? CompetitionId
@@ -184,18 +180,6 @@ namespace Priem
                 if (value.HasValue)
                     dtDocInsertDate.Value = value.Value; 
             }
-        }
-
-        public bool AttDocOrigin
-        {
-            get { return chbAttOriginal.Checked; }
-            set { chbAttOriginal.Checked = value; }
-        }
-
-        public bool EgeDocOrigin
-        {
-            get { return chbEgeDocOriginal.Checked; }
-            set { chbEgeDocOriginal.Checked = value; }
         }
 
         public bool Checked

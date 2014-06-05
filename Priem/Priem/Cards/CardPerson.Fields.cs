@@ -23,19 +23,16 @@ namespace Priem
             get { return tbName.Text.Trim(); }
             set { tbName.Text = value; }
         }
-
         public string SecondName
         {
             get { return tbSecondName.Text.Trim(); }
             set { tbSecondName.Text = value; }
         }
-
         public string Surname
         {
             get { return tbSurname.Text.Trim(); }
             set { tbSurname.Text = value; }
         }
-
         public DateTime? BirthDate
         {
             get { return dtBirthDate.Value.Date; }            
@@ -45,7 +42,6 @@ namespace Priem
                     dtBirthDate.Value = value.Value; 
             }
         }
-
         public string BirthPlace
         {
             get { return tbBirthPlace.Text.Trim(); }
@@ -57,25 +53,21 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbPassportType); }
             set { ComboServ.SetComboId(cbPassportType, value); }
         }
-
         public string PassportSeries
         {
             get { return tbPassportSeries.Text.Replace(" ", "").Trim(); }
             set { tbPassportSeries.Text = value; }
         }
-
         public string PassportNumber
         {
             get { return tbPassportNumber.Text.Replace(" ", "").Trim(); }
             set { tbPassportNumber.Text = value; }
         }
-
         public string PassportAuthor
         {
             get { return tbPassportAuthor.Text.Trim(); }
             set { tbPassportAuthor.Text = value; }
         }
-
         public DateTime? PassportDate
         {
             get { return dtPassportDate.Value.Date; }
@@ -101,13 +93,11 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbCountry); }
             set { ComboServ.SetComboId(cbCountry, value); }
         }
-       
         protected int? NationalityId
         {
             get { return ComboServ.GetComboIdInt(cbNationality); }
             set { ComboServ.SetComboId(cbNationality, value); }
         }
-        
         protected int? RegionId
         {
             get { return ComboServ.GetComboIdInt(cbRegion); }
@@ -119,13 +109,11 @@ namespace Priem
             get { return tbPhone.Text.Trim(); }
             set { tbPhone.Text = value; }
         }
-
         public string Mobiles
         {
             get { return tbMobiles.Text.Trim(); }
             set { tbMobiles.Text = value; }
         }
-
         public string Email
         {
             get { return tbEmail.Text.Trim(); }
@@ -141,7 +129,15 @@ namespace Priem
                 chbHostelAbitNo.Checked = !value;
             }
         }
-
+        public bool HostelEduc
+        {
+            get { return chbHostelEducYes.Checked; }
+            set
+            {
+                chbHostelEducYes.Checked = value;
+                chbHostelEducNo.Checked = !value;
+            }
+        }
         public bool HasAssignToHostel
         {            
             set
@@ -154,7 +150,6 @@ namespace Priem
                 return _hasAssignToFaculty;
             }
         }
-        
         public int? HostelFacultyId
         {
             get { return _hostelFacultyId; }
@@ -170,14 +165,12 @@ namespace Priem
                 }
             }        
         }
-
         public bool HasExamPass
 
         {
             set { _hasExamPass = lblHasExamPass.Visible = value; }
             get { return _hasExamPass; }
         }
-
         public int? ExamPassFacultyId
         { 
             get { return _examPassFacultyId; }                
@@ -199,7 +192,6 @@ namespace Priem
             get { return chbIsExcellent.Checked; }
             set { chbIsExcellent.Checked = value; }
         }
-       
         protected int? LanguageId
         {
             get { return ComboServ.GetComboIdInt(cbLanguage); }
@@ -211,25 +203,21 @@ namespace Priem
             get { return cbSchoolCity.Text.Trim(); }
             set { cbSchoolCity.SelectedItem = value; }
         }
-        
         protected int? SchoolTypeId
         {
             get { return ComboServ.GetComboIdInt(cbSchoolType); }
             set { ComboServ.SetComboId(cbSchoolType, value); }
         }
-
         public string SchoolName
         {
             get { return tbSchoolName.Text.Trim(); }
             set { tbSchoolName.Text = value; }
         }
-
         public string SchoolNum
         {
             get { return tbSchoolNum.Text.Trim(); }
             set { tbSchoolNum.Text = value; }
         }
-
         public int? SchoolExitYear
         {
             get
@@ -242,31 +230,45 @@ namespace Priem
             }
             set { tbSchoolExitYear.Text = Util.ToStr(value); }           
         }
-       
         protected int? CountryEducId
         {
             get { return ComboServ.GetComboIdInt(cbCountryEduc); }
             set { ComboServ.SetComboId(cbCountryEduc, value); }
         }
 
-        public bool HasEkvivEduc
+        public bool IsEqual
         {
-            get { return chbEkvivEduc.Checked; }
-            set { chbEkvivEduc.Checked = value; }
+            get { return chbIsEqual.Checked; }
+            set { chbIsEqual.Checked = value; }
         }
+        public string EqualDocumentNumber
+        {
+            get { return tbEqualDocumentNumber.Text.Trim(); }
+            set { tbEqualDocumentNumber.Text = value; }
+        }
+
+        public bool HasTRKI
+        {
+            get { return chbHasTRKI.Checked; }
+            set { chbHasTRKI.Checked = value; }
+        }
+        public string TRKISertificateNumber
+        {
+            get { return tbTRKISertificateNumber.Text.Trim(); }
+            set { tbTRKISertificateNumber.Text = value; }
+        }
+
 
         public string AttestatRegion
         {
             get { return tbAttestatRegion.Text.Trim(); }
             set { tbAttestatRegion.Text = value; }
         }
-
         public string AttestatSeries
         {
             get { return cbAttestatSeries.Text.Trim(); }
             set { cbAttestatSeries.Text = value; }
         }
-
         public string AttestatNum
         {
             get { return tbAttestatNum.Text.Trim(); }
@@ -278,7 +280,6 @@ namespace Priem
             get { return tbDiplomSeries.Text.Trim(); }
             set { tbDiplomSeries.Text = value; }
         }
-
         public string DiplomNum
         {
             get { return tbDiplomNum.Text.Trim(); }
@@ -290,19 +291,16 @@ namespace Priem
             get { return tbHighEducation.Text.Trim(); }
             set { tbHighEducation.Text = value; }
         }
-
         public string HEProfession
         {
             get { return tbHEProfession.Text.Trim(); }
             set { tbHEProfession.Text = value; }
         }
-
         public string HEQualification
         {
             get { return cbHEQualification.Text.Trim(); }
             set { cbHEQualification.SelectedItem = value; }
         }
-       
         public int? HEEntryYear
         {
             get
@@ -315,7 +313,6 @@ namespace Priem
             }
             set { tbHEEntryYear.Text = Util.ToStr(value); }
         }
-
         public int? HEExitYear
         {
             get
@@ -328,13 +325,11 @@ namespace Priem
             }
             set { tbHEExitYear.Text = Util.ToStr(value); }
         }
-
         public string HEWork
         {
             get { return tbHEWork.Text.Trim(); }
             set { tbHEWork.Text = value; }
         }
-        
         protected int? HEStudyFormId
         {
             get { return ComboServ.GetComboIdInt(cbHEStudyForm); }
@@ -346,7 +341,6 @@ namespace Priem
             get { return tbStag.Text.Trim(); }
             set { tbStag.Text = value; }
         }
-
         public string WorkPlace
         {
             get { return tbWorkPlace.Text.Trim(); }
@@ -364,13 +358,11 @@ namespace Priem
             get { return tbExtraInfo.Text.Trim(); }
             set { tbExtraInfo.Text = value; }
         }
-
         public string PersonInfo
         {
             get { return tbPersonInfo.Text.Trim(); }
             set { tbPersonInfo.Text = value; }
         }    
-
         public int? Privileges
         {
             get 
@@ -443,7 +435,6 @@ namespace Priem
             get { return tbPassportCode.Text.Trim(); }
             set { tbPassportCode.Text = value; }
         }
-
         public string PersonalCode
         {
             get { return tbPersonalCode.Text.Trim(); }
@@ -462,7 +453,6 @@ namespace Priem
             }
             set { tbEnglishMark.Text = Util.ToStr(value); }
         }
-
         public bool StartEnglish
         {
             get { return chbStartEnglish.Checked; }
@@ -500,7 +490,6 @@ namespace Priem
                 }
             }
         }
-
         public DateTime? VisaEnd
         {
             get
@@ -519,7 +508,6 @@ namespace Priem
                 }
             }
         }
-
         public DateTime? EnterInRussiaDate
         {
             get
@@ -538,7 +526,6 @@ namespace Priem
                 }
             }
         }
-
         public DateTime? EducationDirectionDate
         {
             get
@@ -557,7 +544,6 @@ namespace Priem
                 }
             }
         }
-
         public string EducationDirectionNumber
         {
             get { return tbEducationDirectionNumber.Text; }
@@ -569,35 +555,38 @@ namespace Priem
             get { return tbCode.Text; }
             set { tbCode.Text = value; }
         }
-
         public string City
         {
             get { return tbCity.Text; }
             set { tbCity.Text = value; }
         }
-
         public string Street
         {
             get { return tbStreet.Text; }
             set { tbStreet.Text = value; }
         }
-
         public string House
         {
             get { return tbHouse.Text; }
             set { tbHouse.Text = value; }
         }
-
         public string Korpus
         {
             get { return tbKorpus.Text; }
             set { tbKorpus.Text = value; }
         }
-
         public string Flat
         {
             get { return tbFlat.Text; }
             set { tbFlat.Text = value; }
         }
+
+        public string CodeReal { get; set; }
+        public string CityReal { get; set; }
+        public string StreetReal { get; set; }
+        public string HouseReal { get; set; }
+        public string KorpusReal { get; set; }
+        public string FlatReal { get; set; }
+        
     }
 }

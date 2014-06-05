@@ -108,6 +108,11 @@
             this.tbPhone = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.gbEduc = new System.Windows.Forms.GroupBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.tbTRKISertificateNumber = new System.Windows.Forms.TextBox();
+            this.chbHasTRKI = new System.Windows.Forms.CheckBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.tbEqualDocumentNumber = new System.Windows.Forms.TextBox();
             this.gbAtt = new System.Windows.Forms.GroupBox();
             this.cbAttestatSeries = new System.Windows.Forms.ComboBox();
             this.tbAttestatRegion = new System.Windows.Forms.TextBox();
@@ -190,15 +195,12 @@
             this.chlbFile = new System.Windows.Forms.CheckedListBox();
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.tpApplication = new System.Windows.Forms.TabPage();
+            this.label26 = new System.Windows.Forms.Label();
+            this.tbApplicationVersion = new System.Windows.Forms.TextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.btnOpenCompetition = new System.Windows.Forms.Button();
             this.dgvApplications = new System.Windows.Forms.DataGridView();
             this.lblBarcode = new System.Windows.Forms.Label();
-            this.tbEqualDocumentNumber = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.tbNumTRKI = new System.Windows.Forms.TextBox();
-            this.chbHasTRKI = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).BeginInit();
             this.tabCard.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -285,7 +287,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(470, 505);
+            this.tabPage1.Size = new System.Drawing.Size(470, 523);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Основное";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1034,7 +1036,7 @@
             // gbEduc
             // 
             this.gbEduc.Controls.Add(this.label20);
-            this.gbEduc.Controls.Add(this.tbNumTRKI);
+            this.gbEduc.Controls.Add(this.tbTRKISertificateNumber);
             this.gbEduc.Controls.Add(this.chbHasTRKI);
             this.gbEduc.Controls.Add(this.label19);
             this.gbEduc.Controls.Add(this.tbEqualDocumentNumber);
@@ -1055,6 +1057,50 @@
             this.gbEduc.Size = new System.Drawing.Size(456, 234);
             this.gbEduc.TabIndex = 97;
             this.gbEduc.TabStop = false;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(236, 114);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(18, 13);
+            this.label20.TabIndex = 120;
+            this.label20.Text = "№";
+            // 
+            // tbTRKISertificateNumber
+            // 
+            this.tbTRKISertificateNumber.Location = new System.Drawing.Point(260, 112);
+            this.tbTRKISertificateNumber.MaxLength = 15;
+            this.tbTRKISertificateNumber.Name = "tbTRKISertificateNumber";
+            this.tbTRKISertificateNumber.Size = new System.Drawing.Size(162, 20);
+            this.tbTRKISertificateNumber.TabIndex = 119;
+            // 
+            // chbHasTRKI
+            // 
+            this.chbHasTRKI.AutoSize = true;
+            this.chbHasTRKI.Location = new System.Drawing.Point(239, 94);
+            this.chbHasTRKI.Name = "chbHasTRKI";
+            this.chbHasTRKI.Size = new System.Drawing.Size(135, 17);
+            this.chbHasTRKI.TabIndex = 118;
+            this.chbHasTRKI.Text = "Свидетельство ТРКИ";
+            this.chbHasTRKI.UseVisualStyleBackColor = true;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(17, 115);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(18, 13);
+            this.label19.TabIndex = 117;
+            this.label19.Text = "№";
+            // 
+            // tbEqualDocumentNumber
+            // 
+            this.tbEqualDocumentNumber.Location = new System.Drawing.Point(41, 112);
+            this.tbEqualDocumentNumber.MaxLength = 15;
+            this.tbEqualDocumentNumber.Name = "tbEqualDocumentNumber";
+            this.tbEqualDocumentNumber.Size = new System.Drawing.Size(182, 20);
+            this.tbEqualDocumentNumber.TabIndex = 116;
             // 
             // gbAtt
             // 
@@ -1823,7 +1869,7 @@
             this.tpDocs.Controls.Add(this.gbFile);
             this.tpDocs.Location = new System.Drawing.Point(4, 22);
             this.tpDocs.Name = "tpDocs";
-            this.tpDocs.Size = new System.Drawing.Size(470, 505);
+            this.tpDocs.Size = new System.Drawing.Size(470, 523);
             this.tpDocs.TabIndex = 5;
             this.tpDocs.Text = "Документы";
             this.tpDocs.UseVisualStyleBackColor = true;
@@ -1883,19 +1929,38 @@
             // 
             // tpApplication
             // 
+            this.tpApplication.Controls.Add(this.label26);
+            this.tpApplication.Controls.Add(this.tbApplicationVersion);
             this.tpApplication.Controls.Add(this.groupBox7);
             this.tpApplication.Location = new System.Drawing.Point(4, 22);
             this.tpApplication.Name = "tpApplication";
-            this.tpApplication.Size = new System.Drawing.Size(470, 505);
+            this.tpApplication.Size = new System.Drawing.Size(470, 523);
             this.tpApplication.TabIndex = 8;
             this.tpApplication.Text = "Конкурс";
             this.tpApplication.UseVisualStyleBackColor = true;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(24, 13);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(148, 13);
+            this.label26.TabIndex = 3;
+            this.label26.Text = "Текущая версия заявления";
+            // 
+            // tbApplicationVersion
+            // 
+            this.tbApplicationVersion.Location = new System.Drawing.Point(178, 10);
+            this.tbApplicationVersion.Name = "tbApplicationVersion";
+            this.tbApplicationVersion.ReadOnly = true;
+            this.tbApplicationVersion.Size = new System.Drawing.Size(288, 20);
+            this.tbApplicationVersion.TabIndex = 2;
             // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.btnOpenCompetition);
             this.groupBox7.Controls.Add(this.dgvApplications);
-            this.groupBox7.Location = new System.Drawing.Point(8, 3);
+            this.groupBox7.Location = new System.Drawing.Point(8, 36);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(458, 377);
             this.groupBox7.TabIndex = 1;
@@ -1920,6 +1985,7 @@
             this.dgvApplications.Location = new System.Drawing.Point(6, 19);
             this.dgvApplications.Name = "dgvApplications";
             this.dgvApplications.ReadOnly = true;
+            this.dgvApplications.RowHeadersVisible = false;
             this.dgvApplications.Size = new System.Drawing.Size(446, 323);
             this.dgvApplications.TabIndex = 0;
             this.dgvApplications.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvApplications_CellDoubleClick);
@@ -1934,50 +2000,6 @@
             this.lblBarcode.Name = "lblBarcode";
             this.lblBarcode.Size = new System.Drawing.Size(0, 13);
             this.lblBarcode.TabIndex = 41;
-            // 
-            // tbEkvivEducNumber
-            // 
-            this.tbEqualDocumentNumber.Location = new System.Drawing.Point(41, 112);
-            this.tbEqualDocumentNumber.MaxLength = 15;
-            this.tbEqualDocumentNumber.Name = "tbEkvivEducNumber";
-            this.tbEqualDocumentNumber.Size = new System.Drawing.Size(182, 20);
-            this.tbEqualDocumentNumber.TabIndex = 116;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(17, 115);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(18, 13);
-            this.label19.TabIndex = 117;
-            this.label19.Text = "№";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(236, 114);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(18, 13);
-            this.label20.TabIndex = 120;
-            this.label20.Text = "№";
-            // 
-            // tbNumTRKI
-            // 
-            this.tbNumTRKI.Location = new System.Drawing.Point(260, 112);
-            this.tbNumTRKI.MaxLength = 15;
-            this.tbNumTRKI.Name = "tbNumTRKI";
-            this.tbNumTRKI.Size = new System.Drawing.Size(162, 20);
-            this.tbNumTRKI.TabIndex = 119;
-            // 
-            // chbHasTRKI
-            // 
-            this.chbHasTRKI.AutoSize = true;
-            this.chbHasTRKI.Location = new System.Drawing.Point(239, 94);
-            this.chbHasTRKI.Name = "chbHasTRKI";
-            this.chbHasTRKI.Size = new System.Drawing.Size(135, 17);
-            this.chbHasTRKI.TabIndex = 118;
-            this.chbHasTRKI.Text = "Свидетельство ТРКИ";
-            this.chbHasTRKI.UseVisualStyleBackColor = true;
             // 
             // CardFromInet
             // 
@@ -2036,6 +2058,7 @@
             this.groupBox2.PerformLayout();
             this.gbFile.ResumeLayout(false);
             this.tpApplication.ResumeLayout(false);
+            this.tpApplication.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvApplications)).EndInit();
             this.ResumeLayout(false);
@@ -2214,7 +2237,9 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox tbEqualDocumentNumber;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox tbNumTRKI;
+        private System.Windows.Forms.TextBox tbTRKISertificateNumber;
         private System.Windows.Forms.CheckBox chbHasTRKI;
+        private System.Windows.Forms.TextBox tbApplicationVersion;
+        private System.Windows.Forms.Label label26;
     }
 }

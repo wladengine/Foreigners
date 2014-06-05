@@ -122,7 +122,7 @@ namespace Priem
         {
             // если прием - то проверяем на три заявления
             if (MainClass.dbType != PriemType.Priem)
-                return true;  
+                return true;
 
             //просто сосчитаем количество созданных конкурсов на человека
             var concurses = (from allab in context.qAbitAll
@@ -223,9 +223,11 @@ namespace Priem
                             person.PassportSeries, person.PassportNumber, person.PassportAuthor, person.PassportDate, person.Sex, person.CountryId, person.NationalityId, 
                             person.RegionId, person.Phone, person.Mobiles, person.Email, 
                             person.Code, person.City,  person.Street, person.House, person.Korpus, person.Flat,
+                            person.CodeReal, person.CityReal, person.StreetReal, person.HouseReal, person.KorpusReal, person.FlatReal,
                             person.HostelAbit, false, null, false, null, person.IsExcellent, 
                             person.LanguageId, person.SchoolCity, person.SchoolTypeId, person.SchoolName, person.SchoolNum, person.SchoolExitYear, person.SchoolAVG, 
-                            person.CountryEducId, person.HasEkvivEduc, person.AttestatRegion, person.AttestatSeries, person.AttestatNum, person.DiplomSeries, person.DiplomNum, 
+                            person.CountryEducId, person.IsEqual, person.EqualDocumentNumber, person.HasTRKI, person.TRKICertificateNumber, 
+                            person.AttestatRegion, person.AttestatSeries, person.AttestatNum, person.DiplomSeries, person.DiplomNum, 
                             person.HighEducation, person.HEProfession, person.HEQualification, person.HEEntryYear, person.HEExitYear, person.HEStudyFormId, 
                             person.HEWork, person.Stag, person.WorkPlace, person.Privileges, person.PassportCode,
                             person.PersonalCode, person.PersonInfo, person.ExtraInfo, person.ScienceWork, person.StartEnglish, person.EnglishMark, entId);
@@ -255,9 +257,9 @@ namespace Priem
                     else
                         competitionId = 3;
 
-                    context.Abiturient_Insert(personId, abit.EntryId, competitionId, abit.HostelEduc, false, false, false, false, null, abit.DocDate, DateTime.Now,
-                    abit.AttDocOrigin, abit.EgeDocOrigin, false, false, null, null, null, null, abit.LanguageId, false,
-                    abit.Priority, abit.Barcode, abEntId);
+                    context.Abiturient_Insert(personId, abit.EntryId, competitionId, false, false, false, false, null, abit.DocDate, DateTime.Now,
+                    false, false, null, null, null, null, abit.LanguageId, false,
+                    abit.Priority, abit.Barcode, abit.CommitId, abit.CommitNumber, abit.IsGosLine, abEntId);
 
                     // _bdcInet.ExecuteQuery("UPDATE Application SET IsImported = 1 WHERE Application.Barcode = " + abitBarcode);
                 }

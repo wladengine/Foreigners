@@ -60,19 +60,21 @@ namespace Priem
             try
             {
                 string personQueryInet =
-                        @"SELECT Id, Barcode, Name, SecondName, Surname, BirthDate, BirthPlace, Sex,
-                            PassportTypeId, PassportSeries, PassportNumber, PassportAuthor, PassportDate,
-                            PassportCode, '' AS PersonalCode, CountryId, NationalityId AS NationalityId, RegionId, Phone, Mobiles, Email,
-                            Code, City, Street, House, Korpus, Flat, HostelAbit, LanguageId,
-                            SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear, IsExcellent,
-                            CountryEducId, AttestatRegion, AttestatSeries, AttestatNumber,
-                            EducationDocumentSeries AS DiplomSeries, EducationDocumentNumber AS DiplomNum, AvgMark AS SchoolAVG,
-                            (case when SchoolTypeId=1 then '' else SchoolName end) AS HighEducation, HEProfession AS HEProfession, 
-                            HEQualification AS HEQualification, DiplomaTheme AS HEWork,
-                            EducationStart AS HEEntryYear, HEExitYear, HEStudyFormId, Parents AS PersonInfo, AddInfo AS ExtraInfo,
-                            HostelEduc
-                            FROM extForeignPerson
-                            WHERE 0=0";
+                @"SELECT Id, Barcode, Name, SecondName, Surname, BirthDate, BirthPlace, Sex,
+                    PassportTypeId, PassportSeries, PassportNumber, PassportAuthor, PassportDate,
+                    PassportCode, '' AS PersonalCode, CountryId, NationalityId AS NationalityId, RegionId, Phone, Mobiles, Email,
+                    Code, City, Street, House, Korpus, Flat, 
+                    CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal, 
+                    HostelAbit, HostelEduc, LanguageId,
+                    SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear, IsExcellent,
+                    CountryEducId, AttestatRegion, AttestatSeries, AttestatNumber,
+                    EducationDocumentSeries AS DiplomSeries, EducationDocumentNumber AS DiplomNum, AvgMark AS SchoolAVG,
+                    (case when SchoolTypeId=1 then '' else SchoolName end) AS HighEducation, HEProfession AS HEProfession, 
+                    HEQualification AS HEQualification, DiplomaTheme AS HEWork,
+                    EducationStart AS HEEntryYear, HEExitYear, HEStudyFormId, Parents AS PersonInfo, AddInfo AS ExtraInfo,
+                    IsEqual, EqualDocumentNumber, HasTRKI, TRKICertificateNumber
+                    FROM extForeignPerson
+                    WHERE 0=0";
 
                 DataSet ds = _bdcInet.GetDataSet(personQueryInet + " AND extForeignPerson.Barcode = " + fileNum);
                 if (ds.Tables[0].Rows.Count == 0)
@@ -80,7 +82,6 @@ namespace Priem
 
                 DataRow row = ds.Tables[0].Rows[0];
                 extPerson pers = new extPerson();
-               
                 pers.Id = (Guid)row["Id"];
                 pers.Barcode = (int?)row["Barcode"];
                 pers.FIO = Util.GetFIO(row["Surname"].ToString(), row["Name"].ToString(), row["SecondName"].ToString());
@@ -109,8 +110,22 @@ namespace Priem
                 pers.House = row["House"].ToString();
                 pers.Korpus = row["Korpus"].ToString();
                 pers.Flat = row["Flat"].ToString();
+
+                pers.CodeReal = row["CodeReal"].ToString();
+                pers.CityReal = row["CityReal"].ToString();
+                pers.StreetReal = row["StreetReal"].ToString();
+                pers.HouseReal = row["HouseReal"].ToString();
+                pers.KorpusReal = row["KorpusReal"].ToString();
+                pers.FlatReal = row["FlatReal"].ToString();
+
                 pers.HostelAbit = QueryServ.ToBoolValue(row["HostelAbit"]);
                 pers.HostelEduc = QueryServ.ToBoolValue(row["HostelEduc"]);
+
+                pers.IsEqual = QueryServ.ToBoolValue(row["IsEqual"]);
+                pers.HasTRKI = QueryServ.ToBoolValue(row["HasTRKI"]);
+                pers.EqualDocumentNumber = row["EqualDocumentNumber"].ToString();
+                pers.TRKICertificateNumber = row["TRKICertificateNumber"].ToString();
+
                 pers.HasAssignToHostel = false;
                 pers.HasExamPass = false;
                 pers.IsExcellent = QueryServ.ToBoolValue(row["IsExcellent"]);
@@ -205,7 +220,8 @@ namespace Priem
                             qAbiturient.DateOfDisable AS BackDocDate, qAbiturient.DateOfStart AS DocDate,                           
                             qAbiturient.Priority, qAbiturient.LicenseProgramId, qAbiturient.ObrazProgramId, 
                             qAbiturient.ProfileId, qAbiturient.FacultyId, qAbiturient.StudyFormId, 
-                            qAbiturient.StudyBasisId, qAbiturient.IsSecond
+                            qAbiturient.StudyBasisId, qAbiturient.IsSecond,
+                            qAbiturient.IsGosLine, qAbiturient.CommitId, qAbiturient.CommitNumber 
                             FROM qAbiturient WHERE 0=0";
 
                 DataSet ds = _bdcInet.GetDataSet(abitQueryInet + " AND qAbiturient.Barcode = " + fileNum);
@@ -217,13 +233,17 @@ namespace Priem
 
                 abit.IsSecond = (bool)row["IsSecond"];
                 abit.EntryId = (Guid)row["EntryId"];
+
+                abit.CommitId = (Guid)row["CommitId"];
+                abit.CommitNumber = (int?)row["CommitNumber"];
+
                 abit.FacultyId = (int)row["FacultyId"];
                 abit.LicenseProgramId = (int)row["LicenseProgramId"];
                 abit.ObrazProgramId = (int)row["ObrazProgramId"];
                 abit.ProfileId = (Guid?)(Util.ToNullObject(row["ProfileId"]));
                 abit.StudyFormId = (int)row["StudyFormId"];
                 abit.StudyBasisId = (int)row["StudyBasisId"];
-                abit.HostelEduc = QueryServ.ToBoolValue(row["HostelEduc"]);                
+                abit.IsGosLine = QueryServ.ToBoolValue(row["IsGosLine"]);                
                
                 abit.BackDoc = QueryServ.ToBoolValue(row["BackDoc"]);
                 abit.BackDocDate = row.Field<DateTime?>("BackDocDate");

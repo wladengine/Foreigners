@@ -190,6 +190,17 @@ namespace Priem
             set { tbEqualDocumentNumber.Text = value; }
         }
 
+        public bool HasTRKI
+        {
+            get { return chbHasTRKI.Checked; }
+            set { chbHasTRKI.Checked = value; }
+        }
+        public string TRKISertificateNumber
+        {
+            get { return tbTRKISertificateNumber.Text.Trim(); }
+            set { tbTRKISertificateNumber.Text = value; }
+        }
+
         public string AttestatRegion
         {
             get { return tbAttestatRegion.Text.Trim(); }
@@ -473,6 +484,7 @@ namespace Priem
             set { tbEducationDirectionNumber.Text = value; }
         }
 
+        public string KladrCode { get; set; }
         public string Code
         {
             get { return tbCode.Text; }
@@ -503,5 +515,13 @@ namespace Priem
             get { return tbFlat.Text; }
             set { tbFlat.Text = value; }
         }
+
+        public string CodeReal { get; set; }
+        public string CityReal { get; set; }
+        public string StreetReal { get; set; }
+        public string HouseReal { get; set; }
+        public string KorpusReal { get; set; }
+        public string FlatReal { get; set; }
+        
     }
 }

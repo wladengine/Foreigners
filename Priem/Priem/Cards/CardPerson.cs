@@ -60,7 +60,7 @@ namespace Priem
 
             gbAtt.Visible = true;
             gbDipl.Visible = false;
-            chbEkvivEduc.Visible = false;
+            chbIsEqual.Visible = false;
             
             chbHostelAbitYes.Checked = false;
             chbHostelAbitNo.Checked = false;
@@ -196,9 +196,9 @@ namespace Priem
         private void UpdateAfterCountryEduc(object sender, EventArgs e)
         {
             if (CountryEducId == MainClass.countryRussiaId)           
-                chbEkvivEduc.Visible = false;
+                chbIsEqual.Visible = false;
             else
-                chbEkvivEduc.Visible = true;
+                chbIsEqual.Visible = true;
         }
 
         private void chbHostelAbitYes_CheckedChanged(object sender, EventArgs e)
@@ -239,7 +239,24 @@ namespace Priem
             Phone = person.Phone;
             Mobiles = person.Mobiles;
             Email = person.Email;
+
+            Code = person.Code;
+            City = person.City;
+            Street = person.Street;
+            House = person.House;
+            Korpus = person.Korpus;
+            Flat = person.Flat;
+
+            CodeReal = person.CodeReal;
+            CityReal = person.CityReal;
+            StreetReal = person.StreetReal;
+            HouseReal = person.HouseReal;
+            KorpusReal = person.KorpusReal;
+            FlatReal = person.FlatReal;
+
             HostelAbit = person.HostelAbit ?? false;
+            HostelEduc = person.HostelEduc ?? false;
+
             HasAssignToHostel = person.HasAssignToHostel ?? false;
             HostelFacultyId = person.HostelFacultyId;
             HasExamPass = person.HasExamPass ?? false;
@@ -252,7 +269,12 @@ namespace Priem
             SchoolNum = person.SchoolNum;
             SchoolExitYear = person.SchoolExitYear;
             CountryEducId = person.CountryEducId;
-            HasEkvivEduc = person.HasEkvivEduc ?? false;
+
+            IsEqual = person.IsEqual ?? false;
+            EqualDocumentNumber = person.EqualDocumentNumber;
+            HasTRKI = person.HasTRKI ?? false;
+            TRKISertificateNumber = person.TRKICertificateNumber;
+
             AttestatRegion = person.AttestatRegion;
             AttestatSeries = person.AttestatSeries;
             AttestatNum = person.AttestatNum;
@@ -895,9 +917,10 @@ namespace Priem
             context.Person_Foreign_insert(personBarc, PersonName, SecondName, Surname, BirthDate, BirthPlace, PassportTypeId, PassportSeries, PassportNumber,
                 PassportAuthor, PassportDate, Sex, CountryId, NationalityId, RegionId, Phone, Mobiles, Email, 
                 Code, City, Street, House, Korpus, Flat,
+                CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal,
                 HostelAbit, HasAssignToHostel,
                 HostelFacultyId, HasExamPass, ExamPassFacultyId, IsExcellent, LanguageId, SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear,
-                SchoolAVG, CountryEducId, HasEkvivEduc, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
+                SchoolAVG, CountryEducId, IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
                 HEQualification, HEEntryYear, HEExitYear, HEStudyFormId, HEWork, Stag, WorkPlace, Privileges, PassportCode,
                 PersonalCode, PersonInfo, ExtraInfo, ScienceWork, StartEnglish, EnglishMark, idParam);
 
@@ -910,10 +933,13 @@ namespace Priem
         protected override void UpdateRec(PriemEntities context, Guid id)
         {
             context.Person_Foreign_UpdateWithoutMain(BirthPlace, Sex, CountryId, NationalityId, RegionId, Phone, Mobiles, Email,
-                Code, City, Street, House, Korpus, Flat, 
-                HostelAbit, HasAssignToHostel,
+                Code, City, Street, House, Korpus, Flat,
+                CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal, 
+                HostelAbit, HostelEduc, HasAssignToHostel,
                 HostelFacultyId, HasExamPass, ExamPassFacultyId, IsExcellent, LanguageId, SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear,
-                SchoolAVG, CountryEducId, HasEkvivEduc, DiplomSeries, DiplomNum, HighEducation, HEProfession,
+                SchoolAVG, CountryEducId, 
+                IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber,
+                DiplomSeries, DiplomNum, HighEducation, HEProfession,
                 HEQualification, HEEntryYear, HEExitYear, HEStudyFormId, HEWork, Stag, WorkPlace, PassportCode,
                 PersonalCode, PersonInfo, ExtraInfo, ScienceWork, StartEnglish, EnglishMark, id);
 

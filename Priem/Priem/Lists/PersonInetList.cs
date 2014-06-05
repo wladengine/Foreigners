@@ -40,8 +40,8 @@ namespace Priem
                 btnLoad.Enabled = false;
                 btnAdd.Enabled = false;
             }
-           
-            if (MainClass.dbType == PriemType.PriemMag)
+
+            if (MainClass.dbType == PriemType.PriemMag || MainClass.dbType == PriemType.PriemForeigners)
                 tbPersonNum.Visible = lblBarcode.Visible = btnLoad.Visible = false;
 
             //Dgv.CellDoubleClick -= new System.Windows.Forms.DataGridViewCellEventHandler(Dgv_CellDoubleClick);

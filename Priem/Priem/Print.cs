@@ -777,8 +777,8 @@ namespace Priem
                         tmp = abit.StudyFormId.ToString();
                         acrFlds.SetField("StudyForm" + tmp, "1");
 
-                        acrFlds.SetField("HostelEducYes", abit.HostelEduc ? "1" : "0");
-                        acrFlds.SetField("HostelEducNo", abit.HostelEduc ? "0" : "1");
+                        acrFlds.SetField("HostelEducYes", person.HostelEduc ?? false ? "1" : "0");
+                        acrFlds.SetField("HostelEducNo", person.HostelEduc ?? false ? "0" : "1");
 
                         acrFlds.SetField("HostelAbitYes", person.HostelAbit ?? false ? "1" : "0");
                         acrFlds.SetField("HostelAbitNo", person.HostelAbit ?? false ? "0" : "1");
@@ -799,9 +799,10 @@ namespace Priem
                         acrFlds.SetField("PassportDate", person.PassportDate.Value.ToShortDateString());
                         acrFlds.SetField("PassportAuthor", person.PassportAuthor);
 
-                        string[] zz = GetSplittedStrings(person.ForeignAddressInfo, 50, 70, 2);
-                        for (int k = 1; k <= 2; k++)
-                            acrFlds.SetField("Address" + k, zz[k - 1]);
+
+                        //string[] zz = GetSplittedStrings(person.ForeignAddressInfo, 50, 70, 2);
+                        //for (int k = 1; k <= 2; k++)
+                        //    acrFlds.SetField("Address" + k, zz[k - 1]);
                         
                         //acrFlds.SetField("Address2", string.Format("{0} дом {1} {2} кв. {3}", person.Street, person.House, (person.Korpus == string.Empty || person.Korpus == "-") ? "" : "корп. " + person.Korpus, person.Flat));
 

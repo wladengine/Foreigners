@@ -69,6 +69,11 @@ namespace Priem
             }
         }
 
+        public static DateTime ToSmallDateTime(this DateTime dt)
+        {
+            return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+        }
+
         //инициализация постороителя запросов для списка с фильтрами
         public static void InitQueryBuilder()
         {
@@ -111,7 +116,7 @@ namespace Priem
             qBuilder.AddQueryItem(new QueryItem("ed.Person", "ed.Person.HEQualification", "Квалификация"));
             qBuilder.AddQueryItem(new QueryItem("ed.Person", "ed.Person.HighEducation", "Место_предыдущего_образования_маг"));
 
-            if (MainClass.dbType == PriemType.PriemMag)
+            if (MainClass.dbType == PriemType.PriemMag || MainClass.dbType == PriemType.PriemForeigners)
             {
                 qBuilder.AddQueryItem(new QueryItem("ed.Person", "ed.Person.HighEducation", "Название_уч_заведения"));
                 qBuilder.AddQueryItem(new QueryItem("ed.Person", "ed.Person.HEProfession", "Направление_подготовки"));

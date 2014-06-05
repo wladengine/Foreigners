@@ -93,20 +93,16 @@ namespace Priem
 
                     dtBackDocDate.Enabled = false;
                     lblCompFromOlymp.Visible = false;
-                    chbAttOriginal.Checked = false;
-                    chbEgeDocOriginal.Checked = false;
                     chbHasOriginals.Checked = false;
                     lockHasOrigin = false;
                     lblOtherOriginals.Visible = false;
                     chbChecked.Checked = false;
                     chbChecked.Enabled = false;
                     chbNotEnabled.Checked = false;
-                    chbHostelEducYes.Checked = false;
-                    chbHostelEducNo.Checked = false;
+                    chbIsGosLine.Checked = false;
                     dtDocInsertDate.Enabled = false;
                     btnDocInventory.Visible = false;
 
-                    chbEgeDocOriginal.Visible = false;
                     btnDocs.Visible = true;
                     gbSecondType.Visible = false;
                     btnDocInventory.Visible = true;
@@ -182,7 +178,7 @@ namespace Priem
                     FacultyId = abit.FacultyId;
                     StudyFormId = abit.StudyFormId;
                     StudyBasisId = abit.StudyBasisId;
-                    HostelEduc = abit.HostelEduc;
+                    IsGosLine = abit.IsGosLine;
                     CompetitionId = abit.CompetitionId;
                     OtherCompetitionId = abit.OtherCompetitionId;
                     CelCompetitionId = abit.CelCompetitionId;
@@ -194,8 +190,6 @@ namespace Priem
                     BackDocDate = abit.BackDocDate;
                     DocDate = abit.DocDate;
                     DocInsertDate = abit.DocInsertDate;
-                    AttDocOrigin = abit.AttDocOrigin;
-                    EgeDocOrigin = abit.EgeDocOrigin;
                     Checked = abit.Checked;
                     NotEnabled = abit.NotEnabled;
                     Coefficient = abit.Coefficient;
@@ -375,9 +369,7 @@ namespace Priem
                 chbBackDoc.Enabled = true;
 
             chbIsPaid.Enabled = true;
-            chbHostelEducNo.Enabled = true;
-            chbHostelEducYes.Enabled = true;
-            gbDocs.Enabled = true;
+            chbIsGosLine.Enabled = true;
             cbLanguage.Enabled = true;
             cbCelCompetition.Enabled = true;
             tbCelCompetitionText.Enabled = true;
@@ -392,12 +384,6 @@ namespace Priem
             btnClose.Enabled = true;
             btnSaveChange.Enabled = true;
 
-            if (chbHasOriginals.Checked)
-            {
-                chbAttOriginal.Enabled = false;
-                chbEgeDocOriginal.Enabled = false;
-            }
-            
             if (MainClass.IsFacMain())
             {                
                 if (chbBackDoc.Checked)
@@ -944,7 +930,6 @@ namespace Priem
                     if (MessageBox.Show("Я подтверждаю что все документы подлинные", "Внимание!", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         //chbEgeDocOriginal.Checked = true;
-                        chbAttOriginal.Checked = true;
                         chbHasOriginals.ForeColor = System.Drawing.Color.Black;
                     }
                     else
@@ -955,7 +940,6 @@ namespace Priem
                 else
                 {
                     chbHasOriginals.ForeColor = System.Drawing.Color.Red;
-                    chbAttOriginal.Checked = false;
                 }
             }
         }
@@ -984,23 +968,7 @@ namespace Priem
                 }
             }
         }
-
-        private void chbHostelEducYes_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chbHostelEducYes.Checked)
-                chbHostelEducNo.Checked = false;
-            else
-                chbHostelEducNo.Checked = true;
-        }
-
-        private void chbHostelEducNo_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chbHostelEducNo.Checked)
-                chbHostelEducYes.Checked = false;
-            else
-                chbHostelEducYes.Checked = true;
-        }
-
+        
         private void chbChecked_CheckedChanged(object sender, EventArgs e)
         {
             if (chbChecked.Checked)
@@ -1086,15 +1054,6 @@ namespace Priem
                         return false;
                     }
 
-                    if (!chbHostelEducYes.Checked && !chbHostelEducNo.Checked)
-                    {
-                        epErrorInput.SetError(chbHostelEducNo, "Не указаны данные о предоставлении общежития");
-                        tabCard.SelectedIndex = 0;
-                        return false;
-                    }
-                    else
-                        epErrorInput.Clear();
-
                     if (DocDate > DateTime.Now)
                     {
                         epErrorInput.SetError(dtDocDate, "Неправильная дата");
@@ -1103,10 +1062,6 @@ namespace Priem
                     }
                     else
                         epErrorInput.Clear();
-
-                    if (BackDoc && HasOriginals)                    
-                        HasOriginals = EgeDocOrigin = AttDocOrigin = false;
-                    
 
                     //if (cbCompetition.Id != CheckCompetition(context))
                     //{
@@ -1168,20 +1123,20 @@ namespace Priem
 
         protected override void InsertRec(PriemEntities context, ObjectParameter idParam)
         {
-            context.Abiturient_Insert(_personId, EntryId, CompetitionId, HostelEduc, IsListener, false, IsPaid, BackDoc, BackDocDate, DocDate, DateTime.Now, 
-                AttDocOrigin, EgeDocOrigin, Checked, NotEnabled, Coefficient, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, HasOriginals, 
-                Priority, abitBarcode, idParam);
+            context.Abiturient_Insert(_personId, EntryId, CompetitionId, IsListener, false, IsPaid, BackDoc, BackDocDate, DocDate, DateTime.Now, 
+                Checked, NotEnabled, Coefficient, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, HasOriginals, 
+                Priority, abitBarcode, null, null, IsGosLine, idParam);
         }
 
         protected override void UpdateRec(PriemEntities context, Guid id)
         {
-            context.Abiturient_UpdateWithoutEntry(CompetitionId, HostelEduc, IsListener, false, IsPaid, BackDoc, BackDocDate, DocDate,
-                  AttDocOrigin, EgeDocOrigin, Checked, NotEnabled, Coefficient, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, HasOriginals,
+            context.Abiturient_UpdateWithoutEntry(CompetitionId, IsListener, false, IsPaid, BackDoc, BackDocDate, DocDate,
+                  Checked, NotEnabled, Coefficient, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, HasOriginals,
                   Priority, id);
 
             //если есть права на изменение конкурса 
             context.Abiturient_UpdateEntry(EntryId, id);            
-        } 
+        }
 
         protected override void OnSave()
         {

@@ -146,15 +146,12 @@
       [extAbit].[RegNum] AS [RegNum], 
       [extAbit].[EntryId] AS [EntryId], 
       [extAbit].[CompetitionId] AS [CompetitionId], 
-      [extAbit].[HostelEduc] AS [HostelEduc], 
       [extAbit].[IsListener] AS [IsListener], 
       [extAbit].[IsPaid] AS [IsPaid], 
       [extAbit].[BackDoc] AS [BackDoc], 
       [extAbit].[BackDocDate] AS [BackDocDate], 
       [extAbit].[DocDate] AS [DocDate], 
       [extAbit].[DocInsertDate] AS [DocInsertDate], 
-      [extAbit].[AttDocOrigin] AS [AttDocOrigin], 
-      [extAbit].[EgeDocOrigin] AS [EgeDocOrigin], 
       [extAbit].[Checked] AS [Checked], 
       [extAbit].[NotEnabled] AS [NotEnabled], 
       [extAbit].[Coefficient] AS [Coefficient], 
@@ -500,7 +497,6 @@
       [extForeignPerson].[Phone] AS [Phone], 
       [extForeignPerson].[Mobiles] AS [Mobiles], 
       [extForeignPerson].[Email] AS [Email], 
-      [extForeignPerson].[ForeignAddressInfo] AS [ForeignAddressInfo], 
       [extForeignPerson].[HostelAbit] AS [HostelAbit], 
       [extForeignPerson].[HasAssignToHostel] AS [HasAssignToHostel], 
       [extForeignPerson].[HostelFacultyId] AS [HostelFacultyId], 
@@ -514,7 +510,7 @@
       [extForeignPerson].[SchoolNum] AS [SchoolNum], 
       [extForeignPerson].[SchoolExitYear] AS [SchoolExitYear], 
       [extForeignPerson].[CountryEducId] AS [CountryEducId], 
-      [extForeignPerson].[HasEkvivEduc] AS [HasEkvivEduc], 
+      [extForeignPerson].[IsEqual] AS [IsEqual], 
       [extForeignPerson].[AttestatRegion] AS [AttestatRegion], 
       [extForeignPerson].[AttestatSeries] AS [AttestatSeries], 
       [extForeignPerson].[AttestatNum] AS [AttestatNum], 
@@ -559,7 +555,17 @@
       [extForeignPerson].[House] AS [House], 
       [extForeignPerson].[Korpus] AS [Korpus], 
       [extForeignPerson].[Flat] AS [Flat], 
-      [extForeignPerson].[HostelEduc] AS [HostelEduc]
+      [extForeignPerson].[HostelEduc] AS [HostelEduc], 
+      [extForeignPerson].[CodeReal] AS [CodeReal], 
+      [extForeignPerson].[CityReal] AS [CityReal], 
+      [extForeignPerson].[StreetReal] AS [StreetReal], 
+      [extForeignPerson].[HouseReal] AS [HouseReal], 
+      [extForeignPerson].[KorpusReal] AS [KorpusReal], 
+      [extForeignPerson].[FlatReal] AS [FlatReal], 
+      [extForeignPerson].[KladrCode] AS [KladrCode], 
+      [extForeignPerson].[EqualDocumentNumber] AS [EqualDocumentNumber], 
+      [extForeignPerson].[HasTRKI] AS [HasTRKI], 
+      [extForeignPerson].[TRKICertificateNumber] AS [TRKICertificateNumber]
       FROM [ed].[extForeignPerson] AS [extForeignPerson]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="extOlympBook" EntityType="Priem2012Model.Store.extOlympBook" store:Type="Views" store:Schema="ed" store:Name="extOlympBook">
@@ -661,7 +667,7 @@
       [extPersonAll].[SchoolNum] AS [SchoolNum], 
       [extPersonAll].[SchoolExitYear] AS [SchoolExitYear], 
       [extPersonAll].[CountryEducId] AS [CountryEducId], 
-      [extPersonAll].[HasEkvivEduc] AS [HasEkvivEduc], 
+      [extPersonAll].[IsEqual] AS [IsEqual], 
       [extPersonAll].[AttestatRegion] AS [AttestatRegion], 
       [extPersonAll].[AttestatSeries] AS [AttestatSeries], 
       [extPersonAll].[AttestatNum] AS [AttestatNum], 
@@ -799,15 +805,12 @@
       [qAbitAll].[RegNum] AS [RegNum], 
       [qAbitAll].[EntryId] AS [EntryId], 
       [qAbitAll].[CompetitionId] AS [CompetitionId], 
-      [qAbitAll].[HostelEduc] AS [HostelEduc], 
       [qAbitAll].[IsListener] AS [IsListener], 
       [qAbitAll].[IsPaid] AS [IsPaid], 
       [qAbitAll].[BackDoc] AS [BackDoc], 
       [qAbitAll].[BackDocDate] AS [BackDocDate], 
       [qAbitAll].[DocDate] AS [DocDate], 
       [qAbitAll].[DocInsertDate] AS [DocInsertDate], 
-      [qAbitAll].[AttDocOrigin] AS [AttDocOrigin], 
-      [qAbitAll].[EgeDocOrigin] AS [EgeDocOrigin], 
       [qAbitAll].[Checked] AS [Checked], 
       [qAbitAll].[NotEnabled] AS [NotEnabled], 
       [qAbitAll].[Coefficient] AS [Coefficient], 
@@ -863,15 +866,12 @@
       [qAbiturient].[RegNum] AS [RegNum], 
       [qAbiturient].[EntryId] AS [EntryId], 
       [qAbiturient].[CompetitionId] AS [CompetitionId], 
-      [qAbiturient].[HostelEduc] AS [HostelEduc], 
       [qAbiturient].[IsListener] AS [IsListener], 
       [qAbiturient].[IsPaid] AS [IsPaid], 
       [qAbiturient].[BackDoc] AS [BackDoc], 
       [qAbiturient].[BackDocDate] AS [BackDocDate], 
       [qAbiturient].[DocDate] AS [DocDate], 
       [qAbiturient].[DocInsertDate] AS [DocInsertDate], 
-      [qAbiturient].[AttDocOrigin] AS [AttDocOrigin], 
-      [qAbiturient].[EgeDocOrigin] AS [EgeDocOrigin], 
       [qAbiturient].[Checked] AS [Checked], 
       [qAbiturient].[NotEnabled] AS [NotEnabled], 
       [qAbiturient].[Coefficient] AS [Coefficient], 
@@ -917,7 +917,10 @@
       [qAbiturient].[IsParallel] AS [IsParallel], 
       [qAbiturient].[StudyBasisFISName] AS [StudyBasisFISName], 
       [qAbiturient].[StudyFormFISName] AS [StudyFormFISName], 
-      [qAbiturient].[ObrazProgramPrintName] AS [ObrazProgramPrintName]
+      [qAbiturient].[ObrazProgramPrintName] AS [ObrazProgramPrintName], 
+      [qAbiturient].[CommitId] AS [CommitId], 
+      [qAbiturient].[CommitNumber] AS [CommitNumber], 
+      [qAbiturient].[IsGosLine] AS [IsGosLine]
       FROM [ed].[qAbiturient] AS [qAbiturient]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="qCompetitiveGroup" EntityType="Priem2012Model.Store.qCompetitiveGroup" store:Type="Views" store:Schema="ed" store:Name="qCompetitiveGroup">
@@ -1425,15 +1428,12 @@
           <Property Name="RegNum" Type="nvarchar" MaxLength="50" />
           <Property Name="EntryId" Type="uniqueidentifier" />
           <Property Name="CompetitionId" Type="int" />
-          <Property Name="HostelEduc" Type="bit" Nullable="false" />
           <Property Name="IsListener" Type="bit" Nullable="false" />
           <Property Name="IsPaid" Type="bit" Nullable="false" />
           <Property Name="BackDoc" Type="bit" Nullable="false" />
           <Property Name="BackDocDate" Type="smalldatetime" />
           <Property Name="DocDate" Type="smalldatetime" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
-          <Property Name="AttDocOrigin" Type="bit" Nullable="false" />
-          <Property Name="EgeDocOrigin" Type="bit" Nullable="false" />
           <Property Name="Checked" Type="bit" Nullable="false" />
           <Property Name="NotEnabled" Type="bit" Nullable="false" />
           <Property Name="Sum" Type="int" />
@@ -1456,6 +1456,7 @@
           <Property Name="IsCommitedToFIS" Type="bit" />
           <Property Name="CommitId" Type="uniqueidentifier" />
           <Property Name="CommitNumber" Type="int" />
+          <Property Name="IsGosLine" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Age">
           <Key>
@@ -1883,7 +1884,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="NameDative" Type="nvarchar" MaxLength="100" />
           <Property Name="IsOpen" Type="bit" Nullable="false" />
@@ -2076,6 +2077,7 @@
           <Property Name="KorpusReal" Type="nvarchar" MaxLength="10" />
           <Property Name="FlatReal" Type="nvarchar" MaxLength="10" />
           <Property Name="ForeignAddressInfo" Type="nvarchar" MaxLength="1000" />
+          <Property Name="KladrCode" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Person_EducationInfo">
           <Key>
@@ -2091,7 +2093,6 @@
           <Property Name="SchoolExitYear" Type="int" />
           <Property Name="CountryEducId" Type="int" />
           <Property Name="ForeignCountryEducId" Type="int" />
-          <Property Name="HasEkvivEduc" Type="bit" />
           <Property Name="AttestatRegion" Type="nvarchar" MaxLength="2" />
           <Property Name="AttestatSeries" Type="nvarchar" MaxLength="10" />
           <Property Name="AttestatNum" Type="nvarchar" MaxLength="10" />
@@ -2108,6 +2109,10 @@
           <Property Name="StartEnglish" Type="bit" />
           <Property Name="EnglishMark" Type="int" />
           <Property Name="EgeInSPbgu" Type="bit" />
+          <Property Name="IsEqual" Type="bit" Nullable="false" />
+          <Property Name="EqualDocumentNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="HasTRKI" Type="bit" Nullable="false" />
+          <Property Name="TRKICertificateNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="PersonBenefitDocument">
           <Key>
@@ -2321,19 +2326,18 @@
         <EntityType Name="extAbit">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="HostelEduc" />
             <PropertyRef Name="IsListener" />
             <PropertyRef Name="IsPaid" />
             <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="AttDocOrigin" />
-            <PropertyRef Name="EgeDocOrigin" />
             <PropertyRef Name="Checked" />
             <PropertyRef Name="NotEnabled" />
             <PropertyRef Name="CompFromOlymp" />
             <PropertyRef Name="HasOriginals" />
             <PropertyRef Name="FacultyId" />
             <PropertyRef Name="LicenseProgramId" />
+            
             <PropertyRef Name="ObrazProgramId" />
+            
             <PropertyRef Name="StudyBasisId" />
             <PropertyRef Name="StudyBasisName" />
             <PropertyRef Name="StudyFormId" />
@@ -2354,15 +2358,12 @@
           <Property Name="RegNum" Type="nvarchar" MaxLength="50" />
           <Property Name="EntryId" Type="uniqueidentifier" />
           <Property Name="CompetitionId" Type="int" />
-          <Property Name="HostelEduc" Type="bit" Nullable="false" />
           <Property Name="IsListener" Type="bit" Nullable="false" />
           <Property Name="IsPaid" Type="bit" Nullable="false" />
           <Property Name="BackDoc" Type="bit" Nullable="false" />
           <Property Name="BackDocDate" Type="smalldatetime" />
           <Property Name="DocDate" Type="smalldatetime" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
-          <Property Name="AttDocOrigin" Type="bit" Nullable="false" />
-          <Property Name="EgeDocOrigin" Type="bit" Nullable="false" />
           <Property Name="Checked" Type="bit" Nullable="false" />
           <Property Name="NotEnabled" Type="bit" Nullable="false" />
           <Property Name="Coefficient" Type="float" />
@@ -2381,13 +2382,13 @@
           <Property Name="FacultyId" Type="int" Nullable="false" />
           <Property Name="FacultyAcr" Type="nvarchar" MaxLength="50" />
           <Property Name="LicenseProgramId" Type="int" Nullable="false" />
-          <Property Name="LicenseProgramName" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LicenseProgramName" Type="nvarchar" Nullable="false" MaxLength="1000" />
           <Property Name="FacultyName" Type="nvarchar" MaxLength="100" />
           <Property Name="LicenseProgramCode" Type="nvarchar" MaxLength="10" />
           <Property Name="ObrazProgramId" Type="int" Nullable="false" />
-          <Property Name="ObrazProgramName" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ObrazProgramName" Type="nvarchar" Nullable="false" MaxLength="1000" />
           <Property Name="ObrazProgramNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="ObrazProgramCrypt" Type="nvarchar" MaxLength="82" />
+          <Property Name="ObrazProgramCrypt" Type="nvarchar" MaxLength="66" />
           <Property Name="ProfileId" Type="uniqueidentifier" />
           <Property Name="ProfileName" Type="nvarchar" MaxLength="1000" />
           <Property Name="StudyBasisId" Type="int" Nullable="false" />
@@ -2850,7 +2851,6 @@
           <Property Name="Phone" Type="nvarchar" MaxLength="100" />
           <Property Name="Mobiles" Type="nvarchar" MaxLength="200" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
-          <Property Name="ForeignAddressInfo" Type="nvarchar" MaxLength="1000" />
           <Property Name="HostelAbit" Type="bit" />
           <Property Name="HasAssignToHostel" Type="bit" />
           <Property Name="HostelFacultyId" Type="int" />
@@ -2864,7 +2864,7 @@
           <Property Name="SchoolNum" Type="nvarchar" MaxLength="50" />
           <Property Name="SchoolExitYear" Type="int" />
           <Property Name="CountryEducId" Type="int" />
-          <Property Name="HasEkvivEduc" Type="bit" />
+          <Property Name="IsEqual" Type="bit" />
           <Property Name="AttestatRegion" Type="nvarchar" MaxLength="2" />
           <Property Name="AttestatSeries" Type="nvarchar" MaxLength="10" />
           <Property Name="AttestatNum" Type="nvarchar" MaxLength="10" />
@@ -2910,6 +2910,16 @@
           <Property Name="Korpus" Type="nvarchar" MaxLength="10" />
           <Property Name="Flat" Type="nvarchar" MaxLength="10" />
           <Property Name="HostelEduc" Type="bit" />
+          <Property Name="CodeReal" Type="nvarchar" MaxLength="20" />
+          <Property Name="CityReal" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StreetReal" Type="nvarchar" MaxLength="100" />
+          <Property Name="HouseReal" Type="nvarchar" MaxLength="10" />
+          <Property Name="KorpusReal" Type="nvarchar" MaxLength="10" />
+          <Property Name="FlatReal" Type="nvarchar" MaxLength="10" />
+          <Property Name="KladrCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="EqualDocumentNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="HasTRKI" Type="bit" />
+          <Property Name="TRKICertificateNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Priem.ed.extOlympBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3042,7 +3052,7 @@
           <Property Name="SchoolNum" Type="nvarchar" MaxLength="50" />
           <Property Name="SchoolExitYear" Type="int" />
           <Property Name="CountryEducId" Type="int" />
-          <Property Name="HasEkvivEduc" Type="bit" />
+          <Property Name="IsEqual" Type="bit" />
           <Property Name="AttestatRegion" Type="nvarchar" MaxLength="2" />
           <Property Name="AttestatSeries" Type="nvarchar" MaxLength="10" />
           <Property Name="AttestatNum" Type="nvarchar" MaxLength="10" />
@@ -3214,12 +3224,9 @@
         <EntityType Name="qAbitAll">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="HostelEduc" />
             <PropertyRef Name="IsListener" />
             <PropertyRef Name="IsPaid" />
             <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="AttDocOrigin" />
-            <PropertyRef Name="EgeDocOrigin" />
             <PropertyRef Name="Checked" />
             <PropertyRef Name="NotEnabled" />
             <PropertyRef Name="CompFromOlymp" />
@@ -3245,15 +3252,12 @@
           <Property Name="RegNum" Type="nvarchar" MaxLength="50" />
           <Property Name="EntryId" Type="uniqueidentifier" />
           <Property Name="CompetitionId" Type="int" />
-          <Property Name="HostelEduc" Type="bit" Nullable="false" />
           <Property Name="IsListener" Type="bit" Nullable="false" />
           <Property Name="IsPaid" Type="bit" Nullable="false" />
           <Property Name="BackDoc" Type="bit" Nullable="false" />
           <Property Name="BackDocDate" Type="smalldatetime" />
           <Property Name="DocDate" Type="smalldatetime" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
-          <Property Name="AttDocOrigin" Type="bit" Nullable="false" />
-          <Property Name="EgeDocOrigin" Type="bit" Nullable="false" />
           <Property Name="Checked" Type="bit" Nullable="false" />
           <Property Name="NotEnabled" Type="bit" Nullable="false" />
           <Property Name="Coefficient" Type="float" />
@@ -3307,19 +3311,18 @@
         <EntityType Name="qAbiturient">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="HostelEduc" />
             <PropertyRef Name="IsListener" />
             <PropertyRef Name="IsPaid" />
             <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="AttDocOrigin" />
-            <PropertyRef Name="EgeDocOrigin" />
             <PropertyRef Name="Checked" />
             <PropertyRef Name="NotEnabled" />
             <PropertyRef Name="CompFromOlymp" />
             <PropertyRef Name="HasOriginals" />
             <PropertyRef Name="FacultyId" />
             <PropertyRef Name="LicenseProgramId" />
+            
             <PropertyRef Name="ObrazProgramId" />
+            
             <PropertyRef Name="StudyBasisId" />
             <PropertyRef Name="StudyBasisName" />
             <PropertyRef Name="StudyFormId" />
@@ -3331,6 +3334,7 @@
             <PropertyRef Name="WithHE" />
             <PropertyRef Name="IsReduced" />
             <PropertyRef Name="IsParallel" />
+            <PropertyRef Name="IsGosLine" />
             <PropertyRef Name="StudyPlanId" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
@@ -3338,15 +3342,12 @@
           <Property Name="RegNum" Type="nvarchar" MaxLength="50" />
           <Property Name="EntryId" Type="uniqueidentifier" />
           <Property Name="CompetitionId" Type="int" />
-          <Property Name="HostelEduc" Type="bit" Nullable="false" />
           <Property Name="IsListener" Type="bit" Nullable="false" />
           <Property Name="IsPaid" Type="bit" Nullable="false" />
           <Property Name="BackDoc" Type="bit" Nullable="false" />
           <Property Name="BackDocDate" Type="smalldatetime" />
           <Property Name="DocDate" Type="smalldatetime" />
           <Property Name="DocInsertDate" Type="smalldatetime" />
-          <Property Name="AttDocOrigin" Type="bit" Nullable="false" />
-          <Property Name="EgeDocOrigin" Type="bit" Nullable="false" />
           <Property Name="Checked" Type="bit" Nullable="false" />
           <Property Name="NotEnabled" Type="bit" Nullable="false" />
           <Property Name="Coefficient" Type="float" />
@@ -3366,12 +3367,12 @@
           <Property Name="FacultyName" Type="nvarchar" MaxLength="100" />
           <Property Name="FacultyAcr" Type="nvarchar" MaxLength="50" />
           <Property Name="LicenseProgramId" Type="int" Nullable="false" />
-          <Property Name="LicenseProgramName" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LicenseProgramName" Type="nvarchar" Nullable="false" MaxLength="1000" />
           <Property Name="LicenseProgramCode" Type="nvarchar" MaxLength="10" />
           <Property Name="ObrazProgramId" Type="int" Nullable="false" />
-          <Property Name="ObrazProgramName" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ObrazProgramName" Type="nvarchar" Nullable="false" MaxLength="1000" />
           <Property Name="ObrazProgramNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="ObrazProgramCrypt" Type="nvarchar" MaxLength="82" />
+          <Property Name="ObrazProgramCrypt" Type="nvarchar" MaxLength="66" />
           <Property Name="ProfileId" Type="uniqueidentifier" />
           <Property Name="ProfileName" Type="nvarchar" MaxLength="1000" />
           <Property Name="StudyBasisId" Type="int" Nullable="false" />
@@ -3393,6 +3394,9 @@
           <Property Name="StudyBasisFISName" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyFormFISName" Type="nvarchar" MaxLength="50" />
           <Property Name="ObrazProgramPrintName" Type="nvarchar" MaxLength="150" />
+          <Property Name="CommitId" Type="uniqueidentifier" />
+          <Property Name="CommitNumber" Type="int" />
+          <Property Name="IsGosLine" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Priem.ed.qCompetitiveGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -4540,7 +4544,6 @@
           <Parameter Name="PersonId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="EntryId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="CompetitionId" Type="int" Mode="In" />
-          <Parameter Name="HostelEduc" Type="bit" Mode="In" />
           <Parameter Name="IsListener" Type="bit" Mode="In" />
           <Parameter Name="WithHE" Type="bit" Mode="In" />
           <Parameter Name="IsPaid" Type="bit" Mode="In" />
@@ -4548,8 +4551,6 @@
           <Parameter Name="BackDocDate" Type="smalldatetime" Mode="In" />
           <Parameter Name="DocDate" Type="smalldatetime" Mode="In" />
           <Parameter Name="DocInsertDate" Type="smalldatetime" Mode="In" />
-          <Parameter Name="AttDocOrigin" Type="bit" Mode="In" />
-          <Parameter Name="EgeDocOrigin" Type="bit" Mode="In" />
           <Parameter Name="Checked" Type="bit" Mode="In" />
           <Parameter Name="NotEnabled" Type="bit" Mode="In" />
           <Parameter Name="Coefficient" Type="float" Mode="In" />
@@ -4560,6 +4561,9 @@
           <Parameter Name="HasOriginals" Type="bit" Mode="In" />
           <Parameter Name="Priority" Type="float" Mode="In" />
           <Parameter Name="Barcode" Type="int" Mode="In" />
+          <Parameter Name="CommitId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="CommitNumber" Type="int" Mode="In" />
+          <Parameter Name="IsGosLine" Type="bit" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="InOut" />
         </Function>
         <Function Name="Abiturient_InsertDirectly" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
@@ -4573,8 +4577,6 @@
           <Parameter Name="BackDocDate" Type="smalldatetime" Mode="In" />
           <Parameter Name="DocDate" Type="smalldatetime" Mode="In" />
           <Parameter Name="DocInsertDate" Type="smalldatetime" Mode="In" />
-          <Parameter Name="AttDocOrigin" Type="bit" Mode="In" />
-          <Parameter Name="EgeDocOrigin" Type="bit" Mode="In" />
           <Parameter Name="Checked" Type="bit" Mode="In" />
           <Parameter Name="NotEnabled" Type="bit" Mode="In" />
           <Parameter Name="Coefficient" Type="float" Mode="In" />
@@ -4587,6 +4589,7 @@
           <Parameter Name="Barcode" Type="int" Mode="In" />
           <Parameter Name="CommitId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="CommitNumber" Type="int" Mode="In" />
+          <Parameter Name="IsGosLine" Type="bit" Mode="In" />
           <Parameter Name="id" Type="uniqueidentifier" Mode="In" />
         </Function>
         <Function Name="Abiturient_UpdateBackDoc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
@@ -4631,15 +4634,12 @@
         </Function>
         <Function Name="Abiturient_UpdateWithoutEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
           <Parameter Name="CompetitionId" Type="int" Mode="In" />
-          <Parameter Name="HostelEduc" Type="bit" Mode="In" />
           <Parameter Name="IsListener" Type="bit" Mode="In" />
           <Parameter Name="WithHE" Type="bit" Mode="In" />
           <Parameter Name="IsPaid" Type="bit" Mode="In" />
           <Parameter Name="BackDoc" Type="bit" Mode="In" />
           <Parameter Name="BackDocDate" Type="smalldatetime" Mode="In" />
           <Parameter Name="DocDate" Type="smalldatetime" Mode="In" />
-          <Parameter Name="AttDocOrigin" Type="bit" Mode="In" />
-          <Parameter Name="EgeDocOrigin" Type="bit" Mode="In" />
           <Parameter Name="Checked" Type="bit" Mode="In" />
           <Parameter Name="NotEnabled" Type="bit" Mode="In" />
           <Parameter Name="Coefficient" Type="float" Mode="In" />
@@ -5256,6 +5256,12 @@
           <Parameter Name="House" Type="nvarchar" Mode="In" />
           <Parameter Name="Korpus" Type="nvarchar" Mode="In" />
           <Parameter Name="Flat" Type="nvarchar" Mode="In" />
+          <Parameter Name="CodeReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="CityReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="StreetReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="HouseReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="KorpusReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="FlatReal" Type="nvarchar" Mode="In" />
           <Parameter Name="HostelAbit" Type="bit" Mode="In" />
           <Parameter Name="HasAssignToHostel" Type="bit" Mode="In" />
           <Parameter Name="HostelFacultyId" Type="int" Mode="In" />
@@ -5270,7 +5276,10 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
-          <Parameter Name="HasEkvivEduc" Type="bit" Mode="In" />
+          <Parameter Name="IsEqual" Type="bit" Mode="In" />
+          <Parameter Name="EqualDocumentNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="HasTRKI" Type="bit" Mode="In" />
+          <Parameter Name="TRKICertificateNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="AttestatRegion" Type="nvarchar" Mode="In" />
           <Parameter Name="AttestatSeries" Type="nvarchar" Mode="In" />
           <Parameter Name="AttestatNum" Type="nvarchar" Mode="In" />
@@ -5310,7 +5319,14 @@
           <Parameter Name="House" Type="nvarchar" Mode="In" />
           <Parameter Name="Korpus" Type="nvarchar" Mode="In" />
           <Parameter Name="Flat" Type="nvarchar" Mode="In" />
+          <Parameter Name="CodeReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="CityReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="StreetReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="HouseReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="KorpusReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="FlatReal" Type="nvarchar" Mode="In" />
           <Parameter Name="HostelAbit" Type="bit" Mode="In" />
+          <Parameter Name="HostelEduc" Type="bit" Mode="In" />
           <Parameter Name="HasAssignToHostel" Type="bit" Mode="In" />
           <Parameter Name="HostelFacultyId" Type="int" Mode="In" />
           <Parameter Name="HasExamPass" Type="bit" Mode="In" />
@@ -5324,7 +5340,10 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
-          <Parameter Name="HasEkvivEduc" Type="bit" Mode="In" />
+          <Parameter Name="IsEqual" Type="bit" Mode="In" />
+          <Parameter Name="EqualDocumentNumber" Type="nvarchar" Mode="In" />
+          <Parameter Name="HasTRKI" Type="bit" Mode="In" />
+          <Parameter Name="TRKICertificateNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="DiplomSeries" Type="nvarchar" Mode="In" />
           <Parameter Name="DiplomNum" Type="nvarchar" Mode="In" />
           <Parameter Name="HighEducation" Type="nvarchar" Mode="In" />
@@ -5377,6 +5396,7 @@
           <Parameter Name="KorpusReal" Type="nvarchar" Mode="In" />
           <Parameter Name="FlatReal" Type="nvarchar" Mode="In" />
           <Parameter Name="HostelAbit" Type="bit" Mode="In" />
+          <Parameter Name="HostelEduc" Type="bit" Mode="In" />
           <Parameter Name="HasAssignToHostel" Type="bit" Mode="In" />
           <Parameter Name="HostelFacultyId" Type="int" Mode="In" />
           <Parameter Name="HasExamPass" Type="bit" Mode="In" />
@@ -5390,7 +5410,7 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
-          <Parameter Name="HasEkvivEduc" Type="bit" Mode="In" />
+          <Parameter Name="IsEqual" Type="bit" Mode="In" />
           <Parameter Name="AttestatRegion" Type="nvarchar" Mode="In" />
           <Parameter Name="AttestatSeries" Type="nvarchar" Mode="In" />
           <Parameter Name="AttestatNum" Type="nvarchar" Mode="In" />
@@ -5469,6 +5489,7 @@
           <Parameter Name="KorpusReal" Type="nvarchar" Mode="In" />
           <Parameter Name="FlatReal" Type="nvarchar" Mode="In" />
           <Parameter Name="HostelAbit" Type="bit" Mode="In" />
+          <Parameter Name="HostelEduc" Type="bit" Mode="In" />
           <Parameter Name="HasAssignToHostel" Type="bit" Mode="In" />
           <Parameter Name="HostelFacultyId" Type="int" Mode="In" />
           <Parameter Name="HasExamPass" Type="bit" Mode="In" />
@@ -5482,7 +5503,7 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
-          <Parameter Name="HasEkvivEduc" Type="bit" Mode="In" />
+          <Parameter Name="IsEqual" Type="bit" Mode="In" />
           <Parameter Name="DiplomSeries" Type="nvarchar" Mode="In" />
           <Parameter Name="DiplomNum" Type="nvarchar" Mode="In" />
           <Parameter Name="HighEducation" Type="nvarchar" Mode="In" />
@@ -5760,6 +5781,7 @@
             <Parameter Name="KorpusReal" Mode="In" Type="String" />
             <Parameter Name="FlatReal" Mode="In" Type="String" />
             <Parameter Name="HostelAbit" Mode="In" Type="Boolean" />
+            <Parameter Name="HostelEduc" Mode="In" Type="Boolean" />
             <Parameter Name="HasAssignToHostel" Mode="In" Type="Boolean" />
             <Parameter Name="HostelFacultyId" Mode="In" Type="Int32" />
             <Parameter Name="HasExamPass" Mode="In" Type="Boolean" />
@@ -5773,7 +5795,7 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
-            <Parameter Name="HasEkvivEduc" Mode="In" Type="Boolean" />
+            <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
             <Parameter Name="AttestatRegion" Mode="In" Type="String" />
             <Parameter Name="AttestatSeries" Mode="In" Type="String" />
             <Parameter Name="AttestatNum" Mode="In" Type="String" />
@@ -5842,6 +5864,7 @@
             <Parameter Name="KorpusReal" Mode="In" Type="String" />
             <Parameter Name="FlatReal" Mode="In" Type="String" />
             <Parameter Name="HostelAbit" Mode="In" Type="Boolean" />
+            <Parameter Name="HostelEduc" Mode="In" Type="Boolean" />
             <Parameter Name="HasAssignToHostel" Mode="In" Type="Boolean" />
             <Parameter Name="HostelFacultyId" Mode="In" Type="Int32" />
             <Parameter Name="HasExamPass" Mode="In" Type="Boolean" />
@@ -5855,7 +5878,7 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
-            <Parameter Name="HasEkvivEduc" Mode="In" Type="Boolean" />
+            <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
             <Parameter Name="DiplomSeries" Mode="In" Type="String" />
             <Parameter Name="DiplomNum" Mode="In" Type="String" />
             <Parameter Name="HighEducation" Mode="In" Type="String" />
@@ -6388,7 +6411,6 @@
             <Parameter Name="PersonId" Mode="In" Type="Guid" />
             <Parameter Name="EntryId" Mode="In" Type="Guid" />
             <Parameter Name="CompetitionId" Mode="In" Type="Int32" />
-            <Parameter Name="HostelEduc" Mode="In" Type="Boolean" />
             <Parameter Name="IsListener" Mode="In" Type="Boolean" />
             <Parameter Name="WithHE" Mode="In" Type="Boolean" />
             <Parameter Name="IsPaid" Mode="In" Type="Boolean" />
@@ -6396,8 +6418,6 @@
             <Parameter Name="BackDocDate" Mode="In" Type="DateTime" />
             <Parameter Name="DocDate" Mode="In" Type="DateTime" />
             <Parameter Name="DocInsertDate" Mode="In" Type="DateTime" />
-            <Parameter Name="AttDocOrigin" Mode="In" Type="Boolean" />
-            <Parameter Name="EgeDocOrigin" Mode="In" Type="Boolean" />
             <Parameter Name="Checked" Mode="In" Type="Boolean" />
             <Parameter Name="NotEnabled" Mode="In" Type="Boolean" />
             <Parameter Name="Coefficient" Mode="In" Type="Double" />
@@ -6408,19 +6428,19 @@
             <Parameter Name="HasOriginals" Mode="In" Type="Boolean" />
             <Parameter Name="Priority" Mode="In" Type="Double" />
             <Parameter Name="Barcode" Mode="In" Type="Int32" />
+            <Parameter Name="CommitId" Mode="In" Type="Guid" />
+            <Parameter Name="CommitNumber" Mode="In" Type="Int32" />
+            <Parameter Name="IsGosLine" Mode="In" Type="Boolean" />
             <Parameter Name="id" Mode="InOut" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="Abiturient_UpdateWithoutEntry">
             <Parameter Name="CompetitionId" Mode="In" Type="Int32" />
-            <Parameter Name="HostelEduc" Mode="In" Type="Boolean" />
             <Parameter Name="IsListener" Mode="In" Type="Boolean" />
             <Parameter Name="WithHE" Mode="In" Type="Boolean" />
             <Parameter Name="IsPaid" Mode="In" Type="Boolean" />
             <Parameter Name="BackDoc" Mode="In" Type="Boolean" />
             <Parameter Name="BackDocDate" Mode="In" Type="DateTime" />
             <Parameter Name="DocDate" Mode="In" Type="DateTime" />
-            <Parameter Name="AttDocOrigin" Mode="In" Type="Boolean" />
-            <Parameter Name="EgeDocOrigin" Mode="In" Type="Boolean" />
             <Parameter Name="Checked" Mode="In" Type="Boolean" />
             <Parameter Name="NotEnabled" Mode="In" Type="Boolean" />
             <Parameter Name="Coefficient" Mode="In" Type="Double" />
@@ -7013,6 +7033,12 @@
             <Parameter Name="House" Mode="In" Type="String" />
             <Parameter Name="Korpus" Mode="In" Type="String" />
             <Parameter Name="Flat" Mode="In" Type="String" />
+            <Parameter Name="CodeReal" Mode="In" Type="String" />
+            <Parameter Name="CityReal" Mode="In" Type="String" />
+            <Parameter Name="StreetReal" Mode="In" Type="String" />
+            <Parameter Name="HouseReal" Mode="In" Type="String" />
+            <Parameter Name="KorpusReal" Mode="In" Type="String" />
+            <Parameter Name="FlatReal" Mode="In" Type="String" />
             <Parameter Name="HostelAbit" Mode="In" Type="Boolean" />
             <Parameter Name="HasAssignToHostel" Mode="In" Type="Boolean" />
             <Parameter Name="HostelFacultyId" Mode="In" Type="Int32" />
@@ -7027,7 +7053,10 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
-            <Parameter Name="HasEkvivEduc" Mode="In" Type="Boolean" />
+            <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
+            <Parameter Name="EqualDocumentNumber" Mode="In" Type="String" />
+            <Parameter Name="HasTRKI" Mode="In" Type="Boolean" />
+            <Parameter Name="TRKICertificateNumber" Mode="In" Type="String" />
             <Parameter Name="AttestatRegion" Mode="In" Type="String" />
             <Parameter Name="AttestatSeries" Mode="In" Type="String" />
             <Parameter Name="AttestatNum" Mode="In" Type="String" />
@@ -7067,7 +7096,14 @@
             <Parameter Name="House" Mode="In" Type="String" />
             <Parameter Name="Korpus" Mode="In" Type="String" />
             <Parameter Name="Flat" Mode="In" Type="String" />
+            <Parameter Name="CodeReal" Mode="In" Type="String" />
+            <Parameter Name="CityReal" Mode="In" Type="String" />
+            <Parameter Name="StreetReal" Mode="In" Type="String" />
+            <Parameter Name="HouseReal" Mode="In" Type="String" />
+            <Parameter Name="KorpusReal" Mode="In" Type="String" />
+            <Parameter Name="FlatReal" Mode="In" Type="String" />
             <Parameter Name="HostelAbit" Mode="In" Type="Boolean" />
+            <Parameter Name="HostelEduc" Mode="In" Type="Boolean" />
             <Parameter Name="HasAssignToHostel" Mode="In" Type="Boolean" />
             <Parameter Name="HostelFacultyId" Mode="In" Type="Int32" />
             <Parameter Name="HasExamPass" Mode="In" Type="Boolean" />
@@ -7081,7 +7117,10 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
-            <Parameter Name="HasEkvivEduc" Mode="In" Type="Boolean" />
+            <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
+            <Parameter Name="EqualDocumentNumber" Mode="In" Type="String" />
+            <Parameter Name="HasTRKI" Mode="In" Type="Boolean" />
+            <Parameter Name="TRKICertificateNumber" Mode="In" Type="String" />
             <Parameter Name="DiplomSeries" Mode="In" Type="String" />
             <Parameter Name="DiplomNum" Mode="In" Type="String" />
             <Parameter Name="HighEducation" Mode="In" Type="String" />
@@ -7141,8 +7180,6 @@
             <Parameter Name="BackDocDate" Mode="In" Type="DateTime" />
             <Parameter Name="DocDate" Mode="In" Type="DateTime" />
             <Parameter Name="DocInsertDate" Mode="In" Type="DateTime" />
-            <Parameter Name="AttDocOrigin" Mode="In" Type="Boolean" />
-            <Parameter Name="EgeDocOrigin" Mode="In" Type="Boolean" />
             <Parameter Name="Checked" Mode="In" Type="Boolean" />
             <Parameter Name="NotEnabled" Mode="In" Type="Boolean" />
             <Parameter Name="Coefficient" Mode="In" Type="Double" />
@@ -7155,6 +7192,7 @@
             <Parameter Name="Barcode" Mode="In" Type="Int32" />
             <Parameter Name="CommitId" Mode="In" Type="Guid" />
             <Parameter Name="CommitNumber" Mode="In" Type="Int32" />
+            <Parameter Name="IsGosLine" Mode="In" Type="Boolean" />
             <Parameter Name="id" Mode="In" Type="Guid" />
           </FunctionImport>
           </EntityContainer>
@@ -8149,15 +8187,12 @@
           <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="EntryId" />
           <Property Type="Int32" Name="CompetitionId" />
-          <Property Type="Boolean" Name="HostelEduc" Nullable="false" />
           <Property Type="Boolean" Name="IsListener" Nullable="false" />
           <Property Type="Boolean" Name="IsPaid" Nullable="false" />
           <Property Type="Boolean" Name="BackDoc" Nullable="false" />
           <Property Type="DateTime" Name="BackDocDate" Precision="0" />
           <Property Type="DateTime" Name="DocDate" Precision="0" />
           <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
-          <Property Type="Boolean" Name="AttDocOrigin" Nullable="false" />
-          <Property Type="Boolean" Name="EgeDocOrigin" Nullable="false" />
           <Property Type="Boolean" Name="Checked" Nullable="false" />
           <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
           <Property Type="Int32" Name="Sum" />
@@ -8192,6 +8227,7 @@
           <Property Type="Boolean" Name="IsCommitedToFIS" />
           <Property Type="Guid" Name="CommitId" />
           <Property Type="Int32" Name="CommitNumber" />
+          <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
         </EntityType>
         <EntityType Name="Protocol">
           <Key>
@@ -8221,12 +8257,9 @@
         <EntityType Name="extAbit">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="HostelEduc" />
             <PropertyRef Name="IsListener" />
             <PropertyRef Name="IsPaid" />
             <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="AttDocOrigin" />
-            <PropertyRef Name="EgeDocOrigin" />
             <PropertyRef Name="Checked" />
             <PropertyRef Name="NotEnabled" />
             <PropertyRef Name="CompFromOlymp" />
@@ -8252,15 +8285,12 @@
           <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="EntryId" />
           <Property Type="Int32" Name="CompetitionId" />
-          <Property Type="Boolean" Name="HostelEduc" Nullable="false" />
           <Property Type="Boolean" Name="IsListener" Nullable="false" />
           <Property Type="Boolean" Name="IsPaid" Nullable="false" />
           <Property Type="Boolean" Name="BackDoc" Nullable="false" />
           <Property Type="DateTime" Name="BackDocDate" Precision="0" />
           <Property Type="DateTime" Name="DocDate" Precision="0" />
           <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
-          <Property Type="Boolean" Name="AttDocOrigin" Nullable="false" />
-          <Property Type="Boolean" Name="EgeDocOrigin" Nullable="false" />
           <Property Type="Boolean" Name="Checked" Nullable="false" />
           <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
           <Property Type="Double" Name="Coefficient" />
@@ -8279,13 +8309,13 @@
           <Property Type="Int32" Name="FacultyId" Nullable="false" />
           <Property Type="String" Name="FacultyAcr" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="LicenseProgramId" Nullable="false" />
-          <Property Type="String" Name="LicenseProgramName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LicenseProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="FacultyName" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="LicenseProgramCode" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ObrazProgramId" Nullable="false" />
-          <Property Type="String" Name="ObrazProgramName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="ObrazProgramNumber" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="82" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="ProfileId" />
           <Property Type="String" Name="ProfileName" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="StudyBasisId" Nullable="false" />
@@ -8357,12 +8387,9 @@
         <EntityType Name="qAbitAll">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="HostelEduc" />
             <PropertyRef Name="IsListener" />
             <PropertyRef Name="IsPaid" />
             <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="AttDocOrigin" />
-            <PropertyRef Name="EgeDocOrigin" />
             <PropertyRef Name="Checked" />
             <PropertyRef Name="NotEnabled" />
             <PropertyRef Name="CompFromOlymp" />
@@ -8388,15 +8415,12 @@
           <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="EntryId" />
           <Property Type="Int32" Name="CompetitionId" />
-          <Property Type="Boolean" Name="HostelEduc" Nullable="false" />
           <Property Type="Boolean" Name="IsListener" Nullable="false" />
           <Property Type="Boolean" Name="IsPaid" Nullable="false" />
           <Property Type="Boolean" Name="BackDoc" Nullable="false" />
           <Property Type="DateTime" Name="BackDocDate" Precision="0" />
           <Property Type="DateTime" Name="DocDate" Precision="0" />
           <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
-          <Property Type="Boolean" Name="AttDocOrigin" Nullable="false" />
-          <Property Type="Boolean" Name="EgeDocOrigin" Nullable="false" />
           <Property Type="Boolean" Name="Checked" Nullable="false" />
           <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
           <Property Type="Double" Name="Coefficient" />
@@ -8447,12 +8471,9 @@
         <EntityType Name="qAbiturient">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="HostelEduc" />
             <PropertyRef Name="IsListener" />
             <PropertyRef Name="IsPaid" />
             <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="AttDocOrigin" />
-            <PropertyRef Name="EgeDocOrigin" />
             <PropertyRef Name="Checked" />
             <PropertyRef Name="NotEnabled" />
             <PropertyRef Name="CompFromOlymp" />
@@ -8472,21 +8493,19 @@
             <PropertyRef Name="WithHE" />
             <PropertyRef Name="IsReduced" />
             <PropertyRef Name="IsParallel" />
+            <PropertyRef Name="IsGosLine" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" />
           <Property Type="Guid" Name="PersonId" />
           <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="EntryId" />
           <Property Type="Int32" Name="CompetitionId" />
-          <Property Type="Boolean" Name="HostelEduc" Nullable="false" />
           <Property Type="Boolean" Name="IsListener" Nullable="false" />
           <Property Type="Boolean" Name="IsPaid" Nullable="false" />
           <Property Type="Boolean" Name="BackDoc" Nullable="false" />
           <Property Type="DateTime" Name="BackDocDate" Precision="0" />
           <Property Type="DateTime" Name="DocDate" Precision="0" />
           <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
-          <Property Type="Boolean" Name="AttDocOrigin" Nullable="false" />
-          <Property Type="Boolean" Name="EgeDocOrigin" Nullable="false" />
           <Property Type="Boolean" Name="Checked" Nullable="false" />
           <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
           <Property Type="Double" Name="Coefficient" />
@@ -8506,12 +8525,12 @@
           <Property Type="String" Name="FacultyName" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="FacultyAcr" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="LicenseProgramId" Nullable="false" />
-          <Property Type="String" Name="LicenseProgramName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LicenseProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="LicenseProgramCode" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ObrazProgramId" Nullable="false" />
-          <Property Type="String" Name="ObrazProgramName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="ObrazProgramNumber" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="82" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="ProfileId" />
           <Property Type="String" Name="ProfileName" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="StudyBasisId" Nullable="false" />
@@ -8533,6 +8552,9 @@
           <Property Type="String" Name="StudyBasisFISName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyFormFISName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ObrazProgramPrintName" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="CommitId" />
+          <Property Type="Int32" Name="CommitNumber" />
+          <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
         </EntityType>
         <EntityType Name="qProtocol">
           <Key>
@@ -9463,6 +9485,7 @@
           <NavigationProperty Name="Region" Relationship="Priem2012Model.FK_Person_Contacts_Region" FromRole="Person_Contacts" ToRole="Region" />
           <Property Type="String" Name="ForeignAddressInfo" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ForeignCountryId" />
+          <Property Type="String" Name="KladrCode" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Person_EducationInfo">
           <Key>
@@ -9477,7 +9500,6 @@
           <Property Type="String" Name="SchoolNum" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="SchoolExitYear" />
           <Property Type="Int32" Name="CountryEducId" />
-          <Property Type="Boolean" Name="HasEkvivEduc" />
           <Property Type="String" Name="AttestatRegion" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AttestatSeries" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AttestatNum" MaxLength="10" FixedLength="false" Unicode="true" />
@@ -9500,6 +9522,10 @@
           <NavigationProperty Name="SchoolType" Relationship="Priem2012Model.FK_Person_EducationInfo_SchoolType" FromRole="Person_EducationInfo" ToRole="SchoolType" />
           <NavigationProperty Name="StudyForm" Relationship="Priem2012Model.FK_Person_EducationInfo_StudyForm_HE_" FromRole="Person_EducationInfo" ToRole="StudyForm" />
           <Property Type="Int32" Name="ForeignCountryEducId" />
+          <Property Type="Boolean" Name="IsEqual" Nullable="false" />
+          <Property Type="String" Name="EqualDocumentNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="HasTRKI" Nullable="false" />
+          <Property Type="String" Name="TRKICertificateNumber" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Abiturient_Person">
           <End Type="Priem2012Model.Person" Role="Person" Multiplicity="0..1" />
@@ -9894,7 +9920,6 @@
           <Property Type="String" Name="SchoolNum" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="SchoolExitYear" />
           <Property Type="Int32" Name="CountryEducId" />
-          <Property Type="Boolean" Name="HasEkvivEduc" />
           <Property Type="String" Name="AttestatRegion" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AttestatSeries" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AttestatNum" MaxLength="10" FixedLength="false" Unicode="true" />
@@ -9937,6 +9962,7 @@
           <Property Type="Boolean" Name="HasGrant" />
           <Property Type="Boolean" Name="HostelEduc" />
           <Property Type="String" Name="SNILS" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsEqual" />
         </EntityType>
         <EntityType Name="StudyLevelGroup">
           <Key>
@@ -10212,7 +10238,6 @@
           <Property Type="String" Name="Phone" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Mobiles" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Email" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ForeignAddressInfo" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="HostelAbit" />
           <Property Type="Boolean" Name="HasAssignToHostel" />
           <Property Type="Int32" Name="HostelFacultyId" />
@@ -10226,7 +10251,6 @@
           <Property Type="String" Name="SchoolNum" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="SchoolExitYear" />
           <Property Type="Int32" Name="CountryEducId" />
-          <Property Type="Boolean" Name="HasEkvivEduc" />
           <Property Type="String" Name="AttestatRegion" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AttestatSeries" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AttestatNum" MaxLength="10" FixedLength="false" Unicode="true" />
@@ -10272,6 +10296,17 @@
           <Property Type="String" Name="Korpus" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Flat" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="HostelEduc" />
+          <Property Type="Boolean" Name="IsEqual" />
+          <Property Type="String" Name="CodeReal" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CityReal" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StreetReal" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="HouseReal" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="KorpusReal" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FlatReal" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="KladrCode" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EqualDocumentNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="HasTRKI" />
+          <Property Type="String" Name="TRKICertificateNumber" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -10915,6 +10950,7 @@
           <EntitySetMapping Name="Abiturient">
             <EntityTypeMapping TypeName="Priem2012Model.Abiturient">
               <MappingFragment StoreEntitySet="Abiturient">
+                <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
                 <ScalarProperty Name="CommitNumber" ColumnName="CommitNumber" />
                 <ScalarProperty Name="CommitId" ColumnName="CommitId" />
                 <ScalarProperty Name="IsCommitedToFIS" ColumnName="IsCommitedToFIS" />
@@ -10937,15 +10973,12 @@
                 <ScalarProperty Name="Sum" ColumnName="Sum" />
                 <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
                 <ScalarProperty Name="Checked" ColumnName="Checked" />
-                <ScalarProperty Name="EgeDocOrigin" ColumnName="EgeDocOrigin" />
-                <ScalarProperty Name="AttDocOrigin" ColumnName="AttDocOrigin" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="DocDate" ColumnName="DocDate" />
                 <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
                 <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
                 <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
                 <ScalarProperty Name="IsListener" ColumnName="IsListener" />
-                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
                 <ScalarProperty Name="RegNum" ColumnName="RegNum" />
@@ -11031,15 +11064,12 @@
                 <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
                 <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
                 <ScalarProperty Name="Checked" ColumnName="Checked" />
-                <ScalarProperty Name="EgeDocOrigin" ColumnName="EgeDocOrigin" />
-                <ScalarProperty Name="AttDocOrigin" ColumnName="AttDocOrigin" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="DocDate" ColumnName="DocDate" />
                 <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
                 <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
                 <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
                 <ScalarProperty Name="IsListener" ColumnName="IsListener" />
-                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
                 <ScalarProperty Name="RegNum" ColumnName="RegNum" />
@@ -11124,15 +11154,12 @@
                 <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
                 <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
                 <ScalarProperty Name="Checked" ColumnName="Checked" />
-                <ScalarProperty Name="EgeDocOrigin" ColumnName="EgeDocOrigin" />
-                <ScalarProperty Name="AttDocOrigin" ColumnName="AttDocOrigin" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="DocDate" ColumnName="DocDate" />
                 <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
                 <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
                 <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
                 <ScalarProperty Name="IsListener" ColumnName="IsListener" />
-                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
                 <ScalarProperty Name="RegNum" ColumnName="RegNum" />
@@ -11144,6 +11171,9 @@
           <EntitySetMapping Name="qAbiturient">
             <EntityTypeMapping TypeName="Priem2012Model.qAbiturient">
               <MappingFragment StoreEntitySet="qAbiturient">
+                <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
+                <ScalarProperty Name="CommitNumber" ColumnName="CommitNumber" />
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
                 <ScalarProperty Name="ObrazProgramPrintName" ColumnName="ObrazProgramPrintName" />
                 <ScalarProperty Name="StudyFormFISName" ColumnName="StudyFormFISName" />
                 <ScalarProperty Name="StudyBasisFISName" ColumnName="StudyBasisFISName" />
@@ -11190,15 +11220,12 @@
                 <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
                 <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
                 <ScalarProperty Name="Checked" ColumnName="Checked" />
-                <ScalarProperty Name="EgeDocOrigin" ColumnName="EgeDocOrigin" />
-                <ScalarProperty Name="AttDocOrigin" ColumnName="AttDocOrigin" />
                 <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
                 <ScalarProperty Name="DocDate" ColumnName="DocDate" />
                 <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
                 <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
                 <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
                 <ScalarProperty Name="IsListener" ColumnName="IsListener" />
-                <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
                 <ScalarProperty Name="EntryId" ColumnName="EntryId" />
                 <ScalarProperty Name="RegNum" ColumnName="RegNum" />
@@ -11784,6 +11811,7 @@
           <EntitySetMapping Name="Person_Contacts">
             <EntityTypeMapping TypeName="Priem2012Model.Person_Contacts">
               <MappingFragment StoreEntitySet="Person_Contacts">
+                <ScalarProperty Name="KladrCode" ColumnName="KladrCode" />
                 <ScalarProperty Name="ForeignCountryId" ColumnName="ForeignCountryId" />
                 <ScalarProperty Name="ForeignAddressInfo" ColumnName="ForeignAddressInfo" />
                 <ScalarProperty Name="FlatReal" ColumnName="FlatReal" />
@@ -11810,6 +11838,10 @@
           <EntitySetMapping Name="Person_EducationInfo">
             <EntityTypeMapping TypeName="Priem2012Model.Person_EducationInfo">
               <MappingFragment StoreEntitySet="Person_EducationInfo">
+                <ScalarProperty Name="TRKICertificateNumber" ColumnName="TRKICertificateNumber" />
+                <ScalarProperty Name="HasTRKI" ColumnName="HasTRKI" />
+                <ScalarProperty Name="EqualDocumentNumber" ColumnName="EqualDocumentNumber" />
+                <ScalarProperty Name="IsEqual" ColumnName="IsEqual" />
                 <ScalarProperty Name="ForeignCountryEducId" ColumnName="ForeignCountryEducId" />
                 <ScalarProperty Name="EgeInSPbgu" ColumnName="EgeInSPbgu" />
                 <ScalarProperty Name="EnglishMark" ColumnName="EnglishMark" />
@@ -11827,7 +11859,6 @@
                 <ScalarProperty Name="AttestatNum" ColumnName="AttestatNum" />
                 <ScalarProperty Name="AttestatSeries" ColumnName="AttestatSeries" />
                 <ScalarProperty Name="AttestatRegion" ColumnName="AttestatRegion" />
-                <ScalarProperty Name="HasEkvivEduc" ColumnName="HasEkvivEduc" />
                 <ScalarProperty Name="CountryEducId" ColumnName="CountryEducId" />
                 <ScalarProperty Name="SchoolExitYear" ColumnName="SchoolExitYear" />
                 <ScalarProperty Name="SchoolNum" ColumnName="SchoolNum" />
@@ -11947,6 +11978,7 @@
           <EntitySetMapping Name="extPersonAll">
             <EntityTypeMapping TypeName="Priem2012Model.extPersonAll">
               <MappingFragment StoreEntitySet="extPersonAll">
+                <ScalarProperty Name="IsEqual" ColumnName="IsEqual" />
                 <ScalarProperty Name="SNILS" ColumnName="SNILS" />
                 <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="HasGrant" ColumnName="HasGrant" />
@@ -11989,7 +12021,6 @@
                 <ScalarProperty Name="AttestatNum" ColumnName="AttestatNum" />
                 <ScalarProperty Name="AttestatSeries" ColumnName="AttestatSeries" />
                 <ScalarProperty Name="AttestatRegion" ColumnName="AttestatRegion" />
-                <ScalarProperty Name="HasEkvivEduc" ColumnName="HasEkvivEduc" />
                 <ScalarProperty Name="CountryEducId" ColumnName="CountryEducId" />
                 <ScalarProperty Name="SchoolExitYear" ColumnName="SchoolExitYear" />
                 <ScalarProperty Name="SchoolNum" ColumnName="SchoolNum" />
@@ -12210,6 +12241,17 @@
           <EntitySetMapping Name="extForeignPerson">
             <EntityTypeMapping TypeName="Priem2012Model.extPerson">
               <MappingFragment StoreEntitySet="extForeignPerson">
+                <ScalarProperty Name="TRKICertificateNumber" ColumnName="TRKICertificateNumber" />
+                <ScalarProperty Name="HasTRKI" ColumnName="HasTRKI" />
+                <ScalarProperty Name="EqualDocumentNumber" ColumnName="EqualDocumentNumber" />
+                <ScalarProperty Name="KladrCode" ColumnName="KladrCode" />
+                <ScalarProperty Name="FlatReal" ColumnName="FlatReal" />
+                <ScalarProperty Name="KorpusReal" ColumnName="KorpusReal" />
+                <ScalarProperty Name="HouseReal" ColumnName="HouseReal" />
+                <ScalarProperty Name="StreetReal" ColumnName="StreetReal" />
+                <ScalarProperty Name="CityReal" ColumnName="CityReal" />
+                <ScalarProperty Name="CodeReal" ColumnName="CodeReal" />
+                <ScalarProperty Name="IsEqual" ColumnName="IsEqual" />
                 <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
                 <ScalarProperty Name="Flat" ColumnName="Flat" />
                 <ScalarProperty Name="Korpus" ColumnName="Korpus" />
@@ -12255,7 +12297,6 @@
                 <ScalarProperty Name="AttestatNum" ColumnName="AttestatNum" />
                 <ScalarProperty Name="AttestatSeries" ColumnName="AttestatSeries" />
                 <ScalarProperty Name="AttestatRegion" ColumnName="AttestatRegion" />
-                <ScalarProperty Name="HasEkvivEduc" ColumnName="HasEkvivEduc" />
                 <ScalarProperty Name="CountryEducId" ColumnName="CountryEducId" />
                 <ScalarProperty Name="SchoolExitYear" ColumnName="SchoolExitYear" />
                 <ScalarProperty Name="SchoolNum" ColumnName="SchoolNum" />
@@ -12269,7 +12310,6 @@
                 <ScalarProperty Name="HostelFacultyId" ColumnName="HostelFacultyId" />
                 <ScalarProperty Name="HasAssignToHostel" ColumnName="HasAssignToHostel" />
                 <ScalarProperty Name="HostelAbit" ColumnName="HostelAbit" />
-                <ScalarProperty Name="ForeignAddressInfo" ColumnName="ForeignAddressInfo" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Mobiles" ColumnName="Mobiles" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
@@ -12323,7 +12363,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="PriemModel" ZoomLevel="86">
+      <Diagram Name="PriemModel" ZoomLevel="53">
         <EntityTypeShape EntityType="Priem2012Model.C_SettingRoles" Width="1.5" PointX="16.75" PointY="2.75" Height="1.9210009765624996" IsExpanded="true" />
         <EntityTypeShape EntityType="Priem2012Model.Age" Width="1.5" PointX="13.75" PointY="11.75" Height="1.4279589843749996" IsExpanded="true" />
         <EntityTypeShape EntityType="Priem2012Model.AttMarks" Width="1.5" PointX="9" PointY="3.5" Height="1.9210009765624996" IsExpanded="true" />

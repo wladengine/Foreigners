@@ -49,6 +49,9 @@ namespace Priem
             IsGosLine = _competition.IsGosLine;
 
             InitHandlers();
+
+            if (_competition.HasInnerPriorities)
+                btnHasInnerObrazProgram.Visible = true;
         }
 
         protected void InitHandlers()
@@ -459,6 +462,11 @@ namespace Priem
 
                 this.Close();
             }
+        }
+
+        private void btnHasInnerObrazProgram_Click(object sender, EventArgs e)
+        {
+            new CardObrazProgramInEntryInCompetitionInInet(_competition).Show();
         }
     }
 }

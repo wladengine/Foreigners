@@ -233,7 +233,7 @@ extForeignPerson.BirthDate AS Дата_рождения,
 extForeignPerson.Nationality AS [Гражданство], 
 extForeignPerson.[CountryName] AS [Страна проживания],
 qAbiturient.CommitNumber AS Barcode,
-qAbiturient.IsGosLine,
+(Case When EXISTS(SELECT IsGosLine FROM [Application] WHERE Application.CommitId = qAbiturient.CommitId) THEN CONVERT(bit, 1) ELSE CONVERT(bit, 0) END) AS IsGosLine,
 (Case When EXISTS(SELECT extAbitFiles.Id FROM extAbitFiles WHERE extAbitFiles.PersonId = extForeignPerson.Id) then 'да' else 'нет' end) AS Приложены_файлы,
 (SELECT Max(extAbitFiles.LoadDate) FROM extAbitFiles WHERE extAbitFiles.PersonId = extForeignPerson.Id AND (extAbitFiles.ApplicationId = qAbiturient.Id OR extAbitFiles.ApplicationId IS NULL)) AS Дата_обновления
 FROM qAbiturient INNER JOIN extForeignPerson ON qAbiturient.PersonId = extForeignPerson.Id

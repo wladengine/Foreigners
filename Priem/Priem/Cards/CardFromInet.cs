@@ -256,8 +256,6 @@ namespace Priem
                 LstCompetitions[ind].HasCompetition = comp.HasCompetition;
                 LstCompetitions[ind].ChangeEntry();
 
-                
-
                 UpdateApplicationGrid();
             }
         }
@@ -347,8 +345,8 @@ namespace Priem
                 PassportCode = person.PassportCode;
                 PersonalCode = person.PersonalCode;
                 Sex = person.Sex;
-                CountryId = person.CountryId;
-                NationalityId = person.NationalityId;
+                CountryId = person.ForeignCountryId;
+                NationalityId = person.ForeignNationalityId;
                 RegionId = person.RegionId;
                 Phone = person.Phone;
                 Mobiles = person.Mobiles;
@@ -453,15 +451,16 @@ namespace Priem
 ,(SELECT MAX(ApplicationCommitVersion.Id) FROM ApplicationCommitVersion WHERE ApplicationCommitVersion.CommitId = [Abiturient].CommitId) AS VersionNum
 ,(SELECT MAX(ApplicationCommitVersion.VersionDate) FROM ApplicationCommitVersion WHERE ApplicationCommitVersion.CommitId = [Abiturient].CommitId) AS VersionDate
 ,ApplicationCommit.IntNumber
+,[Abiturient].HasInnerPriorities
 FROM [Abiturient] 
 INNER JOIN ApplicationCommit ON ApplicationCommit.Id = Abiturient.CommitId
 WHERE IsCommited = 1 AND IntNumber=@CommitId";
                 
                 DataTable tbl = _bdcInet.GetDataSet(query, new SortedList<string, object>() { { "@CommitId", _abitBarc } }).Tables[0];
 
-                LstCompetitions = 
+                LstCompetitions =
                          (from DataRow rw in tbl.Rows
-                          select new ShortCompetition(rw.Field<Guid>("Id"), rw.Field<Guid>("CommitId"), rw.Field<Guid>("EntryId"), rw.Field<Guid>("PersonId"), 
+                          select new ShortCompetition(rw.Field<Guid>("Id"), rw.Field<Guid>("CommitId"), rw.Field<Guid>("EntryId"), rw.Field<Guid>("PersonId"),
                               rw.Field<int?>("VersionNum"), rw.Field<DateTime?>("VersionDate"))
                           {
                               CompetitionId = rw.Field<int>("StudyBasisId") == 1 ? 4 : 3,
@@ -484,6 +483,8 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                               DocDate = rw.Field<DateTime>("DateOfStart"),
                               Priority = rw.Field<int>("Priority"),
                               IsGosLine = rw.Field<bool>("IsGosLine"),
+                              HasInnerPriorities = rw.Field<bool>("HasInnerPriorities"),
+                              lstObrazProgramsInEntry = new List<ShortObrazProgramInEntry>()
                           }).ToList();
 
                 if (LstCompetitions.Count == 0)
@@ -495,6 +496,41 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
 
                 tbApplicationVersion.Text = (LstCompetitions[0].VersionNum.HasValue ? "№ " + LstCompetitions[0].VersionNum.Value.ToString() : "n/a") +
                     (LstCompetitions[0].VersionDate.HasValue ? (" от " + LstCompetitions[0].VersionDate.Value.ToShortDateString() + " " + LstCompetitions[0].VersionDate.Value.ToShortTimeString()) : "n/a");
+
+
+                //ObrazProgramInEntry
+                foreach (var C in LstCompetitions.Where(x => x.HasInnerPriorities))
+                {
+                    C.lstObrazProgramsInEntry = new List<ShortObrazProgramInEntry>();
+                    query = @"SELECT ObrazProgramInEntryId, ObrazProgramInEntryPriority, ObrazProgramName, ProfileInObrazProgramInEntryId, ProfileInObrazProgramInEntryPriority, ProfileName, CurrVersion, CurrDate
+FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
+                    tbl = _bdcInet.GetDataSet(query, new SortedList<string, object>() { { "@AppId", C.Id } }).Tables[0];
+
+                    var data = from DataRow rw in tbl.Rows
+                               select new
+                               {
+                                   ObrazProgramInEntryId = rw.Field<Guid>("ObrazProgramInEntryId"),
+                                   ObrazProgramInEntryPriority = rw.Field<int>("ObrazProgramInEntryPriority"),
+                                   ObrazProgramName = rw.Field<string>("ObrazProgramName"),
+                                   ProfileInObrazProgramInEntryId = rw.Field<Guid?>("ProfileInObrazProgramInEntryId"),
+                                   ProfileInObrazProgramInEntryPriority = rw.Field<int?>("ProfileInObrazProgramInEntryPriority"),
+                                   ProfileName = rw.Field<string>("ProfileName"),
+                                   CurrVersion = rw.Field<int>("CurrVersion"),
+                                   CurrDate = rw.Field<DateTime>("CurrDate")
+                               };
+
+                    foreach (var OPIE in data.Select(x => new { x.ObrazProgramInEntryId, x.ObrazProgramInEntryPriority, x.ObrazProgramName, x.CurrDate, x.CurrVersion }).Distinct())
+                    {
+                        var OP = new ShortObrazProgramInEntry(OPIE.ObrazProgramInEntryId, OPIE.ObrazProgramName) { ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority, CurrVersion = OPIE.CurrVersion, CurrDate = OPIE.CurrDate };
+                        OP.ListProfiles = new List<ShortProfileInObrazProgramInEntry>();
+                        foreach (var PROF in data.Where(x => x.ObrazProgramInEntryId == OPIE.ObrazProgramInEntryId && x.ProfileInObrazProgramInEntryId.HasValue).Select(x => new { x.ProfileInObrazProgramInEntryId, x.ProfileInObrazProgramInEntryPriority, x.ProfileName }))
+                        {
+                            OP.ListProfiles.Add(new ShortProfileInObrazProgramInEntry(PROF.ProfileInObrazProgramInEntryId.Value, PROF.ProfileName) { ProfileInObrazProgramInEntryPriority = PROF.ProfileInObrazProgramInEntryPriority.Value });
+                        }
+
+                        C.lstObrazProgramsInEntry.Add(OP);
+                    }
+                }
 
                 UpdateApplicationGrid();
 
@@ -519,7 +555,8 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                     x.ProfileName,
                     x.StudyFormName,
                     x.StudyBasisName,
-                    x.HasCompetition
+                    x.HasCompetition,
+                    comp = x.lstObrazProgramsInEntry.Count > 0 ? "приоритеты" : ""
                 }).ToList();
             dgvApplications.Columns["Id"].Visible = false;
             dgvApplications.Columns["Priority"].HeaderText = "Приор";
@@ -529,6 +566,7 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
             dgvApplications.Columns["ProfileName"].HeaderText = "Профиль";
             dgvApplications.Columns["StudyFormName"].HeaderText = "Форма обуч";
             dgvApplications.Columns["StudyBasisName"].HeaderText = "Основа обуч";
+            dgvApplications.Columns["comp"].HeaderText = "";
             dgvApplications.Columns["HasCompetition"].Visible = false;
         }
         private void dgvApplications_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -859,20 +897,18 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
 
         private bool CheckFieldsAbit()
         {
-            using (PriemEntities context = new PriemEntities())
+
+            if (LstCompetitions.Where(x => !x.HasCompetition).Count() > 0)
             {
-                if (LstCompetitions.Where(x => !x.HasCompetition).Count() > 0)
-                {
-                    epError.SetError(dgvApplications, "Не по всем конкурсным позициям указаны типы конкурсов");
-                    tabCard.SelectedIndex = 5;
-                    return false;
-                }
-                else
-                    epError.Clear();
+                epError.SetError(dgvApplications, "Не по всем конкурсным позициям указаны типы конкурсов");
+                tabCard.SelectedIndex = 5;
+                return false;
             }
+            else
+                epError.Clear();
 
             return true;
-        } 
+        }
         
         protected override bool SaveClick()
         {
@@ -916,6 +952,7 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                             catch (Exception exc)
                             {
                                 WinFormsServ.Error("Ошибка при сохранении:\n" + exc.Message + (exc.InnerException != null ? "\n\nВнутреннее исключение:\n" + exc.InnerException.Message : ""));
+                                return false;
                             }
                         }
                         //if (!SaveApplication())
@@ -955,7 +992,7 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
 
             try
             {
-                using (TransactionScope trans = new TransactionScope())
+                using (TransactionScope trans = new TransactionScope(TransactionScopeOption.Required))
                 {
                     using (PriemEntities context = new PriemEntities())
                     {
@@ -970,14 +1007,67 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                                 false, false, false, null, DocDate, DocInsertDate, 
                                 false, false, null, Comp.OtherCompetitionId, Comp.CelCompetitionId, Comp.CelCompetitionText, 
                                 LanguageId, Comp.HasOriginals, Comp.Priority, Comp.Barcode, Comp.CommitId, _abitBarc, Comp.IsGosLine, Comp.Id);
+
+                            if (Comp.lstObrazProgramsInEntry.Count > 0)
+                            {
+                                //загружаем внутренние приоритеты по профилям
+                                int currVersion = Comp.lstObrazProgramsInEntry.Select(x => x.CurrVersion).FirstOrDefault();
+                                DateTime currDate = Comp.lstObrazProgramsInEntry.Select(x => x.CurrDate).FirstOrDefault();
+                                Guid ApplicationVersionId = Guid.NewGuid();
+                                context.ApplicationVersion.AddObject(new ApplicationVersion() { IntNumber = currVersion, Id = ApplicationVersionId, ApplicationId = Comp.Id, VersionDate = currDate });
+                                foreach (var OPIE in Comp.lstObrazProgramsInEntry)
+                                {
+                                    if (OPIE.ListProfiles.Count == 0)
+                                    {
+                                        context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                        {
+                                            ApplicationId = Comp.Id,
+                                            Id = Guid.NewGuid(),
+                                            ObrazProgramInEntryId = OPIE.Id,
+                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,
+                                        });
+
+                                        context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                        {
+                                            ApplicationVersionId = ApplicationVersionId,
+                                            ObrazProgramInEntryId = OPIE.Id,
+                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority
+                                        });
+                                    }
+
+                                    foreach (var ProfInOPIE in OPIE.ListProfiles)
+                                    {
+                                        context.ApplicationDetails.AddObject(new ApplicationDetails()
+                                        {
+                                            ApplicationId = Comp.Id,
+                                            Id = Guid.NewGuid(),
+                                            ObrazProgramInEntryId = OPIE.Id,
+                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,
+                                            ProfileInObrazProgramInEntryId = ProfInOPIE.Id,
+                                            ProfileInObrazProgramInEntryPriority = ProfInOPIE.ProfileInObrazProgramInEntryPriority
+                                        });
+
+                                        context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
+                                        {
+                                            ApplicationVersionId = ApplicationVersionId,
+                                            ObrazProgramInEntryId = OPIE.Id,
+                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,
+                                            ProfileInObrazProgramInEntryId = ProfInOPIE.Id,
+                                            ProfileInObrazProgramInEntryPriority = ProfInOPIE.ProfileInObrazProgramInEntryPriority
+                                        });
+                                    }
+                                }
+                            }
                         }
+
+                        context.SaveChanges();
 
                         //context.Abiturient_Insert(personId, EntryId, CompetitionId, HostelEduc, IsListener, WithHE, false, false, null, DocDate, DateTime.Now,
                         //AttDocOrigin, EgeDocOrigin, false, false, null, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, false,
                         //Priority, _abitBarc, entId);
                     }
 
-                    _bdcInet.ExecuteQuery("UPDATE Application SET IsImported = 1 WHERE Application.CommitId = (SELECT Id FROM ApplicationCommit WHERE IntNumber = '" + _abitBarc + "' )");
+                    _bdcInet.ExecuteQuery("UPDATE ApplicationCommit SET IsImported = 1 WHERE IntNumber = '" + _abitBarc + "'");
 
                     trans.Complete();
                     return true;
@@ -1014,11 +1104,12 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
             {
                 if (_abitBarc != null)
                 {
-                    Guid? abId = (from ab in context.qAbiturient
-                                  where ab.Barcode == _abitBarc
-                                  select ab.Id).FirstOrDefault();
+                    Guid? perId = (from ab in context.qAbiturient
+                                  where ab.CommitNumber == _abitBarc
+                                  select ab.PersonId).FirstOrDefault();
 
-                    MainClass.OpenCardAbit(abId.ToString(), null, null);
+                    //MainClass.OpenCardAbit(abId.ToString(), null, null);
+                    MainClass.OpenCardPerson(perId.ToString(), null, null);
 
                 }
                 else

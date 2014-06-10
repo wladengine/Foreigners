@@ -28,7 +28,7 @@ namespace Priem
         private int? abitBarcode;
     
         // конструктор нового заявления для человека
-        public CardAbit(Guid? personId)           
+        public CardAbit(Guid? personId)
         {
             InitializeComponent();            
             _Id = null;
@@ -52,6 +52,29 @@ namespace Priem
             
             InitControls();           
         }
+
+        protected override void InitControls()
+        {
+            InitFocusHandlers();
+
+            ExtraInit();
+            FillCard();
+            InitHandlers();
+
+            if (_Id == null)
+            {
+                _isModified = true;
+                btnSaveChange.Text = Constants.BTN_SAVE_TITLE;
+                this.Text = Constants.CARD_TITLE + _title + Constants.CARD_MODIFIED;
+            }
+            else
+            {
+                _isModified = false;
+                ReadOnlyCard();
+            }
+
+            SetReadOnlyFieldsAfterFill();
+        }        
 
         protected override void ExtraInit()
         {
@@ -172,12 +195,26 @@ namespace Priem
                     IsSecond = abit.IsSecond;
                     IsReduced = abit.IsReduced;
                     IsParallel = abit.IsParallel;
+                    FillLicenseProgram();
+
                     LicenseProgramId = abit.LicenseProgramId;
+                    FillObrazProgram();
+                    
                     ObrazProgramId = abit.ObrazProgramId;
-                    ProfileId = abit.ProfileId; 
+                    FillProfile();
+                    
+                    ProfileId = abit.ProfileId;
+                    FillFaculty();
+                    
                     FacultyId = abit.FacultyId;
+                    FillStudyForm();
+                    
                     StudyFormId = abit.StudyFormId;
+                    FillStudyBasis();
+                    
                     StudyBasisId = abit.StudyBasisId;
+                    FillCompetition();
+
                     IsGosLine = abit.IsGosLine;
                     CompetitionId = abit.CompetitionId;
                     OtherCompetitionId = abit.OtherCompetitionId;
@@ -545,7 +582,24 @@ namespace Priem
             cbStudyBasis.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);
             cbCompetition.SelectedIndexChanged += new EventHandler(cbCompetition_SelectedIndexChanged);            
             chbHasOriginals.CheckedChanged += new System.EventHandler(chbHasOriginals_CheckedChanged);           
+
+            cbStudyLevel.SelectedIndexChanged += cbStudyLevel_SelectedIndexChanged;
         }
+        protected override void NullHandlers()
+        {
+            chbIsReduced.CheckedChanged -= new EventHandler(chbIsReduced_CheckedChanged);
+            chbIsParallel.CheckedChanged -= new EventHandler(chbIsParallel_CheckedChanged);
+            chbIsSecond.CheckedChanged -= new EventHandler(chbIsSecond_CheckedChanged);
+            cbLicenseProgram.SelectedIndexChanged -= new EventHandler(cbLicenseProgram_SelectedIndexChanged);
+            cbObrazProgram.SelectedIndexChanged -= new EventHandler(cbObrazProgram_SelectedIndexChanged);
+            cbProfile.SelectedIndexChanged -= new EventHandler(cbProfile_SelectedIndexChanged);
+            cbStudyForm.SelectedIndexChanged -= new EventHandler(cbStudyForm_SelectedIndexChanged);
+            cbStudyBasis.SelectedIndexChanged -= new EventHandler(cbStudyBasis_SelectedIndexChanged);
+            cbCompetition.SelectedIndexChanged -= new EventHandler(cbCompetition_SelectedIndexChanged);
+            chbHasOriginals.CheckedChanged -= new System.EventHandler(chbHasOriginals_CheckedChanged);
+
+            cbStudyLevel.SelectedIndexChanged -= cbStudyLevel_SelectedIndexChanged;
+        }        
 
         void chbIsSecond_CheckedChanged(object sender, EventArgs e)
         {
@@ -592,19 +646,7 @@ namespace Priem
         {
             FillLicenseProgram();
         }
-        protected override void NullHandlers()
-        {
-            chbIsReduced.CheckedChanged -= new EventHandler(chbIsReduced_CheckedChanged);
-            chbIsParallel.CheckedChanged -= new EventHandler(chbIsParallel_CheckedChanged);
-            chbIsSecond.CheckedChanged -= new EventHandler(chbIsSecond_CheckedChanged);     
-            cbLicenseProgram.SelectedIndexChanged -= new EventHandler(cbLicenseProgram_SelectedIndexChanged);
-            cbObrazProgram.SelectedIndexChanged -= new EventHandler(cbObrazProgram_SelectedIndexChanged);
-            cbProfile.SelectedIndexChanged -= new EventHandler(cbProfile_SelectedIndexChanged);
-            cbStudyForm.SelectedIndexChanged -= new EventHandler(cbStudyForm_SelectedIndexChanged);
-            cbStudyBasis.SelectedIndexChanged -= new EventHandler(cbStudyBasis_SelectedIndexChanged);
-            cbCompetition.SelectedIndexChanged -= new EventHandler(cbCompetition_SelectedIndexChanged);
-            chbHasOriginals.CheckedChanged -= new System.EventHandler(chbHasOriginals_CheckedChanged); 
-        }        
+        
 
         private IEnumerable<qEntry> GetEntry(PriemEntities context)
         {               
@@ -642,7 +684,6 @@ namespace Priem
                  WinFormsServ.Error("Ошибка при инициализации формы FillLicenseProgram" + exc.Message);
              }      
         }
-
         private void FillObrazProgram()
         {
             try
@@ -667,7 +708,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы FillObrazProgram" + exc.Message);
             }
         }
-
         private void FillProfile()
         {
             try
@@ -703,7 +743,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы FillProfile" + exc.Message);
             }
         }
-
         private void FillFaculty()
         {
             try
@@ -728,7 +767,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы FillFaculty" + exc.Message);
             }
         }
-
         private void FillStudyLevel()
         {
             try
@@ -750,7 +788,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы FillStudyForm" + exc.Message);
             }
         }
-
         private void FillStudyForm()
         {
             try
@@ -778,7 +815,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы FillStudyForm" + exc.Message);
             }
         }
-
         private void FillStudyBasis()
         {
             try
@@ -806,7 +842,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы FillStudyBasis" + exc.Message);
             }
         }
-
         private void FillCompetition()
         {
             try
@@ -857,7 +892,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы FillCompetition" + exc.Message);
             }
         }        
-       
         private void UpdateAfterCompetition()
         {            
             if (CompetitionId == 1 || CompetitionId == 2 || CompetitionId == 7 || CompetitionId == 8)
@@ -1491,7 +1525,6 @@ namespace Priem
             _personId = null;
             base.btnNext_Click(sender, e);
         }
-
 
         protected override void btnPrev_Click(object sender, EventArgs e)
         {

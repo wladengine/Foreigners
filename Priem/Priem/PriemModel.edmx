@@ -18,6 +18,9 @@
           <EntitySet Name="AbitDoc" EntityType="Priem2012Model.Store.AbitDoc" store:Type="Tables" Schema="ed" />
           <EntitySet Name="Abiturient" EntityType="Priem2012Model.Store.Abiturient" store:Type="Tables" Schema="ed" />
           <EntitySet Name="Age" EntityType="Priem2012Model.Store.Age" store:Type="Tables" Schema="ed" />
+          <EntitySet Name="ApplicationDetails" EntityType="Priem2012Model.Store.ApplicationDetails" store:Type="Tables" Schema="ed" />
+          <EntitySet Name="ApplicationVersion" EntityType="Priem2012Model.Store.ApplicationVersion" store:Type="Tables" Schema="ed" />
+          <EntitySet Name="ApplicationVersionDetails" EntityType="Priem2012Model.Store.ApplicationVersionDetails" store:Type="Tables" Schema="ed" />
           <EntitySet Name="AttMarks" EntityType="Priem2012Model.Store.AttMarks" store:Type="Tables" Schema="ed" />
           <EntitySet Name="AttSubject" EntityType="Priem2012Model.Store.AttSubject" store:Type="Tables" Schema="ed" />
           <EntitySet Name="BenefitDocumentType" EntityType="Priem2012Model.Store.BenefitDocumentType" store:Type="Tables" Schema="ed" />
@@ -492,7 +495,9 @@
       [extForeignPerson].[PassportDate] AS [PassportDate], 
       [extForeignPerson].[Sex] AS [Sex], 
       [extForeignPerson].[CountryId] AS [CountryId], 
+      [extForeignPerson].[ForeignCountryId] AS [ForeignCountryId], 
       [extForeignPerson].[NationalityId] AS [NationalityId], 
+      [extForeignPerson].[ForeignNationalityId] AS [ForeignNationalityId], 
       [extForeignPerson].[RegionId] AS [RegionId], 
       [extForeignPerson].[Phone] AS [Phone], 
       [extForeignPerson].[Mobiles] AS [Mobiles], 
@@ -542,8 +547,10 @@
       [extForeignPerson].[PassportData] AS [PassportData], 
       [extForeignPerson].[EducDocument] AS [EducDocument], 
       [extForeignPerson].[HostelFacultyAcr] AS [HostelFacultyAcr], 
+      [extForeignPerson].[ForeignCountryName] AS [ForeignCountryName], 
       [extForeignPerson].[CountryName] AS [CountryName], 
       [extForeignPerson].[NationalityName] AS [NationalityName], 
+      [extForeignPerson].[ForeignNationalityName] AS [ForeignNationalityName], 
       [extForeignPerson].[RegionName] AS [RegionName], 
       [extForeignPerson].[HostelFacultyName] AS [HostelFacultyName], 
       [extForeignPerson].[StartEnglish] AS [StartEnglish], 
@@ -1122,6 +1129,18 @@
             <End Role="Person" EntitySet="Person" />
             <End Role="Abiturient" EntitySet="Abiturient" />
           </AssociationSet>
+          <AssociationSet Name="FK_ApplicationDetails_Abiturient" Association="Priem2012Model.Store.FK_ApplicationDetails_Abiturient">
+            <End Role="Abiturient" EntitySet="Abiturient" />
+            <End Role="ApplicationDetails" EntitySet="ApplicationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationVersion_Abiturient" Association="Priem2012Model.Store.FK_ApplicationVersion_Abiturient">
+            <End Role="Abiturient" EntitySet="Abiturient" />
+            <End Role="ApplicationVersion" EntitySet="ApplicationVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationVersionDetails_ApplicationVersion" Association="Priem2012Model.Store.FK_ApplicationVersionDetails_ApplicationVersion">
+            <End Role="ApplicationVersion" EntitySet="ApplicationVersion" />
+            <End Role="ApplicationVersionDetails" EntitySet="ApplicationVersionDetails" />
+          </AssociationSet>
           <AssociationSet Name="fk_AttMarks_AttSubject" Association="Priem2012Model.Store.fk_AttMarks_AttSubject">
             <End Role="AttSubject" EntitySet="AttSubject" />
             <End Role="AttMarks" EntitySet="AttMarks" />
@@ -1465,6 +1484,37 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MinAge" Type="int" />
           <Property Name="MaxAge" Type="int" />
+        </EntityType>
+        <EntityType Name="ApplicationDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ObrazProgramInEntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ObrazProgramInEntryPriority" Type="int" Nullable="false" />
+          <Property Name="ProfileInObrazProgramInEntryId" Type="uniqueidentifier" />
+          <Property Name="ProfileInObrazProgramInEntryPriority" Type="int" />
+        </EntityType>
+        <EntityType Name="ApplicationVersion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IntNumber" Type="int" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="VersionDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationVersionDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationVersionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ObrazProgramInEntryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ObrazProgramInEntryPriority" Type="int" Nullable="false" />
+          <Property Name="ProfileInObrazProgramInEntryId" Type="uniqueidentifier" />
+          <Property Name="ProfileInObrazProgramInEntryPriority" Type="int" />
         </EntityType>
         <EntityType Name="AttMarks">
           <Key>
@@ -2846,7 +2896,9 @@
           <Property Name="PassportDate" Type="date" />
           <Property Name="Sex" Type="bit" Nullable="false" />
           <Property Name="CountryId" Type="int" />
+          <Property Name="ForeignCountryId" Type="int" />
           <Property Name="NationalityId" Type="int" Nullable="false" />
+          <Property Name="ForeignNationalityId" Type="int" />
           <Property Name="RegionId" Type="int" />
           <Property Name="Phone" Type="nvarchar" MaxLength="100" />
           <Property Name="Mobiles" Type="nvarchar" MaxLength="200" />
@@ -2896,8 +2948,10 @@
           <Property Name="PassportData" Type="nvarchar" MaxLength="532" />
           <Property Name="EducDocument" Type="nvarchar" MaxLength="41" />
           <Property Name="HostelFacultyAcr" Type="nvarchar" MaxLength="50" />
+          <Property Name="ForeignCountryName" Type="nvarchar" MaxLength="100" />
           <Property Name="CountryName" Type="nvarchar" MaxLength="100" />
           <Property Name="NationalityName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ForeignNationalityName" Type="nvarchar" MaxLength="100" />
           <Property Name="RegionName" Type="nvarchar" MaxLength="100" />
           <Property Name="HostelFacultyName" Type="nvarchar" MaxLength="100" />
           <Property Name="StartEnglish" Type="bit" />
@@ -3320,9 +3374,9 @@
             <PropertyRef Name="HasOriginals" />
             <PropertyRef Name="FacultyId" />
             <PropertyRef Name="LicenseProgramId" />
-            
+            <PropertyRef Name="LicenseProgramName" />
             <PropertyRef Name="ObrazProgramId" />
-            
+            <PropertyRef Name="ObrazProgramName" />
             <PropertyRef Name="StudyBasisId" />
             <PropertyRef Name="StudyBasisName" />
             <PropertyRef Name="StudyFormId" />
@@ -3335,7 +3389,6 @@
             <PropertyRef Name="IsReduced" />
             <PropertyRef Name="IsParallel" />
             <PropertyRef Name="IsGosLine" />
-            <PropertyRef Name="StudyPlanId" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PersonId" Type="uniqueidentifier" />
@@ -3381,7 +3434,7 @@
           <Property Name="StudyFormName" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="StudyLevelId" Type="int" Nullable="false" />
           <Property Name="StudyLevelName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="StudyPlanId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudyPlanId" Type="uniqueidentifier" />
           <Property Name="StudyPlanNumber" Type="nvarchar" MaxLength="64" />
           <Property Name="ProgramModeShortName" Type="nvarchar" MaxLength="100" />
           <Property Name="IsSecond" Type="bit" Nullable="false" />
@@ -3735,6 +3788,42 @@
             </Principal>
             <Dependent Role="Abiturient">
               <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationDetails_Abiturient">
+          <End Role="Abiturient" Type="Priem2012Model.Store.Abiturient" Multiplicity="1" />
+          <End Role="ApplicationDetails" Type="Priem2012Model.Store.ApplicationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Abiturient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationDetails">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationVersion_Abiturient">
+          <End Role="Abiturient" Type="Priem2012Model.Store.Abiturient" Multiplicity="1" />
+          <End Role="ApplicationVersion" Type="Priem2012Model.Store.ApplicationVersion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Abiturient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationVersion">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationVersionDetails_ApplicationVersion">
+          <End Role="ApplicationVersion" Type="Priem2012Model.Store.ApplicationVersion" Multiplicity="1" />
+          <End Role="ApplicationVersionDetails" Type="Priem2012Model.Store.ApplicationVersionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationVersionDetails">
+              <PropertyRef Name="ApplicationVersionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6364,7 +6453,6 @@
           <EntitySet Name="extAbit" EntityType="Priem2012Model.extAbit" />
           <EntitySet Name="extExamInEntry" EntityType="Priem2012Model.extExamInEntry" />
           <EntitySet Name="qAbitAll" EntityType="Priem2012Model.qAbitAll" />
-          <EntitySet Name="qAbiturient" EntityType="Priem2012Model.qAbiturient" />
           <EntitySet Name="qProtocol" EntityType="Priem2012Model.qProtocol" />
           <EntitySet Name="qProtocolHistory" EntityType="Priem2012Model.qProtocolHistory" />
           <AssociationSet Name="FK_Abiturient_CelCompetition" Association="Priem2012Model.FK_Abiturient_CelCompetition">
@@ -7195,6 +7283,22 @@
             <Parameter Name="IsGosLine" Mode="In" Type="Boolean" />
             <Parameter Name="id" Mode="In" Type="Guid" />
           </FunctionImport>
+          <EntitySet Name="qAbiturient" EntityType="Priem2012Model.qAbiturient" />
+          <EntitySet Name="ApplicationDetails" EntityType="Priem2012Model.ApplicationDetails" />
+          <EntitySet Name="ApplicationVersion" EntityType="Priem2012Model.ApplicationVersion" />
+          <EntitySet Name="ApplicationVersionDetails" EntityType="Priem2012Model.ApplicationVersionDetails" />
+          <AssociationSet Name="FK_ApplicationDetails_Abiturient" Association="Priem2012Model.FK_ApplicationDetails_Abiturient">
+            <End Role="Abiturient" EntitySet="Abiturient" />
+            <End Role="ApplicationDetails" EntitySet="ApplicationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationVersion_Abiturient" Association="Priem2012Model.FK_ApplicationVersion_Abiturient">
+            <End Role="Abiturient" EntitySet="Abiturient" />
+            <End Role="ApplicationVersion" EntitySet="ApplicationVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationVersionDetails_ApplicationVersion" Association="Priem2012Model.FK_ApplicationVersionDetails_ApplicationVersion">
+            <End Role="ApplicationVersion" EntitySet="ApplicationVersion" />
+            <End Role="ApplicationVersionDetails" EntitySet="ApplicationVersionDetails" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="C_SettingRoles">
           <Key>
@@ -8228,6 +8332,8 @@
           <Property Type="Guid" Name="CommitId" />
           <Property Type="Int32" Name="CommitNumber" />
           <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
+          <NavigationProperty Name="ApplicationDetails" Relationship="Priem2012Model.FK_ApplicationDetails_Abiturient" FromRole="Abiturient" ToRole="ApplicationDetails" />
+          <NavigationProperty Name="ApplicationVersion" Relationship="Priem2012Model.FK_ApplicationVersion_Abiturient" FromRole="Abiturient" ToRole="ApplicationVersion" />
         </EntityType>
         <EntityType Name="Protocol">
           <Key>
@@ -8467,94 +8573,6 @@
           <Property Type="String" Name="StudyBasisFISName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyFormFISName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyLevelFISName" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="qAbiturient">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="IsListener" />
-            <PropertyRef Name="IsPaid" />
-            <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="Checked" />
-            <PropertyRef Name="NotEnabled" />
-            <PropertyRef Name="CompFromOlymp" />
-            <PropertyRef Name="HasOriginals" />
-            <PropertyRef Name="FacultyId" />
-            <PropertyRef Name="LicenseProgramId" />
-            <PropertyRef Name="ObrazProgramId" />
-            <PropertyRef Name="StudyBasisId" />
-            <PropertyRef Name="StudyBasisName" />
-            <PropertyRef Name="StudyFormId" />
-            <PropertyRef Name="StudyFormName" />
-            <PropertyRef Name="StudyLevelId" />
-            <PropertyRef Name="StudyLevelName" />
-            <PropertyRef Name="StudyPlanId" />
-            <PropertyRef Name="IsSecond" />
-            <PropertyRef Name="StudyLevelGroupId" />
-            <PropertyRef Name="WithHE" />
-            <PropertyRef Name="IsReduced" />
-            <PropertyRef Name="IsParallel" />
-            <PropertyRef Name="IsGosLine" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="PersonId" />
-          <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="EntryId" />
-          <Property Type="Int32" Name="CompetitionId" />
-          <Property Type="Boolean" Name="IsListener" Nullable="false" />
-          <Property Type="Boolean" Name="IsPaid" Nullable="false" />
-          <Property Type="Boolean" Name="BackDoc" Nullable="false" />
-          <Property Type="DateTime" Name="BackDocDate" Precision="0" />
-          <Property Type="DateTime" Name="DocDate" Precision="0" />
-          <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
-          <Property Type="Boolean" Name="Checked" Nullable="false" />
-          <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
-          <Property Type="Double" Name="Coefficient" />
-          <Property Type="Int32" Name="Sum" />
-          <Property Type="Int32" Name="OtherCompetitionId" />
-          <Property Type="Int32" Name="CelCompetitionId" />
-          <Property Type="String" Name="CelCompetitionText" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="CompFromOlymp" Nullable="false" />
-          <Property Type="Int32" Name="LanguageId" />
-          <Property Type="Boolean" Name="HasOriginals" Nullable="false" />
-          <Property Type="String" Name="StudyNumber" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Double" Name="SessionAVG" />
-          <Property Type="Int32" Name="StudentStatus" />
-          <Property Type="Double" Name="Priority" />
-          <Property Type="Int32" Name="Barcode" />
-          <Property Type="Int32" Name="FacultyId" Nullable="false" />
-          <Property Type="String" Name="FacultyName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="FacultyAcr" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="LicenseProgramId" Nullable="false" />
-          <Property Type="String" Name="LicenseProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="String" Name="LicenseProgramCode" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="ObrazProgramId" Nullable="false" />
-          <Property Type="String" Name="ObrazProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="String" Name="ObrazProgramNumber" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="ProfileId" />
-          <Property Type="String" Name="ProfileName" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyBasisId" Nullable="false" />
-          <Property Type="String" Name="StudyBasisName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyFormId" Nullable="false" />
-          <Property Type="String" Name="StudyFormName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyLevelId" Nullable="false" />
-          <Property Type="String" Name="StudyLevelName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="StudyPlanId" Nullable="false" />
-          <Property Type="String" Name="StudyPlanNumber" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ProgramModeShortName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="IsSecond" Nullable="false" />
-          <Property Type="String" Name="StudyFormOldName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyLevelGroupId" Nullable="false" />
-          <Property Type="String" Name="ObrazProgramNameEx" MaxLength="1014" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="WithHE" Nullable="false" />
-          <Property Type="Boolean" Name="IsReduced" Nullable="false" />
-          <Property Type="Boolean" Name="IsParallel" Nullable="false" />
-          <Property Type="String" Name="StudyBasisFISName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="StudyFormFISName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramPrintName" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="CommitId" />
-          <Property Type="Int32" Name="CommitNumber" />
-          <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
         </EntityType>
         <EntityType Name="qProtocol">
           <Key>
@@ -10307,7 +10325,171 @@
           <Property Type="String" Name="EqualDocumentNumber" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="HasTRKI" />
           <Property Type="String" Name="TRKICertificateNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ForeignCountryId" />
+          <Property Type="Int32" Name="ForeignNationalityId" />
+          <Property Type="String" Name="ForeignCountryName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ForeignNationalityName" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="qAbiturient">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="IsListener" />
+            <PropertyRef Name="IsPaid" />
+            <PropertyRef Name="BackDoc" />
+            <PropertyRef Name="Checked" />
+            <PropertyRef Name="NotEnabled" />
+            <PropertyRef Name="CompFromOlymp" />
+            <PropertyRef Name="HasOriginals" />
+            <PropertyRef Name="FacultyId" />
+            <PropertyRef Name="LicenseProgramId" />
+            <PropertyRef Name="LicenseProgramName" />
+            <PropertyRef Name="ObrazProgramId" />
+            <PropertyRef Name="ObrazProgramName" />
+            <PropertyRef Name="StudyBasisId" />
+            <PropertyRef Name="StudyBasisName" />
+            <PropertyRef Name="StudyFormId" />
+            <PropertyRef Name="StudyFormName" />
+            <PropertyRef Name="StudyLevelId" />
+            <PropertyRef Name="StudyLevelName" />
+            <PropertyRef Name="IsSecond" />
+            <PropertyRef Name="StudyLevelGroupId" />
+            <PropertyRef Name="WithHE" />
+            <PropertyRef Name="IsReduced" />
+            <PropertyRef Name="IsParallel" />
+            <PropertyRef Name="IsGosLine" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="PersonId" />
+          <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="EntryId" />
+          <Property Type="Int32" Name="CompetitionId" />
+          <Property Type="Boolean" Name="IsListener" Nullable="false" />
+          <Property Type="Boolean" Name="IsPaid" Nullable="false" />
+          <Property Type="Boolean" Name="BackDoc" Nullable="false" />
+          <Property Type="DateTime" Name="BackDocDate" Precision="0" />
+          <Property Type="DateTime" Name="DocDate" Precision="0" />
+          <Property Type="DateTime" Name="DocInsertDate" Precision="0" />
+          <Property Type="Boolean" Name="Checked" Nullable="false" />
+          <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
+          <Property Type="Double" Name="Coefficient" />
+          <Property Type="Int32" Name="Sum" />
+          <Property Type="Int32" Name="OtherCompetitionId" />
+          <Property Type="Int32" Name="CelCompetitionId" />
+          <Property Type="String" Name="CelCompetitionText" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="CompFromOlymp" Nullable="false" />
+          <Property Type="Int32" Name="LanguageId" />
+          <Property Type="Boolean" Name="HasOriginals" Nullable="false" />
+          <Property Type="String" Name="StudyNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Double" Name="SessionAVG" />
+          <Property Type="Int32" Name="StudentStatus" />
+          <Property Type="Double" Name="Priority" />
+          <Property Type="Int32" Name="Barcode" />
+          <Property Type="Int32" Name="FacultyId" Nullable="false" />
+          <Property Type="String" Name="FacultyName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FacultyAcr" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="LicenseProgramId" Nullable="false" />
+          <Property Type="String" Name="LicenseProgramName" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LicenseProgramCode" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ObrazProgramId" Nullable="false" />
+          <Property Type="String" Name="ObrazProgramName" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="ProfileId" />
+          <Property Type="String" Name="ProfileName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyBasisId" Nullable="false" />
+          <Property Type="String" Name="StudyBasisName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyFormId" Nullable="false" />
+          <Property Type="String" Name="StudyFormName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyLevelId" Nullable="false" />
+          <Property Type="String" Name="StudyLevelName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="StudyPlanId" />
+          <Property Type="String" Name="StudyPlanNumber" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ProgramModeShortName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsSecond" Nullable="false" />
+          <Property Type="String" Name="StudyFormOldName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyLevelGroupId" Nullable="false" />
+          <Property Type="String" Name="ObrazProgramNameEx" MaxLength="1014" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="WithHE" Nullable="false" />
+          <Property Type="Boolean" Name="IsReduced" Nullable="false" />
+          <Property Type="Boolean" Name="IsParallel" Nullable="false" />
+          <Property Type="String" Name="StudyBasisFISName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyFormFISName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramPrintName" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="CommitId" />
+          <Property Type="Int32" Name="CommitNumber" />
+          <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="ObrazProgramInEntryId" Nullable="false" />
+          <Property Type="Int32" Name="ObrazProgramInEntryPriority" Nullable="false" />
+          <Property Type="Guid" Name="ProfileInObrazProgramInEntryId" />
+          <Property Type="Int32" Name="ProfileInObrazProgramInEntryPriority" />
+          <NavigationProperty Name="Abiturient" Relationship="Priem2012Model.FK_ApplicationDetails_Abiturient" FromRole="ApplicationDetails" ToRole="Abiturient" />
+        </EntityType>
+        <EntityType Name="ApplicationVersion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="IntNumber" Nullable="false" />
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="DateTime" Name="VersionDate" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Abiturient" Relationship="Priem2012Model.FK_ApplicationVersion_Abiturient" FromRole="ApplicationVersion" ToRole="Abiturient" />
+          <NavigationProperty Name="ApplicationVersionDetails" Relationship="Priem2012Model.FK_ApplicationVersionDetails_ApplicationVersion" FromRole="ApplicationVersion" ToRole="ApplicationVersionDetails" />
+        </EntityType>
+        <EntityType Name="ApplicationVersionDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ApplicationVersionId" Nullable="false" />
+          <Property Type="Guid" Name="ObrazProgramInEntryId" Nullable="false" />
+          <Property Type="Int32" Name="ObrazProgramInEntryPriority" Nullable="false" />
+          <Property Type="Guid" Name="ProfileInObrazProgramInEntryId" />
+          <Property Type="Int32" Name="ProfileInObrazProgramInEntryPriority" />
+          <NavigationProperty Name="ApplicationVersion" Relationship="Priem2012Model.FK_ApplicationVersionDetails_ApplicationVersion" FromRole="ApplicationVersionDetails" ToRole="ApplicationVersion" />
+        </EntityType>
+        <Association Name="FK_ApplicationDetails_Abiturient">
+          <End Type="Priem2012Model.Abiturient" Role="Abiturient" Multiplicity="1" />
+          <End Type="Priem2012Model.ApplicationDetails" Role="ApplicationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Abiturient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationDetails">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationVersion_Abiturient">
+          <End Type="Priem2012Model.Abiturient" Role="Abiturient" Multiplicity="1" />
+          <End Type="Priem2012Model.ApplicationVersion" Role="ApplicationVersion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Abiturient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationVersion">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationVersionDetails_ApplicationVersion">
+          <End Type="Priem2012Model.ApplicationVersion" Role="ApplicationVersion" Multiplicity="1" />
+          <End Type="Priem2012Model.ApplicationVersionDetails" Role="ApplicationVersionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationVersionDetails">
+              <PropertyRef Name="ApplicationVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11115,72 +11297,6 @@
                 <ScalarProperty Name="IsParallel" ColumnName="IsParallel" />
                 <ScalarProperty Name="IsReduced" ColumnName="IsReduced" />
                 <ScalarProperty Name="WithHE" ColumnName="WithHE" />
-                <ScalarProperty Name="StudyLevelGroupId" ColumnName="StudyLevelGroupId" />
-                <ScalarProperty Name="StudyFormOldName" ColumnName="StudyFormOldName" />
-                <ScalarProperty Name="IsSecond" ColumnName="IsSecond" />
-                <ScalarProperty Name="ProgramModeShortName" ColumnName="ProgramModeShortName" />
-                <ScalarProperty Name="StudyPlanNumber" ColumnName="StudyPlanNumber" />
-                <ScalarProperty Name="StudyPlanId" ColumnName="StudyPlanId" />
-                <ScalarProperty Name="StudyLevelName" ColumnName="StudyLevelName" />
-                <ScalarProperty Name="StudyLevelId" ColumnName="StudyLevelId" />
-                <ScalarProperty Name="StudyFormName" ColumnName="StudyFormName" />
-                <ScalarProperty Name="StudyFormId" ColumnName="StudyFormId" />
-                <ScalarProperty Name="StudyBasisName" ColumnName="StudyBasisName" />
-                <ScalarProperty Name="StudyBasisId" ColumnName="StudyBasisId" />
-                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
-                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
-                <ScalarProperty Name="ObrazProgramCrypt" ColumnName="ObrazProgramCrypt" />
-                <ScalarProperty Name="ObrazProgramNumber" ColumnName="ObrazProgramNumber" />
-                <ScalarProperty Name="ObrazProgramName" ColumnName="ObrazProgramName" />
-                <ScalarProperty Name="ObrazProgramId" ColumnName="ObrazProgramId" />
-                <ScalarProperty Name="LicenseProgramCode" ColumnName="LicenseProgramCode" />
-                <ScalarProperty Name="LicenseProgramName" ColumnName="LicenseProgramName" />
-                <ScalarProperty Name="LicenseProgramId" ColumnName="LicenseProgramId" />
-                <ScalarProperty Name="FacultyAcr" ColumnName="FacultyAcr" />
-                <ScalarProperty Name="FacultyName" ColumnName="FacultyName" />
-                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
-                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="StudentStatus" ColumnName="StudentStatus" />
-                <ScalarProperty Name="SessionAVG" ColumnName="SessionAVG" />
-                <ScalarProperty Name="StudyNumber" ColumnName="StudyNumber" />
-                <ScalarProperty Name="HasOriginals" ColumnName="HasOriginals" />
-                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
-                <ScalarProperty Name="CompFromOlymp" ColumnName="CompFromOlymp" />
-                <ScalarProperty Name="CelCompetitionText" ColumnName="CelCompetitionText" />
-                <ScalarProperty Name="CelCompetitionId" ColumnName="CelCompetitionId" />
-                <ScalarProperty Name="OtherCompetitionId" ColumnName="OtherCompetitionId" />
-                <ScalarProperty Name="Sum" ColumnName="Sum" />
-                <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
-                <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
-                <ScalarProperty Name="Checked" ColumnName="Checked" />
-                <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
-                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
-                <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
-                <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
-                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
-                <ScalarProperty Name="IsListener" ColumnName="IsListener" />
-                <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
-                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
-                <ScalarProperty Name="RegNum" ColumnName="RegNum" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="qAbiturient">
-            <EntityTypeMapping TypeName="Priem2012Model.qAbiturient">
-              <MappingFragment StoreEntitySet="qAbiturient">
-                <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
-                <ScalarProperty Name="CommitNumber" ColumnName="CommitNumber" />
-                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
-                <ScalarProperty Name="ObrazProgramPrintName" ColumnName="ObrazProgramPrintName" />
-                <ScalarProperty Name="StudyFormFISName" ColumnName="StudyFormFISName" />
-                <ScalarProperty Name="StudyBasisFISName" ColumnName="StudyBasisFISName" />
-                <ScalarProperty Name="IsParallel" ColumnName="IsParallel" />
-                <ScalarProperty Name="IsReduced" ColumnName="IsReduced" />
-                <ScalarProperty Name="WithHE" ColumnName="WithHE" />
-                <ScalarProperty Name="ObrazProgramNameEx" ColumnName="ObrazProgramNameEx" />
                 <ScalarProperty Name="StudyLevelGroupId" ColumnName="StudyLevelGroupId" />
                 <ScalarProperty Name="StudyFormOldName" ColumnName="StudyFormOldName" />
                 <ScalarProperty Name="IsSecond" ColumnName="IsSecond" />
@@ -12241,6 +12357,10 @@
           <EntitySetMapping Name="extForeignPerson">
             <EntityTypeMapping TypeName="Priem2012Model.extPerson">
               <MappingFragment StoreEntitySet="extForeignPerson">
+                <ScalarProperty Name="ForeignNationalityName" ColumnName="ForeignNationalityName" />
+                <ScalarProperty Name="ForeignCountryName" ColumnName="ForeignCountryName" />
+                <ScalarProperty Name="ForeignNationalityId" ColumnName="ForeignNationalityId" />
+                <ScalarProperty Name="ForeignCountryId" ColumnName="ForeignCountryId" />
                 <ScalarProperty Name="TRKICertificateNumber" ColumnName="TRKICertificateNumber" />
                 <ScalarProperty Name="HasTRKI" ColumnName="HasTRKI" />
                 <ScalarProperty Name="EqualDocumentNumber" ColumnName="EqualDocumentNumber" />
@@ -12343,6 +12463,106 @@
           <FunctionImportMapping FunctionImportName="PersonVisaInfo_insert" FunctionName="Priem2012Model.Store.PersonVisaInfo_insert" />
           <FunctionImportMapping FunctionImportName="PersonVisaInfo_update" FunctionName="Priem2012Model.Store.PersonVisaInfo_update" />
           <FunctionImportMapping FunctionImportName="Abiturient_InsertDirectly" FunctionName="Priem2012Model.Store.Abiturient_InsertDirectly" />
+          <EntitySetMapping Name="qAbiturient">
+            <EntityTypeMapping TypeName="Priem2012Model.qAbiturient">
+              <MappingFragment StoreEntitySet="qAbiturient">
+                <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
+                <ScalarProperty Name="CommitNumber" ColumnName="CommitNumber" />
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
+                <ScalarProperty Name="ObrazProgramPrintName" ColumnName="ObrazProgramPrintName" />
+                <ScalarProperty Name="StudyFormFISName" ColumnName="StudyFormFISName" />
+                <ScalarProperty Name="StudyBasisFISName" ColumnName="StudyBasisFISName" />
+                <ScalarProperty Name="IsParallel" ColumnName="IsParallel" />
+                <ScalarProperty Name="IsReduced" ColumnName="IsReduced" />
+                <ScalarProperty Name="WithHE" ColumnName="WithHE" />
+                <ScalarProperty Name="ObrazProgramNameEx" ColumnName="ObrazProgramNameEx" />
+                <ScalarProperty Name="StudyLevelGroupId" ColumnName="StudyLevelGroupId" />
+                <ScalarProperty Name="StudyFormOldName" ColumnName="StudyFormOldName" />
+                <ScalarProperty Name="IsSecond" ColumnName="IsSecond" />
+                <ScalarProperty Name="ProgramModeShortName" ColumnName="ProgramModeShortName" />
+                <ScalarProperty Name="StudyPlanNumber" ColumnName="StudyPlanNumber" />
+                <ScalarProperty Name="StudyPlanId" ColumnName="StudyPlanId" />
+                <ScalarProperty Name="StudyLevelName" ColumnName="StudyLevelName" />
+                <ScalarProperty Name="StudyLevelId" ColumnName="StudyLevelId" />
+                <ScalarProperty Name="StudyFormName" ColumnName="StudyFormName" />
+                <ScalarProperty Name="StudyFormId" ColumnName="StudyFormId" />
+                <ScalarProperty Name="StudyBasisName" ColumnName="StudyBasisName" />
+                <ScalarProperty Name="StudyBasisId" ColumnName="StudyBasisId" />
+                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+                <ScalarProperty Name="ObrazProgramCrypt" ColumnName="ObrazProgramCrypt" />
+                <ScalarProperty Name="ObrazProgramNumber" ColumnName="ObrazProgramNumber" />
+                <ScalarProperty Name="ObrazProgramName" ColumnName="ObrazProgramName" />
+                <ScalarProperty Name="ObrazProgramId" ColumnName="ObrazProgramId" />
+                <ScalarProperty Name="LicenseProgramCode" ColumnName="LicenseProgramCode" />
+                <ScalarProperty Name="LicenseProgramName" ColumnName="LicenseProgramName" />
+                <ScalarProperty Name="LicenseProgramId" ColumnName="LicenseProgramId" />
+                <ScalarProperty Name="FacultyAcr" ColumnName="FacultyAcr" />
+                <ScalarProperty Name="FacultyName" ColumnName="FacultyName" />
+                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="StudentStatus" ColumnName="StudentStatus" />
+                <ScalarProperty Name="SessionAVG" ColumnName="SessionAVG" />
+                <ScalarProperty Name="StudyNumber" ColumnName="StudyNumber" />
+                <ScalarProperty Name="HasOriginals" ColumnName="HasOriginals" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="CompFromOlymp" ColumnName="CompFromOlymp" />
+                <ScalarProperty Name="CelCompetitionText" ColumnName="CelCompetitionText" />
+                <ScalarProperty Name="CelCompetitionId" ColumnName="CelCompetitionId" />
+                <ScalarProperty Name="OtherCompetitionId" ColumnName="OtherCompetitionId" />
+                <ScalarProperty Name="Sum" ColumnName="Sum" />
+                <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
+                <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
+                <ScalarProperty Name="Checked" ColumnName="Checked" />
+                <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
+                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
+                <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
+                <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
+                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+                <ScalarProperty Name="IsListener" ColumnName="IsListener" />
+                <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="RegNum" ColumnName="RegNum" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationDetails">
+            <EntityTypeMapping TypeName="Priem2012Model.ApplicationDetails">
+              <MappingFragment StoreEntitySet="ApplicationDetails">
+                <ScalarProperty Name="ProfileInObrazProgramInEntryPriority" ColumnName="ProfileInObrazProgramInEntryPriority" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryId" ColumnName="ProfileInObrazProgramInEntryId" />
+                <ScalarProperty Name="ObrazProgramInEntryPriority" ColumnName="ObrazProgramInEntryPriority" />
+                <ScalarProperty Name="ObrazProgramInEntryId" ColumnName="ObrazProgramInEntryId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationVersion">
+            <EntityTypeMapping TypeName="Priem2012Model.ApplicationVersion">
+              <MappingFragment StoreEntitySet="ApplicationVersion">
+                <ScalarProperty Name="VersionDate" ColumnName="VersionDate" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="IntNumber" ColumnName="IntNumber" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationVersionDetails">
+            <EntityTypeMapping TypeName="Priem2012Model.ApplicationVersionDetails">
+              <MappingFragment StoreEntitySet="ApplicationVersionDetails">
+                <ScalarProperty Name="ProfileInObrazProgramInEntryPriority" ColumnName="ProfileInObrazProgramInEntryPriority" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryId" ColumnName="ProfileInObrazProgramInEntryId" />
+                <ScalarProperty Name="ObrazProgramInEntryPriority" ColumnName="ObrazProgramInEntryPriority" />
+                <ScalarProperty Name="ObrazProgramInEntryId" ColumnName="ObrazProgramInEntryId" />
+                <ScalarProperty Name="ApplicationVersionId" ColumnName="ApplicationVersionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -12611,7 +12831,6 @@
         <EntityTypeShape EntityType="Priem2012Model.extAbit" Width="1.5" PointX="16.75" PointY="24.75" Height="11.453146158854167" />
         <EntityTypeShape EntityType="Priem2012Model.extExamInEntry" Width="1.5" PointX="22.75" PointY="21.75" Height="4.2218636067708388" />
         <EntityTypeShape EntityType="Priem2012Model.qAbitAll" Width="1.5" PointX="24.75" PointY="2.75" Height="10.138367513020832" />
-        <EntityTypeShape EntityType="Priem2012Model.qAbiturient" Width="1.5" PointX="24.75" PointY="13.75" Height="10.302714843750001" />
         <EntityTypeShape EntityType="Priem2012Model.qProtocol" Width="1.5" PointX="22.75" PointY="26.75" Height="3.2357796223958317" />
         <EntityTypeShape EntityType="Priem2012Model.qProtocolHistory" Width="1.5" PointX="24.75" PointY="25.75" Height="3.893168945312496" />
         <AssociationConnector Association="Priem2012Model.FK_Abiturient_CelCompetition" >
@@ -13102,6 +13321,13 @@
         <EntityTypeShape EntityType="Priem2012Model.SchoolNames" Width="1.5" PointX="10.399214537068836" PointY="21.065563628946229" />
         <EntityTypeShape EntityType="Priem2012Model.C_AppSettings" Width="1.5" PointX="6.428422342254045" PointY="27.097689074975293" />
         <EntityTypeShape EntityType="Priem2012Model.extPerson" Width="1.5" PointX="5.5441401961930747" PointY="31.784940704603187" />
+        <EntityTypeShape EntityType="Priem2012Model.qAbiturient" Width="1.5" PointX="1.7765857678729042" PointY="0.029977813377034764" />
+        <EntityTypeShape EntityType="Priem2012Model.ApplicationDetails" Width="1.5" PointX="6.3455933026716087" PointY="24.360187079925176" />
+        <EntityTypeShape EntityType="Priem2012Model.ApplicationVersion" Width="1.5" PointX="4.6948828830825553" PointY="9.6176942482673073" />
+        <EntityTypeShape EntityType="Priem2012Model.ApplicationVersionDetails" Width="1.5" PointX="7.13657481369403" PointY="15.917766310236308" />
+        <AssociationConnector Association="Priem2012Model.FK_ApplicationDetails_Abiturient" />
+        <AssociationConnector Association="Priem2012Model.FK_ApplicationVersion_Abiturient" />
+        <AssociationConnector Association="Priem2012Model.FK_ApplicationVersionDetails_ApplicationVersion" />
         </Diagram>
     </Diagrams>
   </Designer>

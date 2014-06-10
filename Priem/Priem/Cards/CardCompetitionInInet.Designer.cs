@@ -64,6 +64,7 @@
             this.epError = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnSave = new System.Windows.Forms.Button();
             this.chbIsGosLine = new System.Windows.Forms.CheckBox();
+            this.btnHasInnerObrazProgram = new System.Windows.Forms.Button();
             this.gbDocs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).BeginInit();
             this.SuspendLayout();
@@ -211,7 +212,7 @@
             // 
             this.tbCelCompetitionText.Location = new System.Drawing.Point(196, 352);
             this.tbCelCompetitionText.Name = "tbCelCompetitionText";
-            this.tbCelCompetitionText.Size = new System.Drawing.Size(170, 20);
+            this.tbCelCompetitionText.Size = new System.Drawing.Size(164, 20);
             this.tbCelCompetitionText.TabIndex = 177;
             // 
             // lblCelCompetition
@@ -433,11 +434,23 @@
             this.chbIsGosLine.Text = "Поступление по гослинии";
             this.chbIsGosLine.UseVisualStyleBackColor = true;
             // 
+            // btnHasInnerObrazProgram
+            // 
+            this.btnHasInnerObrazProgram.Location = new System.Drawing.Point(366, 311);
+            this.btnHasInnerObrazProgram.Name = "btnHasInnerObrazProgram";
+            this.btnHasInnerObrazProgram.Size = new System.Drawing.Size(84, 62);
+            this.btnHasInnerObrazProgram.TabIndex = 192;
+            this.btnHasInnerObrazProgram.Text = "Приоритеты по обр. программам";
+            this.btnHasInnerObrazProgram.UseVisualStyleBackColor = true;
+            this.btnHasInnerObrazProgram.Visible = false;
+            this.btnHasInnerObrazProgram.Click += new System.EventHandler(this.btnHasInnerObrazProgram_Click);
+            // 
             // CardCompetitionInInet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(476, 529);
+            this.Controls.Add(this.btnHasInnerObrazProgram);
             this.Controls.Add(this.chbIsGosLine);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.cbStudyLevel);
@@ -518,5 +531,6 @@
         private System.Windows.Forms.ErrorProvider epError;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.CheckBox chbIsGosLine;
+        private System.Windows.Forms.Button btnHasInnerObrazProgram;
     }
 }

@@ -98,8 +98,8 @@ namespace Priem
                 pers.PassportCode = row["PassportCode"].ToString();
                 pers.PersonalCode = row["PersonalCode"].ToString();
                 pers.Sex = QueryServ.ToBoolValue(row["Sex"]);
-                pers.CountryId = (int?)(Util.ToNullObject(row["CountryId"]));
-                pers.NationalityId = (int)(row["NationalityId"]);
+                pers.ForeignCountryId = (int?)(Util.ToNullObject(row["CountryId"]));
+                pers.ForeignNationalityId = (int)(row["NationalityId"]);
                 pers.RegionId = (int?)(Util.ToNullObject(row["RegionId"]));
                 pers.Phone = row["Phone"].ToString();
                 pers.Mobiles = row["Mobiles"].ToString();

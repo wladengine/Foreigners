@@ -295,7 +295,6 @@
             this.cbStudyLevel.Name = "cbStudyLevel";
             this.cbStudyLevel.Size = new System.Drawing.Size(170, 21);
             this.cbStudyLevel.TabIndex = 126;
-            this.cbStudyLevel.SelectedIndexChanged += new System.EventHandler(this.cbStudyLevel_SelectedIndexChanged);
             // 
             // label10
             // 

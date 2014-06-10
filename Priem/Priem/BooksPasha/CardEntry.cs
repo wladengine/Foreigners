@@ -25,7 +25,7 @@ namespace Priem
         {
             base.ExtraInit();
             _title = "Прием";
-            _tableName = "ed.[Entry]";              
+            _tableName = "ed.[Entry]";
         }
 
         protected override void SetIsOpen()

@@ -106,7 +106,6 @@ namespace Priem
             {
             }
         }
-
         protected virtual void btnPrev_Click(object sender, EventArgs e)
         {
             try

@@ -51,6 +51,9 @@ namespace Priem
 
         public int Barcode { get; private set; }
 
+        public bool HasInnerPriorities { get; set; }
+        public List<ShortObrazProgramInEntry> lstObrazProgramsInEntry { get; set; }
+
         public ShortCompetition(Guid _Id, Guid _CommitId, Guid _EntryId, Guid _PersonId, int? _VersionNum, DateTime? _VersionDate)
         {
             Id = _Id;
@@ -76,6 +79,33 @@ namespace Priem
                 if (Entry != null)
                     EntryId = Entry.Id;
             }
+        }
+    }
+    public class ShortObrazProgramInEntry
+    {
+        public Guid Id { get; private set; }
+        public string ObrazProgramName { get; private set; }
+        public int ObrazProgramInEntryPriority { get; set; }
+        public int CurrVersion { get; set; }
+        public DateTime CurrDate { get; set; }
+        public List<ShortProfileInObrazProgramInEntry> ListProfiles { get; set; }
+
+        public ShortObrazProgramInEntry(Guid _id, string _obrazProgramName)
+        {
+            Id = _id;
+            ObrazProgramName = _obrazProgramName;
+        }
+    }
+    public class ShortProfileInObrazProgramInEntry
+    {
+        public Guid Id { get; private set; }
+        public string ProfileName { get; private set; }
+        public int ProfileInObrazProgramInEntryPriority { get; set; }
+
+        public ShortProfileInObrazProgramInEntry(Guid _Id, string _ProfileName)
+        {
+            Id = _Id;
+            ProfileName = _ProfileName;
         }
     }
 }

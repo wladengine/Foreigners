@@ -25,6 +25,8 @@ namespace Priem
         private bool _closePerson;
         private bool _closeAbit;
 
+        private int? RegionEducId { get; set; }
+
         private List<ShortCompetition> LstCompetitions;
 
         LoadFromInet load;
@@ -256,6 +258,9 @@ namespace Priem
                 LstCompetitions[ind].HasCompetition = comp.HasCompetition;
                 LstCompetitions[ind].ChangeEntry();
 
+                string query = "UPDATE [Application] SET IsApprovedByComission=1, ApproverName=SUSER_SNAME(), CompetitionId=@CompId WHERE Id=@Id";
+                _bdcInet.ExecuteQuery(query, new SortedList<string, object>() { { "@Id", comp.Id }, { "@CompId", comp.CompetitionId } });
+
                 UpdateApplicationGrid();
             }
         }
@@ -375,7 +380,8 @@ namespace Priem
                 SchoolName = person.SchoolName;
                 SchoolNum = person.SchoolNum;
                 SchoolExitYear = person.SchoolExitYear;
-                CountryEducId = person.CountryEducId;
+                CountryEducId = person.ForeignCountryEducId;
+                RegionEducId = person.RegionEducId;
                 
                 IsEqual = person.IsEqual ?? false;
                 EqualDocumentNumber = person.EqualDocumentNumber;
@@ -937,7 +943,7 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                                     CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal,
                                     HostelAbit, false,
                                     null, false, null, IsExcellent, LanguageId, SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear,
-                                    SchoolAVG, CountryEducId, IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
+                                    SchoolAVG, CountryEducId, RegionEducId, IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
                                     HEQualification, HEEntryYear, HEExitYear, HEStudyFormId, HEWork, Stag, WorkPlace, Privileges, PassportCode,
                                     PersonalCode, PersonInfo, ExtraInfo, ScienceWork, StartEnglish, EnglishMark, entId);
 

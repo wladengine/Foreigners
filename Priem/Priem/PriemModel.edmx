@@ -572,7 +572,9 @@
       [extForeignPerson].[KladrCode] AS [KladrCode], 
       [extForeignPerson].[EqualDocumentNumber] AS [EqualDocumentNumber], 
       [extForeignPerson].[HasTRKI] AS [HasTRKI], 
-      [extForeignPerson].[TRKICertificateNumber] AS [TRKICertificateNumber]
+      [extForeignPerson].[TRKICertificateNumber] AS [TRKICertificateNumber], 
+      [extForeignPerson].[RegionEducId] AS [RegionEducId], 
+      [extForeignPerson].[ForeignCountryEducId] AS [ForeignCountryEducId]
       FROM [ed].[extForeignPerson] AS [extForeignPerson]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="extOlympBook" EntityType="Priem2012Model.Store.extOlympBook" store:Type="Views" store:Schema="ed" store:Name="extOlympBook">
@@ -716,7 +718,8 @@
       [extPersonAll].[CompetitionWinner] AS [CompetitionWinner], 
       [extPersonAll].[HasGrant] AS [HasGrant], 
       [extPersonAll].[HostelEduc] AS [HostelEduc], 
-      [extPersonAll].[SNILS] AS [SNILS]
+      [extPersonAll].[SNILS] AS [SNILS], 
+      [extPersonAll].[RegionEducId] AS [RegionEducId]
       FROM [ed].[extPersonAll] AS [extPersonAll]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="extProtocol" EntityType="Priem2012Model.Store.extProtocol" store:Type="Views" store:Schema="ed" store:Name="extProtocol">
@@ -2134,7 +2137,7 @@
             <PropertyRef Name="PersonId" />
           </Key>
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="IsExcellent" Type="bit" />
+          <Property Name="IsExcellent" Type="bit" Nullable="false" />
           <Property Name="LanguageId" Type="int" />
           <Property Name="SchoolCity" Type="nvarchar" MaxLength="100" />
           <Property Name="SchoolTypeId" Type="int" />
@@ -2142,6 +2145,7 @@
           <Property Name="SchoolNum" Type="nvarchar" MaxLength="50" />
           <Property Name="SchoolExitYear" Type="int" />
           <Property Name="CountryEducId" Type="int" />
+          <Property Name="RegionEducId" Type="int" />
           <Property Name="ForeignCountryEducId" Type="int" />
           <Property Name="AttestatRegion" Type="nvarchar" MaxLength="2" />
           <Property Name="AttestatSeries" Type="nvarchar" MaxLength="10" />
@@ -2974,6 +2978,8 @@
           <Property Name="EqualDocumentNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="HasTRKI" Type="bit" />
           <Property Name="TRKICertificateNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegionEducId" Type="int" />
+          <Property Name="ForeignCountryEducId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Priem.ed.extOlympBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3149,6 +3155,7 @@
           <Property Name="HasGrant" Type="bit" />
           <Property Name="HostelEduc" Type="bit" />
           <Property Name="SNILS" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegionEducId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'Priem.ed.extProtocol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -3792,7 +3799,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ApplicationDetails_Abiturient">
-          <End Role="Abiturient" Type="Priem2012Model.Store.Abiturient" Multiplicity="1" />
+          <End Role="Abiturient" Type="Priem2012Model.Store.Abiturient" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ApplicationDetails" Type="Priem2012Model.Store.ApplicationDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Abiturient">
@@ -3804,7 +3813,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ApplicationVersion_Abiturient">
-          <End Role="Abiturient" Type="Priem2012Model.Store.Abiturient" Multiplicity="1" />
+          <End Role="Abiturient" Type="Priem2012Model.Store.Abiturient" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ApplicationVersion" Type="Priem2012Model.Store.ApplicationVersion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Abiturient">
@@ -3816,7 +3827,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ApplicationVersionDetails_ApplicationVersion">
-          <End Role="ApplicationVersion" Type="Priem2012Model.Store.ApplicationVersion" Multiplicity="1" />
+          <End Role="ApplicationVersion" Type="Priem2012Model.Store.ApplicationVersion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ApplicationVersionDetails" Type="Priem2012Model.Store.ApplicationVersionDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApplicationVersion">
@@ -4885,6 +4898,7 @@
           <Parameter Name="IsReduced" Type="bit" Mode="In" />
           <Parameter Name="IsParallel" Type="bit" Mode="In" />
           <Parameter Name="KCP" Type="int" Mode="In" />
+          <Parameter Name="ComissionId" Type="int" Mode="In" />
         </Function>
         <Function Name="Entry_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
           <Parameter Name="Id" Type="uniqueidentifier" Mode="In" />
@@ -4902,6 +4916,7 @@
           <Parameter Name="DateOfClose_GosLine" Type="datetime" Mode="In" />
           <Parameter Name="DateOfStart" Type="datetime" Mode="In" />
           <Parameter Name="DateOfClose" Type="datetime" Mode="In" />
+          <Parameter Name="ComissionId" Type="int" Mode="In" />
         </Function>
         <Function Name="Entry_UpdateCEl" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
           <Parameter Name="Id" Type="uniqueidentifier" Mode="In" />
@@ -5365,6 +5380,7 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
+          <Parameter Name="RegionEducId" Type="int" Mode="In" />
           <Parameter Name="IsEqual" Type="bit" Mode="In" />
           <Parameter Name="EqualDocumentNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="HasTRKI" Type="bit" Mode="In" />
@@ -5429,6 +5445,7 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
+          <Parameter Name="RegionEducId" Type="int" Mode="In" />
           <Parameter Name="IsEqual" Type="bit" Mode="In" />
           <Parameter Name="EqualDocumentNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="HasTRKI" Type="bit" Mode="In" />
@@ -5484,6 +5501,7 @@
           <Parameter Name="HouseReal" Type="nvarchar" Mode="In" />
           <Parameter Name="KorpusReal" Type="nvarchar" Mode="In" />
           <Parameter Name="FlatReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="KladrCode" Type="nvarchar" Mode="In" />
           <Parameter Name="HostelAbit" Type="bit" Mode="In" />
           <Parameter Name="HostelEduc" Type="bit" Mode="In" />
           <Parameter Name="HasAssignToHostel" Type="bit" Mode="In" />
@@ -5499,6 +5517,7 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
+          <Parameter Name="RegionEducId" Type="int" Mode="In" />
           <Parameter Name="IsEqual" Type="bit" Mode="In" />
           <Parameter Name="AttestatRegion" Type="nvarchar" Mode="In" />
           <Parameter Name="AttestatSeries" Type="nvarchar" Mode="In" />
@@ -5577,6 +5596,7 @@
           <Parameter Name="HouseReal" Type="nvarchar" Mode="In" />
           <Parameter Name="KorpusReal" Type="nvarchar" Mode="In" />
           <Parameter Name="FlatReal" Type="nvarchar" Mode="In" />
+          <Parameter Name="KladrCode" Type="nvarchar" Mode="In" />
           <Parameter Name="HostelAbit" Type="bit" Mode="In" />
           <Parameter Name="HostelEduc" Type="bit" Mode="In" />
           <Parameter Name="HasAssignToHostel" Type="bit" Mode="In" />
@@ -5592,6 +5612,7 @@
           <Parameter Name="SchoolExitYear" Type="int" Mode="In" />
           <Parameter Name="SchoolAVG" Type="float" Mode="In" />
           <Parameter Name="CountryEducId" Type="int" Mode="In" />
+          <Parameter Name="RegionEducId" Type="int" Mode="In" />
           <Parameter Name="IsEqual" Type="bit" Mode="In" />
           <Parameter Name="DiplomSeries" Type="nvarchar" Mode="In" />
           <Parameter Name="DiplomNum" Type="nvarchar" Mode="In" />
@@ -5869,6 +5890,7 @@
             <Parameter Name="HouseReal" Mode="In" Type="String" />
             <Parameter Name="KorpusReal" Mode="In" Type="String" />
             <Parameter Name="FlatReal" Mode="In" Type="String" />
+            <Parameter Name="KladrCode" Mode="In" Type="String" />
             <Parameter Name="HostelAbit" Mode="In" Type="Boolean" />
             <Parameter Name="HostelEduc" Mode="In" Type="Boolean" />
             <Parameter Name="HasAssignToHostel" Mode="In" Type="Boolean" />
@@ -5884,6 +5906,7 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
+            <Parameter Name="RegionEducId" Mode="In" Type="Int32" />
             <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
             <Parameter Name="AttestatRegion" Mode="In" Type="String" />
             <Parameter Name="AttestatSeries" Mode="In" Type="String" />
@@ -5952,6 +5975,7 @@
             <Parameter Name="HouseReal" Mode="In" Type="String" />
             <Parameter Name="KorpusReal" Mode="In" Type="String" />
             <Parameter Name="FlatReal" Mode="In" Type="String" />
+            <Parameter Name="KladrCode" Mode="In" Type="String" />
             <Parameter Name="HostelAbit" Mode="In" Type="Boolean" />
             <Parameter Name="HostelEduc" Mode="In" Type="Boolean" />
             <Parameter Name="HasAssignToHostel" Mode="In" Type="Boolean" />
@@ -5967,6 +5991,7 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
+            <Parameter Name="RegionEducId" Mode="In" Type="Int32" />
             <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
             <Parameter Name="DiplomSeries" Mode="In" Type="String" />
             <Parameter Name="DiplomNum" Mode="In" Type="String" />
@@ -6562,6 +6587,7 @@
             <Parameter Name="IsReduced" Mode="In" Type="Boolean" />
             <Parameter Name="IsParallel" Mode="In" Type="Boolean" />
             <Parameter Name="KCP" Mode="In" Type="Int32" />
+            <Parameter Name="ComissionId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Protocol_Insert">
             <Parameter Name="StudyLevelGroupId" Mode="In" Type="Int32" />
@@ -7094,6 +7120,7 @@
             <Parameter Name="DateOfClose_GosLine" Mode="In" Type="DateTime" />
             <Parameter Name="DateOfStart" Mode="In" Type="DateTime" />
             <Parameter Name="DateOfClose" Mode="In" Type="DateTime" />
+            <Parameter Name="ComissionId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="extForeignPerson" EntityType="Priem2012Model.extPerson" />
           <FunctionImport Name="Person_Foreign_insert">
@@ -7141,6 +7168,7 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
+            <Parameter Name="RegionEducId" Mode="In" Type="Int32" />
             <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
             <Parameter Name="EqualDocumentNumber" Mode="In" Type="String" />
             <Parameter Name="HasTRKI" Mode="In" Type="Boolean" />
@@ -7205,6 +7233,7 @@
             <Parameter Name="SchoolExitYear" Mode="In" Type="Int32" />
             <Parameter Name="SchoolAVG" Mode="In" Type="Double" />
             <Parameter Name="CountryEducId" Mode="In" Type="Int32" />
+            <Parameter Name="RegionEducId" Mode="In" Type="Int32" />
             <Parameter Name="IsEqual" Mode="In" Type="Boolean" />
             <Parameter Name="EqualDocumentNumber" Mode="In" Type="String" />
             <Parameter Name="HasTRKI" Mode="In" Type="Boolean" />
@@ -9510,7 +9539,7 @@
             <PropertyRef Name="PersonId" />
           </Key>
           <Property Type="Guid" Name="PersonId" Nullable="false" />
-          <Property Type="Boolean" Name="IsExcellent" />
+          <Property Type="Boolean" Name="IsExcellent" Nullable="false" />
           <Property Type="Int32" Name="LanguageId" />
           <Property Type="String" Name="SchoolCity" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="SchoolTypeId" />
@@ -9544,6 +9573,7 @@
           <Property Type="String" Name="EqualDocumentNumber" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="HasTRKI" Nullable="false" />
           <Property Type="String" Name="TRKICertificateNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="RegionEducId" />
         </EntityType>
         <Association Name="FK_Abiturient_Person">
           <End Type="Priem2012Model.Person" Role="Person" Multiplicity="0..1" />
@@ -9981,6 +10011,7 @@
           <Property Type="Boolean" Name="HostelEduc" />
           <Property Type="String" Name="SNILS" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="IsEqual" />
+          <Property Type="Int32" Name="RegionEducId" />
         </EntityType>
         <EntityType Name="StudyLevelGroup">
           <Key>
@@ -10329,6 +10360,8 @@
           <Property Type="Int32" Name="ForeignNationalityId" />
           <Property Type="String" Name="ForeignCountryName" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ForeignNationalityName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="RegionEducId" />
+          <Property Type="Int32" Name="ForeignCountryEducId" />
         </EntityType>
         <EntityType Name="qAbiturient">
           <Key>
@@ -11954,6 +11987,7 @@
           <EntitySetMapping Name="Person_EducationInfo">
             <EntityTypeMapping TypeName="Priem2012Model.Person_EducationInfo">
               <MappingFragment StoreEntitySet="Person_EducationInfo">
+                <ScalarProperty Name="RegionEducId" ColumnName="RegionEducId" />
                 <ScalarProperty Name="TRKICertificateNumber" ColumnName="TRKICertificateNumber" />
                 <ScalarProperty Name="HasTRKI" ColumnName="HasTRKI" />
                 <ScalarProperty Name="EqualDocumentNumber" ColumnName="EqualDocumentNumber" />
@@ -12094,6 +12128,7 @@
           <EntitySetMapping Name="extPersonAll">
             <EntityTypeMapping TypeName="Priem2012Model.extPersonAll">
               <MappingFragment StoreEntitySet="extPersonAll">
+                <ScalarProperty Name="RegionEducId" ColumnName="RegionEducId" />
                 <ScalarProperty Name="IsEqual" ColumnName="IsEqual" />
                 <ScalarProperty Name="SNILS" ColumnName="SNILS" />
                 <ScalarProperty Name="HostelEduc" ColumnName="HostelEduc" />
@@ -12357,6 +12392,8 @@
           <EntitySetMapping Name="extForeignPerson">
             <EntityTypeMapping TypeName="Priem2012Model.extPerson">
               <MappingFragment StoreEntitySet="extForeignPerson">
+                <ScalarProperty Name="ForeignCountryEducId" ColumnName="ForeignCountryEducId" />
+                <ScalarProperty Name="RegionEducId" ColumnName="RegionEducId" />
                 <ScalarProperty Name="ForeignNationalityName" ColumnName="ForeignNationalityName" />
                 <ScalarProperty Name="ForeignCountryName" ColumnName="ForeignCountryName" />
                 <ScalarProperty Name="ForeignNationalityId" ColumnName="ForeignNationalityId" />

@@ -18,8 +18,8 @@ namespace Priem
         public EntryList()
         {
             InitializeComponent();
-            Dgv = dgvEntry;            
-            InitControls();            
+            Dgv = dgvEntry;
+            InitControls();
         }
 
         protected override void ExtraInit()
@@ -31,7 +31,7 @@ namespace Priem
 
             Dgv.Size = new Size(1031, 270);
             Dgv.Location = new Point(12, 172);
-            lblCount.Location = new Point(405, 448);            
+            lblCount.Location = new Point(405, 448);
 
             try
             {
@@ -75,14 +75,14 @@ namespace Priem
             btnAdd.Visible = btnRemove.Visible = false;
         }
 
-        public override void  InitHandlers()       
-        {            
-            cbFaculty.SelectedIndexChanged += new EventHandler(UpdateDataGrid);           
+        public override void InitHandlers()
+        {
+            cbFaculty.SelectedIndexChanged += new EventHandler(UpdateDataGrid);
             cbStudyBasis.SelectedIndexChanged += new EventHandler(UpdateDataGrid);
             cbStudyForm.SelectedIndexChanged += new EventHandler(UpdateDataGrid);
             cbStudyLevel.SelectedIndexChanged += new EventHandler(UpdateDataGrid);
             cbIsSecond.SelectedIndexChanged += new EventHandler(UpdateDataGrid);
-            cbIsReduced.SelectedIndexChanged += new EventHandler(UpdateDataGrid); 
+            cbIsReduced.SelectedIndexChanged += new EventHandler(UpdateDataGrid);
             cbIsParallel.SelectedIndexChanged += new EventHandler(UpdateDataGrid);
         }
 
@@ -106,10 +106,10 @@ namespace Priem
                 if (cbFaculty.SelectedValue.ToString() != ComboServ.ALL_VALUE)
                 {
                     int? h = ComboServ.GetComboIdInt(cbFaculty);
-                    if (h != null) 
-                        query = query.Where(c => c.FacultyId == h);                    
+                    if (h != null)
+                        query = query.Where(c => c.FacultyId == h);
                 }
-               
+
                 // основа обучения
                 if (cbStudyBasis.SelectedValue.ToString() != ComboServ.ALL_VALUE)
                 {
@@ -124,7 +124,7 @@ namespace Priem
                     int? h = ComboServ.GetComboIdInt(cbStudyForm);
                     if (h != null)
                         query = query.Where(c => c.StudyFormId == h);
-                }                
+                }
 
                 // подвид программы
                 if (cbStudyLevel.SelectedValue.ToString() != ComboServ.ALL_VALUE)
@@ -153,8 +153,8 @@ namespace Priem
                 {
                     bool h = QueryServ.ToBoolValue(ComboServ.GetComboIdInt(cbIsSecond));
                     query = query.Where(c => c.IsSecond == h);
-                }                              
-            }           
+                }
+            }
         }
 
         protected override void GetSource()
@@ -168,7 +168,7 @@ namespace Priem
                     if (string.IsNullOrEmpty(_orderBy))
                         query = context.qEntry.OrderBy(c => c.StudyLevelName).ThenBy(c => c.FacultyName).ThenBy(c => c.ObrazProgramName).ThenBy(c => c.ProfileName).ThenBy(c => c.StudyFormId).ThenBy(c => c.StudyBasisId);
                     else
-                        query = context.qEntry.OrderBy(_orderBy);                    
+                        query = context.qEntry.OrderBy(_orderBy);
 
                     GetFilters(ref query);
                     Dgv.DataSource = query;
@@ -190,17 +190,17 @@ namespace Priem
             }
 
             Dgv.AutoGenerateColumns = false;
-            
-            SetVisibleColumnsAndNameColumnsOrdered("StudyLevelName", "Уровень программы", 0);            
+
+            SetVisibleColumnsAndNameColumnsOrdered("StudyLevelName", "Уровень программы", 0);
             SetVisibleColumnsAndNameColumnsOrdered("FacultyName", "Факультет", 1);
             SetVisibleColumnsAndNameColumnsOrdered("LicenseProgramCode", "Код направления", 2);
             SetVisibleColumnsAndNameColumnsOrdered("LicenseProgramName", "Направление", 3);
             SetVisibleColumnsAndNameColumnsOrdered("ObrazProgramName", "Образовательная программа", 4);
             SetVisibleColumnsAndNameColumnsOrdered("ObrazProgramCrypt", "Шифр программы", 5);
-            SetVisibleColumnsAndNameColumnsOrdered("ProfileName", "Профиль", 6);            
+            SetVisibleColumnsAndNameColumnsOrdered("ProfileName", "Профиль", 6);
             SetVisibleColumnsAndNameColumnsOrdered("StudyFormName", "Форма обучения", 7);
             SetVisibleColumnsAndNameColumnsOrdered("StudyBasisName", "Основа обучения", 8);
-            SetVisibleColumnsAndNameColumnsOrdered("StudyPlanNumber", "Номер плана", 9);            
+            SetVisibleColumnsAndNameColumnsOrdered("StudyPlanNumber", "Номер плана", 9);
             SetVisibleColumnsAndNameColumnsOrdered("SecondType", "Реализуется как ВВ", 10);
             SetVisibleColumnsAndNameColumnsOrdered("KCP", "Контрольные цифры приема", 11);
             SetVisibleColumnsAndNameColumnsOrdered("KCPCel", "КЦП целевикки", 12);
@@ -221,11 +221,6 @@ namespace Priem
         private void tbPlanNumSearch_TextChanged(object sender, EventArgs e)
         {
             WinFormsServ.SearchInsideValue(this.Dgv, "ObrazProgramName", tbPlanNumSearch.Text);
-        }
-
-        private void btnLoadEntry_Click(object sender, EventArgs e)
-        {
-            new CardLoadEntry().Show();
         }
     }
 }

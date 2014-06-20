@@ -67,7 +67,7 @@ namespace Priem
                     CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal, 
                     HostelAbit, HostelEduc, LanguageId,
                     SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear, IsExcellent,
-                    CountryEducId, AttestatRegion, AttestatSeries, AttestatNumber,
+                    CountryEducId, RegionEducId, AttestatRegion, AttestatSeries, AttestatNumber,
                     EducationDocumentSeries AS DiplomSeries, EducationDocumentNumber AS DiplomNum, AvgMark AS SchoolAVG,
                     (case when SchoolTypeId=1 then '' else SchoolName end) AS HighEducation, HEProfession AS HEProfession, 
                     HEQualification AS HEQualification, DiplomaTheme AS HEWork,
@@ -137,7 +137,8 @@ namespace Priem
                 int SchoolExitYear = 0;
                 int.TryParse(row["SchoolExitYear"].ToString(), out SchoolExitYear);
                 pers.SchoolExitYear = SchoolExitYear;
-                pers.CountryEducId = (int?)(Util.ToNullObject(row["CountryEducId"]));
+                pers.ForeignCountryEducId = (int?)(Util.ToNullObject(row["CountryEducId"]));
+                pers.RegionEducId = (int?)(Util.ToNullObject(row["RegionEducId"]));
                 pers.AttestatRegion = row["AttestatRegion"].ToString();
                 pers.AttestatSeries = row["AttestatSeries"].ToString();
                 pers.AttestatNum = row["AttestatNumber"].ToString();

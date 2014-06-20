@@ -226,7 +226,7 @@ namespace Priem
                             person.CodeReal, person.CityReal, person.StreetReal, person.HouseReal, person.KorpusReal, person.FlatReal,
                             person.HostelAbit, false, null, false, null, person.IsExcellent, 
                             person.LanguageId, person.SchoolCity, person.SchoolTypeId, person.SchoolName, person.SchoolNum, person.SchoolExitYear, person.SchoolAVG, 
-                            person.CountryEducId, person.IsEqual, person.EqualDocumentNumber, person.HasTRKI, person.TRKICertificateNumber, 
+                            person.ForeignCountryEducId, person.RegionEducId, person.IsEqual, person.EqualDocumentNumber, person.HasTRKI, person.TRKICertificateNumber, 
                             person.AttestatRegion, person.AttestatSeries, person.AttestatNum, person.DiplomSeries, person.DiplomNum, 
                             person.HighEducation, person.HEProfession, person.HEQualification, person.HEEntryYear, person.HEExitYear, person.HEStudyFormId, 
                             person.HEWork, person.Stag, person.WorkPlace, person.Privileges, person.PassportCode,

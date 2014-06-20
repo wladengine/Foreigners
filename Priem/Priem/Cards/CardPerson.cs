@@ -82,8 +82,8 @@ namespace Priem
                 {
                     ComboServ.FillCombo(cbPassportType, HelpClass.GetComboListByTable("ed.PassportType"), false, false);
 
-                    ComboServ.FillCombo(cbCountry, HelpClass.GetComboListByTable("ed.Country", "ORDER BY Distance, Name"), false, false);
-                    ComboServ.FillCombo(cbNationality, HelpClass.GetComboListByTable("ed.Country", "ORDER BY Distance, Name"), false, false);
+                    ComboServ.FillCombo(cbCountry, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY Distance, Name"), false, false);
+                    ComboServ.FillCombo(cbNationality, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY Distance, Name"), false, false);
                     ComboServ.FillCombo(cbRegion, HelpClass.GetComboListByTable("ed.Region", "ORDER BY Distance, Name"), true, false);
                     ComboServ.FillCombo(cbLanguage, HelpClass.GetComboListByTable("ed.Language"), false, false);
                     ComboServ.FillCombo(cbCountryEduc, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY Distance, Name"), false, false);
@@ -97,29 +97,6 @@ namespace Priem
                     cbSchoolCity.SelectedIndex = -1;
                     cbHEQualification.SelectedIndex = -1;
                 }
-
-                //// магистратура!
-                //if (MainClass.dbType == PriemType.PriemMag)
-                //{
-                //    btnDocs.Visible = true;
-
-                //    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByQuery("SELECT Cast(ed.SchoolType.Id as nvarchar(100)) AS Id, ed.SchoolType.Name FROM ed.SchoolType WHERE ed.SchoolType.Id = 4 ORDER BY 1"), false, false);
-                //    tbSchoolNum.Visible = false;
-                //    tbSchoolName.Width = 200;
-                //    lblSchoolNum.Visible = false;
-                //    gbAtt.Visible = false;
-                //    gbDipl.Visible = true;
-                //    chbIsExcellent.Text = "Диплом с отличием";
-                //    btnAttMarks.Visible = false;
-                //    gbSchool.Visible = false;                    
-
-                //    gbEduc.Location = new Point(11, 7);
-                //    gbFinishStudy.Location = new Point(11, 222);
-                //}
-                //else
-                //{
-                //    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType", "ORDER BY 1"), false, false);
-                //}
 
                 btnDocs.Visible = true;
                 ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType", "ORDER BY 1"), false, false);
@@ -233,8 +210,8 @@ namespace Priem
             PassportCode = person.PassportCode;
             PersonalCode = person.PersonalCode;
             Sex = person.Sex;
-            CountryId = person.CountryId;
-            NationalityId = person.NationalityId;
+            CountryId = person.ForeignCountryId;
+            NationalityId = person.ForeignNationalityId;
             RegionId = person.RegionId;
             Phone = person.Phone;
             Mobiles = person.Mobiles;
@@ -268,7 +245,7 @@ namespace Priem
             SchoolName = person.SchoolName;
             SchoolNum = person.SchoolNum;
             SchoolExitYear = person.SchoolExitYear;
-            CountryEducId = person.CountryEducId;
+            CountryEducId = person.ForeignCountryEducId;
 
             IsEqual = person.IsEqual ?? false;
             EqualDocumentNumber = person.EqualDocumentNumber;
@@ -301,7 +278,7 @@ namespace Priem
         }
 
         //данные из нашей базы
-        protected override void  FillCard()
+        protected override void FillCard()
         {
             if (_Id == null)
                 return;                   
@@ -920,7 +897,7 @@ namespace Priem
                 CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal,
                 HostelAbit, HasAssignToHostel,
                 HostelFacultyId, HasExamPass, ExamPassFacultyId, IsExcellent, LanguageId, SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear,
-                SchoolAVG, CountryEducId, IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
+                SchoolAVG, CountryEducId, RegionEducId, IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
                 HEQualification, HEEntryYear, HEExitYear, HEStudyFormId, HEWork, Stag, WorkPlace, Privileges, PassportCode,
                 PersonalCode, PersonInfo, ExtraInfo, ScienceWork, StartEnglish, EnglishMark, idParam);
 
@@ -937,7 +914,7 @@ namespace Priem
                 CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal, 
                 HostelAbit, HostelEduc, HasAssignToHostel,
                 HostelFacultyId, HasExamPass, ExamPassFacultyId, IsExcellent, LanguageId, SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear,
-                SchoolAVG, CountryEducId, 
+                SchoolAVG, CountryEducId, RegionEducId,
                 IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber,
                 DiplomSeries, DiplomNum, HighEducation, HEProfession,
                 HEQualification, HEEntryYear, HEExitYear, HEStudyFormId, HEWork, Stag, WorkPlace, PassportCode,

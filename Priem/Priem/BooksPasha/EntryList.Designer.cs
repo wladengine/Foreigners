@@ -175,7 +175,6 @@
             this.btnLoadEntry.TabIndex = 105;
             this.btnLoadEntry.Text = "Обновить данные";
             this.btnLoadEntry.UseVisualStyleBackColor = true;
-            this.btnLoadEntry.Click += new System.EventHandler(this.btnLoadEntry_Click);
             // 
             // dgvEntry
             // 

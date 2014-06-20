@@ -235,6 +235,11 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbCountryEduc); }
             set { ComboServ.SetComboId(cbCountryEduc, value); }
         }
+        protected int? RegionEducId
+        {
+            get { return ComboServ.GetComboIdInt(cbRegionEduc); }
+            set { ComboServ.SetComboId(cbRegionEduc, value); }
+        }
 
         public bool IsEqual
         {

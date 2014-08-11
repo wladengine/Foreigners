@@ -52,8 +52,8 @@ namespace Priem
             
             InitControls();           
         }
-
-        protected override void InitControls()
+        
+        protected void InitControls()
         {
             InitFocusHandlers();
 
@@ -75,7 +75,7 @@ namespace Priem
 
             SetReadOnlyFieldsAfterFill();
         }        
-
+        
         protected override void ExtraInit()
         {
             base.ExtraInit();
@@ -1442,8 +1442,18 @@ namespace Priem
                     sfd.Filter = "ADOBE Pdf files|*.pdf";
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
+                        // бакалавры, специалисты, магистры
                         if (StudyLevelId == 16 || StudyLevelId == 17 || StudyLevelId == 18)
-                            Print.PrintApplication(chbPrint.Checked, sfd.FileName, _personId);
+                        {
+                            bool isMag = (StudyLevelId == 17);
+                            Print.PrintApplication(chbPrint.Checked, sfd.FileName, _personId, isMag);
+                        }
+                        // аспирантура
+                        if (StudyLevelId == 15)
+                            Print.PrintApplicationAspirant(chbPrint.Checked, sfd.FileName, _personId);
+                        // спо
+                        if (StudyLevelId == 8 || StudyLevelId == 10)
+                            Print.PrintApplicationSPO(chbPrint.Checked, sfd.FileName, _personId);
                     }
                     break;
                 case 1:

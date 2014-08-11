@@ -72,7 +72,8 @@ namespace Priem
                     (case when SchoolTypeId=1 then '' else SchoolName end) AS HighEducation, HEProfession AS HEProfession, 
                     HEQualification AS HEQualification, DiplomaTheme AS HEWork,
                     EducationStart AS HEEntryYear, HEExitYear, HEStudyFormId, Parents AS PersonInfo, AddInfo AS ExtraInfo,
-                    IsEqual, EqualDocumentNumber, HasTRKI, TRKICertificateNumber
+                    IsEqual, EqualDocumentNumber, HasTRKI, TRKICertificateNumber,
+                    EnglishMark, StartEnglish
                     FROM extForeignPerson
                     WHERE 0=0";
 
@@ -144,6 +145,11 @@ namespace Priem
                 pers.AttestatNum = row["AttestatNumber"].ToString();
                 pers.DiplomSeries = row["DiplomSeries"].ToString();
                 pers.DiplomNum = row["DiplomNum"].ToString();
+
+                pers.StartEnglish = QueryServ.ToBoolValue(row["StartEnglish"]);
+                int EnglishMark = 0;
+                int.TryParse(row["EnglishMark"].ToString(), out EnglishMark);
+                pers.EnglishMark = EnglishMark == 0 ? null : (int?)EnglishMark;
                 
 
                 double avg;                

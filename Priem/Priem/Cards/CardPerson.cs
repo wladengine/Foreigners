@@ -88,6 +88,8 @@ namespace Priem
                     ComboServ.FillCombo(cbLanguage, HelpClass.GetComboListByTable("ed.Language"), false, false);
                     ComboServ.FillCombo(cbCountryEduc, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY Distance, Name"), false, false);
                     ComboServ.FillCombo(cbHEStudyForm, HelpClass.GetComboListByTable("ed.StudyForm"), true, false);
+                    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType"), false, false);
+
 
                     cbSchoolCity.DataSource = context.ExecuteStoreQuery<string>("SELECT DISTINCT ed.Person_EducationInfo.SchoolCity AS Name FROM ed.Person_EducationInfo WHERE ed.Person_EducationInfo.SchoolCity > '' ORDER BY 1");
                     cbAttestatSeries.DataSource = context.ExecuteStoreQuery<string>("SELECT DISTINCT ed.Person_EducationInfo.AttestatSeries AS Name FROM ed.Person_EducationInfo WHERE ed.Person_EducationInfo.AttestatSeries > '' ORDER BY 1");
@@ -99,7 +101,6 @@ namespace Priem
                 }
 
                 btnDocs.Visible = true;
-                ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType", "ORDER BY 1"), false, false);
             }
             catch (Exception exc)
             {
@@ -143,14 +144,19 @@ namespace Priem
             {
                 gbAtt.Visible = true;
                 gbDipl.Visible = false;
-                tbSchoolName.Width = 217;
+                //tbSchoolName.Width = 217;
+                //tbSchoolNum.Visible = true;
+                gbEduc.Location = gbSchool.Location;
+                gbFinishStudy.Location = new Point(gbFinishStudy.Location.X, gbFinishStudy.Location.Y - gbSchool.Height);
             }               
             else
             {
-                if (SchoolTypeId == 4)
+                /*if (SchoolTypeId == 4)
                     tbSchoolName.Width = 281;
                 else
                     tbSchoolName.Width = 217;
+                tbSchoolNum.Visible = false;*/
+
                 gbAtt.Visible = false;
                 gbDipl.Visible = true;
             }

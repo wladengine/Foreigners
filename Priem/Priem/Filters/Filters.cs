@@ -135,26 +135,26 @@ namespace Priem
             {
                 AddItem(new FilterItem("Программы для лиц с ВО", FilterType.Bool, "ed.qAbiturient.IsSecond", "ed.qAbiturient"));
                 AddItem(new FilterItem("Сокращенные программы", FilterType.Bool, "ed.qAbiturient.IsReduced", "ed.qAbiturient"));
-                AddItem(new FilterItem("параллельные программы", FilterType.Bool, "ed.qAbiturient.IsParallel", "ed.qAbiturient"));  
+                AddItem(new FilterItem("параллельные программы", FilterType.Bool, "ed.qAbiturient.IsParallel", "ed.qAbiturient"));
 
-                AddItem(new FilterItem("Медалист", FilterType.Bool, "ed.Person.IsExcellent", "ed.Person"));
-                AddItem(new FilterItem("Подан подлинник аттестата", FilterType.Bool, "ed.qAbiturient.AttDocOrigin", "ed.qAbiturient"));
+                AddItem(new FilterItem("Медалист", FilterType.Bool, "ed.Person_EducationInfo.IsExcellent", "ed.Person_EducationInfo"));
+                //AddItem(new FilterItem("Подан подлинник аттестата", FilterType.Bool, "ed.qAbiturient.AttDocOrigin", "ed.qAbiturient"));
 
-                AddItem(new FilterItem("Номер аттестата", FilterType.FromTo, "ed.Person.AttestatNum", "ed.Person"));
-                AddItem(new FilterItem("Серия аттестата", FilterType.FromTo, "ed.Person.AttestatSeries", "ed.Person"));
-                AddItem(new FilterItem("Регион аттестата", FilterType.FromTo, "ed.Person.AttestatRegion", "ed.Person"));
-                AddItem(new FilterItem("Средний балл аттестата", FilterType.FromTo, "ed.Person.SchoolAVG", "ed.Person"));
-                AddItem(new FilterItem("Введен средний балл аттестата", FilterType.Bool, "(NOT ed.Person.SchoolAVG IS NULL AND Len(ed.Person.SchoolAVG) > 0)", "ed.Person"));
+                AddItem(new FilterItem("Номер аттестата", FilterType.FromTo, "ed.Person_EducationInfo.AttestatNum", "ed.Person_EducationInfo"));
+                AddItem(new FilterItem("Серия аттестата", FilterType.FromTo, "ed.Person_EducationInfo.AttestatSeries", "ed.Person_EducationInfo"));
+                AddItem(new FilterItem("Регион аттестата", FilterType.FromTo, "ed.Person_EducationInfo.AttestatRegion", "ed.Person_EducationInfo"));
+                AddItem(new FilterItem("Средний балл аттестата", FilterType.FromTo, "ed.Person_EducationInfo.SchoolAVG", "ed.Person_EducationInfo"));
+                AddItem(new FilterItem("Введен средний балл аттестата", FilterType.Bool, "(NOT ed.Person_EducationInfo.SchoolAVG IS NULL AND Len(ed.Person_EducationInfo.SchoolAVG) > 0)", "ed.Person"));
 
-                AddItem(new FilterItem("Город учебного заведения", FilterType.Text, "ed.Person.SchoolCity", "ed.Person"));
-                AddItem(new FilterItem("Тип учебного заведения", FilterType.Multi, "ed.Person.SchoolTypeId", "ed.Person", "SELECT Id, Name FROM SchoolType ORDER BY Name"));
-                AddItem(new FilterItem("Название учебного заведения", FilterType.Text, "ed.Person.SchoolName", "ed.Person"));
-                AddItem(new FilterItem("Номер учебного заведения", FilterType.FromTo, "ed.Person.SchoolNum", "ed.Person"));
-                AddItem(new FilterItem("Год окончания учебного заведения", FilterType.FromTo, "ed.Person.SchoolExitYear", "ed.Person"));
+                AddItem(new FilterItem("Город учебного заведения", FilterType.Text, "ed.Person_EducationInfo.SchoolCity", "ed.Person_EducationInfo"));
+                AddItem(new FilterItem("Тип учебного заведения", FilterType.Multi, "ed.Person_EducationInfo.SchoolTypeId", "ed.Person_EducationInfo", "SELECT Id, Name FROM SchoolType ORDER BY Name"));
+                AddItem(new FilterItem("Название учебного заведения", FilterType.Text, "ed.Person_EducationInfo.SchoolName", "ed.Person_EducationInfo"));
+                AddItem(new FilterItem("Номер учебного заведения", FilterType.FromTo, "ed.Person_EducationInfo.SchoolNum", "ed.Person_EducationInfo"));
+                AddItem(new FilterItem("Год окончания учебного заведения", FilterType.FromTo, "ed.Person_EducationInfo.SchoolExitYear", "ed.Person_EducationInfo"));
 
                 AddItem(new FilterItem("Профиль", FilterType.Multi, "ed.qAbiturient.ProfileId", "ed.qAbiturient", " SELECT DISTINCT ed.qProfile.Id, ed.qProfile.Name AS Name FROM ed.qProfile "));
 
-                AddItem(new FilterItem("Поданы подлинники свидетельств ЕГЭ", FilterType.Bool, "ed.qAbiturient.EgeDocOrigin", "ed.qAbiturient"));
+                //AddItem(new FilterItem("Поданы подлинники свидетельств ЕГЭ", FilterType.Bool, "ed.qAbiturient.EgeDocOrigin", "ed.qAbiturient"));
                 AddItem(new FilterItem("Статус ФБС", FilterType.Multi, "(SELECT FBSStatusId FROM ed.extFBSStatus WHERE ed.extFBSStatus.PersonId = ed.Person.Id)", "ed.Person", "SELECT Id, Name FROM ed.FBSStatus WHERE Id <> 3"));
 
                 //олимпиады

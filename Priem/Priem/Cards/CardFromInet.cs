@@ -89,6 +89,7 @@ namespace Priem
                     ComboServ.FillCombo(cbLanguage, HelpClass.GetComboListByTable("ed.Language"), true, false);
                     ComboServ.FillCombo(cbCountryEduc, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY LevelOfUsing DESC, Name"), true, false);                    
                     ComboServ.FillCombo(cbHEStudyForm, HelpClass.GetComboListByTable("ed.StudyForm"), true, false);
+                    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType"), false, false);
 
                     cbSchoolCity.DataSource = context.ExecuteStoreQuery<string>("SELECT DISTINCT ed.Person_EducationInfo.SchoolCity AS Name FROM ed.Person_EducationInfo WHERE ed.Person_EducationInfo.SchoolCity > '' ORDER BY 1");
                     cbAttestatSeries.DataSource = context.ExecuteStoreQuery<string>("SELECT DISTINCT ed.Person_EducationInfo.AttestatSeries AS Name FROM ed.Person_EducationInfo WHERE ed.Person_EducationInfo.AttestatSeries > '' ORDER BY 1");
@@ -104,28 +105,23 @@ namespace Priem
                     chbHostelEducNo.Checked = false;
                 }               
 
-                // магистратура!
-                if (MainClass.dbType == PriemType.PriemMag || MainClass.dbType == PriemType.PriemForeigners)
-                {
-                    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByQuery("SELECT Cast(ed.SchoolType.Id as nvarchar(100)) AS Id, ed.SchoolType.Name FROM ed.SchoolType WHERE ed.SchoolType.Id = 4 ORDER BY 1"), true, false);
-                    tbSchoolNum.Visible = false;
-                    tbSchoolName.Width = 200;
-                    lblSchoolNum.Visible = false;
-                    gbAtt.Visible = false;
-                    gbDipl.Visible = true;
-                    chbIsExcellent.Text = "Диплом с отличием";
-                    btnAttMarks.Visible = false;
-                    gbSchool.Visible = false;                   
+                //ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType", "ORDER BY 1"), true, false);  
+                //ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByQuery("SELECT Cast(ed.SchoolType.Id as nvarchar(100)) AS Id, ed.SchoolType.Name FROM ed.SchoolType WHERE ed.SchoolType.Id = 4 ORDER BY 1"), true, false);
+                //tbSchoolNum.Visible = false;
+                //tbSchoolName.Width = 200;
+                //lblSchoolNum.Visible = false;
+               
+                //gbAtt.Visible = false;
+                //gbDipl.Visible = true;
+                
+                //chbIsExcellent.Text = "Диплом с отличием";
+                //btnAttMarks.Visible = false;
+                //gbSchool.Visible = false;                   
 
-                    gbEduc.Location = new Point(11, 7);
-                    gbFinishStudy.Location = new Point(11, 222);
+                //gbEduc.Location = new Point(11, 7);
+                //gbFinishStudy.Location = new Point(11, 222);
 
-                }
-                else
-                {
-                    tpDocs.Parent = null;
-                    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType", "ORDER BY 1"), true, false);                        
-                }
+                tpDocs.Parent = null;
 
                 if (_closeAbit)
                     tpApplication.Parent = null;
@@ -388,6 +384,7 @@ DocInsertDate=@DocInsertDate, IsCommonRussianCompetition=@IsCommonRussianCompeti
                 LanguageId = person.LanguageId;
                 SchoolCity = person.SchoolCity;
                 SchoolTypeId = person.SchoolTypeId;
+                
                 SchoolName = person.SchoolName;
                 SchoolNum = person.SchoolNum;
                 SchoolExitYear = person.SchoolExitYear;
@@ -420,6 +417,27 @@ DocInsertDate=@DocInsertDate, IsCommonRussianCompetition=@IsCommonRussianCompeti
                 ScienceWork = person.ScienceWork;
                 StartEnglish = person.StartEnglish ?? false;
                 EnglishMark = person.EnglishMark;
+
+
+
+                if (SchoolTypeId != 1)
+                {
+                    gbAtt.Visible = false;
+                    gbDipl.Visible = true;
+
+                    chbIsExcellent.Text = "Диплом с отличием";
+                    btnAttMarks.Visible = false;
+                    gbSchool.Visible = false;
+
+                    gbEduc.Location = gbSchool.Location;
+                    gbFinishStudy.Location = new Point(gbFinishStudy.Location.X, gbFinishStudy.Location.Y - gbSchool.Height);
+
+                }
+                else
+                {
+                    gbAtt.Visible = true;
+                    gbDipl.Visible = false;
+                }
             }
             catch (DataException de)
             {

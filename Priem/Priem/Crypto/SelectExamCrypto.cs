@@ -19,16 +19,18 @@ namespace Priem
         private DBPriem bdc;
         private int? facultyId;
         private int? studyBasisId;
+        private int? studyLevelGroupId;
         private ExamsVedList owner;
         private bool isAdditional;
 
-        public SelectExamCrypto(ExamsVedList owner, int? facId, int? basisId, DateTime passDate, int? examId)
+        public SelectExamCrypto(ExamsVedList owner, int? _studyLevelGroupId, int? facId, int? basisId, DateTime passDate, int? examId)
         {
             InitializeComponent();            
             this.owner = owner;
             this.facultyId = facId;
             this.studyBasisId = basisId;
-            this.isAdditional = true;            
+            this.isAdditional = true;
+            studyLevelGroupId = _studyLevelGroupId;
 
             InitControls(); 
             cbExam.Enabled = false;
@@ -44,13 +46,15 @@ namespace Priem
             set { ComboServ.SetComboId(cbExam, value); }
         }
 
-        public SelectExamCrypto(ExamsVedList owner, int? facId, int? basisId)
+        public SelectExamCrypto(ExamsVedList owner, int? _studyLevelGroupId, int? facId, int? basisId)
         {
             InitializeComponent();
             this.owner = owner;
             this.facultyId = facId;
             this.studyBasisId = basisId;
             this.isAdditional = false;
+
+            studyLevelGroupId = _studyLevelGroupId;
 
             InitControls();
         }  
@@ -70,7 +74,7 @@ namespace Priem
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = Exams.GetExamsWithFilters(context, facultyId, null, null, null, null, studyBasisId, null, null, null);
+                var ent = Exams.GetExamsWithFilters(context, studyLevelGroupId, facultyId, null, null, null, null, studyBasisId, null, null, null);
                 List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ExamId.ToString(), u.ExamName)).Distinct().ToList();
                 ComboServ.FillCombo(cbExam, lst, false, false);                 
             }          
@@ -97,7 +101,7 @@ namespace Priem
                 }
             }
 
-            ExamsVedCard frm = new ExamsVedCard(owner, facultyId, ExamId, dtDateExam.Value, studyBasisId, isAdditional);
+            ExamsVedCard frm = new ExamsVedCard(owner, studyLevelGroupId, facultyId, ExamId, dtDateExam.Value, studyBasisId, isAdditional);
             frm.Show();
             this.Close();
         }                     

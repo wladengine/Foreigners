@@ -52,7 +52,7 @@ namespace Priem
                 LEFT JOIN ed.qProtocolHistory ON ed.qProtocolHistory.AbiturientId = ed.extAbit.Id
                 LEFT JOIN ed.qProtocol ON ed.qProtocol.Id =  ed.qProtocolHistory.ProtocolId ";
 
-            this.sWhere = string.Format(" WHERE 1=1 AND ed.extAbit.StudyLevelGroupId = {1} AND ed.qProtocol.ProtocolTypeId = {0}", TypeToInt(_protocolType), MainClass.studyLevelGroupId);
+            this.sWhere = string.Format(" WHERE 1=1 AND ed.qProtocol.ProtocolTypeId = {0}", TypeToInt(_protocolType));
             this.sOrderby = " ORDER BY ed.extAbit.RegNum, ed.extAbit.BAckDoc ";
 
             InitializeComponent();
@@ -140,8 +140,8 @@ namespace Priem
                             select new
                             {
                                 ent.StudyFormId,
-                                ent.StudyFormName
-                            }).Distinct()).ToList().Select(x => new KeyValuePair<string, string>(x.StudyFormId.ToString(), x.StudyFormName)).ToList();
+                                ent.StudyForm.Name
+                            }).Distinct()).ToList().Select(x => new KeyValuePair<string, string>(x.StudyFormId.ToString(), x.Name)).ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, false);
             }
@@ -161,7 +161,6 @@ namespace Priem
                     var protocols = (from p in context.qProtocol
                                      where !p.IsOld && p.ProtocolTypeId == protType
                                      && p.FacultyId == FacultyId && p.StudyFormId == StudyFormId && p.StudyBasisId == StudyBasisId
-                                     && p.StudyLevelGroupId == MainClass.studyLevelGroupId
                                      orderby p.Number
                                      select new
                                      {

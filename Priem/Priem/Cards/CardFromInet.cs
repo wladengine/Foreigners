@@ -231,13 +231,14 @@ namespace Priem
             if (ind > -1)
             {
                 LstCompetitions[ind].HasCompetition = true;
+                LstCompetitions[ind].IsApprovedByComission = true;
                 LstCompetitions[ind].CompetitionId = comp.CompetitionId;
                 LstCompetitions[ind].CompetitionName = comp.CompetitionName;
 
                 LstCompetitions[ind].DocInsertDate = comp.DocInsertDate;
                 LstCompetitions[ind].IsGosLine = comp.IsGosLine;
                 LstCompetitions[ind].IsListener = comp.IsListener;
-                LstCompetitions[ind].IsSecond = comp.IsSecond;
+                LstCompetitions[ind].IsReduced = comp.IsReduced;
 
                 LstCompetitions[ind].FacultyId = comp.FacultyId;
                 LstCompetitions[ind].FacultyName = comp.FacultyName;
@@ -258,8 +259,18 @@ namespace Priem
                 LstCompetitions[ind].HasCompetition = comp.HasCompetition;
                 LstCompetitions[ind].ChangeEntry();
 
-                string query = "UPDATE [Application] SET IsApprovedByComission=1, ApproverName=SUSER_SNAME(), CompetitionId=@CompId WHERE Id=@Id";
-                _bdcInet.ExecuteQuery(query, new SortedList<string, object>() { { "@Id", comp.Id }, { "@CompId", comp.CompetitionId } });
+                string userName = MainClass.GetUserName();
+
+                string query = @"UPDATE [Application] SET IsApprovedByComission=1, ApproverName=@ApproverName, CompetitionId=@CompId, 
+DocInsertDate=@DocInsertDate, IsCommonRussianCompetition=@IsCommonRussianCompetition, IsGosLine=@IsGosLine WHERE Id=@Id";
+                _bdcInet.ExecuteQuery(query, new SortedList<string, object>() { 
+                    { "@Id", comp.Id }, 
+                    { "@CompId", comp.CompetitionId }, 
+                    { "@DocInsertDate", comp.DocInsertDate }, 
+                    { "@ApproverName", userName }, 
+                    { "@IsCommonRussianCompetition", comp.IsCommonRussianCompetition },
+                    { "@IsGosLine", comp.IsGosLine } 
+                });
 
                 UpdateApplicationGrid();
             }
@@ -276,7 +287,7 @@ namespace Priem
             chlbFile.DisplayMember = "Value";   
         }
 
-        private extPerson GetPerson()
+        private extPersonAll GetPerson()
         {
             if (_personBarc == null)
                 return null;
@@ -289,7 +300,7 @@ namespace Priem
 
                     using (PriemEntities context = new PriemEntities())
                     {
-                        extPerson person = (from pers in context.extForeignPerson
+                        extPersonAll person = (from pers in context.extPersonAll
                                             where pers.Barcode == _personBarc
                                             select pers).FirstOrDefault();
 
@@ -312,7 +323,7 @@ namespace Priem
                     tcCard.SelectedIndex = 0;
                     tbSurname.Focus();
 
-                    extPerson person = load.GetPersonByBarcode(_personBarc); 
+                    extPersonAll person = load.GetPersonByBarcode(_personBarc); 
                     
                     this.Text = "ЗАГРУЗКА " + person.FIO;
                     return person;
@@ -326,7 +337,7 @@ namespace Priem
             }       
         }
 
-        private void FillPersonData(extPerson person)
+        private void FillPersonData(extPersonAll person)
         {
             if (person == null)
             {
@@ -458,10 +469,15 @@ namespace Priem
 ,(SELECT MAX(ApplicationCommitVersion.VersionDate) FROM ApplicationCommitVersion WHERE ApplicationCommitVersion.CommitId = [Abiturient].CommitId) AS VersionDate
 ,ApplicationCommit.IntNumber
 ,[Abiturient].HasInnerPriorities
+,[Abiturient].IsApprovedByComission
+,[Abiturient].CompetitionId
+,[Abiturient].ApproverName
+,[Abiturient].DocInsertDate
+,[Abiturient].IsCommonRussianCompetition
 FROM [Abiturient] 
 INNER JOIN ApplicationCommit ON ApplicationCommit.Id = Abiturient.CommitId
 WHERE IsCommited = 1 AND IntNumber=@CommitId";
-                
+
                 DataTable tbl = _bdcInet.GetDataSet(query, new SortedList<string, object>() { { "@CommitId", _abitBarc } }).Tables[0];
 
                 LstCompetitions =
@@ -469,9 +485,10 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                           select new ShortCompetition(rw.Field<Guid>("Id"), rw.Field<Guid>("CommitId"), rw.Field<Guid>("EntryId"), rw.Field<Guid>("PersonId"),
                               rw.Field<int?>("VersionNum"), rw.Field<DateTime?>("VersionDate"))
                           {
-                              CompetitionId = rw.Field<int>("StudyBasisId") == 1 ? 4 : 3,
+                              Barcode = rw.Field<int>("Barcode"),
+                              CompetitionId = rw.Field<int?>("CompetitionId") ?? (rw.Field<int>("StudyBasisId") == 1 ? 4 : 3),
                               CompetitionName = "не указана",
-                              HasCompetition = false,
+                              HasCompetition = rw.Field<bool>("IsApprovedByComission"),
                               LicenseProgramId = rw.Field<int>("LicenseProgramId"),
                               LicenseProgramName = rw.Field<string>("LicenseProgramName"),
                               ObrazProgramId = rw.Field<int>("ObrazProgramId"),
@@ -487,10 +504,14 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                               FacultyId = rw.Field<int>("FacultyId"),
                               FacultyName = rw.Field<string>("FacultyName"),
                               DocDate = rw.Field<DateTime>("DateOfStart"),
+                              DocInsertDate = rw.Field<DateTime?>("DocInsertDate") ?? DateTime.Now,
                               Priority = rw.Field<int>("Priority"),
                               IsGosLine = rw.Field<bool>("IsGosLine"),
                               HasInnerPriorities = rw.Field<bool>("HasInnerPriorities"),
-                              lstObrazProgramsInEntry = new List<ShortObrazProgramInEntry>()
+                              IsApprovedByComission = rw.Field<bool>("IsApprovedByComission"),
+                              ApproverName = rw.Field<string>("ApproverName"),
+                              lstObrazProgramsInEntry = new List<ShortObrazProgramInEntry>(),
+                              IsCommonRussianCompetition = rw.Field<bool>("IsCommonRussianCompetition"),
                           }).ToList();
 
                 if (LstCompetitions.Count == 0)
@@ -508,33 +529,40 @@ WHERE IsCommited = 1 AND IntNumber=@CommitId";
                 foreach (var C in LstCompetitions.Where(x => x.HasInnerPriorities))
                 {
                     C.lstObrazProgramsInEntry = new List<ShortObrazProgramInEntry>();
-                    query = @"SELECT ObrazProgramInEntryId, ObrazProgramInEntryPriority, ObrazProgramName, ProfileInObrazProgramInEntryId, ProfileInObrazProgramInEntryPriority, ProfileName, CurrVersion, CurrDate
+                    query = @"SELECT ObrazProgramInEntryId, ObrazProgramInEntryPriority, ObrazProgramName, ProfileInObrazProgramInEntryId, ProfileInObrazProgramInEntryPriority, ProfileName, 
+ISNULL(CurrVersion, 1) AS CurrVersion, ISNULL(CurrDate, GETDATE()) AS CurrDate
 FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                     tbl = _bdcInet.GetDataSet(query, new SortedList<string, object>() { { "@AppId", C.Id } }).Tables[0];
 
-                    var data = from DataRow rw in tbl.Rows
-                               select new
-                               {
-                                   ObrazProgramInEntryId = rw.Field<Guid>("ObrazProgramInEntryId"),
-                                   ObrazProgramInEntryPriority = rw.Field<int>("ObrazProgramInEntryPriority"),
-                                   ObrazProgramName = rw.Field<string>("ObrazProgramName"),
-                                   ProfileInObrazProgramInEntryId = rw.Field<Guid?>("ProfileInObrazProgramInEntryId"),
-                                   ProfileInObrazProgramInEntryPriority = rw.Field<int?>("ProfileInObrazProgramInEntryPriority"),
-                                   ProfileName = rw.Field<string>("ProfileName"),
-                                   CurrVersion = rw.Field<int>("CurrVersion"),
-                                   CurrDate = rw.Field<DateTime>("CurrDate")
-                               };
-
-                    foreach (var OPIE in data.Select(x => new { x.ObrazProgramInEntryId, x.ObrazProgramInEntryPriority, x.ObrazProgramName, x.CurrDate, x.CurrVersion }).Distinct())
+                    var data = (from DataRow rw in tbl.Rows
+                                select new
+                                {
+                                    ObrazProgramInEntryId = rw.Field<Guid>("ObrazProgramInEntryId"),
+                                    ObrazProgramInEntryPriority = rw.Field<int>("ObrazProgramInEntryPriority"),
+                                    ObrazProgramName = rw.Field<string>("ObrazProgramName"),
+                                    ProfileInObrazProgramInEntryId = rw.Field<Guid?>("ProfileInObrazProgramInEntryId"),
+                                    ProfileInObrazProgramInEntryPriority = rw.Field<int?>("ProfileInObrazProgramInEntryPriority"),
+                                    ProfileName = rw.Field<string>("ProfileName"),
+                                    CurrVersion = rw.Field<int>("CurrVersion"),
+                                    CurrDate = rw.Field<DateTime>("CurrDate")
+                                }).ToList();
+                    using (PriemEntities context = new PriemEntities())
                     {
-                        var OP = new ShortObrazProgramInEntry(OPIE.ObrazProgramInEntryId, OPIE.ObrazProgramName) { ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority, CurrVersion = OPIE.CurrVersion, CurrDate = OPIE.CurrDate };
-                        OP.ListProfiles = new List<ShortProfileInObrazProgramInEntry>();
-                        foreach (var PROF in data.Where(x => x.ObrazProgramInEntryId == OPIE.ObrazProgramInEntryId && x.ProfileInObrazProgramInEntryId.HasValue).Select(x => new { x.ProfileInObrazProgramInEntryId, x.ProfileInObrazProgramInEntryPriority, x.ProfileName }))
+                        foreach (var OPIE in data.Select(x => new { x.ObrazProgramInEntryId, x.ObrazProgramInEntryPriority, x.ObrazProgramName, x.CurrDate, x.CurrVersion }).Distinct())
                         {
-                            OP.ListProfiles.Add(new ShortProfileInObrazProgramInEntry(PROF.ProfileInObrazProgramInEntryId.Value, PROF.ProfileName) { ProfileInObrazProgramInEntryPriority = PROF.ProfileInObrazProgramInEntryPriority.Value });
-                        }
 
-                        C.lstObrazProgramsInEntry.Add(OP);
+
+                            var OP = new ShortObrazProgramInEntry(OPIE.ObrazProgramInEntryId, OPIE.ObrazProgramName) { ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority, CurrVersion = OPIE.CurrVersion, CurrDate = OPIE.CurrDate };
+                            OP.ListProfiles = new List<ShortProfileInObrazProgramInEntry>();
+                            int profPriorVal = 0;
+                            foreach (var PROF in data.Where(x => x.ObrazProgramInEntryId == OPIE.ObrazProgramInEntryId && x.ProfileInObrazProgramInEntryId.HasValue).Select(x => new { x.ProfileInObrazProgramInEntryId, ProfileInObrazProgramInEntryPriority = x.ProfileInObrazProgramInEntryPriority, x.ProfileName }).OrderBy(x => x.ProfileInObrazProgramInEntryPriority))
+                            {
+                                profPriorVal++;
+                                OP.ListProfiles.Add(new ShortProfileInObrazProgramInEntry(PROF.ProfileInObrazProgramInEntryId.Value, PROF.ProfileName) { ProfileInObrazProgramInEntryPriority = PROF.ProfileInObrazProgramInEntryPriority ?? profPriorVal });
+                            }
+
+                            C.lstObrazProgramsInEntry.Add(OP);
+                        }
                     }
                 }
 
@@ -1006,28 +1034,36 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
 
                         foreach (var Comp in LstCompetitions)
                         {
-                            var DocDate = Comp.DocDate.ToSmallDateTime();
-                            var DocInsertDate = Comp.DocInsertDate.ToSmallDateTime();
+                            var DocDate = Comp.DocDate;
+                            var DocInsertDate = Comp.DocInsertDate == DateTime.MinValue ? DateTime.Now : Comp.DocInsertDate;
 
-                            context.Abiturient_InsertDirectly(PersonId, Comp.EntryId, Comp.CompetitionId, Comp.IsListener,
-                                false, false, false, null, DocDate, DocInsertDate, 
-                                false, false, null, Comp.OtherCompetitionId, Comp.CelCompetitionId, Comp.CelCompetitionText, 
-                                LanguageId, Comp.HasOriginals, Comp.Priority, Comp.Barcode, Comp.CommitId, _abitBarc, Comp.IsGosLine, Comp.Id);
-
+                            bool isViewed = Comp.HasCompetition;
+                            Guid ApplicationId = Comp.Id;
+                            bool hasLoaded = context.Abiturient.Where(x => x.PersonId == PersonId && x.EntryId == Comp.EntryId && !x.BackDoc).Count() == 0;
+                            if (hasLoaded)
+                            {
+                                context.Abiturient_InsertDirectly(PersonId, Comp.EntryId, Comp.CompetitionId, Comp.IsListener,
+                                    false, false, false, null, DocDate, DocInsertDate,
+                                    false, false, null, Comp.OtherCompetitionId, Comp.CelCompetitionId, Comp.CelCompetitionText,
+                                    LanguageId, Comp.HasOriginals, Comp.Priority, Comp.Barcode, Comp.CommitId, _abitBarc, Comp.IsGosLine, isViewed, ApplicationId);
+                                context.Abiturient_UpdateIsCommonRussianCompetition(Comp.IsCommonRussianCompetition, ApplicationId);
+                            }
+                            else
+                                ApplicationId = context.Abiturient.Where(x => x.PersonId == PersonId && x.EntryId == Comp.EntryId && !x.BackDoc).Select(x => x.Id).First();
                             if (Comp.lstObrazProgramsInEntry.Count > 0)
                             {
                                 //загружаем внутренние приоритеты по профилям
                                 int currVersion = Comp.lstObrazProgramsInEntry.Select(x => x.CurrVersion).FirstOrDefault();
                                 DateTime currDate = Comp.lstObrazProgramsInEntry.Select(x => x.CurrDate).FirstOrDefault();
                                 Guid ApplicationVersionId = Guid.NewGuid();
-                                context.ApplicationVersion.AddObject(new ApplicationVersion() { IntNumber = currVersion, Id = ApplicationVersionId, ApplicationId = Comp.Id, VersionDate = currDate });
+                                context.ApplicationVersion.AddObject(new ApplicationVersion() { IntNumber = currVersion, Id = ApplicationVersionId, ApplicationId = ApplicationId, VersionDate = currDate });
                                 foreach (var OPIE in Comp.lstObrazProgramsInEntry)
                                 {
                                     if (OPIE.ListProfiles.Count == 0)
                                     {
                                         context.ApplicationDetails.AddObject(new ApplicationDetails()
                                         {
-                                            ApplicationId = Comp.Id,
+                                            ApplicationId = ApplicationId,
                                             Id = Guid.NewGuid(),
                                             ObrazProgramInEntryId = OPIE.Id,
                                             ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,
@@ -1045,7 +1081,7 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                                     {
                                         context.ApplicationDetails.AddObject(new ApplicationDetails()
                                         {
-                                            ApplicationId = Comp.Id,
+                                            ApplicationId = ApplicationId,
                                             Id = Guid.NewGuid(),
                                             ObrazProgramInEntryId = OPIE.Id,
                                             ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,

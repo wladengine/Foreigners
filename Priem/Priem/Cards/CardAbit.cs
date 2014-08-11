@@ -170,7 +170,7 @@ namespace Priem
 
                     if (_Id == null)
                     {
-                        extPerson pers = (from per in context.extForeignPerson
+                        extPerson pers = (from per in context.extPerson
                                       where per.Id == _personId
                                       select per).FirstOrDefault();
 
@@ -235,6 +235,14 @@ namespace Priem
                     Priority = abit.Priority;
                     abitBarcode = abit.Barcode;
 
+                    if (StudyBasisId == 2)
+                        chbIsCommonRussianCompetition.Visible = true;
+                    else
+                        chbIsCommonRussianCompetition.Visible = false;
+
+                    IsCommonRussianCompetition = abit.IsCommonRussianCompetition;
+
+
                     FillProtocols(context);
                     UpdateDataGridOlymp();
 
@@ -243,6 +251,8 @@ namespace Priem
 
                     inEnableProtocol = GetInEnableProtocol(context);
                     inEntryView = GetInEntryView(context);
+
+                    context.Abiturient_UpdateIsViewed(GuidId);
                 }                   
             }            
             catch (Exception ex)
@@ -407,6 +417,7 @@ namespace Priem
 
             chbIsPaid.Enabled = true;
             chbIsGosLine.Enabled = true;
+            chbIsCommonRussianCompetition.Enabled = true;
             cbLanguage.Enabled = true;
             cbCelCompetition.Enabled = true;
             tbCelCompetitionText.Enabled = true;
@@ -648,9 +659,9 @@ namespace Priem
         }
         
 
-        private IEnumerable<qEntry> GetEntry(PriemEntities context)
+        private IEnumerable<Entry> GetEntry(PriemEntities context)
         {               
-            IEnumerable<qEntry> entry = MainClass.GetEntry(context);
+            IEnumerable<Entry> entry = MainClass.GetEntry(context);
 
             entry = entry.Where(x => x.StudyLevelId == StudyLevelId);
 
@@ -668,12 +679,12 @@ namespace Priem
                 using (PriemEntities context = new PriemEntities())
                 {
                     List<KeyValuePair<string, string>> lst = ((from ent in GetEntry(context)
-                                                               orderby ent.LicenseProgramName
+                                                               orderby ent.SP_LicenseProgram.Code
                                                                select new
                                                                {
                                                                    Id = ent.LicenseProgramId,
-                                                                   Name = ent.LicenseProgramName,
-                                                                   Code = ent.LicenseProgramCode
+                                                                   Name = ent.SP_LicenseProgram.Name,
+                                                                   Code = ent.SP_LicenseProgram.Code
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Code)).ToList();
 
                     ComboServ.FillCombo(cbLicenseProgram, lst, false, false);                   
@@ -692,12 +703,12 @@ namespace Priem
                 {
                     List<KeyValuePair<string, string>> lst = ((from ent in GetEntry(context)
                                                                where ent.LicenseProgramId == LicenseProgramId
-                                                               orderby ent.ObrazProgramName
+                                                               orderby ent.SP_ObrazProgram.Number
                                                                select new
                                                                {
                                                                    Id = ent.ObrazProgramId,
-                                                                   Name = ent.ObrazProgramName,
-                                                                   Crypt = ent.ObrazProgramCrypt
+                                                                   Name = ent.SP_ObrazProgram.Name,
+                                                                   Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                     ComboServ.FillCombo(cbObrazProgram, lst, false, false);
@@ -756,7 +767,7 @@ namespace Priem
                                                                select new
                                                                {
                                                                    Id = ent.FacultyId,
-                                                                   Name = ent.FacultyName
+                                                                   Name = ent.SP_Faculty.Name
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                     ComboServ.FillCombo(cbFaculty, lst, false, false);
@@ -800,11 +811,11 @@ namespace Priem
                                                                && ent.ObrazProgramId == ObrazProgramId
                                                                && (ProfileId == null ? ent.ProfileId == null : ent.ProfileId == ProfileId)    
                                                                && ent.FacultyId == FacultyId   
-                                                               orderby ent.StudyFormName
+                                                               orderby ent.StudyForm.Name
                                                                select new
                                                                {
                                                                    Id = ent.StudyFormId,
-                                                                   Name = ent.StudyFormName
+                                                                   Name = ent.StudyForm.Name
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                     ComboServ.FillCombo(cbStudyForm, lst, false, false);
@@ -827,11 +838,11 @@ namespace Priem
                                                                && (ProfileId == null ? ent.ProfileId == null : ent.ProfileId == ProfileId)   
                                                                && ent.FacultyId == FacultyId
                                                                && ent.StudyFormId == StudyFormId
-                                                               orderby ent.StudyBasisName
+                                                               orderby ent.StudyBasis.Name
                                                                select new
                                                                {
                                                                    Id = ent.StudyBasisId,
-                                                                   Name = ent.StudyBasisName
+                                                                   Name = ent.StudyBasis.Name
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                     ComboServ.FillCombo(cbStudyBasis, lst, false, false);
@@ -1160,6 +1171,10 @@ namespace Priem
             context.Abiturient_Insert(_personId, EntryId, CompetitionId, IsListener, false, IsPaid, BackDoc, BackDocDate, DocDate, DateTime.Now, 
                 Checked, NotEnabled, Coefficient, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, HasOriginals, 
                 Priority, abitBarcode, null, null, IsGosLine, idParam);
+
+            Guid AppId = (Guid)idParam.Value;
+
+            context.Abiturient_UpdateIsCommonRussianCompetition(IsCommonRussianCompetition, AppId);
         }
 
         protected override void UpdateRec(PriemEntities context, Guid id)
@@ -1169,7 +1184,9 @@ namespace Priem
                   Priority, id);
 
             //если есть права на изменение конкурса 
-            context.Abiturient_UpdateEntry(EntryId, id);            
+            context.Abiturient_UpdateEntry(EntryId, id);
+            context.Abiturient_UpdateIsGosLine(IsGosLine, id);
+            context.Abiturient_UpdateIsCommonRussianCompetition(IsCommonRussianCompetition, id);
         }
 
         protected override void OnSave()
@@ -1192,9 +1209,9 @@ namespace Priem
                                     where pr.Id == GuidId
                                     select pr.PersonNum).FirstOrDefault().ToString();
 
-                tbRegNum.Text = MainClass.GetAbitNum(num, personNum);                   
+                tbRegNum.Text = MainClass.GetAbitNum(num, personNum);
             }
-        }  
+        }
         
         #endregion 
        
@@ -1424,7 +1441,10 @@ namespace Priem
                     sfd.FileName = lblFIO.Text + " - Заявление.pdf";
                     sfd.Filter = "ADOBE Pdf files|*.pdf";
                     if (sfd.ShowDialog() == DialogResult.OK)
-                        Print.PrintApplication(AbitId, chbPrint.Checked, sfd.FileName);
+                    {
+                        if (StudyLevelId == 16 || StudyLevelId == 17 || StudyLevelId == 18)
+                            Print.PrintApplication(chbPrint.Checked, sfd.FileName, _personId);
+                    }
                     break;
                 case 1:
                     Print.PrintStikerOne(AbitId, chbPrint.Checked);
@@ -1461,7 +1481,7 @@ namespace Priem
         }
         
         #endregion
-                
+
         private void UpdateApplications()
         {
             foreach (Form frmChild in MainClass.mainform.MdiChildren)
@@ -1660,7 +1680,5 @@ namespace Priem
         {
             new CardDocInventory(GuidId, !_isModified).Show();
         }
-
-        
     }
 }

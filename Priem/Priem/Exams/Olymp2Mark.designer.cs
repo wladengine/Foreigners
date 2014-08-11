@@ -58,6 +58,8 @@ namespace Priem
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.cbStudyLevelGroup = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbitList)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,7 +90,7 @@ namespace Priem
             // lblLanguage
             // 
             this.lblLanguage.AutoSize = true;
-            this.lblLanguage.Location = new System.Drawing.Point(420, 10);
+            this.lblLanguage.Location = new System.Drawing.Point(439, 12);
             this.lblLanguage.Name = "lblLanguage";
             this.lblLanguage.Size = new System.Drawing.Size(94, 13);
             this.lblLanguage.TabIndex = 66;
@@ -129,7 +131,7 @@ namespace Priem
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(256, 10);
+            this.label3.Location = new System.Drawing.Point(275, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 13);
             this.label3.TabIndex = 54;
@@ -169,9 +171,9 @@ namespace Priem
             this.dgvAbitList.AllowUserToDeleteRows = false;
             this.dgvAbitList.AllowUserToOrderColumns = true;
             this.dgvAbitList.AllowUserToResizeRows = false;
-            this.dgvAbitList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvAbitList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvAbitList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAbitList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAbitList.Location = new System.Drawing.Point(13, 234);
@@ -237,7 +239,7 @@ namespace Priem
             this.cbStudyBasis.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyBasis.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyBasis.FormattingEnabled = true;
-            this.cbStudyBasis.Location = new System.Drawing.Point(423, 25);
+            this.cbStudyBasis.Location = new System.Drawing.Point(442, 27);
             this.cbStudyBasis.Name = "cbStudyBasis";
             this.cbStudyBasis.Size = new System.Drawing.Size(136, 21);
             this.cbStudyBasis.TabIndex = 146;
@@ -248,7 +250,7 @@ namespace Priem
             this.cbStudyForm.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyForm.FormattingEnabled = true;
-            this.cbStudyForm.Location = new System.Drawing.Point(259, 25);
+            this.cbStudyForm.Location = new System.Drawing.Point(278, 27);
             this.cbStudyForm.Name = "cbStudyForm";
             this.cbStudyForm.Size = new System.Drawing.Size(136, 21);
             this.cbStudyForm.TabIndex = 144;
@@ -386,11 +388,34 @@ namespace Priem
             this.label5.TabIndex = 149;
             this.label5.Text = "Предмет";
             // 
+            // cbStudyLevelGroup
+            // 
+            this.cbStudyLevelGroup.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbStudyLevelGroup.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStudyLevelGroup.FormattingEnabled = true;
+            this.cbStudyLevelGroup.Location = new System.Drawing.Point(584, 27);
+            this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
+            this.cbStudyLevelGroup.Size = new System.Drawing.Size(136, 21);
+            this.cbStudyLevelGroup.TabIndex = 160;
+            this.cbStudyLevelGroup.SelectedIndexChanged += new System.EventHandler(this.cbStudyLevelGroup_SelectedIndexChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(581, 12);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(94, 13);
+            this.label11.TabIndex = 159;
+            this.label11.Text = "Основа обучения";
+            // 
             // Olymp2Mark
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(945, 584);
+            this.Controls.Add(this.cbStudyLevelGroup);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.cbOlympName);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.cbOlympSubject);
@@ -457,6 +482,8 @@ namespace Priem
             this.Controls.SetChildIndex(this.cbOlympSubject, 0);
             this.Controls.SetChildIndex(this.label10, 0);
             this.Controls.SetChildIndex(this.cbOlympName, 0);
+            this.Controls.SetChildIndex(this.label11, 0);
+            this.Controls.SetChildIndex(this.cbStudyLevelGroup, 0);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbitList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -493,6 +520,8 @@ namespace Priem
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;        
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cbStudyLevelGroup;
+        private System.Windows.Forms.Label label11;        
     }
 }

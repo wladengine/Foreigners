@@ -116,6 +116,7 @@
             this.lblFIO = new System.Windows.Forms.Label();
             this.btnCardPerson = new System.Windows.Forms.Button();
             this.epErrorInput = new System.Windows.Forms.ErrorProvider(this.components);
+            this.chbIsCommonRussianCompetition = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).BeginInit();
             this.tabCard.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -226,6 +227,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.chbIsCommonRussianCompetition);
             this.tabPage1.Controls.Add(this.chbIsGosLine);
             this.tabPage1.Controls.Add(this.cbStudyLevel);
             this.tabPage1.Controls.Add(this.label10);
@@ -1086,6 +1088,16 @@
             // 
             this.epErrorInput.ContainerControl = this;
             // 
+            // chbIsCommonRussianCompetition
+            // 
+            this.chbIsCommonRussianCompetition.Location = new System.Drawing.Point(286, 262);
+            this.chbIsCommonRussianCompetition.Name = "chbIsCommonRussianCompetition";
+            this.chbIsCommonRussianCompetition.Size = new System.Drawing.Size(181, 30);
+            this.chbIsCommonRussianCompetition.TabIndex = 128;
+            this.chbIsCommonRussianCompetition.Text = "поступление на равных правах с гражданами РФ";
+            this.chbIsCommonRussianCompetition.UseVisualStyleBackColor = true;
+            this.chbIsCommonRussianCompetition.Visible = false;
+            // 
             // CardAbit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1221,5 +1233,6 @@
         private System.Windows.Forms.ComboBox cbStudyLevel;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox chbIsGosLine;
+        private System.Windows.Forms.CheckBox chbIsCommonRussianCompetition;
     }
 }

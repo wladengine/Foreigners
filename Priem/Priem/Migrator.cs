@@ -194,12 +194,12 @@ namespace Priem
                               "ed.Person.PassportTypeId, ed.Person.PassportSeries, ed.Person.PassportNumber, ed.Person.PassportAuthor, ed.Person.PassportDate, " +
                               "ed.Person.NationalityId, ed.Person.RegionId, ed.Person.Phone, ed.Person.Mobiles, " +
                               "ed.extAbit.LanguageId, ed.Person.Privileges, " +
-                              "ed.Person.Code, Person.City, Person.Street, Person.House, Person.Korpus, Person.Flat, " +
-                              "ed.Person.CodeReal, ed.Person.CityReal, ed.Person.StreetReal, ed.Person.HouseReal, ed.Person.KorpusReal, ed.Person.FlatReal, " +
-                              "ed.Person.SchoolTypeId, ed.Person.SchoolCity, ed.Person.SchoolName, ed.Person.SchoolNum, ed.Person.SchoolExitYear, " +
-                              "ed.Person.AttestatRegion, ed.Person.AttestatSeries, ed.Person.AttestatNum, (case when ed.extAbit.AttDocOrigin = 1 then 'false' else 'true' end) AS CopyAtt, " +
-                              "ed.Person.DiplomSeries, ed.Person.DiplomNum, " +
-                              "ed.Person.IsExcellent, ed.Country.Name as Nation, " +
+                              "ed.Person_Contacts.Code, Person_Contacts.City, Person_Contacts.Street, Person_Contacts.House, Person_Contacts.Korpus, Person_Contacts.Flat, " +
+                              "ed.Person_Contacts.CodeReal, ed.Person_Contacts.CityReal, ed.Person_Contacts.StreetReal, ed.Person_Contacts.HouseReal, ed.Person_Contacts.KorpusReal, ed.Person_Contacts.FlatReal, " +
+                              "ed.Person_EducationInfo.SchoolTypeId, ed.Person_EducationInfo.SchoolCity, ed.Person_EducationInfo.SchoolName, ed.Person_EducationInfo.SchoolNum, ed.Person_EducationInfo.SchoolExitYear, " +
+                              "ed.Person_EducationInfo.AttestatRegion, ed.Person_EducationInfo.AttestatSeries, ed.Person_EducationInfo.AttestatNum, (case when ed.extAbit.AttDocOrigin = 1 then 'false' else 'true' end) AS CopyAtt, " +
+                              "ed.Person_EducationInfo.DiplomSeries, ed.Person_EducationInfo.DiplomNum, " +
+                              "ed.Person_EducationInfo.IsExcellent, ed.Country.Name as Nation, " +
                               "ed.extAbit.FacultyId, ed.extAbit.StudyFormId, ed.extAbit.StudyBasisId, " +
                               "ed.extAbit.LicenseProgramId, ed.extAbit.ProfileId, ed.extAbit.CompetitionId, ed.extAbit.StudyNumber, " +
                               "ed.extAbit.ObrazProgramName, ed.extAbit.ObrazProgramCrypt, " +
@@ -207,6 +207,8 @@ namespace Priem
                               "(Case When ed.extAbit.IsSecond = 1 then 1 else (case when ed.extabit.Isreduced = 1 then 2 else (case when ed.extabit.isparallel = 1 then 3 else 0 end) end) end) AS ListenerTypeId, " +
                               "ed.extEntryView.Id AS EntryProtId, ed.Person.DiplomSeries, ed.Person.DiplomNum, ed.Person.HEExitYear " +
                               "FROM ed.extAbit INNER JOIN ed.Person ON ed.extAbit.PersonId = ed.Person.Id " +
+                              "Left join ed.Person_EducationInfo on ed.Person_EducationInfo.PersonId = ed.Person.Id" +
+                              "Left join ed.Person_Contacts on ed.Person_Contacts.PersonId = ed.Person.Id" +
                               "INNER JOIN ed.extEntryView ON ed.extEntryView.AbiturientId = ed.extAbit.Id " +
                               "INNER JOIN ed.OrderNumbers ON ed.extEntryView.Id = ed.OrderNumbers.ProtocolId " +
                               "LEFT JOIN ed.Country ON ed.Country.Id=ed.Person.NationalityId " +

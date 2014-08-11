@@ -50,6 +50,8 @@
             this.cbFaculty = new System.Windows.Forms.ComboBox();
             this.cbExamVed = new System.Windows.Forms.ComboBox();
             this.cbStudyBasis = new System.Windows.Forms.ComboBox();
+            this.cbStudyLevelGroup = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).BeginInit();
             this.SuspendLayout();
             // 
@@ -106,9 +108,9 @@
             this.dgvList.AllowUserToDeleteRows = false;
             this.dgvList.AllowUserToOrderColumns = true;
             this.dgvList.AllowUserToResizeRows = false;
-            this.dgvList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvList.Location = new System.Drawing.Point(12, 92);
@@ -279,11 +281,34 @@
             this.cbStudyBasis.Size = new System.Drawing.Size(136, 21);
             this.cbStudyBasis.TabIndex = 145;
             // 
+            // cbStudyLevelGroup
+            // 
+            this.cbStudyLevelGroup.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbStudyLevelGroup.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStudyLevelGroup.FormattingEnabled = true;
+            this.cbStudyLevelGroup.Location = new System.Drawing.Point(386, 21);
+            this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
+            this.cbStudyLevelGroup.Size = new System.Drawing.Size(136, 21);
+            this.cbStudyLevelGroup.TabIndex = 147;
+            this.cbStudyLevelGroup.SelectedIndexChanged += new System.EventHandler(this.cbStudyLevelGroup_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(383, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(51, 13);
+            this.label2.TabIndex = 146;
+            this.label2.Text = "Уровень";
+            // 
             // ExamsVedList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1106, 498);
+            this.Controls.Add(this.cbStudyLevelGroup);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.cbStudyBasis);
             this.Controls.Add(this.cbFaculty);
             this.Controls.Add(this.cbExamVed);
@@ -336,5 +361,7 @@
         private System.Windows.Forms.ComboBox cbFaculty;
         private System.Windows.Forms.ComboBox cbExamVed;
         private System.Windows.Forms.ComboBox cbStudyBasis;
+        private System.Windows.Forms.ComboBox cbStudyLevelGroup;
+        private System.Windows.Forms.Label label2;
     }
 }

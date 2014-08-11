@@ -128,7 +128,7 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.LicenseProgramId,
-                                                               Name = ent.LicenseProgramName
+                                                               Name = ent.SP_LicenseProgram.Name
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, false);
@@ -145,8 +145,8 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.ObrazProgramId,
-                                                               Name = ent.ObrazProgramName,
-                                                               Crypt = ent.ObrazProgramCrypt
+                                                               Name = ent.SP_ObrazProgram.Name,
+                                                               Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, false);
@@ -296,14 +296,14 @@ namespace Priem
             string query = @"SELECT DISTINCT qAbiturient.Id, qAbiturient.Barcode FROM qAbiturient WHERE 
 (qAbiturient.Id IN 
 (
-SELECT DISTINCT ab.Id FROM extAbitFiles INNER JOIN qAbiturient AS ab ON extAbitFiles.ApplicationId = ab.Id 
-WHERE (ab.DateReviewDocs IS NULL OR DateDiff(MINUTE, ab.DateReviewDocs, extAbitFiles.LoadDate) > 0)
+SELECT DISTINCT ab.Id FROM extAbitFiles_All INNER JOIN qAbiturient AS ab ON extAbitFiles_All.ApplicationId = ab.Id 
+WHERE (ab.DateReviewDocs IS NULL OR DateDiff(MINUTE, ab.DateReviewDocs, extAbitFiles_All.LoadDate) > 0)
 )
 OR
 qAbiturient.PersonId IN 
 (
-SELECT DISTINCT pers.Id FROM extAbitFiles INNER JOIN Person AS pers ON extAbitFiles.PersonId = pers.Id 
-WHERE extAbitFiles.ApplicationId IS NULL AND (pers.DateReviewDocs IS NULL OR DateDiff(MINUTE, pers.DateReviewDocs, extAbitFiles.LoadDate) > 0)
+SELECT DISTINCT pers.Id FROM extAbitFiles_All INNER JOIN Person AS pers ON extAbitFiles_All.PersonId = pers.Id 
+WHERE extAbitFiles_All.ApplicationId IS NULL AND (pers.DateReviewDocs IS NULL OR DateDiff(MINUTE, pers.DateReviewDocs, extAbitFiles_All.LoadDate) > 0)
 ))
 AND qAbiturient.IsImported = 1 "; 
             

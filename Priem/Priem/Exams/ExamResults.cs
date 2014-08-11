@@ -45,6 +45,7 @@ namespace Priem
             {
                 using (PriemEntities context = new PriemEntities())
                 {
+                    ComboServ.FillCombo(cbStudyLevelGroup, HelpClass.GetComboListByTable("ed.StudyLevelGroup", "ORDER BY Acronym"), false, false);
                     ComboServ.FillCombo(cbFaculty, HelpClass.GetComboListByTable("ed.qFaculty", "ORDER BY Acronym"), false, false);
                     ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByTable("ed.StudyBasis", "ORDER BY Name"), false, true);
 
@@ -74,7 +75,11 @@ namespace Priem
         }
 
         #region Handlers
-
+        public int? StudyLevelGroupId
+        {
+            get { return ComboServ.GetComboIdInt(cbStudyLevelGroup); }
+            set { ComboServ.SetComboId(cbStudyLevelGroup, value); }
+        }
         public int? FacultyId
         {
             get { return ComboServ.GetComboIdInt(cbFaculty); }
@@ -135,7 +140,7 @@ namespace Priem
             {
                 var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyFormName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyForm.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, true);
                 cbStudyForm.SelectedIndex = 0;
@@ -150,7 +155,7 @@ namespace Priem
                 if(StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, true);
                 cbLicenseProgram.SelectedIndex = 0;
@@ -167,7 +172,7 @@ namespace Priem
                 if (LicenseProgramId != null)
                     ent = ent.Where(c => c.LicenseProgramId == LicenseProgramId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.ObrazProgramName + ' ' + u.ObrazProgramCrypt)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.SP_ObrazProgram.Name + ' ' + u.StudyLevel.Acronym + "." + u.SP_ObrazProgram.Number + "." + MainClass.PriemYear)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);
             }
@@ -210,7 +215,7 @@ namespace Priem
         {            
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = Exams.GetExamsWithFilters(context, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyFormId, StudyBasisId, null, null, null);
+                var ent = Exams.GetExamsWithFilters(context, StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyFormId, StudyBasisId, null, null, null);
                 List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ExamId.ToString(), u.ExamName)).Distinct().ToList();
                 ComboServ.FillCombo(cbExam, lst, false, true);
             }            
@@ -258,6 +263,10 @@ namespace Priem
             cbStudyForm.SelectedIndexChanged += new EventHandler(cbStudyForm_SelectedIndexChanged);
             cbStudyBasis.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);
             cbCompetition.SelectedIndexChanged += new EventHandler(cbCompetition_SelectedIndexChanged);
+        }
+        private void cbStudyLevelGroup_SelectedValueChanged(object sender, EventArgs e)
+        {
+            FillStudyForm();
         }
         void cbStudyForm_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -818,5 +827,7 @@ ORDER BY ‘»Œ", abitFilters);
             else
                 _orderBy = "it." + Dgv.Columns[e.ColumnIndex].Name;
         }
+
+        
     }
 }

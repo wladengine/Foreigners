@@ -55,7 +55,7 @@ namespace Priem
             return dsEge.Tables[0];
         }
 
-        public extPerson GetPersonByBarcode(int fileNum)
+        public extPersonAll GetPersonByBarcode(int fileNum)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace Priem
                     throw new Exception("Записей не найдено");
 
                 DataRow row = ds.Tables[0].Rows[0];
-                extPerson pers = new extPerson();
+                extPersonAll pers = new extPersonAll();
                 pers.Id = (Guid)row["Id"];
                 pers.Barcode = (int?)row["Barcode"];
                 pers.FIO = Util.GetFIO(row["Surname"].ToString(), row["Name"].ToString(), row["SecondName"].ToString());
@@ -250,8 +250,8 @@ namespace Priem
                 abit.BackDocDate = row.Field<DateTime?>("BackDocDate");
                 abit.DocDate = (DateTime)row["DocDate"];
          
-                double prior;
-                if (!double.TryParse(row["Priority"].ToString(), out prior))
+                int prior;
+                if (!int.TryParse(row["Priority"].ToString(), out prior))
                     abit.Priority = null;
                 else
                     abit.Priority = prior;

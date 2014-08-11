@@ -24,6 +24,7 @@ namespace Priem
         private Guid? _Id;
         private bool isAdditional;
         private int? examId;   
+        private int? studyLevelGroupId;
         private int? facultyId;
         private int? studyBasisId;
         private DateTime passDate;
@@ -52,19 +53,21 @@ namespace Priem
                                    where vd.Id == _Id
                                    select vd).FirstOrDefault();
                 
-                this.facultyId = ved.FacultyId;            
+                this.facultyId = ved.FacultyId;   
                 this.passDate = ved.Date;
                 this.isAdditional = ved.IsAdditional;
                 this.examId = ved.ExamId;
                 this.studyBasisId = ved.StudyBasisId;
                 this.isAddVed = false;
                 this.addCount = 0;
+
+                this.studyLevelGroupId = ved.StudyLevelGroupId;
             }
             
             InitControls();       
         }
 
-        public ExamsVedCard(ExamsVedList owner, int? facId, int? examId, DateTime date, int? basisId, bool isAdd)
+        public ExamsVedCard(ExamsVedList owner, int? StudyLevelGroupId, int? facId, int? examId, DateTime date, int? basisId, bool isAdd)
         {
             InitializeComponent();
 
@@ -77,6 +80,7 @@ namespace Priem
             this.examId = examId;
             this.studyBasisId = basisId;
             this.isAddVed = isAdd;
+            this.studyLevelGroupId = StudyLevelGroupId;
 
             using (PriemEntities context = new PriemEntities())
             {
@@ -84,7 +88,7 @@ namespace Priem
                 {
                     addCount = (from vd in context.extExamsVed
                                 where vd.ExamId == examId && vd.Date == passDate.Date
-                                && vd.FacultyId == facultyId && vd.StudyLevelGroupId == MainClass.studyLevelGroupId
+                                && vd.FacultyId == facultyId && vd.StudyLevelGroupId == studyLevelGroupId
                                 && (studyBasisId != null ? vd.StudyBasisId == studyBasisId : true == true)
                                 select vd.AddCount).Max();
                     
@@ -109,13 +113,11 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbStudyBasis); }
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
-
         public int? cbStudyFormId
         {
             get { return ComboServ.GetComboIdInt(cbStudyForm); }
             set { ComboServ.SetComboId(cbStudyForm, value); }
         }
-
         public int? cbObrazProgramId
         {
             get { return ComboServ.GetComboIdInt(cbObrazProgram); }
@@ -161,7 +163,7 @@ namespace Priem
                 else
                     ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByQuery(string.Format("SELECT CONVERT(varchar(100), Id) AS Id, Name FROM ed.StudyBasis WHERE Id = {0} ORDER BY Name", studyBasisId)), false, false);
 
-                ComboServ.FillCombo(cbStudyForm, HelpClass.GetComboListByQuery(string.Format("SELECT DISTINCT CONVERT(varchar(100), StudyFormId) AS Id, StudyFormName AS Name FROM ed.qEntry WHERE StudyLevelGroupId = {0} AND FacultyId = {1} ORDER BY Name", MainClass.studyLevelGroupId, facultyId)), false, true);
+                ComboServ.FillCombo(cbStudyForm, HelpClass.GetComboListByQuery(string.Format("SELECT DISTINCT CONVERT(varchar(100), StudyFormId) AS Id, StudyFormName AS Name FROM ed.qEntry WHERE StudyLevelGroupId = {0} AND FacultyId = {1} ORDER BY Name", studyLevelGroupId, facultyId)), false, true);
                 FillObrazProgram();
 
                 //заполнение гридов            
@@ -196,13 +198,14 @@ namespace Priem
             {
                 List<KeyValuePair<string, string>> lst = ((from ent in MainClass.GetEntry(context)
                                                            where ent.FacultyId == facultyId
+                                                           && ent.StudyLevel.LevelGroupId == studyLevelGroupId
                                                            && (cbStudyBasisId != null ? ent.StudyBasisId == cbStudyBasisId : true == true)
                                                            && (cbStudyFormId != null ? ent.StudyBasisId == cbStudyFormId : true == true)                                                           
                                                            select new
                                                            {
                                                                Id = ent.ObrazProgramId,
-                                                               Name = ent.ObrazProgramName,
-                                                               Crypt = ent.ObrazProgramCrypt
+                                                               Name = ent.SP_ObrazProgram.Name,
+                                                               Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);
@@ -254,7 +257,7 @@ namespace Priem
             flt_protocol = " AND ProtocolTypeId = 1 AND IsOld = 0 AND Excluded = 0";
             flt_hasExam = string.Format(" AND ed.qAbiturient.EntryId IN (SELECT ed.extExamInEntry.EntryId FROM ed.extExamInEntry WHERE ed.extExamInEntry.ExamId = {0})", examId);
 
-            flt_where = string.Format(" WHERE ed.qAbiturient.FacultyId = {0} AND ed.qAbiturient.StudyLevelGroupId = {1} ", facultyId, MainClass.studyLevelGroupId) + flt_prof;
+            flt_where = string.Format(" WHERE ed.qAbiturient.FacultyId = {0} AND ed.qAbiturient.StudyLevelGroupId = {1} ", facultyId, studyLevelGroupId) + flt_prof;
 
             if (studyBasisId != 2)
             {
@@ -274,7 +277,7 @@ namespace Priem
 
         private void FillGridLeft()
         {
-            string flt_where = string.Format(" WHERE ed.qAbiturient.FacultyId = {0} AND ed.qAbiturient.StudyLevelGroupId = {1} ", facultyId, MainClass.studyLevelGroupId);
+            string flt_where = string.Format(" WHERE ed.qAbiturient.FacultyId = {0} AND ed.qAbiturient.StudyLevelGroupId = {1} ", facultyId, studyLevelGroupId);
             
             //заполнили левый
             if (_Id != null)
@@ -355,7 +358,7 @@ namespace Priem
                         if (_Id == null)
                         {
                             ObjectParameter vedParId = new ObjectParameter("id", typeof(Guid));
-                            context.ExamsVed_Insert(MainClass.studyLevelGroupId, facultyId, studyBasisId, passDate.Date, examId, false, false, isAddVed, (isAddVed ? addCount : null), vedParId);
+                            context.ExamsVed_Insert(studyLevelGroupId, facultyId, studyBasisId, passDate.Date, examId, false, false, isAddVed, (isAddVed ? addCount : null), vedParId);
                             _Id = (Guid)vedParId.Value;
                         }
                         else

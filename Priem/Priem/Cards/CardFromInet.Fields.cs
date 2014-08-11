@@ -30,7 +30,14 @@ namespace Priem
             set
             {
                 if (value.HasValue)
-                    dtBirthDate.Value = value.Value;
+                    try
+                    {
+                        dtBirthDate.Value = value.Value;
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        WinFormsServ.Error("Некорректная дата рождения");
+                    }
             }
         }
         public string BirthPlace
@@ -64,8 +71,15 @@ namespace Priem
             get { return dtPassportDate.Value.Date; }
             set
             {
-                if (value.HasValue)
-                    dtPassportDate.Value = value.Value;
+                try
+                {
+                    if (value.HasValue)
+                        dtPassportDate.Value = value.Value;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    WinFormsServ.Error("Некорректная дата паспорта");
+                }
             }
         }
         public bool Sex
@@ -417,10 +431,17 @@ namespace Priem
             }
             set
             {
-                if (value.HasValue)
+                try
                 {
-                    dtpVisaStart.Checked = true;
-                    dtpVisaStart.Value = value.Value;
+                    if (value.HasValue)
+                    {
+                        dtpVisaStart.Checked = true;
+                        dtpVisaStart.Value = value.Value;
+                    }
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    WinFormsServ.Error("Некорректная дата начала действия визы!");
                 }
             }
         }
@@ -435,10 +456,17 @@ namespace Priem
             }
             set
             {
-                if (value.HasValue)
+                try
                 {
-                    dtpVisaEnd.Checked = true;
-                    dtpVisaEnd.Value = value.Value;
+                    if (value.HasValue)
+                    {
+                        dtpVisaEnd.Checked = true;
+                        dtpVisaEnd.Value = value.Value;
+                    }
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    WinFormsServ.Error("Некорректная дата окончания действия визы!");
                 }
             }
         }
@@ -453,10 +481,17 @@ namespace Priem
             }
             set
             {
-                if (value.HasValue)
+                try
                 {
-                    dtpEnterInRussiaDate.Checked = true;
-                    dtpEnterInRussiaDate.Value = value.Value;
+                    if (value.HasValue)
+                    {
+                        dtpEnterInRussiaDate.Checked = true;
+                        dtpEnterInRussiaDate.Value = value.Value;
+                    }
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    WinFormsServ.Error("Некорректная дата въезда в РФ!");
                 }
             }
         }
@@ -471,10 +506,17 @@ namespace Priem
             }
             set
             {
-                if (value.HasValue)
+                try
                 {
-                    dtpEducationDirectionDate.Checked = true;
-                    dtpEducationDirectionDate.Value = value.Value;
+                    if (value.HasValue)
+                    {
+                        dtpEducationDirectionDate.Checked = true;
+                        dtpEducationDirectionDate.Value = value.Value;
+                    }
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    WinFormsServ.Error("Некорректная дата направления на обучение!");
                 }
             }
         }

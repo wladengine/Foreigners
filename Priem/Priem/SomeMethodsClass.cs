@@ -166,7 +166,7 @@ namespace Priem
         }
 
         // проверка на уникальность абитуриента
-        private static bool CheckIdent(extPerson person)
+        private static bool CheckIdent(extPersonAll person)
         {
             using (PriemEntities context = new PriemEntities())
             {
@@ -210,7 +210,7 @@ namespace Priem
                     }
                     else
                     {
-                        extPerson person = loadClass.GetPersonByBarcode(persBarcode.Value);
+                        extPersonAll person = loadClass.GetPersonByBarcode(persBarcode.Value);
 
                         if (!CheckIdent(person))
                         {

@@ -33,7 +33,9 @@ namespace Priem
              ed.extPerson.PassportSeries + ' №' + ed.extPerson.PassportNumber as Паспорт, 
              extAbit.ObrazProgramNameEx + ' ' + (Case when extAbit.ProfileId IS NULL then '' else extAbit.ProfileName end) as Направление, 
              Competition.NAme as Конкурс, extAbit.BackDoc 
-             FROM ed.extAbit INNER JOIN ed.extPerson ON ed.extAbit.PersonId = ed.extPerson.Id   
+             FROM ed.extAbit 
+             INNER JOIN ed.extPerson ON ed.extAbit.PersonId = ed.extPerson.Id   
+             INNER JOIN ed.qAbiturientForeignApplicationsOnly qqq ON qqq.Id = extAbit.Id
              LEFT JOIN ed.hlpMinEgeAbiturient ON ed.hlpMinEgeAbiturient.Id = ed.extAbit.Id          
              LEFT JOIN ed.Competition ON ed.Competition.Id = ed.extAbit.CompetitionId";
 
@@ -51,7 +53,7 @@ namespace Priem
             base.InitAndFillGrids();
 
             string sFilter = string.Empty;
-            sFilter = string.Format(" AND ed.extAbit.BackDoc = 0 AND ed.extAbit.NotEnabled=0 AND ed.extAbit.Id NOT IN (SELECT AbiturientId FROM ed.qProtocolHistory WHERE Excluded=0 AND ProtocolId IN (SELECT Id FROM ed.qProtocol WHERE ISOld=0 AND ProtocolTypeId=1 AND FacultyId ={0} AND StudyFormId = {1} AND StudyBasisId = {2}))", 
+            sFilter += string.Format(" AND ed.extAbit.BackDoc = 0 AND ed.extAbit.NotEnabled=0 AND ed.extAbit.Id NOT IN (SELECT AbiturientId FROM ed.qProtocolHistory WHERE Excluded=0 AND ProtocolId IN (SELECT Id FROM ed.qProtocol WHERE ISOld=0 AND ProtocolTypeId=1 AND FacultyId ={0} AND StudyFormId = {1} AND StudyBasisId = {2}))", 
                 _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString(), MainClass.studyLevelGroupId);
 
             if (chbFilter.Checked)

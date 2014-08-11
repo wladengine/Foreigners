@@ -9,9 +9,12 @@ namespace Priem
 {
     public static class Exams
     {
-        public static IEnumerable<extExamInEntry> GetExamsWithFilters(PriemEntities context, int? facultyId, int? licenseProgramId, int? obrazProgramId, Guid? profileId, int? stFormId, int? stBasisId, bool? isSecond, bool? isReduced, bool? isParallel)
+        public static IEnumerable<extExamInEntry> GetExamsWithFilters(PriemEntities context, int? studyLevelGroupId, int? facultyId, int? licenseProgramId, int? obrazProgramId, Guid? profileId, int? stFormId, int? stBasisId, bool? isSecond, bool? isReduced, bool? isParallel)
         {            
-            IEnumerable<extExamInEntry> exams = from ex in context.extExamInEntry where ex.StudyLevelGroupId == MainClass.studyLevelGroupId select ex;
+            IEnumerable<extExamInEntry> exams = 
+                from ex in context.extExamInEntry 
+                where ex.StudyLevelGroupId == studyLevelGroupId 
+                select ex;
 
             if (facultyId != null)
                 exams = exams.Where(c => c.FacultyId == facultyId);

@@ -33,7 +33,7 @@ namespace Priem
                 MainClass.Init(this);               
 
                 _bdc = MainClass.Bdc;
-                OpenHelp(string.Format("{0}; Пользователь: {1}", _titleString, System.Environment.UserName));
+                OpenHelp(string.Format("{0}; Пользователь: {1}", _titleString, MainClass.GetUserName()));
             }
             catch (Exception exc)
             {

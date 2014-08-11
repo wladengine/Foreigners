@@ -147,7 +147,7 @@ namespace Priem
             {
                 var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyFormName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyForm.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, true);
                 cbStudyForm.SelectedIndex = 0;
@@ -163,7 +163,7 @@ namespace Priem
                 if (StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, true);
                 cbLicenseProgram.SelectedIndex = 0;
@@ -181,7 +181,7 @@ namespace Priem
                 if (LicenseProgramId != null)
                     ent = ent.Where(c => c.LicenseProgramId == LicenseProgramId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.ObrazProgramName + ' ' + u.ObrazProgramCrypt)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.SP_ObrazProgram.Name + ' ' + u.StudyLevel.Acronym + "." + u.SP_ObrazProgram.Number + "." + MainClass.PriemYear)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);
             }

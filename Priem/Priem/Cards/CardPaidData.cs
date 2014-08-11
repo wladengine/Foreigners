@@ -280,7 +280,7 @@ namespace Priem
             context.PaidData_Insert(DogovorNum, DogovorDate, DogovorTypeId, ProrektorId, Qualification, Srok, 
                 DateStart, DateFinish, SumFirstYear, PayPeriodId, SumFirstPeriod, AbitFIORod, AbitParent, null, 
                 Customer, CustomerAddress, CustomerPassport, CustomerPassportAuthor, CustomerLico, CustomerReason, 
-                CustomerINN, CustomerRS, _abitId, idParam);
+                CustomerINN, CustomerRS, _abitId, "", "", idParam);
         }
 
         protected override void UpdateRec(PriemEntities context, Guid id)
@@ -288,7 +288,7 @@ namespace Priem
             context.PaidData_Update(DogovorNum, DogovorDate, DogovorTypeId, ProrektorId, Qualification, Srok,
                 DateStart, DateFinish, SumFirstYear, PayPeriodId, SumFirstPeriod, AbitFIORod, AbitParent, null,
                 Customer, CustomerAddress, CustomerPassport, CustomerPassportAuthor, CustomerLico, CustomerReason,
-                CustomerINN, CustomerRS, id);
+                CustomerINN, CustomerRS, "", "", id);
         }
 
         protected override void OnSaveNew()

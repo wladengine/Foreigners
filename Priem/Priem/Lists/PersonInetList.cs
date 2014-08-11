@@ -158,7 +158,7 @@ LEFT JOIN ed.StudyLevel ON StudyLevel.Id=Entry.StudyLevelId ";
                 UpdateDataGrid();
                 using (PriemEntities context = new PriemEntities())
                 {
-                    extPerson person = (from per in context.extForeignPerson
+                    extPersonAll person = (from per in context.extPersonAll
                                         where per.Barcode == fileNum
                                         select per).FirstOrDefault();
 

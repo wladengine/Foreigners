@@ -65,8 +65,8 @@ namespace Priem
                     tbCountCell.Visible = false;
                     lblCountCell.Visible = false;
                     btnLock.Visible = false;
-                    btnCreateAdd.Visible = false;
-                    btnPrintSticker.Visible = false;                    
+                    btnCreateAdd.Visible = true;
+                    btnPrintSticker.Visible = false;
                 }
                 else if (MainClass.IsCryptoMain() || MainClass.IsPasha())
                 {
@@ -79,8 +79,15 @@ namespace Priem
                     btnLock.Visible = true;
                     btnCreateAdd.Visible = true;
                     btnPrintSticker.Visible = true;                    
-                }                
-                else
+                }
+                else if (MainClass.IsPasha())
+                {
+                    btnDelete.Visible = true;
+                    btnChange.Visible = true;
+                    btnDeleteFromVed.Visible = btnDeleteFromVed.Enabled = true;
+                    btnUnload.Visible = btnUnload.Enabled = true;
+                }
+                else 
                 {
                     btnCreate.Visible = false;
                     btnChange.Visible = false;
@@ -93,14 +100,6 @@ namespace Priem
                     btnPrintSticker.Visible = false;                    
                 }
 
-                if (MainClass.IsPasha())
-                {
-                    btnDelete.Visible = true;
-                    btnChange.Visible = true;
-                    btnDeleteFromVed.Visible = btnDeleteFromVed.Enabled = true;
-                    btnUnload.Visible = btnUnload.Enabled = true;
-                }
-
                 if (MainClass.IsOwner())
                 {
                     btnCreate.Visible = true;
@@ -110,13 +109,15 @@ namespace Priem
                     lblCountCell.Visible = true;
                     btnLock.Visible = true;
                     btnCreateAdd.Visible = true;
-                    btnPrintSticker.Visible = true;                    
+                    btnPrintSticker.Visible = true;
                 }
                     
+                //по умолчанию печатается 2 штрих-кода
                 tbCountCell.Text = (2).ToString();
 
                 using (PriemEntities context = new PriemEntities())
                 {
+                    ComboServ.FillCombo(cbStudyLevelGroup, HelpClass.GetComboListByTable("ed.StudyLevelGroup", ""), false, false);
                     ComboServ.FillCombo(cbFaculty, HelpClass.GetComboListByTable("ed.qFaculty", "ORDER BY Acronym"), false, false);
                     ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByTable("ed.StudyBasis", "ORDER BY Name"), false, true);
                     
@@ -138,12 +139,10 @@ namespace Priem
         {
             UpdateVedList();
         }
-
         void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateVedList();
         }
-
         void cbExamVed_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateDataGrid();
@@ -154,13 +153,16 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbFaculty); }
             set { ComboServ.SetComboId(cbFaculty, value); }
         }
-
+        public int? StudyLevelGroupId
+        {
+            get { return ComboServ.GetComboIdInt(cbStudyLevelGroup); }
+            set { ComboServ.SetComboId(cbStudyLevelGroup, value); }
+        }
         public int? StudyBasisId
         {
             get { return ComboServ.GetComboIdInt(cbStudyBasis); }
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
-
         public Guid? ExamVedId
         {
             get 
@@ -188,7 +190,7 @@ namespace Priem
                 using (PriemEntities context = new PriemEntities())
                 {
                     List<KeyValuePair<string, string>> lst = ((from ent in context.extExamsVed
-                                                               where ent.StudyLevelGroupId == MainClass.studyLevelGroupId
+                                                               where ent.StudyLevelGroupId == StudyLevelGroupId
                                                                && ent.FacultyId == FacultyId
                                                                && (StudyBasisId != null ? ent.StudyBasisId == StudyBasisId : true == true)
                                                                
@@ -352,7 +354,7 @@ namespace Priem
         {
             if (MainClass.RightsFacMain())
             {
-                SelectExamCrypto frm = new SelectExamCrypto(this, FacultyId, StudyBasisId);
+                SelectExamCrypto frm = new SelectExamCrypto(this, StudyLevelGroupId, FacultyId, StudyBasisId);
                 frm.Show();
             }                 
         }     
@@ -429,7 +431,6 @@ namespace Priem
             else            
                 return GetRandomNumber(ref lstNums);
         }
-
         
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -476,7 +477,7 @@ namespace Priem
 
         private void btnCreateAdd_Click(object sender, EventArgs e)
         {
-            if (MainClass.IsCrypto() || MainClass.IsOwner() || MainClass.IsPasha())
+            if (MainClass.IsFacMain() || MainClass.IsOwner() || MainClass.IsPasha())
             {
                 using (PriemEntities context = new PriemEntities())
                 {
@@ -493,7 +494,7 @@ namespace Priem
                     DateTime passDate = ved.Date;
                     int examId = ved.ExamId;
 
-                    SelectExamCrypto frm = new SelectExamCrypto(this, FacultyId, stBas, passDate, examId);
+                    SelectExamCrypto frm = new SelectExamCrypto(this, StudyLevelGroupId, FacultyId, stBas, passDate, examId);
                     frm.Show();
                 }
             } 
@@ -751,6 +752,11 @@ namespace Priem
                     }
                 }
             }
+        }
+
+        private void cbStudyLevelGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateVedList();
         }         
     }
 }

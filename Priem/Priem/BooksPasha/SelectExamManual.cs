@@ -30,7 +30,7 @@ namespace Priem
             this.MdiParent = MainClass.mainform;
             bdc = MainClass.Bdc;
 
-
+            ComboServ.FillCombo(cbStudyLevelGroup, HelpClass.GetComboListByTable("ed.StudyLevelGroup"), false, false);
             ComboServ.FillCombo(cbFaculty, HelpClass.GetComboListByTable("ed.SP_Faculty"), false, false);
             ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByTable("ed.StudyBasis"), false, true);
             
@@ -49,13 +49,16 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbStudyBasis); }
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
-
+        public int? StudyLevelGroupId
+        {
+            get { return ComboServ.GetComboIdInt(cbStudyLevelGroup); }
+            set { ComboServ.SetComboId(cbStudyLevelGroup, value); }
+        }
         public int? FacultyId
         {
             get { return ComboServ.GetComboIdInt(cbFaculty); }
             set { ComboServ.SetComboId(cbFaculty, value); }
         }
-
         public int? ExamId
         {
             get { return ComboServ.GetComboIdInt(cbExam); }
@@ -66,7 +69,7 @@ namespace Priem
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = Exams.GetExamsWithFilters(context, FacultyId, null, null, null, null, StudyBasisId, null, null, null);
+                var ent = Exams.GetExamsWithFilters(context, StudyLevelGroupId, FacultyId, null, null, null, null, StudyBasisId, null, null, null);
                 List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ExamId.ToString(), u.ExamName)).Distinct().ToList();
                 ComboServ.FillCombo(cbExam, lst, false, true);
             }             

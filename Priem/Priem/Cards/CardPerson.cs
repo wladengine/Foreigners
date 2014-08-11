@@ -194,7 +194,7 @@ namespace Priem
 
         #endregion
 
-        private void FillPersonData(ref extPerson person)
+        private void FillPersonData(ref extPersonAll person)
         {
             CardTitle = Util.GetFIO(person.Surname, person.Name, person.SecondName);
             PersonName = person.Name;
@@ -287,7 +287,7 @@ namespace Priem
             {
                 using (PriemEntities context = new PriemEntities())
                 {
-                    extPerson person = (from pr in context.extForeignPerson
+                    extPersonAll person = (from pr in context.extPersonAll
                                      where pr.Id == GuidId
                                      select pr).FirstOrDefault();                   
 

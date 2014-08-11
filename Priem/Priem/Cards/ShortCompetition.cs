@@ -47,11 +47,15 @@ namespace Priem
 
         public bool IsListener { get; set; }
         public bool IsSecond { get; set; }
+        public bool IsReduced { get; set; }
         public bool IsGosLine { get; set; }
+        public bool IsCommonRussianCompetition { get; set; }
 
-        public int Barcode { get; private set; }
+        public int Barcode { get; set; }
 
         public bool HasInnerPriorities { get; set; }
+        public bool IsApprovedByComission { get; set; }
+        public string ApproverName { get; set; }
         public List<ShortObrazProgramInEntry> lstObrazProgramsInEntry { get; set; }
 
         public ShortCompetition(Guid _Id, Guid _CommitId, Guid _EntryId, Guid _PersonId, int? _VersionNum, DateTime? _VersionDate)

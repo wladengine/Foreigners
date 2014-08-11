@@ -57,7 +57,7 @@ namespace Priem
             {
                 foreach (KeyValuePair<string, string> file in lstFiles)
                 {
-                    byte[] bt = _bdcInet.ReadFile(string.Format("SELECT FileData FROM extAbitFiles WHERE Id = '{0}'", file.Key));
+                    byte[] bt = _bdcInet.ReadFile(string.Format("SELECT FileData FROM extAbitFiles_All WHERE Id = '{0}'", file.Key));
 
                     string filename = file.Value.Replace(@"\", "-").Replace(@":", "-");
 
@@ -84,10 +84,10 @@ namespace Priem
 
                 List<KeyValuePair<string, string>> lstFiles = new List<KeyValuePair<string, string>>();
 
-                string query = string.Format("SELECT Id, FileName + ' (' + convert(nvarchar, extAbitFiles.LoadDate, 104) + ' ' + convert(nvarchar, extAbitFiles.LoadDate, 108) + ')' + FileExtention AS FileName FROM extAbitFiles WHERE extAbitFiles.PersonId = '{0}' {1} {2}", _personId, 
-                    !string.IsNullOrEmpty(_abitId) ? " AND (extAbitFiles.ApplicationId = '" + _abitId + "' OR extAbitFiles.ApplicationId IS NULL)" : "",
-                    !string.IsNullOrEmpty(_commitId) ? " AND (extAbitFiles.CommitId = '" + _commitId + "' OR extAbitFiles.CommitId IS NULL)" : "");
-                DataSet ds = _bdcInet.GetDataSet(query + " ORDER BY extAbitFiles.LoadDate DESC");
+                string query = string.Format("SELECT Id, FileName + ' (' + convert(nvarchar, extAbitFiles_All.LoadDate, 104) + ' ' + convert(nvarchar, extAbitFiles_All.LoadDate, 108) + ')' + FileExtention AS FileName FROM extAbitFiles_All WHERE extAbitFiles_All.PersonId = '{0}' {1} {2}", _personId, 
+                    !string.IsNullOrEmpty(_abitId) ? " AND (extAbitFiles_All.ApplicationId = '" + _abitId + "' OR extAbitFiles_All.ApplicationId IS NULL)" : "",
+                    !string.IsNullOrEmpty(_commitId) ? " AND (extAbitFiles_All.CommitId = '" + _commitId + "' OR extAbitFiles_All.CommitId IS NULL)" : "");
+                DataSet ds = _bdcInet.GetDataSet(query + " ORDER BY extAbitFiles_All.LoadDate DESC");
                 foreach (DataRow dRow in ds.Tables[0].Rows)
                 {
                     lstFiles.Add(new KeyValuePair<string, string>(dRow["Id"].ToString(), dRow["FileName"].ToString()));

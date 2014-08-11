@@ -42,11 +42,18 @@ namespace Priem
             FillCompetition();
             ComboServ.FillCombo(cbCelCompetition, HelpClass.GetComboListByTable("ed.CelCompetition"), true, false);
             CompetitionId = _competition.CompetitionId;
+            
             UpdateAfterCompetition();
 
             Priority = _competition.Priority;
             DocDate = _competition.DocDate;
             IsGosLine = _competition.IsGosLine;
+
+            if (StudyBasisId == 2)
+                chbIsCommonRussianCompetition.Visible = true;
+            else
+                chbIsCommonRussianCompetition.Visible = false;
+            IsCommonRussianCompetition = _competition.IsCommonRussianCompetition;
 
             InitHandlers();
 
@@ -109,9 +116,9 @@ namespace Priem
             UpdateAfterCompetition();
         }
 
-        private IEnumerable<qEntry> GetEntry(PriemEntities context)
+        private IEnumerable<Entry> GetEntry(PriemEntities context)
         {
-            IEnumerable<qEntry> entry = MainClass.GetEntry(context);
+            IEnumerable<Entry> entry = MainClass.GetEntry(context);
             entry = entry.Where(c => c.IsSecond == IsSecond);
 
             return entry;
@@ -149,7 +156,7 @@ namespace Priem
                                                                select new
                                                                {
                                                                    Id = ent.LicenseProgramId,
-                                                                   Name = ent.LicenseProgramName
+                                                                   Name = ent.SP_LicenseProgram.Name
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                     ComboServ.FillCombo(cbLicenseProgram, lst, false, false);
@@ -171,8 +178,8 @@ namespace Priem
                                                                select new
                                                                {
                                                                    Id = ent.ObrazProgramId,
-                                                                   Name = ent.ObrazProgramName,
-                                                                   Crypt = ent.ObrazProgramCrypt
+                                                                   Name = ent.SP_ObrazProgram.Name,
+                                                                   Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                     ComboServ.FillCombo(cbObrazProgram, lst, false, false);
@@ -227,7 +234,7 @@ namespace Priem
                                                                select new
                                                                {
                                                                    Id = ent.FacultyId,
-                                                                   Name = ent.FacultyName
+                                                                   Name = ent.SP_Faculty.Name
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                     ComboServ.FillCombo(cbFaculty, lst, false, false);
@@ -252,7 +259,7 @@ namespace Priem
                                                                select new
                                                                {
                                                                    Id = ent.StudyFormId,
-                                                                   Name = ent.StudyFormName
+                                                                   Name = ent.StudyForm.Name
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                     ComboServ.FillCombo(cbStudyForm, lst, false, false);
@@ -278,7 +285,7 @@ namespace Priem
                                                                select new
                                                                {
                                                                    Id = ent.StudyBasisId,
-                                                                   Name = ent.StudyBasisName
+                                                                   Name = ent.StudyBasis.Name
                                                                }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                     ComboServ.FillCombo(cbStudyBasis, lst, false, false);
@@ -455,6 +462,7 @@ namespace Priem
                 _competition.IsGosLine = IsGosLine;
                 _competition.IsListener = IsListener;
                 _competition.IsSecond = IsSecond;
+                _competition.IsCommonRussianCompetition = IsCommonRussianCompetition;
 
                 _competition.ChangeEntry();
                 if (OnUpdate != null)

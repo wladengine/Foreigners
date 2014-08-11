@@ -61,6 +61,8 @@ namespace Priem
             this.cbStudyBasis = new System.Windows.Forms.ComboBox();
             this.cbProfile = new System.Windows.Forms.ComboBox();
             this.cbExam = new System.Windows.Forms.ComboBox();
+            this.cbStudyLevelGroup = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMarks)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -155,9 +157,9 @@ namespace Priem
             this.dgvMarks.AllowUserToDeleteRows = false;
             this.dgvMarks.AllowUserToOrderColumns = true;
             this.dgvMarks.AllowUserToResizeRows = false;
-            this.dgvMarks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvMarks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -408,11 +410,34 @@ namespace Priem
             this.cbExam.Size = new System.Drawing.Size(329, 21);
             this.cbExam.TabIndex = 140;
             // 
+            // cbStudyLevelGroup
+            // 
+            this.cbStudyLevelGroup.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbStudyLevelGroup.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStudyLevelGroup.FormattingEnabled = true;
+            this.cbStudyLevelGroup.Location = new System.Drawing.Point(679, 34);
+            this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
+            this.cbStudyLevelGroup.Size = new System.Drawing.Size(136, 21);
+            this.cbStudyLevelGroup.TabIndex = 142;
+            this.cbStudyLevelGroup.SelectedValueChanged += new System.EventHandler(this.cbStudyLevelGroup_SelectedValueChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(676, 18);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(51, 13);
+            this.label10.TabIndex = 141;
+            this.label10.Text = "Уровень";
+            // 
             // ExamResults
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 561);
+            this.Controls.Add(this.cbStudyLevelGroup);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.cbExam);
             this.Controls.Add(this.cbProfile);
             this.Controls.Add(this.cbStudyBasis);
@@ -479,6 +504,8 @@ namespace Priem
             this.Controls.SetChildIndex(this.cbStudyBasis, 0);
             this.Controls.SetChildIndex(this.cbProfile, 0);
             this.Controls.SetChildIndex(this.cbExam, 0);
+            this.Controls.SetChildIndex(this.label10, 0);
+            this.Controls.SetChildIndex(this.cbStudyLevelGroup, 0);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMarks)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -517,5 +544,7 @@ namespace Priem
         private System.Windows.Forms.ComboBox cbStudyBasis;
         private System.Windows.Forms.ComboBox cbProfile;
         private System.Windows.Forms.ComboBox cbExam;
+        private System.Windows.Forms.ComboBox cbStudyLevelGroup;
+        private System.Windows.Forms.Label label10;
     }
 }

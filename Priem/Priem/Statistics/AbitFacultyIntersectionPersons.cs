@@ -202,12 +202,12 @@ namespace Priem
                            join y in context.StudyLevel
                            on x.StudyLevelId equals y.Id
                            where y.LevelGroupId == MainClass.studyLevelGroupId && x.FacultyId == FacultyId
-                           orderby x.LicenseProgramCode
+                           orderby x.SP_LicenseProgram.Code
                            select new
                            {
                                x.LicenseProgramId,
-                               x.LicenseProgramCode,
-                               x.LicenseProgramName
+                               LicenseProgramCode = x.SP_LicenseProgram.Code,
+                               LicenseProgramName = x.SP_LicenseProgram.Name
                            }).Distinct().ToList()
                            .Select(x => new KeyValuePair<string, string>(x.LicenseProgramId.ToString(), x.LicenseProgramCode + " " + x.LicenseProgramName)).ToList();
 
@@ -222,13 +222,13 @@ namespace Priem
                            join y in context.StudyLevel
                            on x.StudyLevelId equals y.Id
                            where y.LevelGroupId == MainClass.studyLevelGroupId && x.FacultyId == FacultyId
-                           orderby x.ObrazProgramCrypt
+                           orderby x.SP_ObrazProgram.Number
                            select new
                            {
                                x.LicenseProgramId,
                                x.ObrazProgramId,
-                               x.ObrazProgramName,
-                               x.ObrazProgramCrypt
+                               ObrazProgramName = x.SP_ObrazProgram.Name,
+                               ObrazProgramCrypt = x.StudyLevel.Acronym + "." + x.SP_ObrazProgram.Number + "." + MainClass.PriemYear
                            }).Distinct();
                 if (LicenseProgramId.HasValue)
                     src = src.Where(x => x.LicenseProgramId == LicenseProgramId);
@@ -302,12 +302,12 @@ namespace Priem
                            join y in context.StudyLevel
                            on x.StudyLevelId equals y.Id
                            where y.LevelGroupId == MainClass.studyLevelGroupId && x.FacultyId == OtherFacultyId
-                           orderby x.LicenseProgramCode
+                           orderby x.SP_LicenseProgram.Code
                            select new
                            {
                                x.LicenseProgramId,
-                               x.LicenseProgramCode,
-                               x.LicenseProgramName
+                               LicenseProgramCode = x.SP_LicenseProgram.Code,
+                               LicenseProgramName = x.SP_LicenseProgram.Name
                            }).Distinct().ToList()
                            .Select(x => new KeyValuePair<string, string>(x.LicenseProgramId.ToString(), x.LicenseProgramCode + " " + x.LicenseProgramName)).ToList();
 
@@ -322,13 +322,13 @@ namespace Priem
                            join y in context.StudyLevel
                            on x.StudyLevelId equals y.Id
                            where y.LevelGroupId == MainClass.studyLevelGroupId && x.FacultyId == OtherFacultyId
-                           orderby x.ObrazProgramCrypt
+                           orderby x.SP_ObrazProgram.Number
                            select new
                            {
                                x.LicenseProgramId,
                                x.ObrazProgramId,
-                               x.ObrazProgramName,
-                               x.ObrazProgramCrypt
+                               ObrazProgramName = x.SP_ObrazProgram.Name,
+                               ObrazProgramCrypt = x.StudyLevel.Acronym + "." + x.SP_ObrazProgram.Number + "." + MainClass.PriemYear
                            }).Distinct();
                 if (OtherLicenseProgramId.HasValue)
                     src = src.Where(x => x.LicenseProgramId == OtherLicenseProgramId);

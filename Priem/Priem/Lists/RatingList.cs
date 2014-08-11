@@ -219,7 +219,7 @@ namespace Priem
                 
                 ent = ent.Where(c => c.IsSecond == IsSecond && c.IsReduced == IsReduced && c.IsParallel == IsParallel);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyFormName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyForm.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, false);                
             }
@@ -238,7 +238,7 @@ namespace Priem
                 if (StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, false);                
             }
@@ -259,7 +259,7 @@ namespace Priem
                 if (LicenseProgramId != null)
                     ent = ent.Where(c => c.LicenseProgramId == LicenseProgramId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.ObrazProgramName + ' ' + u.ObrazProgramCrypt)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.SP_ObrazProgram.Name + ' ' + u.StudyLevel.Acronym + "." + u.SP_ObrazProgram.Number + "." + MainClass.PriemYear)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, false);
             }
@@ -370,7 +370,7 @@ namespace Priem
             {
                 int plan = 0, planCel = 0, entered = 0, enteredCel = 0;               
 
-                qEntry entry = (from ent in MainClass.GetEntry(context)
+                Entry entry = (from ent in MainClass.GetEntry(context)
                        where ent.IsReduced == IsReduced && ent.IsParallel == IsParallel && ent.IsSecond == IsSecond 
                        && ent.FacultyId == FacultyId && ent.LicenseProgramId == LicenseProgramId
                        && ent.ObrazProgramId == ObrazProgramId
@@ -712,7 +712,7 @@ namespace Priem
                         int rand = new Random().Next(10000, 99999);
 
                         ObjectParameter fvId = new ObjectParameter("id", typeof(Guid));
-                        context.FixierenView_Insert(MainClass.studyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, IsCel, rand, false, fvId);
+                        context.FixierenView_Insert(MainClass.studyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, IsCel, rand, false, false, false, fvId);
                         Guid? viewId = (Guid?)fvId.Value;
 
                         int counter = 0;
@@ -910,7 +910,7 @@ namespace Priem
                                            select fv.Id).FirstOrDefault();
                         
                         //удалили старое
-                        context.FirstWave_DELETE(entryId, IsCel);
+                        context.FirstWave_DELETE(entryId, IsCel, false);
 
                         var fix = from fx in context.Fixieren
                                   where fx.FixierenViewId == fixViewId
@@ -957,7 +957,7 @@ namespace Priem
                                          select fv.Id).FirstOrDefault();
                     
                     //удалили
-                    context.FirstWave_DELETE(entryId, IsCel);
+                    context.FirstWave_DELETE(entryId, IsCel, false);
                 }
             }
             catch (Exception ex)

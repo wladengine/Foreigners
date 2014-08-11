@@ -58,8 +58,8 @@ namespace Priem
             AddItem(new FilterItem("Серия паспорта", FilterType.FromTo, "ed.Person.PassportSeries", "ed.Person"));
             AddItem(new FilterItem("Дата выдачи паспорта", FilterType.DateFromTo, "ed.Person.PassportDate", "ed.Person"));
             AddItem(new FilterItem("Пол мужской?", FilterType.Bool, "ed.Person.Sex", "ed.Person"));
-            AddItem(new FilterItem("Страна", FilterType.Multi, "ed.Person.CountryId", "ed.Person", " SELECT ed.Country.Id, ed.Country.Name FROM ed.Country ORDER BY Name "));
-            AddItem(new FilterItem("Гражданство", FilterType.Multi, "ed.Person.NationalityId", "ed.Person", " SELECT ed.Country.Id, ed.Country.Name FROM ed.Country ORDER BY Name "));
+            AddItem(new FilterItem("Страна", FilterType.Multi, "ed.Person_Contacts.ForeignCountryId", "ed.Person", " SELECT Id, Name FROM ed.ForeignCountry ORDER BY Name "));
+            AddItem(new FilterItem("Гражданство", FilterType.Multi, "ed.Person.ForeignNationalityId", "ed.Person", " SELECT Id, Name FROM ed.ForeignCountry ORDER BY Name "));
             AddItem(new FilterItem("Регион", FilterType.Multi, "ed.Person.RegionId", "ed.Person", " SELECT Id, Name FROM ed.Region "));
             AddItem(new FilterItem("Телефон", FilterType.Text, "ed.Person.Phone", "ed.Person"));
             AddItem(new FilterItem("Предоставлять общежитие на время поступления", FilterType.Bool, "ed.Person.HostelAbit", "ed.Person"));
@@ -79,6 +79,8 @@ namespace Priem
             AddItem(new FilterItem("Забрал документы", FilterType.Bool, "ed.qAbiturient.BackDoc", "ed.qAbiturient"));
             AddItem(new FilterItem("Данные проверены", FilterType.Bool, "ed.qAbiturient.Checked", "ed.qAbiturient"));
             AddItem(new FilterItem("Не допущен", FilterType.Bool, "ed.qAbiturient.NotEnabled", "ed.qAbiturient"));
+            AddItem(new FilterItem("Гослиния", FilterType.Bool, "ed.qAbiturient.IsGosLine", "ed.qAbiturient"));
+            
             AddItem(new FilterItem("Дата возврата документов", FilterType.DateFromTo, "ed.qAbiturient.BackDocDate", "ed.qAbiturient"));
             AddItem(new FilterItem("Дата подачи документов", FilterType.DateFromTo, "ed.qAbiturient.DocDate", "ed.qAbiturient"));
             AddItem(new FilterItem("Сумма баллов", FilterType.FromTo, "ed.extAbitMarksSum.TotalSum", "ed.extAbitMarksSum"));
@@ -87,6 +89,8 @@ namespace Priem
             AddItem(new FilterItem("Статус студента", FilterType.FromTo, "ed.qAbiturient.StudentStatus", "ed.qAbiturient"));
             AddItem(new FilterItem("Договор об оплате", FilterType.Bool, " EXISTS (SELECT Top(1) ed.PaidData.Id FROM ed.PaidData WHERE ed.PaidData.AbiturientId = ed.qAbiturient.Id)", "ed.qAbiturient"));
 
+            AddItem(new FilterItem("Уровень образования", FilterType.Multi, "ed.qAbiturient.StudyLevelId", "ed.qAbiturient", "SELECT Id, Name FROM ed.StudyLevel ORDER BY Name"));
+            
             //экзамены 
             DataSet dsExams = _bdc.GetDataSet("SELECT DISTINCT ed.extExamInEntry.ExamId AS Id, ed.extExamInEntry.ExamName AS Name FROM ed.extExamInEntry");
 

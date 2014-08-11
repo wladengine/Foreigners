@@ -89,6 +89,11 @@ namespace Priem
             set { ComboServ.SetComboId(cbCompetition, value); }
         }
 
+        public bool IsCommonRussianCompetition
+        {
+            get { return chbIsCommonRussianCompetition.Checked; }
+            set { chbIsCommonRussianCompetition.Checked = value; }
+        }
         public bool IsSecond
         {
             get { return chbIsSecond.Checked; }

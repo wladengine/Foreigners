@@ -280,6 +280,12 @@ namespace Priem
             set { chbHasOriginals.Checked = value; }
         }
 
+        public bool IsCommonRussianCompetition
+        {
+            get { return chbIsCommonRussianCompetition.Checked; }
+            set { chbIsCommonRussianCompetition.Checked = value; }
+        }
+
         public double? Priority
         {
             get

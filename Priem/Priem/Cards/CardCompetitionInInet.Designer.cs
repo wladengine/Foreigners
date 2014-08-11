@@ -65,6 +65,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.chbIsGosLine = new System.Windows.Forms.CheckBox();
             this.btnHasInnerObrazProgram = new System.Windows.Forms.Button();
+            this.chbIsCommonRussianCompetition = new System.Windows.Forms.CheckBox();
             this.gbDocs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epError)).BeginInit();
             this.SuspendLayout();
@@ -136,9 +137,9 @@
             // gbDocs
             // 
             this.gbDocs.Controls.Add(this.chbAttOriginal);
-            this.gbDocs.Location = new System.Drawing.Point(226, 409);
+            this.gbDocs.Location = new System.Drawing.Point(224, 445);
             this.gbDocs.Name = "gbDocs";
-            this.gbDocs.Size = new System.Drawing.Size(232, 73);
+            this.gbDocs.Size = new System.Drawing.Size(232, 48);
             this.gbDocs.TabIndex = 183;
             this.gbDocs.TabStop = false;
             this.gbDocs.Text = "Документы";
@@ -445,11 +446,22 @@
             this.btnHasInnerObrazProgram.Visible = false;
             this.btnHasInnerObrazProgram.Click += new System.EventHandler(this.btnHasInnerObrazProgram_Click);
             // 
+            // chbIsCommonRussianCompetition
+            // 
+            this.chbIsCommonRussianCompetition.Location = new System.Drawing.Point(230, 407);
+            this.chbIsCommonRussianCompetition.Name = "chbIsCommonRussianCompetition";
+            this.chbIsCommonRussianCompetition.Size = new System.Drawing.Size(181, 30);
+            this.chbIsCommonRussianCompetition.TabIndex = 194;
+            this.chbIsCommonRussianCompetition.Text = "поступление на равных правах с гражданами РФ";
+            this.chbIsCommonRussianCompetition.UseVisualStyleBackColor = true;
+            this.chbIsCommonRussianCompetition.Visible = false;
+            // 
             // CardCompetitionInInet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(476, 529);
+            this.Controls.Add(this.chbIsCommonRussianCompetition);
             this.Controls.Add(this.btnHasInnerObrazProgram);
             this.Controls.Add(this.chbIsGosLine);
             this.Controls.Add(this.btnSave);
@@ -532,5 +544,6 @@
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.CheckBox chbIsGosLine;
         private System.Windows.Forms.Button btnHasInnerObrazProgram;
+        private System.Windows.Forms.CheckBox chbIsCommonRussianCompetition;
     }
 }

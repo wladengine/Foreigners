@@ -140,64 +140,66 @@ namespace Priem
 
         protected override string Save()
         {
-            try
-            {
-                using (PriemEntities context = new PriemEntities())
-                {
-                    if (_Id == null)
-                    {
-                        ObjectParameter exId;
+            MessageBox.Show("Сохраняйте в основном приложении приёма");
+            return "";
+            //try
+            //{
+            //    using (PriemEntities context = new PriemEntities())
+            //    {
+            //        if (_Id == null)
+            //        {
+            //            ObjectParameter exId;
                         
-                        using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.RequiresNew))
-                        { 
-                            try
-                            {
-                                exId = new ObjectParameter("id", typeof(Int32));
-                                context.ExamInEntry_Insert(ExamId, _entryId, IsProfil, EgeMin, exId);
+            //            using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.RequiresNew))
+            //            { 
+            //                try
+            //                {
+            //                    exId = new ObjectParameter("id", typeof(Int32));
+            //                    context.ExamInEntry_Insert(ExamId, _entryId, IsProfil, EgeMin, exId);
 
-                                Entry curEnt = (from ent in context.Entry
-                                              where ent.Id == _entryId
-                                              select ent).FirstOrDefault();
+            //                    Entry curEnt = (from ent in context.Entry
+            //                                  where ent.Id == _entryId
+            //                                  select ent).FirstOrDefault();
 
-                                IEnumerable<Entry> ents = from ent in context.Entry
-                                                          where                                                           
-                                                          ent.FacultyId == curEnt.FacultyId
-                                                          && ent.LicenseProgramId == curEnt.LicenseProgramId
-                                                          && ent.ObrazProgramId == curEnt.ObrazProgramId                                                         
-                                                          && (curEnt.ProfileId == null ? ent.ProfileId == null : ent.ProfileId == curEnt.ProfileId) 
-                                                          && ent.Id != curEnt.Id
-                                                          select ent;
+            //                    IEnumerable<Entry> ents = from ent in context.Entry
+            //                                              where                                                           
+            //                                              ent.FacultyId == curEnt.FacultyId
+            //                                              && ent.LicenseProgramId == curEnt.LicenseProgramId
+            //                                              && ent.ObrazProgramId == curEnt.ObrazProgramId                                                         
+            //                                              && (curEnt.ProfileId == null ? ent.ProfileId == null : ent.ProfileId == curEnt.ProfileId) 
+            //                                              && ent.Id != curEnt.Id
+            //                                              select ent;
 
-                                if (!chbToAllStudyBasis.Checked)
-                                    ents = ents.Where(c => c.StudyBasisId == curEnt.StudyBasisId);
+            //                    if (!chbToAllStudyBasis.Checked)
+            //                        ents = ents.Where(c => c.StudyBasisId == curEnt.StudyBasisId);
 
-                                foreach (Entry e in ents)
-                                {
-                                    exId = new ObjectParameter("id", typeof(Int32));
-                                    context.ExamInEntry_Insert(ExamId, e.Id, IsProfil, EgeMin, exId);
-                                }
+            //                    foreach (Entry e in ents)
+            //                    {
+            //                        exId = new ObjectParameter("id", typeof(Int32));
+            //                        context.ExamInEntry_Insert(ExamId, e.Id, IsProfil, EgeMin, exId);
+            //                    }
 
-                                transaction.Complete();
-                            }
-                            catch (Exception exc)
-                            {
-                                throw new Exception("Ошибка при сохранении данных: " + exc.Message);
-                            }
-                        }
+            //                    transaction.Complete();
+            //                }
+            //                catch (Exception exc)
+            //                {
+            //                    throw new Exception("Ошибка при сохранении данных: " + exc.Message);
+            //                }
+            //            }
 
-                        return exId.Value.ToString();
-                    }
-                    else
-                    {
-                        context.ExamInEntry_Update(ExamId, IsProfil, EgeMin, IntId);
-                        return _Id;
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                throw new Exception("Ошибка при сохранении данных: " + exc.Message);
-            }
+            //            return exId.Value.ToString();
+            //        }
+            //        else
+            //        {
+            //            context.ExamInEntry_Update(ExamId, IsProfil, EgeMin, IntId);
+            //            return _Id;
+            //        }
+            //    }
+            //}
+            //catch (Exception exc)
+            //{
+            //    throw new Exception("Ошибка при сохранении данных: " + exc.Message);
+            //}
         }
 
         protected override void CloseCardAfterSave()

@@ -232,7 +232,7 @@ namespace Priem
         private string GetFilterString()
         {
             string s = " WHERE 1=1 ";
-
+            s += " AND qAbiturient.Id IN (SELECT Id FROM ed.qAbiturientForeignApplicationsOnly)";
             //обработали факультет
             if (!string.IsNullOrEmpty(FacultyId))
                 s += " AND ed.qAbiturient.FacultyId = " + FacultyId;

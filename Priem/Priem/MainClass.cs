@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.ComponentModel;
 using System.Linq;
+using System.DirectoryServices.AccountManagement;
 
 using BaseFormsLib;
 using EducServLib;
@@ -34,6 +35,15 @@ namespace Priem
         public static int educSchoolId;
         public static int pasptypeRFId;
         public static int olympSpbguId;
+
+        //GLOBALS
+        //-----------------------------------------------------
+        public static string sPriemYear;
+        public static int iPriemYear;
+
+        public static bool b1kCheckProtocolsEnabled;
+        public static bool bMagCheckProtocolsEnabled;
+        //-----------------------------------------------------
 
         public const string PriemYear = "2014";
 
@@ -76,6 +86,17 @@ namespace Priem
                     pasptypeRFId = 1;
                     //постоянный id олимпиады СПбГУ
                     olympSpbguId = 3;
+
+
+                    var dicSettings = context.C_AppSettings.Select(x => new { x.ParamKey, x.ParamValue }).ToList().ToDictionary(x => x.ParamKey, y => y.ParamValue);
+                    sPriemYear = dicSettings.ContainsKey("PriemYear") ? dicSettings["PriemYear"] : DateTime.Now.Year.ToString();
+                    iPriemYear = int.Parse(sPriemYear);
+
+                    string tmp = dicSettings.ContainsKey("b1kCheckProtocolsEnabled") ? dicSettings["b1kCheckProtocolsEnabled"] : "False";
+                    b1kCheckProtocolsEnabled = bool.Parse(tmp);
+
+                    tmp = dicSettings.ContainsKey("bMagCheckProtocolsEnabled") ? dicSettings["bMagCheckProtocolsEnabled"] : "False";
+                    bMagCheckProtocolsEnabled = bool.Parse(tmp);
                 }
 
                 if(dbType == PriemType.Priem)
@@ -106,6 +127,25 @@ namespace Priem
             {
                 throw e;
             }
+        }
+
+        public static string GetUserName()
+        {
+            return GetADUserName(System.Environment.UserName);
+        }
+        public static string GetADUserName(string userName)
+        {
+            try
+            {
+                var ADPrincipal = new PrincipalContext(ContextType.Domain);
+                UserPrincipal user = UserPrincipal.FindByIdentity(ADPrincipal, userName);
+
+                if (user != null)
+                    return user.DisplayName + " (" + userName + ")";
+            }
+            catch { }
+
+            return userName;
         }
 
         //прочитали конфиг
@@ -181,11 +221,11 @@ namespace Priem
             }
         }
 
-        public static IEnumerable<qEntry> GetEntry(PriemEntities context)
+        public static IEnumerable<Entry> GetEntry(PriemEntities context)
         {
             try
             {
-                return context.qEntry;
+                return context.Entry;
             }
             catch (Exception exc)
             {

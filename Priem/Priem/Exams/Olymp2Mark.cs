@@ -41,6 +41,7 @@ namespace Priem
                 using (PriemEntities context = new PriemEntities())
                 {
                     ComboServ.FillCombo(cbFaculty, HelpClass.GetComboListByTable("ed.qFaculty", "ORDER BY Acronym"), false, false);
+                    ComboServ.FillCombo(cbStudyLevelGroup, HelpClass.GetComboListByTable("ed.StudyLevelGroup", "ORDER BY Acronym"), false, false);
                     ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByTable("ed.StudyBasis", "ORDER BY Name"), false, true);
 
                     cbStudyBasis.SelectedIndex = 0;
@@ -65,66 +66,61 @@ namespace Priem
 
         #region Handlers
 
+        public int? StudyLevelGroupId
+        {
+            get { return ComboServ.GetComboIdInt(cbStudyLevelGroup); }
+            set { ComboServ.SetComboId(cbStudyLevelGroup, value); }
+        }
         public int? FacultyId
         {
             get { return ComboServ.GetComboIdInt(cbFaculty); }
             set { ComboServ.SetComboId(cbFaculty, value); }
         }
-
         public int? LicenseProgramId
         {
             get { return ComboServ.GetComboIdInt(cbLicenseProgram); }
             set { ComboServ.SetComboId(cbLicenseProgram, value); }
         }
-
         public int? ObrazProgramId
         {
             get { return ComboServ.GetComboIdInt(cbObrazProgram); }
             set { ComboServ.SetComboId(cbObrazProgram, value); }
         }
-      
         public int? StudyBasisId
         {
             get { return ComboServ.GetComboIdInt(cbStudyBasis); }
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
-
         public int? StudyFormId
         {
             get { return ComboServ.GetComboIdInt(cbStudyForm); }
             set { ComboServ.SetComboId(cbStudyForm, value); }
         }       
-
         public int? ExamId
         {
             get { return ComboServ.GetComboIdInt(cbExam); }
             set { ComboServ.SetComboId(cbExam, value); }
         }
-
         public int? OlympTypeId
         {
             get { return ComboServ.GetComboIdInt(cbOlympType); }
             set { ComboServ.SetComboId(cbOlympType, value); }
         }
-
         public int? OlympSubjectId
         {
             get { return ComboServ.GetComboIdInt(cbOlympSubject); }
             set { ComboServ.SetComboId(cbOlympSubject, value); }
         }
-
         public int? OlympLevelId
         {
             get { return ComboServ.GetComboIdInt(cbOlympLevel); }
             set { ComboServ.SetComboId(cbOlympLevel, value); }
         }
-
         public int? OlympValueId
         {
             get { return ComboServ.GetComboIdInt(cbOlympValue); }
             set { ComboServ.SetComboId(cbOlympValue, value); }
         }
-
         public int? OlympNameId
         {
             get { return ComboServ.GetComboIdInt(cbOlympName); }
@@ -137,41 +133,39 @@ namespace Priem
             {
                 var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyFormName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyForm.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, true);
                 cbStudyForm.SelectedIndex = 0;
             }
         }
-
         private void FillLicenseProgram()
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
+                var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId && c.StudyLevel.LevelGroupId == StudyLevelGroupId);
 
                 if (StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramName)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, true);
                 cbLicenseProgram.SelectedIndex = 0;
             }
         }
-
         private void FillObrazProgram()
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
+                var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId && c.StudyLevel.LevelGroupId == StudyLevelGroupId);
 
                 if (StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
                 if (LicenseProgramId != null)
                     ent = ent.Where(c => c.LicenseProgramId == LicenseProgramId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.ObrazProgramName + ' ' + u.ObrazProgramCrypt)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.SP_ObrazProgram.Name + ' ' + u.StudyLevel.Acronym + "." + u.SP_ObrazProgram.Number + "." + MainClass.PriemYear)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);
             }
@@ -183,7 +177,7 @@ namespace Priem
 
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = Exams.GetExamsWithFilters(context, FacultyId, LicenseProgramId, ObrazProgramId, null, StudyFormId, StudyBasisId, null, null, null);
+                var ent = Exams.GetExamsWithFilters(context, StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, null, StudyFormId, StudyBasisId, null, null, null);
                 List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ExamId.ToString(), u.ExamName)).Distinct().ToList();
                 ComboServ.FillCombo(cbExam, lst, false, false);
             }
@@ -213,31 +207,31 @@ namespace Priem
             cbOlympLevel.SelectedIndexChanged += new EventHandler(cbOlympLevel_SelectedIndexChanged);
         }
 
+
+        private void cbStudyLevelGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillStudyForm();
+        }
         void cbFaculty_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillStudyForm();
         }
-
         void cbStudyForm_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillLicenseProgram();
         }
-
         void cbLicenseProgram_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillObrazProgram();
         }
-
         void cbObrazProgram_SelectedIndexChanged(object sender, EventArgs e)
         {            
             FillExams();
         }
-
         void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillExams();
         }
-
         void cbExam_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateDataGrid();
@@ -627,5 +621,6 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при выводе в Word: " + ex.Message);
             }
         }
+
     }
 }

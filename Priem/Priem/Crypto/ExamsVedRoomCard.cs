@@ -167,8 +167,8 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.ObrazProgramId,
-                                                               Name = ent.ObrazProgramName,
-                                                               Crypt = ent.ObrazProgramCrypt
+                                                               Name = ent.SP_ObrazProgram.Name,
+                                                               Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);

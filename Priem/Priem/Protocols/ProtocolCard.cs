@@ -273,8 +273,8 @@ namespace Priem
         //возвращает строку фильтров
         protected virtual string GetWhereClause(string sTable)
         {
-            string rez = string.Format(" WHERE {3}.StudyLevelGroupId = {4} AND {3}.FacultyId = {0} AND {3}.StudyFormId = {1} AND {3}.StudyBasisId = {2}  ", 
-                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString(), sTable, MainClass.studyLevelGroupId);
+            string rez = string.Format(" WHERE {3}.FacultyId = {0} AND {3}.StudyFormId = {1} AND {3}.StudyBasisId = {2}  ", 
+                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString(), sTable);
 
             return rez;
         }

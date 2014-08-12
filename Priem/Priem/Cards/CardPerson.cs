@@ -140,26 +140,27 @@ namespace Priem
 
         private void UpdateAfterSchool(object sender, EventArgs e)
         {
-            if (SchoolTypeId == MainClass.educSchoolId)
-            {
-                gbAtt.Visible = true;
-                gbDipl.Visible = false;
-                //tbSchoolName.Width = 217;
-                //tbSchoolNum.Visible = true;
-                gbEduc.Location = gbSchool.Location;
-                gbFinishStudy.Location = new Point(gbFinishStudy.Location.X, gbFinishStudy.Location.Y - gbSchool.Height);
-            }               
-            else
-            {
-                /*if (SchoolTypeId == 4)
-                    tbSchoolName.Width = 281;
+            if (SchoolTypeId.HasValue)
+                if (SchoolTypeId == MainClass.educSchoolId)
+                {
+                    gbAtt.Visible = true;
+                    gbDipl.Visible = false;
+                    //tbSchoolName.Width = 217;
+                    //tbSchoolNum.Visible = true;
+                  
+                }               
                 else
-                    tbSchoolName.Width = 217;
-                tbSchoolNum.Visible = false;*/
-
-                gbAtt.Visible = false;
-                gbDipl.Visible = true;
-            }
+                {
+                    /*if (SchoolTypeId == 4)
+                        tbSchoolName.Width = 281;
+                    else
+                        tbSchoolName.Width = 217;
+                    tbSchoolNum.Visible = false;*/
+                    gbEduc.Location = gbSchool.Location;
+                    gbFinishStudy.Location = new Point(gbFinishStudy.Location.X, gbFinishStudy.Location.Y - gbSchool.Height);
+                    gbAtt.Visible = false;
+                    gbDipl.Visible = true;
+                }
         }
 
         private void UpdateAfterCountry(object sender, EventArgs e)

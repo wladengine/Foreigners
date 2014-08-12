@@ -720,10 +720,69 @@ namespace Priem
                                     ComissionAddress = Entry.CommissionId
                                 }).OrderBy(x => x.Priority).ToList();
 
-                extPerson person = (from per in context.extPerson
-                                    where per.Id == PersonId
-                                    select per).FirstOrDefault();
-
+                var person = (from x in context.Person
+                              where x.Id == PersonId
+                              select new
+                              {
+                                  x.Surname,
+                                  x.Name,
+                                  x.SecondName,
+                                  x.Barcode,
+                                  x.Person_AdditionalInfo.HostelAbit,
+                                  x.BirthDate,
+                                  BirthPlace = x.BirthPlace ?? "",
+                                  Sex = x.Sex,
+                                  x.NationalityId,
+                                  Nationality = x.Nationality.Name,
+                                  ForeignNationalityId = x.ForeignNationalityId,
+                                  Country = x.Person_Contacts.Country.Name,
+                                  ForeignCountry = x.Person_Contacts.ForeignCountry.Name,
+                                  PassportType = x.PassportType.Name,
+                                  x.PassportSeries,
+                                  x.PassportNumber,
+                                  x.PassportAuthor,
+                                  x.PassportDate,
+                                  x.Person_Contacts.City,
+                                  Region = x.Person_Contacts.Region.Name,
+                                  ProgramName = x.Person_EducationInfo.HEProfession,
+                                  x.Person_Contacts.Code,
+                                  x.Person_Contacts.Street,
+                                  x.Person_Contacts.House,
+                                  x.Person_Contacts.Korpus,
+                                  x.Person_Contacts.Flat,
+                                  x.Person_Contacts.Phone,
+                                  x.Person_Contacts.Email,
+                                  x.Person_Contacts.Mobiles,
+                                  x.Person_EducationInfo.SchoolExitYear,
+                                  x.Person_EducationInfo.SchoolName,
+                                  AddInfo = x.Person_AdditionalInfo.ExtraInfo,
+                                  Parents = x.Person_AdditionalInfo.PersonInfo,
+                                  x.Person_EducationInfo.StartEnglish,
+                                  x.Person_EducationInfo.EnglishMark,
+                                  x.Person_EducationInfo.IsEqual,
+                                  x.Person_EducationInfo.EqualDocumentNumber,
+                                  CountryEduc = x.Person_EducationInfo.CountryEducId != null ? x.Person_EducationInfo.Country.Name : "",
+                                  x.Person_EducationInfo.ForeignCountryEducId,
+                                  ForeignCountryEduc = x.Person_EducationInfo.ForeignCountryEducId != null ? x.Person_EducationInfo.ForeignCountry.Name : "",
+                                  x.Person_EducationInfo.CountryEducId,
+                                  Qualification = x.Person_EducationInfo.HEQualification,
+                                  x.Person_EducationInfo.SchoolTypeId,
+                                  EducationDocumentSeries = x.Person_EducationInfo.DiplomSeries,
+                                  EducationDocumentNumber = x.Person_EducationInfo.DiplomNum,
+                                  x.Person_EducationInfo.AttestatRegion,
+                                  x.Person_EducationInfo.AttestatSeries,
+                                  x.Person_EducationInfo.AttestatNum,
+                                  Language = x.Person_EducationInfo.Language.Name,
+                                  HasPrivileges = (x.Person_AdditionalInfo.Privileges ?? 0) > 0,
+                                  x.Person_EducationInfo.HasTRKI,
+                                  x.Person_EducationInfo.TRKICertificateNumber,
+                                  x.Person_AdditionalInfo.HostelEduc,
+                                  IsRussia = (x.Person_Contacts.CountryId == 1),
+                                  x.HasRussianNationality,
+                                  x.Person_AdditionalInfo.Stag,
+                                  x.Person_AdditionalInfo.WorkPlace,
+                                  x.Num
+                              }).FirstOrDefault();
                 string tmp;
                 string dotName;
 
@@ -750,7 +809,8 @@ namespace Priem
                 string[] splitStr;
 
                 // ФИО
-                acrFlds.SetField("FIO", person.FIO);
+                string FIO = ((person.Surname ?? "") + " " + (person.Name ?? "") + " " + (person.SecondName ?? "")).Trim();
+                acrFlds.SetField("FIO", FIO);
                 acrFlds.SetField("Male", person.Sex ? "1" : "0");
                 acrFlds.SetField("Female", person.Sex ? "0" : "1");
                 // дата рождения
@@ -759,7 +819,7 @@ namespace Priem
                 acrFlds.SetField("BirthDateDay", person.BirthDate.Day.ToString());
                 acrFlds.SetField("BirthPlace", person.BirthPlace);
                 // паспорт
-                acrFlds.SetField("Nationality", person.NationalityName);
+                acrFlds.SetField("Nationality", person.Nationality);
                 if (person.NationalityId == 1)
                     acrFlds.SetField("HasRussianNationalityYes", "1");
                 acrFlds.SetField("PassportSeries", person.PassportSeries);
@@ -768,22 +828,31 @@ namespace Priem
                 for (int ii = 1; ii <= 2; ii++)
                     acrFlds.SetField("PassportAuthor" + ii, splitStr[ii - 1]);
                 // адрес
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.NationalityId == 1 ? (person.RegionName + ", ") ?? "" : person.CountryName + ", "), (person.City + ", ") ?? "") +
-                string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
-                person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
-                person.Flat == string.Empty ? "" : "кв. " + person.Flat);
+                string country = person.Country;
+                string region = person.Region;
+                if (person.Country.Contains("зарубеж"))
+                {
+                    country = person.ForeignCountry;
+                    region = "";
+                }
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : country + ", "), person.City ?? "") +
+                                    string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
+                                    person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
+                                    person.Flat == string.Empty ? "" : "кв. " + person.Flat);
+
                 splitStr = GetSplittedStrings(Address, 50, 70, 3);
-                for (int ii = 1; ii <= 3; ii++)
-                    acrFlds.SetField("Address" + ii, splitStr[ii - 1]);
+                for (int i = 1; i <= 3; i++)
+                    acrFlds.SetField("Address" + i, splitStr[i - 1]);
+
                 // телефон
                 acrFlds.SetField("Phone", person.Phone);
                 acrFlds.SetField("Email", person.Email);
                 acrFlds.SetField("Mobiles", person.Mobiles);
                 // общежитие
-                acrFlds.SetField("HostelEducYes", person.HostelEduc ?? false ? "1" : "0");
-                acrFlds.SetField("HostelEducNo", person.HostelEduc ?? false ? "0" : "1");
-                acrFlds.SetField("HostelAbitYes", person.HostelAbit ?? false ? "1" : "0");
-                acrFlds.SetField("HostelAbitNo", person.HostelAbit ?? false ? "0" : "1");
+                acrFlds.SetField("HostelEducYes", person.HostelEduc ? "1" : "0");
+                acrFlds.SetField("HostelEducNo", person.HostelEduc ? "0" : "1");
+                acrFlds.SetField("HostelAbitYes", person.HostelAbit ? "1" : "0");
+                acrFlds.SetField("HostelAbitNo", person.HostelAbit ? "0" : "1");
                 // стаж
                 if (person.Stag != string.Empty)
                 {
@@ -794,23 +863,36 @@ namespace Priem
                 else
                     acrFlds.SetField("NoStag", "1");
 
-                if ((int)person.Privileges > 0)
+                if (person.HasPrivileges)
                     acrFlds.SetField("Privileges", "1");
 
+                acrFlds.SetField("Language", person.Language ?? "");
 
-                string LangName = (from ab in context.Language
-                                   where ab.Id == person.LanguageId
-                                   select ab.Name).FirstOrDefault();
-
-                acrFlds.SetField("Language", LangName ?? "");
-
-                if (person.HighEducation != string.Empty)
+                if (person.SchoolTypeId.HasValue)
                 {
-                    acrFlds.SetField("HasEduc", "1");
-                    acrFlds.SetField("HighEducation", person.HighEducation + " " + person.HEProfession);
+                    if (person.SchoolTypeId != 1)
+                    {
+                        acrFlds.SetField("HasEduc", "1");
+                        acrFlds.SetField("HighEducation", person.SchoolName);
+                    }
+                    else
+                        acrFlds.SetField("NoEduc", "1");
                 }
                 else
-                    acrFlds.SetField("NoEduc", "1");
+                {
+                    acrFlds.SetField("HasEduc", "0");
+                    acrFlds.SetField("NoEduc", "0");
+                }
+                if (person.IsEqual && (person.ForeignCountryEducId.HasValue || (person.CountryEducId.HasValue && person.CountryEducId.Value != 193)))
+                {
+                    acrFlds.SetField("IsEqual", "1");
+                    acrFlds.SetField("EqualSertificateNumber", person.EqualDocumentNumber);
+                }
+                else
+                {
+                    acrFlds.SetField("NoEqual", "1");
+                }
+
                 tmp = person.StartEnglish ?? false ? "Yes" : "No";  //+
                 acrFlds.SetField("chbEnglish" + tmp, "1");          //+
                 acrFlds.SetField("EnglishMark", person.EnglishMark.ToString());
@@ -835,10 +917,12 @@ namespace Priem
 
                 // Полученное образование
                 string SchoolTypeName = context.SchoolType.Where(x => x.Id == person.SchoolTypeId).Select(x => x.Name).First();
-                if (SchoolTypeName + person.SchoolName + person.SchoolNum + person.SchoolCity != string.Empty)
+                if (SchoolTypeName + person.SchoolName != string.Empty)
                     acrFlds.SetField("chbSchoolFinished", "1");
 
                 string CountryEducName = context.Country.Where(x => x.Id == person.CountryEducId).Select(x => x.Name).FirstOrDefault();
+                string ForeignCountryEducName = context.ForeignCountry.Where(x => x.Id == person.CountryEducId).Select(x => x.Name).FirstOrDefault();
+
                 acrFlds.SetField("CountryEduc", CountryEducName);
 
                 acrFlds.SetField("ExitYear", person.SchoolExitYear.ToString());
@@ -846,11 +930,32 @@ namespace Priem
                 for (int ii = 1; ii <= 2; ii++)
                     acrFlds.SetField("School" + ii, splitStr[ii - 1]);
 
-                string attreg = person.AttestatRegion;
-                if (person.SchoolTypeId == 1)
-                    acrFlds.SetField("Attestat", string.Format("аттестат  {0} серия {1} № {2}", attreg == string.Empty ? "" : "регион " + attreg, person.AttestatSeries, person.AttestatNum));
+                string Attestat = person.SchoolTypeId == 1 ?
+                    ("аттестат " + (("регион "+person.AttestatRegion + " ") ?? "") + (("серия " + person.AttestatSeries + " ")?? "") + ((" №" + person.AttestatNum) ?? "")) :
+                    
+                    (("диплом " + ("серия" + person.EducationDocumentSeries) ?? "") +  ((" №" +person.EducationDocumentNumber) ?? ""));
+                if (person.SchoolTypeId.HasValue)
+                {
+                    if (person.SchoolTypeId == 1)
+                    {
+                        if ((person.AttestatRegion == String.Empty) && (person.AttestatSeries == String.Empty) && (person.AttestatNum == String.Empty))
+                            Attestat = "";
+                    }
+                    else
+                    {
+                        if ((person.EducationDocumentSeries == String.Empty) && (person.EducationDocumentNumber == String.Empty))
+                            Attestat = "";
+                    }
+                }
                 else
-                    acrFlds.SetField("Attestat", string.Format("диплом серия {0} № {1}", person.DiplomSeries, person.DiplomNum));
+                {
+                    if (person.AttestatNum != String.Empty || person.AttestatSeries != String.Empty)
+                        Attestat = "аттестат " + (("регион" + person.AttestatRegion + " ") ?? "") + (("серия " + person.AttestatSeries + " ") ?? "") + (("№" + person.AttestatNum) ?? "");
+                    else
+                        if (person.EducationDocumentNumber != String.Empty || person.EducationDocumentSeries != String.Empty)
+                            Attestat = "диплом " + (("серия " + person.EducationDocumentSeries + " ") ?? "") + (("№" + person.EducationDocumentNumber) ?? "");
+                }
+                acrFlds.SetField("Attestat", Attestat);
 
                 
                 //EGE
@@ -912,7 +1017,10 @@ namespace Priem
                     acrFlds.SetField("Specialization" + (ii + 1).ToString(), abitList[ii].Specialization);
                     acrFlds.SetField("ObrazProgram" + (ii + 1).ToString(), abitList[ii].ObrazProgram);
                     acrFlds.SetField("StudyBasis" + abitList[ii].StudyBasisId.ToString() + (ii + 1).ToString(), "1");
-                    acrFlds.SetField("StudyForm" + abitList[ii].StudyFormId.ToString() + (ii + 1).ToString(), "1");
+                    string studyForm = abitList[ii].StudyFormId.ToString();
+                    if (studyForm == "3")
+                        studyForm = "2";
+                    acrFlds.SetField("StudyForm" + studyForm + (ii + 1).ToString(), "1");
                 }
 
 
@@ -928,10 +1036,10 @@ namespace Priem
                 acrFlds.SetField("Copy", "1");
 
                 // олимпиады
-                acrFlds.SetField("Extra", person.ExtraInfo + "\r\n" + person.ScienceWork);
+                acrFlds.SetField("Extra", person.AddInfo ?? "");
 
                 //экстр. случаи
-                tmp = person.PersonInfo.Replace('\r', ';').Replace('\n', ' ').Trim();
+                tmp = person.Parents.Replace('\r', ';').Replace('\n', ' ').Trim();
                 string[] mamaPapaWords = tmp.Split(' ');
 
                 string[] mamaPapa = new string[3];
@@ -1030,7 +1138,9 @@ namespace Priem
                                   BirthPlace = x.BirthPlace ?? "",
                                   Sex = x.Sex,
                                   Nationality = x.Nationality.Name,
+                                  ForeignNationalityId = x.ForeignNationalityId,
                                   Country = x.Person_Contacts.Country.Name,
+                                  ForeignCountry = x.Person_Contacts.ForeignCountry.Name,
                                   PassportType = x.PassportType.Name,
                                   x.PassportSeries,
                                   x.PassportNumber,
@@ -1055,7 +1165,9 @@ namespace Priem
                                   x.Person_EducationInfo.EnglishMark,
                                   x.Person_EducationInfo.IsEqual,
                                   x.Person_EducationInfo.EqualDocumentNumber,
+                                  x.Person_EducationInfo.ForeignCountryEducId,
                                   CountryEduc = x.Person_EducationInfo.CountryEducId != null ? x.Person_EducationInfo.Country.Name : "",
+                                  ForeignCountryEduc = x.Person_EducationInfo.ForeignCountryEducId != null ? x.Person_EducationInfo.ForeignCountry.Name : "",
                                   x.Person_EducationInfo.CountryEducId,
                                   Qualification = x.Person_EducationInfo.HEQualification,
                                   x.Person_EducationInfo.SchoolTypeId,
@@ -1203,7 +1315,15 @@ namespace Priem
                 acrFlds.SetField("BirthPlace", person.BirthPlace);
                 acrFlds.SetField("Male", person.Sex ? "1" : "0");
                 acrFlds.SetField("Female", person.Sex ? "0" : "1");
-                acrFlds.SetField("Nationality", person.Nationality);
+
+                if (person.Nationality.Contains("зарубеж"))
+                {
+                    string ForeignNationality = context.ForeignCountry.Where(x => x.Id == person.ForeignNationalityId).Select(x => x.Name).FirstOrDefault();
+                    acrFlds.SetField("Nationality", ForeignNationality);
+                }
+                else
+                    acrFlds.SetField("Nationality", person.Nationality);
+
                 acrFlds.SetField("PassportSeries", person.PassportSeries);
                 acrFlds.SetField("PassportNumber", person.PassportNumber);
 
@@ -1216,7 +1336,15 @@ namespace Priem
                 else
                     acrFlds.SetField("HasRussianNationalityNo", "1");
 
-                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : person.Country + ", "), (person.City + ", ") ?? "") +
+                string country = person.Country;
+                string region = person.Region;
+                if (person.Country.Contains("зарубеж"))
+                {
+                    country = person.ForeignCountry;
+                    region = "";
+                }
+
+                string Address = string.Format("{0} {1}{2},", (person.Code) ?? "", (person.IsRussia ? (person.Region + ", ") ?? "" : country + ", "), person.City ?? "") +
                     string.Format("{0} {1} {2} {3}", person.Street ?? "", person.House == string.Empty ? "" : "дом " + person.House,
                     person.Korpus == string.Empty ? "" : "корп. " + person.Korpus,
                     person.Flat == string.Empty ? "" : "кв. " + person.Flat);
@@ -1246,7 +1374,8 @@ namespace Priem
 
                 acrFlds.SetField("Original", "0");
                 acrFlds.SetField("Copy", "0");
-                acrFlds.SetField("CountryEduc", person.CountryEduc ?? "");
+
+                acrFlds.SetField("CountryEduc", person.ForeignCountryEduc ?? person.CountryEduc ?? "");
                 acrFlds.SetField("Language", person.Language ?? "");
 
                 string extraPerson = person.Parents ?? "";
@@ -1257,12 +1386,35 @@ namespace Priem
                     acrFlds.SetField("ExtraParents" + i.ToString(), splitStr[i - 1]);
                 }
 
-                string Attestat = person.SchoolTypeId == 1 ? ("аттестат серия " + (person.AttestatRegion + " " ?? "") + (person.AttestatSeries ?? "") + " №" + (person.AttestatNum ?? "")) :
-                        ("диплом серия " + (person.EducationDocumentSeries ?? "") + " №" + (person.EducationDocumentNumber ?? ""));
+                string Attestat = person.SchoolTypeId == 1 ? ("аттестат " + (("регион "+person.AttestatRegion + " ") ?? "") + (("серия "+person.AttestatSeries+" " )?? "") + ((" №" + person.AttestatNum) ?? "")) :
+                        (("диплом " + ("серия " + person.EducationDocumentSeries) ?? "") +  ((" №" +person.EducationDocumentNumber) ?? ""));
+                if (person.SchoolTypeId.HasValue)
+                {
+                    if (person.SchoolTypeId == 1)
+                    {
+                        if ((person.AttestatRegion == String.Empty) && (person.AttestatSeries == String.Empty) && (person.AttestatNum == String.Empty))
+                            Attestat = "";
+                    }
+                    else
+                    {
+                        if ((person.EducationDocumentSeries == String.Empty) && (person.EducationDocumentNumber == String.Empty))
+                            Attestat = "";
+                    }
+                }
+                else
+                {
+                    if (person.AttestatNum != String.Empty || person.AttestatSeries != String.Empty)
+                        Attestat = "аттестат " + (("регион" + person.AttestatRegion + " ") ?? "") + (("серия " + person.AttestatSeries + " ") ?? "") + (("№" + person.AttestatNum) ?? "");
+                    else
+                        if (person.EducationDocumentNumber != String.Empty || person.EducationDocumentSeries != String.Empty)
+                            Attestat = "диплом " + (("серия " + person.EducationDocumentSeries + " ") ?? "") + (("№" + person.EducationDocumentNumber) ?? "");
+                }
+
                 acrFlds.SetField("Attestat", Attestat);
+
                 acrFlds.SetField("Extra", person.AddInfo ?? "");
 
-                if (person.IsEqual && person.CountryEducId.HasValue && person.CountryEducId.Value != 193)
+                if (person.IsEqual && (person.ForeignCountryEducId.HasValue || (person.CountryEducId.HasValue && person.CountryEducId.Value != 193)))
                 {
                     acrFlds.SetField("IsEqual", "1");
                     acrFlds.SetField("EqualSertificateNumber", person.EqualDocumentNumber);
@@ -1275,13 +1427,14 @@ namespace Priem
                 if (person.HasPrivileges)
                     acrFlds.SetField("HasPrivileges", "1");
 
-                if ((person.SchoolTypeId == 1) || (isMag && person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("магист") < 0))
-                    acrFlds.SetField("NoEduc", "1");
-                else
-                {
-                    acrFlds.SetField("HasEduc", "1");
-                    acrFlds.SetField("HighEducation", person.SchoolName);
-                }
+                if (person.SchoolTypeId.HasValue)
+                    if ((person.SchoolTypeId == 1) || (isMag && person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("магист") < 0))
+                        acrFlds.SetField("NoEduc", "1");
+                    else
+                    {
+                        acrFlds.SetField("HasEduc", "1");
+                        acrFlds.SetField("HighEducation", person.SchoolName);
+                    }
 
                 if (!isMag)
                 {
@@ -1670,7 +1823,10 @@ namespace Priem
                     acrFlds.SetField("Profession" + (ii + 1).ToString(), "(" + abitList[ii].ProfessionCode + ") " + abitList[ii].Profession);
                     acrFlds.SetField("Specialization" + (ii + 1).ToString(), abitList[ii].Specialization);
                     acrFlds.SetField("ObrazProgram" + (ii + 1).ToString(), abitList[ii].ObrazProgram);
-                    acrFlds.SetField("StudyBasis" + abitList[ii].StudyBasisId.ToString() + (ii + 1).ToString(), "1");
+                    string StudyForm = abitList[ii].StudyBasisId.ToString();
+                    if (StudyForm == "3")
+                        StudyForm = "2";
+                    acrFlds.SetField("StudyBasis" + StudyForm + (ii + 1).ToString(), "1");
                     acrFlds.SetField("StudyForm" + abitList[ii].StudyFormId.ToString() + (ii + 1).ToString(), "1");
                 }
 
@@ -1681,23 +1837,28 @@ namespace Priem
                     acrFlds.SetField("School" + i, splitStr[i - 1]);
                 
                 string attestat = (person.EducationDocumentSeries ?? "") + (person.EducationDocumentNumber ?? "");
-                acrFlds.SetField("Attestat", String.IsNullOrEmpty(attestat) ? "" : "диплом "+(("серия " + person.EducationDocumentSeries) ?? "") + (String.IsNullOrEmpty(person.EducationDocumentNumber)?(" №" + person.EducationDocumentNumber) : ""));
+                string DiplomaNumber = !String.IsNullOrEmpty(person.EducationDocumentNumber) ? (" №" + person.EducationDocumentNumber) : "";
+                string DiplomaSeries = !String.IsNullOrEmpty(person.EducationDocumentSeries) ? ("серия " + person.EducationDocumentSeries+" ") : "";
+                acrFlds.SetField("Attestat", String.IsNullOrEmpty(attestat) ? "" : "диплом "+DiplomaSeries + DiplomaNumber);
 
                 acrFlds.SetField("HEProfession", person.ProgramName ?? "");
                 acrFlds.SetField("Qualification", person.Qualification);
-                if ((person.SchoolTypeId != 4) || (person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("аспирант") < 0))
-                    acrFlds.SetField("NoEduc", "1");
-                else
+                if (person.SchoolTypeId.HasValue)
                 {
-                    acrFlds.SetField("HasEduc", "1");
-                    acrFlds.SetField("HighEducation", person.SchoolName);
+                    if ((person.SchoolTypeId != 4) || (person.SchoolTypeId == 4 && (person.Qualification).ToLower().IndexOf("аспирант") < 0))
+                        acrFlds.SetField("NoEduc", "1");
+                    else
+                    {
+                        acrFlds.SetField("HasEduc", "1");
+                        acrFlds.SetField("HighEducation", person.SchoolName);
+                    }
                 }
 
                 acrFlds.SetField("HostelEducYes", (person.HostelEduc) ? "1" : "0");
                 acrFlds.SetField("HostelEducNo", (person.HostelEduc) ? "0" : "1");
                 acrFlds.SetField("HostelAbitYes", (person.HostelAbit) ? "1" : "0");
                 acrFlds.SetField("HostelAbitNo", (person.HostelAbit) ? "0" : "1");
-                if (person.IsEqual && person.CountryEducId.HasValue && person.CountryEducId.Value != 193)
+                if (person.IsEqual && (person.ForeignCountryEducId.HasValue || (person.CountryEducId.HasValue && person.CountryEducId.Value != 193)))
                 {
                     acrFlds.SetField("IsEqual", "1");
                     acrFlds.SetField("EqualSertificateNumber", person.EqualDocumentNumber);

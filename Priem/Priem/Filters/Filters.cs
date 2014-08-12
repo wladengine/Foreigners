@@ -147,7 +147,7 @@ namespace Priem
                 AddItem(new FilterItem("Введен средний балл аттестата", FilterType.Bool, "(NOT ed.Person_EducationInfo.SchoolAVG IS NULL AND Len(ed.Person_EducationInfo.SchoolAVG) > 0)", "ed.Person"));
 
                 AddItem(new FilterItem("Город учебного заведения", FilterType.Text, "ed.Person_EducationInfo.SchoolCity", "ed.Person_EducationInfo"));
-                AddItem(new FilterItem("Тип учебного заведения", FilterType.Multi, "ed.Person_EducationInfo.SchoolTypeId", "ed.Person_EducationInfo", "SELECT Id, Name FROM SchoolType ORDER BY Name"));
+                AddItem(new FilterItem("Тип учебного заведения", FilterType.Multi, "ed.extPerson.SchoolTypeId", "ed.extPerson", "SELECT Id, Name FROM SchoolType ORDER BY Name"));
                 AddItem(new FilterItem("Название учебного заведения", FilterType.Text, "ed.Person_EducationInfo.SchoolName", "ed.Person_EducationInfo"));
                 AddItem(new FilterItem("Номер учебного заведения", FilterType.FromTo, "ed.Person_EducationInfo.SchoolNum", "ed.Person_EducationInfo"));
                 AddItem(new FilterItem("Год окончания учебного заведения", FilterType.FromTo, "ed.Person_EducationInfo.SchoolExitYear", "ed.Person_EducationInfo"));

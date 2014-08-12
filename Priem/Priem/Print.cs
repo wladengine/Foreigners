@@ -1017,12 +1017,8 @@ namespace Priem
                     acrFlds.SetField("Specialization" + (ii + 1).ToString(), abitList[ii].Specialization);
                     acrFlds.SetField("ObrazProgram" + (ii + 1).ToString(), abitList[ii].ObrazProgram);
                     acrFlds.SetField("StudyBasis" + abitList[ii].StudyBasisId.ToString() + (ii + 1).ToString(), "1");
-                    string studyForm = abitList[ii].StudyFormId.ToString();
-                    if (studyForm == "3")
-                        studyForm = "2";
-                    acrFlds.SetField("StudyForm" + studyForm + (ii + 1).ToString(), "1");
+                    acrFlds.SetField("StudyForm" + abitList[ii].StudyFormId.ToString() + (ii + 1).ToString(), "1");
                 }
-
 
                 string addInfo = person.Mobiles.Replace('\r', ',').Replace('\n', ' ').Trim();//если начнут вбивать построчно, то хотя бы в одну строку сведём
                 if (addInfo.Length > 100)
@@ -1823,10 +1819,7 @@ namespace Priem
                     acrFlds.SetField("Profession" + (ii + 1).ToString(), "(" + abitList[ii].ProfessionCode + ") " + abitList[ii].Profession);
                     acrFlds.SetField("Specialization" + (ii + 1).ToString(), abitList[ii].Specialization);
                     acrFlds.SetField("ObrazProgram" + (ii + 1).ToString(), abitList[ii].ObrazProgram);
-                    string StudyForm = abitList[ii].StudyBasisId.ToString();
-                    if (StudyForm == "3")
-                        StudyForm = "2";
-                    acrFlds.SetField("StudyBasis" + StudyForm + (ii + 1).ToString(), "1");
+                    acrFlds.SetField("StudyBasis" + abitList[ii].StudyBasisId.ToString() + (ii + 1).ToString(), "1");
                     acrFlds.SetField("StudyForm" + abitList[ii].StudyFormId.ToString() + (ii + 1).ToString(), "1");
                 }
 

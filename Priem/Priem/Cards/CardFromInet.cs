@@ -121,7 +121,7 @@ namespace Priem
                 //gbEduc.Location = new Point(11, 7);
                 //gbFinishStudy.Location = new Point(11, 222);
 
-                tpDocs.Parent = null;
+                //tpDocs.Parent = null;
 
                 if (_closeAbit)
                     tpApplication.Parent = null;

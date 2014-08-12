@@ -275,15 +275,15 @@ namespace Priem
             qBuilder.AddTableJoint("ed.SchoolType", " LEFT JOIN ed.SchoolType ON ed.extPerson.SchoolTypeId = ed.SchoolType.Id ");
             qBuilder.AddTableJoint("CountryEduc", " LEFT JOIN ed.Country AS CountryEduc ON ed.extPerson.CountryEducId = CountryEduc.Id ");
             qBuilder.AddTableJoint("HostelFaculty", " LEFT JOIN ed.SP_Faculty AS HostelFaculty ON ed.Person_AdditionalInfo.HostelFacultyId = HostelFaculty.Id ");
-            qBuilder.AddTableJoint("ed.extFBSStatus", " LEFT JOIN ed.extFBSStatus ON ed.extFBSStatus.PersonId = ed.Person.Id ");
+            qBuilder.AddTableJoint("ed.extFBSStatus", " LEFT JOIN ed.extFBSStatus ON ed.extFBSStatus.PersonId = Person.Id ");
 
-            qBuilder.AddTableJoint("ed.qFaculty", " LEFT JOIN ed.qFaculty ON ed.qFaculty.Id = ed.qAbiturient.FacultyId ");
-            qBuilder.AddTableJoint("ed.qLicenseProgram", " LEFT JOIN ed.qLicenseProgram ON ed.qLicenseProgram.Id = ed.qAbiturient.LicenseProgramId ");
-            qBuilder.AddTableJoint("ed.qObrazProgram", " LEFT JOIN ed.qObrazProgram ON ed.qObrazProgram.Id = ed.qAbiturient.ObrazProgramId ");
-            qBuilder.AddTableJoint("ed.qProfile", " LEFT JOIN ed.qProfile ON ed.qProfile.Id = ed.qAbiturient.ProfileId ");
-            qBuilder.AddTableJoint("ed.StudyBasis", " LEFT JOIN ed.StudyBasis ON ed.StudyBasis.Id = ed.qAbiturient.StudyBasisId ");
-            qBuilder.AddTableJoint("ed.StudyForm", " LEFT JOIN ed.StudyForm ON ed.StudyForm.Id = ed.qAbiturient.StudyFormId ");
-            qBuilder.AddTableJoint("ed.Competition", " LEFT JOIN ed.Competition ON ed.Competition.Id = ed.qAbiturient.CompetitionId ");
+            qBuilder.AddTableJoint("ed.qFaculty", " LEFT JOIN ed.qFaculty ON ed.qFaculty.Id = qAbiturient.FacultyId ");
+            qBuilder.AddTableJoint("ed.qLicenseProgram", " LEFT JOIN ed.qLicenseProgram ON ed.qLicenseProgram.Id = qAbiturient.LicenseProgramId ");
+            qBuilder.AddTableJoint("ed.qObrazProgram", " LEFT JOIN ed.qObrazProgram ON ed.qObrazProgram.Id = qAbiturient.ObrazProgramId ");
+            qBuilder.AddTableJoint("ed.qProfile", " LEFT JOIN ed.qProfile ON ed.qProfile.Id = qAbiturient.ProfileId ");
+            qBuilder.AddTableJoint("ed.StudyBasis", " LEFT JOIN ed.StudyBasis ON ed.StudyBasis.Id = qAbiturient.StudyBasisId ");
+            qBuilder.AddTableJoint("ed.StudyForm", " LEFT JOIN ed.StudyForm ON ed.StudyForm.Id = qAbiturient.StudyFormId ");
+            qBuilder.AddTableJoint("ed.Competition", " LEFT JOIN ed.Competition ON Competition.Id = qAbiturient.CompetitionId ");
             qBuilder.AddTableJoint("OtherCompetition", " LEFT JOIN ed.Competition AS OtherCompetition ON ed.qAbiturient.OtherCompetitionId = OtherCompetition.Id ");
             qBuilder.AddTableJoint("ed.CelCompetition", " LEFT JOIN ed.CelCompetition ON ed.qAbiturient.CelCompetitionId = ed.CelCompetition.Id ");
            

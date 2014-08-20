@@ -70,15 +70,17 @@ namespace Priem
             InitFocusHandlers();
             _bdc = MainClass.Bdc;
 
-            ComboServ.FillCombo(cbFaculty, HelpClass.GetComboListByTable("ed.qFaculty", "ORDER BY Acronym"), false, false);
+            ComboServ.FillCombo(cbStudyLevelGroup, HelpClass.GetComboListByTable("ed.StudyLevelGroup", "ORDER BY Acronym"), false, false);
             ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByTable("ed.StudyBasis", "ORDER BY Name"), false, false);
 
             cbStudyBasis.SelectedIndex = 0;
+            FillFaculty();
             FillStudyForm();
             FillLicenseProgram();             
             
             UpdateDataGrid();
 
+            cbStudyLevelGroup.SelectedIndexChanged += cbStudyLevel_SelectedIndexChanged;
             cbFaculty.SelectedIndexChanged += new EventHandler(cbFaculty_SelectedIndexChanged);
             cbStudyForm.SelectedIndexChanged += new EventHandler(cbStudyForm_SelectedIndexChanged);
             cbStudyBasis.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);
@@ -88,21 +90,23 @@ namespace Priem
             MainClass.AddProtocolHandler(prh);          
         }
 
+        void cbStudyLevel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillFaculty();
+        }
+
         void cbFaculty_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillStudyForm();            
         }
-
         void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillStudyForm();            
         }
-
         void cbStudyForm_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillLicenseProgram();
         }
-
         void cbLicenseProgram_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateDataGrid();
@@ -113,23 +117,25 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbFaculty); }
             set { ComboServ.SetComboId(cbFaculty, value); }
         }
-
         public int? LicenseProgramId
         {
             get { return ComboServ.GetComboIdInt(cbLicenseProgram); }
             set { ComboServ.SetComboId(cbLicenseProgram, value); }
         }
-        
         public int? StudyBasisId
         {
             get { return ComboServ.GetComboIdInt(cbStudyBasis); }
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
-
         public int? StudyFormId
         {
             get { return ComboServ.GetComboIdInt(cbStudyForm); }
             set { ComboServ.SetComboId(cbStudyForm, value); }
+        }
+        public int StudyLevelGroupId
+        {
+            get { return ComboServ.GetComboIdInt(cbStudyLevelGroup).Value; }
+            set { ComboServ.SetComboId(cbStudyLevelGroup, value); }
         }
 
         public bool IsSecond
@@ -137,25 +143,33 @@ namespace Priem
             get { return chbIsSecond.Checked; }
             set { chbIsSecond.Checked = value; }
         }
-
         public bool IsReduced
         {
             get { return chbIsReduced.Checked; }
             set { chbIsReduced.Checked = value; }
         }
-
         public bool IsParallel
         {
             get { return chbIsParallel.Checked; }
             set { chbIsParallel.Checked = value; }
         }
-
         public bool IsListener
         {
             get { return chbIsListener.Checked; }
             set { chbIsListener.Checked = value; }
-        } 
+        }
 
+        private void FillFaculty()
+        {
+            using (PriemEntities context = new PriemEntities())
+            {
+                var ent = MainClass.GetEntry(context).Where(c => c.StudyLevel.LevelGroupId == StudyLevelGroupId);
+                List<KeyValuePair<string, string>> lst = ent.Select(x => new { x.SP_Faculty.Name, x.FacultyId }).Distinct().ToList()
+                    .Select(u => new KeyValuePair<string, string>(u.FacultyId.ToString(), u.Name)).OrderBy(x => x.Value).Distinct().ToList();
+
+                ComboServ.FillCombo(cbFaculty, lst, false, false);
+            }
+        }
         private void FillStudyForm()
         {
             using (PriemEntities context = new PriemEntities())
@@ -169,7 +183,6 @@ namespace Priem
                 ComboServ.FillCombo(cbStudyForm, lst, false, false);
             }
         }
-
         private void FillLicenseProgram()
         {
             using (PriemEntities context = new PriemEntities())
@@ -185,7 +198,7 @@ namespace Priem
 
                 List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
 
-                ComboServ.FillCombo(cbLicenseProgram, lst, false, false);
+                ComboServ.FillCombo(cbLicenseProgram, lst, false, true);
             }
         }
 
@@ -197,15 +210,17 @@ namespace Priem
                 return;
             }
 
-            string query = string.Format("SELECT DISTINCT Id, Number as 'Номер представления' FROM ed.extEntryView WHERE StudyFormId={0} AND StudyBasisId={1} AND FacultyId= {2} AND LicenseProgramId = {3} AND IsListener = {4} AND IsSecond = {5} AND IsReduced = {6} AND IsParallel = {7} order by 2", StudyFormId, StudyBasisId, FacultyId, LicenseProgramId, QueryServ.StringParseFromBool(IsListener), QueryServ.StringParseFromBool(IsSecond), QueryServ.StringParseFromBool(IsReduced), QueryServ.StringParseFromBool(IsParallel));
+            string query = string.Format(@"SELECT DISTINCT Id, Number as 'Номер представления' FROM ed.extEntryView 
+WHERE StudyFormId={0} AND StudyBasisId={1} AND FacultyId= {2} {3} AND IsListener = {4} AND IsSecond = {5} AND IsReduced = {6} AND IsParallel = {7} order by 2", 
+StudyFormId, StudyBasisId, FacultyId, LicenseProgramId.HasValue ? "AND LicenseProgramId = " + LicenseProgramId.Value.ToString() : "", 
+QueryServ.StringParseFromBool(IsListener), QueryServ.StringParseFromBool(IsSecond), QueryServ.StringParseFromBool(IsReduced), QueryServ.StringParseFromBool(IsParallel));
             HelpClass.FillDataGrid(dgvViews, _bdc, query, "");
         }       
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            new EntryViewProtocol(null, FacultyId.Value, StudyBasisId.Value, StudyFormId.Value, LicenseProgramId, IsSecond, IsReduced, IsParallel, IsListener, chbCel.Checked).Show();            
+            new EntryViewProtocol(null, StudyLevelGroupId, FacultyId.Value, StudyBasisId.Value, StudyFormId.Value, LicenseProgramId, IsSecond, IsReduced, IsParallel, IsListener, chbCel.Checked).Show();            
         }
-
         private void btnPrint_Click(object sender, EventArgs e)
         {  
             if (dgvViews.CurrentRow == null)
@@ -219,7 +234,6 @@ namespace Priem
             if (sfd.ShowDialog() == DialogResult.OK)
                 Print.PrintEntryView(dgvViews.CurrentRow.Cells["Id"].Value.ToString(), sfd.FileName);
         }
-
         private void btnPrintOrder_Click(object sender, EventArgs e)
         {
             if (dgvViews.CurrentRow == null)
@@ -232,7 +246,6 @@ namespace Priem
 
             Print.PrintOrder(protocolId, !chbIsForeign.Checked, chbCel.Checked);
         }
-
         private void btnOrderReview_Click(object sender, EventArgs e)
         {
             if (dgvViews.CurrentRow == null)
@@ -245,7 +258,6 @@ namespace Priem
 
             Print.PrintOrderReview(protocolId, !chbIsForeign.Checked);
         }
-
         private void btnCancelView_Click(object sender, EventArgs e)
         {
             if(!MainClass.IsPasha())
@@ -275,17 +287,14 @@ namespace Priem
         {
             UpdateDataGrid();
         }
-
         private void chbIsSecond_CheckedChanged(object sender, EventArgs e)
         {
             FillStudyForm();
         }
-
         private void chbIsReduced_CheckedChanged(object sender, EventArgs e)
         {
             FillStudyForm();
         }
-
         private void chbIsParallel_CheckedChanged(object sender, EventArgs e)
         {
             FillStudyForm();

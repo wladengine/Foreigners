@@ -24,6 +24,7 @@ namespace Priem
         protected int _studyFormId;
         protected int _studyBasisId;
         protected int? _licenseProgramId;
+        protected int? StudyLevelGroupId;
         protected Guid? _id;
         protected ProtocolTypes _type;
                 
@@ -109,7 +110,33 @@ namespace Priem
             chbInostr.Visible = false;
 
             InitControls();
-        }       
+        }
+
+        //конструктор 
+        public ProtocolCard(ProtocolList owner, int studyLevelGroupId, int facultyId, int studyBasisId, int studyFormId, int? licenseProgramId, bool? isSecond, bool? isReduced, bool? isParallel, bool? isListener, bool? isCel, Guid? id)
+        {
+            InitializeComponent();
+
+            _facultyId = facultyId;
+            _licenseProgramId = licenseProgramId;
+            _studyBasisId = studyBasisId;
+            _studyFormId = studyFormId;
+            _id = id;
+            _Owner = owner;
+
+            _isSecond = isSecond;
+            _isReduced = isReduced;
+            _isParallel = isParallel;
+            _isListener = isListener;
+            _isCel = isCel;
+
+            StudyLevelGroupId = studyLevelGroupId;
+            //флаг, если новый
+            isNew = id.HasValue ? false : true;
+            chbInostr.Visible = false;
+
+            InitControls();
+        }
 
         //дополнительная инициализация
         protected virtual void InitControls()

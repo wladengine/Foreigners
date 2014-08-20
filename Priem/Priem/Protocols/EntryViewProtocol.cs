@@ -18,21 +18,23 @@ namespace Priem
     public class EntryViewProtocol : ProtocolCard
     {
         Dictionary<int?, List<string>> lstSelected;
-  
-        public EntryViewProtocol(ProtocolList owner, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList, bool isCel)
-            : this(owner, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, isCel, null)
+        //private int StudyLevelGroupId;
+
+        public EntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList, bool isCel)
+            : this(owner, iStudyLevelGroupId, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, isCel, null)
         {
         }
 
         //конструктор 
-        public EntryViewProtocol(ProtocolList owner, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList, bool isCel, Guid? sProtocol)
-            : base(owner,sFac,sSection,sForm,sProf, isSec, isReduced, isParal, isList, isCel, sProtocol)
+        public EntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList, bool isCel, Guid? sProtocol)
+            : base(owner, iStudyLevelGroupId, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, isCel, sProtocol)
         {
+            //StudyLevelGroupId = iStudyLevelGroupId;
             _type = ProtocolTypes.EntryView;                      
         }
 
         //дополнительная инициализация
-        protected override void  InitControls()
+        protected override void InitControls()
         {
             using (PriemEntities context = new PriemEntities())
             {
@@ -65,6 +67,8 @@ namespace Priem
                 this.chbEnable.Text = "Добавить всех выбранных слева абитуриентов в представление о зачислении";
 
                 this.chbFilter.Visible = false;
+
+                UpdateGrids();
             }
         }
 
@@ -83,7 +87,6 @@ namespace Priem
         {
             return GetTotalFilter(true);
         }
-
         string GetTotalFilter(bool header)
         {
             string sFilter = string.Empty;
@@ -240,10 +243,10 @@ namespace Priem
             DataTable dtAbits = new DataTable();
                 
             DataSet dsPrograms = MainClass.Bdc.GetDataSet(string.Format(@"SELECT DISTINCT ObrazProgramId, ProfileId, KCP AS Value, KCPCel AS ValueCel
-                    FROM ed.qEntry 
-                    WHERE ed.qEntry.StudyLevelGroupId = {7} AND ed.qEntry.FacultyId={0} AND ed.qEntry.StudyFormId={1} AND
-                    ed.qEntry.StudyBasisId={2} AND ed.qEntry.LicenseProgramId={3} AND ed.qEntry.IsSEcond = {4} AND ed.qEntry.IsReduced = {5} AND ed.qEntry.IsParallel = {6}", _facultyId, _studyFormId, _studyBasisId, _licenseProgramId, 
-                    QueryServ.StringParseFromBool(_isSecond.Value), QueryServ.StringParseFromBool(_isReduced.Value), QueryServ.StringParseFromBool(_isParallel.Value), MainClass.studyLevelGroupId));
+                    FROM ed.qEntry WHERE ed.qEntry.StudyLevelGroupId = {7} AND ed.qEntry.FacultyId={0} AND ed.qEntry.StudyFormId={1} AND
+                    ed.qEntry.StudyBasisId={2} {3} AND ed.qEntry.IsSecond = {4} AND ed.qEntry.IsReduced = {5} AND ed.qEntry.IsParallel = {6}",
+                    _facultyId, _studyFormId, _studyBasisId, _licenseProgramId.HasValue ? " AND ed.qEntry.LicenseProgramId='" + _licenseProgramId.Value.ToString() + "'" : "", 
+                    QueryServ.StringParseFromBool(_isSecond.Value), QueryServ.StringParseFromBool(_isReduced.Value), QueryServ.StringParseFromBool(_isParallel.Value), StudyLevelGroupId));
 
             foreach (DataRow dr in dsPrograms.Tables[0].Rows)
             {                    
@@ -254,11 +257,13 @@ namespace Priem
                         INNER JOIN ed.extEntryView ON ed.extAbit.Id=ed.extEntryView.AbiturientId 
                         WHERE Excluded=0 AND ed.extAbit.StudyLevelGroupId = {9}
                         AND ed.extAbit.FacultyId={0} AND ed.extAbit.StudyFormId={1} AND ed.extAbit.StudyBasisId={2} 
-                        AND ed.extAbit.LicenseProgramId={3} AND ed.extAbit.IsSEcond = {4} AND ed.extAbit.IsReduced = {5} AND ed.extAbit.IsParallel = {6} AND ed.extAbit.ObrazProgramId={7} {8}", _facultyId, _studyFormId, _studyBasisId, _licenseProgramId, QueryServ.StringParseFromBool(_isSecond.Value), QueryServ.StringParseFromBool(_isReduced.Value), QueryServ.StringParseFromBool(_isParallel.Value),
-                        obProg, string.IsNullOrEmpty(spec) ? " AND ed.extAbit.ProfileId IS NULL " : " AND ed.extAbit.ProfileId='" + spec + "'", MainClass.studyLevelGroupId);
+                        {3} AND ed.extAbit.IsSEcond = {4} AND ed.extAbit.IsReduced = {5} AND ed.extAbit.IsParallel = {6} AND ed.extAbit.ObrazProgramId={7} {8}",
+                        _facultyId, _studyFormId, _studyBasisId, _licenseProgramId.HasValue ? " AND ed.extAbit.LicenseProgramId='" + _licenseProgramId.Value.ToString() + "'" : "", 
+                        QueryServ.StringParseFromBool(_isSecond.Value), QueryServ.StringParseFromBool(_isReduced.Value), QueryServ.StringParseFromBool(_isParallel.Value), 
+                        obProg, string.IsNullOrEmpty(spec) ? " AND ed.extAbit.ProfileId IS NULL " : " AND ed.extAbit.ProfileId='" + spec + "'", StudyLevelGroupId);
 
                 if (_isCel.Value)
-                    enteredQuery += " AND ed.extAbit.CompetitionId=6 ";
+                    enteredQuery += " AND ed.extAbit.CompetitionId = 6 ";
                   
                 int entered = 0;
                 int kc = 0;
@@ -271,18 +276,18 @@ namespace Priem
 
                 int kcRest = kc - entered;
                                
-                string sQueryBody = string.Format("SELECT DISTINCT TOP ({0}) ed.extAbitMarksSum.TotalSum as Sum, ed.extPerson.AttestatSeries, ed.extPerson.AttestatNum, ed.qAbiturient.Id as Id, ed.qAbiturient.BAckDoc as backdoc, " +
+                string sQueryBody = "SELECT DISTINCT ed.extAbitMarksSum.TotalSum as Sum, ed.extPerson.AttestatSeries, ed.extPerson.AttestatNum, ed.qAbiturient.Id as Id, ed.qAbiturient.BAckDoc as backdoc, " +
                     " 'false' as Red, ed.qAbiturient.RegNum as Рег_Номер, " +
                     " ed.extPerson.FIO as ФИО, " +
                     " (case when ed.extPerson.SchoolTypeId = 1 then ed.extPerson.AttestatRegion + ' ' + ed.extPerson.AttestatSeries + '  №' + ed.extPerson.AttestatNum else ed.extPerson.DiplomSeries + '  №' + ed.extPerson.DiplomNum end) as Документ_об_образовании, " +
                     " ed.extPerson.PassportSeries + ' №' + ed.extPerson.PassportNumber as Паспорт, " +
                     " LicenseProgramCode + ' ' + LicenseProgramName + ' ' +(Case when NOT ed.qAbiturient.ProfileId IS NULL then ProfileName else ObrazProgramName end) as Направление, " +
-                    " Competition.NAme as Конкурс, ed.qAbiturient.BackDoc, ed._FirstWave.SortNum " +
-                    " FROM ed.qAbiturient INNER JOIN ed.extPerson ON ed.qAbiturient.PErsonId =  ed.extPerson.Id " +
+                    " Competition.NAme as Конкурс, ed.qAbiturient.BackDoc " +
+                    " FROM ed.qAbiturient INNER JOIN ed.qAbiturientForeignApplicationsOnly qqq ON qqq.Id = qAbiturient.Id INNER JOIN ed.extPerson ON qAbiturient.PersonId = extPerson.Id " +
                     " INNER JOIN ed.extEnableProtocol ON ed.qAbiturient.Id=ed.extEnableProtocol.AbiturientId " +
-                    " INNER JOIN ed._FirstWave ON ed.qAbiturient.Id=ed._FirstWave.AbiturientId " +
+                    //" INNER JOIN ed._FirstWave ON ed.qAbiturient.Id=ed._FirstWave.AbiturientId " +
                     " LEFT JOIN ed.extAbitMarksSum ON ed.qAbiturient.Id=ed.extAbitMarksSum.Id " +
-                    " LEFT JOIN ed.Competition ON ed.Competition.Id = ed.qAbiturient.CompetitionId ", kcRest);
+                    " LEFT JOIN ed.Competition ON ed.Competition.Id = ed.qAbiturient.CompetitionId ";
 
                 string sQueryJoinFW = string.Empty;               
                                 
@@ -290,23 +295,11 @@ namespace Priem
                 sFilter += " AND ed.qAbiturient.ObrazProgramId = " + obProg;
                 sFilter += string.IsNullOrEmpty(spec) ? " AND ed.qAbiturient.ProfileId IS NULL " : " AND ed.qAbiturient.ProfileId='" + spec + "'";
 
-                string orderBy = " ORDER BY SortNum";
+                string orderBy = " ORDER BY ФИО ";
 
                 DataTable dtProg = MainClass.Bdc.GetDataSet(sQueryBody + sQueryJoinFW + sFilter + orderBy).Tables[0];
 
                 dtAbits.Merge(dtProg);
-
-                //// на вторую волну сделать так же и для бакалавров
-                //if (MainClass.dbType == PriemType.PriemMag)
-                //{
-                //    int cntRestAfterGreen = kcRest - dtProg.Rows.Count;
-                //    if (cntRestAfterGreen > 0)
-                //    {
-                //        kcRest = cntRestAfterGreen;                    
-                //        DataTable dtProgAdd = MainClass.Bdc.GetDataSet(sQueryBody + sFilter + orderBy).Tables[0];
-                //        dtAbits.Merge(dtProgAdd);
-                //    }
-                //}
             }
 
             FillGrid(dgvRight, dtAbits);            

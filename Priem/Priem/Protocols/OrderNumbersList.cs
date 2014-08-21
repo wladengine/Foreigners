@@ -266,9 +266,9 @@ namespace Priem
                     Guid? protId = new Guid(dgvViews.CurrentRow.Cells["Id"].Value.ToString());
 
                     if (forUpdate)                   
-                        context.OrderNumbers_Update(protId, dtOrderDate.Value.Date, tbOrderNum.Text.Trim(), dtOrderDateFor.Value.Date, tbOrderNumFor.Text.Trim());                    
+                        context.OrderNumbers_Update(protId, dtOrderDate.Value.Date, tbOrderNum.Text.Trim(), dtOrderDateFor.Value.Date, tbOrderNumFor.Text.Trim(), 1, DateTime.Now.Date, "");                    
                     else
-                        context.OrderNumbers_Insert(protId, dtOrderDate.Value.Date, tbOrderNum.Text.Trim(), dtOrderDateFor.Value.Date, tbOrderNumFor.Text.Trim());
+                        context.OrderNumbers_Insert(protId, dtOrderDate.Value.Date, tbOrderNum.Text.Trim(), dtOrderDateFor.Value.Date, tbOrderNumFor.Text.Trim(), 1, DateTime.Now.Date, "");
                    
                     forUpdate = true;
                     SetReadOnly();

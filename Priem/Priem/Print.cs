@@ -4151,15 +4151,61 @@ namespace Priem
                             string tmp = "";
                             if (v.HasTRKI)
                                     tmp += "ТРКИ-2";
+                            int ExamPortfolio = 0;
+                            bool HasPortfolio = false;
+                            string ExamNamePortfolio = "";
                             foreach (var x in ExamsMarks)
                             {
-                                balls = x.Value.ToString();
+                                if (x.ExamName.Contains("Портфолио"))
+                                {
+                                    ExamPortfolio += x.Value;
+
+                                    if (!HasPortfolio)
+                                    {
+                                        ExamNamePortfolio = x.ExamName.Replace(" (часть 1)", "");
+                                        ExamNamePortfolio = ExamNamePortfolio.Replace(" (часть 2)", "");
+                                    }
+                                    HasPortfolio = true;
+                                }
+                                else
+                                {
+                                    balls = x.Value.ToString();
+                                    ballToStr = " балл";
+                                    if (balls.Length == 0)
+                                        ballToStr = "";
+                                    else
+                                    {
+                                        if (tmp != "")
+                                            tmp += ", ";
+                                        if (balls.EndsWith("1"))
+                                        {
+                                            if (balls.EndsWith("11"))
+                                                ballToStr += "ов";
+                                            else
+                                                ballToStr += "";
+                                        }
+                                        else if (balls.EndsWith("2") || balls.EndsWith("3") || balls.EndsWith("4"))
+                                        {
+                                            if ((balls.EndsWith("12") || balls.EndsWith("13") || balls.EndsWith("14")))
+                                                ballToStr += "ов";
+                                            else
+                                                ballToStr += "а";
+                                        }
+                                        else
+                                            ballToStr += "ов";
+                                    }
+                                    tmp += x.ExamName + " - " + balls + ballToStr;
+                                }
+                            }
+                            if (HasPortfolio)
+                            {
+                                balls = ExamPortfolio.ToString();
                                 ballToStr = " балл";
                                 if (balls.Length == 0)
                                     ballToStr = "";
                                 else
                                 {
-                                    if (tmp != "") 
+                                    if (tmp != "")
                                         tmp += ", ";
                                     if (balls.EndsWith("1"))
                                     {
@@ -4178,7 +4224,7 @@ namespace Priem
                                     else
                                         ballToStr += "ов";
                                 }
-                                tmp += x.ExamName + " - "+balls + ballToStr;
+                                tmp += ExamNamePortfolio + " - " + balls + ballToStr;
                             }
                             balls = tmp;
                             ballToStr = "";

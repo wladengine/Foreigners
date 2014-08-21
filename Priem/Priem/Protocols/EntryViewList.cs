@@ -32,21 +32,23 @@ namespace Priem
             
             btnPrintOrder.Visible = btnPrintOrder.Enabled = btnCancelView.Enabled = btnCancelView.Visible = false;
             chbIsForeign.Visible = false;
+            btnCreate.Enabled = false;
 
-            btnCreate.Enabled = true;
+            if (MainClass.IsFacMain())
+            {
+                btnCreate.Enabled = true;
+            }
 
             if (MainClass.IsPasha())
             {                
                 btnPrintOrder.Visible = btnPrintOrder.Enabled = btnCancelView.Enabled = btnCancelView.Visible = true;
                 chbIsForeign.Visible = true;
-               
-                //btnCreate.Enabled = false;
+                btnCreate.Enabled = true;
             } 
 
             if (MainClass.IsPrintOrder())
             {
                 btnPrintOrder.Visible = btnPrintOrder.Enabled = chbIsForeign.Visible = true;
-                btnCreate.Visible = false;
             }
 
             //если кнопки "печать приказа" не видно, то галочка "иностранцы" съезжает на место кнопки

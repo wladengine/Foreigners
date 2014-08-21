@@ -96,26 +96,26 @@ namespace Priem
                 sFilter += " AND ed.qAbiturient.LicenseProgramId = " + _licenseProgramId;
                         
             if (_isSecond.HasValue)           
-                sFilter += " AND ed.qAbiturient.IsSecond = " + QueryServ.StringParseFromBool(_isSecond.Value);
+                sFilter += " AND qAbiturient.IsSecond = " + QueryServ.StringParseFromBool(_isSecond.Value);
             if (_isReduced.HasValue)
-                sFilter += " AND ed.qAbiturient.IsReduced = " + QueryServ.StringParseFromBool(_isReduced.Value);
+                sFilter += " AND qAbiturient.IsReduced = " + QueryServ.StringParseFromBool(_isReduced.Value);
             if (_isParallel.HasValue)
-                sFilter += " AND ed.qAbiturient.IsParallel = " + QueryServ.StringParseFromBool(_isParallel.Value);
+                sFilter += " AND qAbiturient.IsParallel = " + QueryServ.StringParseFromBool(_isParallel.Value);
 
             //обработали слушатель           
             if (_isListener.HasValue)
-                sFilter += " AND ed.qAbiturient.IsListener = " + QueryServ.StringParseFromBool(_isListener.Value);
+                sFilter += " AND qAbiturient.IsListener = " + QueryServ.StringParseFromBool(_isListener.Value);
 
-            sFilter += " AND ed.qAbiturient.BackDoc = 0 ";
+            sFilter += " AND qAbiturient.BackDoc = 0 ";
 
-            sFilter += " AND (ed.qAbiturient.Id NOT IN (SELECT AbiturientId FROM ed.extEntryView WHERE IsListener = 0) OR ed.qAbiturient.IsListener = 1)";
+            sFilter += " AND (ed.qAbiturient.Id NOT IN (SELECT AbiturientId FROM ed.extEntryView WHERE IsListener = 0) OR qAbiturient.IsListener = 1)";
 
-            sFilter += "AND ((ed.qAbiturient.IsListener = 0 AND ed.qAbiturient.IsSecond = 0 AND ed.qAbiturient.IsReduced = 0 AND ed.qAbiturient.IsParallel = 0 AND ed.qAbiturient.HasOriginals > 0) OR ed.qAbiturient.IsListener = 1 OR ed.qAbiturient.IsSecond = 1 OR ed.qAbiturient.IsReduced = 1 OR ed.qAbiturient.IsParallel = 1)";
+            sFilter += "AND ((qAbiturient.IsListener = 0 AND qAbiturient.IsSecond = 0 AND qAbiturient.IsReduced = 0 AND qAbiturient.IsParallel = 0 AND qAbiturient.HasOriginals > 0) OR qAbiturient.IsListener = 1 OR qAbiturient.IsSecond = 1 OR qAbiturient.IsReduced = 1 OR qAbiturient.IsParallel = 1 OR qAbiturient.IsPaid = 1)";
       
             if (_studyBasisId == 2)
             {
-                sFilter += " AND ed.qAbiturient.IsPaid>0 ";
-                sFilter += " AND EXISTS (SELECT Top(1) ed.PaidData.Id FROM ed.PaidData WHERE ed.PaidData.AbiturientId = ed.qAbiturient.Id) ";
+                sFilter += " AND qAbiturient.IsPaid>0 ";
+                sFilter += " AND EXISTS (SELECT Top(1) ed.PaidData.Id FROM ed.PaidData WHERE ed.PaidData.AbiturientId = qAbiturient.Id) ";
             }
 
             if (header)
@@ -123,11 +123,11 @@ namespace Priem
                 switch (HeaderId)
                 {
                     case 1:
-                        sFilter += " AND ed.qAbiturient.CompetitionId=1 ";
+                        sFilter += " AND qAbiturient.CompetitionId=1 ";
                         sFilter += " AND PersonId IN (SELECT PersonId FROM ed.Olympiads WHERE OlympTypeId=1) ";
                         break;
                     case 2:
-                        sFilter += " AND ed.qAbiturient.CompetitionId=1 ";
+                        sFilter += " AND qAbiturient.CompetitionId=1 ";
                         sFilter += " AND PersonId IN (SELECT PersonId FROM ed.Olympiads WHERE OlympValueId=6 AND OlympTypeId=2) ";
                         break;
                     case 3:
@@ -143,19 +143,19 @@ namespace Priem
                         sFilter += " AND PersonId IN (SELECT PersonId FROM ed.Olympiads WHERE OlympValueId=5 AND OlympTypeId IN (3,4)) ";
                         break;
                     case 6:
-                        sFilter += " AND ed.qAbiturient.CompetitionId=2 ";
+                        sFilter += " AND qAbiturient.CompetitionId=2 ";
                         break;
                     case 7:
-                        sFilter += " AND ed.qAbiturient.CompetitionId = 6";
+                        sFilter += " AND qAbiturient.CompetitionId = 6";
                         break;
                     case 8:
-                        sFilter += " AND ed.qAbiturient.CompetitionId NOT IN (1,2,6,7,8) ";
+                        sFilter += " AND qAbiturient.CompetitionId NOT IN (1,2,6,7,8) ";
                         break;
                     case 9:
-                        sFilter += " AND ed.qAbiturient.CompetitionId IN (1,8) ";
+                        sFilter += " AND qAbiturient.CompetitionId IN (1,8) ";
                         break;
                     case 10:
-                        sFilter += " AND ed.qAbiturient.CompetitionId IN (2,7) ";
+                        sFilter += " AND qAbiturient.CompetitionId IN (2,7) ";
                         break;
                 }
             }

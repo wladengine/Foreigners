@@ -3460,7 +3460,7 @@ namespace Priem
                      ed.EntryHeader.Id as EntryHeaderId, ed.EntryHeader.Name as EntryHeaderName 
                      FROM ed.extAbit 
                      INNER JOIN ed.extEntryView ON ed.extEntryView.AbiturientId=ed.extAbit.Id 
-                     INNER JOIN ed.extPerson Person ON ed.extPerson.Id = ed.extAbit.PersonId 
+                     INNER JOIN ed.extPerson ON ed.extPerson.Id = ed.extAbit.PersonId 
                      INNER JOIN ed.Competition ON ed.Competition.Id = ed.extAbit.CompetitionId
                      LEFT JOIN ed.EntryHeader ON EntryHeader.Id = ed.extEntryView.EntryHeaderId 
                      LEFT JOIN ed.extAbitMarksSum ON extAbit.Id = ed.extAbitMarksSum.Id";
@@ -3738,23 +3738,20 @@ namespace Priem
                 string formId;
                 string facDat;
 
-                //string _docNum="";
-                //string _docDate="";
+                bool? isSec; 
+                bool? isParallel; 
+                bool? isReduced; 
+                bool? isList; 
 
-                bool? isSec;// = (bool?)MainClass.Bdc.GetValue("SELECT IsSecond FROM ed.Protocol WHERE Protocol.Id= @protocolId", slDel);
-                bool? isParallel;// = (bool?)MainClass.Bdc.GetValue("SELECT IsParallel FROM ed.Protocol WHERE Protocol.Id= @protocolId", slDel);
-                bool? isReduced;// = (bool?)MainClass.Bdc.GetValue("SELECT IsReduced FROM ed.Protocol WHERE Protocol.Id= @protocolId", slDel);
-                bool? isList;// = (bool?)MainClass.Bdc.GetValue("SELECT IsListener FROM ed.Protocol WHERE Protocol.Id= @protocolId", slDel);
-
-                string basisId;// = MainClass.Bdc.GetStringValue("SELECT StudyBasis.Id FROM ed.Protocol INNER JOIN ed.StudyBasis ON Protocol.StudyBasisId=StudyBasis.Id WHERE Protocol.Id= @protocolId", slDel);
+                string basisId; 
                 string basis = string.Empty;
                 string basis2 = string.Empty;
                 string form = string.Empty;
                 string form2 = string.Empty;
 
-                string LicenseProgramName;// = MainClass.Bdc.GetStringValue("SELECT LicenseProgramName FROM ed.Entry INNER JOIN ed.extEntryView ON Entry.LicenseProgramId=extEntryView.LicenseProgramId WHERE extEntryView.Id= @protocolId", slDel);
-                string LicenseProgramCode;// = MainClass.Bdc.GetStringValue("SELECT LicenseProgramCode FROM ed.Entry INNER JOIN ed.extEntryView ON Entry.LicenseProgramId=extEntryView.LicenseProgramId WHERE extEntryView.Id= @protocolId", slDel);
-                int StudyLevelId;// = MainClass.Bdc.GetStringValue("SELECT LicenseProgramCode FROM ed.Entry INNER JOIN ed.extEntryView ON Entry.LicenseProgramId=extEntryView.LicenseProgramId WHERE extEntryView.Id= @protocolId", slDel);
+                string LicenseProgramName; 
+                string LicenseProgramCode; 
+                int StudyLevelId; 
 
                 using (PriemEntities ctx = new PriemEntities())
                 {
@@ -3881,15 +3878,11 @@ namespace Priem
                         basis2 = "обучения за счет бюджетных ассигнований федерального бюджета";
                         dogovorDoc = "";
                         educDoc = ", оригиналы документа установленного образца об образовании";
-                        //_docDate = "31.07.2014";
-                        //_docNum = "35";
                         break;
                     case "2":
                         basis2 = "обучения по договорам об образовании";
                         dogovorDoc = ", договоры об образовании";
                         educDoc = "";
-                        //_docDate = "13.08.2014";
-                        //_docNum = "41";
                         break;
                 }
 
@@ -3920,7 +3913,7 @@ namespace Priem
                 using (PriemEntities ctx = new PriemEntities())
                 {
                     var lst = (from extabit in ctx.extAbit
-
+                               join Pers in ctx.Person_EducationInfo on extabit.PersonId equals Pers.PersonId
                                join extentryView in ctx.extEntryView on extabit.Id equals extentryView.AbiturientId
                                join extperson in ctx.extPerson on extabit.PersonId equals extperson.Id
                                join country in ctx.ForeignCountry on extperson.ForeignNationalityId equals country.Id
@@ -3938,6 +3931,7 @@ namespace Priem
                                    Id = extabit.Id,
                                    Рег_Номер = extabit.RegNum,
                                    Ид_номер = extabit.PersonNum,
+                                   HasTRKI = Pers.HasTRKI,
                                    TotalSum = (extabit.CompetitionId == 8 || extabit.CompetitionId == 1) ? null : extabitMarksSum.TotalSum,
                                    ФИО = extabit.FIO,
                                    CelCompName = celCompetition.TvorName,
@@ -3981,17 +3975,29 @@ namespace Priem
                                        x.ObrazProgramInEntryId,
                                        x.ProfileInObrazProgramInEntryId,
                                        x.ProfileInObrazProgramInEntryName,
-                                       x.ForeignNationality
+                                       x.ForeignNationality,
+                                       x.HasTRKI
                                    }
                                ).OrderBy(x => x.CelCompName).ThenBy(x => x.ObrazProgram).ThenBy(x => x.ProfileName).ThenBy(x => x.NameRod).ThenBy(x => x.SortNum).ThenBy(x => x.ФИО).ToList();
 
+                    
+
                     bool bFirstRun = true;
-
-                    //bool HeaderIsPrinted_Dogovor = false;
-
 
                     foreach (var v in lst)
                     {
+                        Guid gabitID = Guid.Parse(v.Id);
+                        var ExamsMarks = (from Mrk in ctx.qMark
+                                          where Mrk.AbiturientId == gabitID
+                                          select new
+                                          {
+                                              Mrk.ExamName,
+                                              Mrk.Value,
+                                              OrderNumber = Mrk.OrderNumber ?? 10
+                                          }
+                                        ).OrderBy(x => x.OrderNumber).ThenBy(x => x.ExamName).ToList();
+
+
                         ++counter;
 
                         string header = v.EntryHeaderName;
@@ -4023,22 +4029,9 @@ namespace Priem
                         string ObrazProgramId = v.ObrazProgramId.ToString();
                         string obProg = v.ObrazProgram;
 
-                        //string obProgCode = MainClass.Bdc.GetStringValue(string.Format("SELECT ObrazProgramCrypt FROM ed.Entry WHERE ObrazProgramId = {0}", v.ObrazProgramId.ToString()));
                         string obProgCode = (from entry in ctx.Entry
                                              where entry.ObrazProgramId == v.ObrazProgramId
                                              select entry.StudyLevel.Acronym + "." + entry.SP_ObrazProgram.Number + "." + MainClass.sPriemYear).FirstOrDefault();
-
-                        /* 
-                        if (!HeaderIsPrinted_Dogovor)
-                            if (basisId == 2)
-                            {
-                                td.AddRow(1);
-                               curRow++;
-                               td[0, curRow] = string.Format("\t{0}:", header);
-                                HeaderIsPrinted_Dogovor = true;
-                            }
-                        */
-
 
                         if (ObrazProgramId != curObProg)
                         {
@@ -4050,8 +4043,7 @@ namespace Priem
                             }
 
                             string profileName = v.ProfileName;
-                            //if (spez != curSpez)
-                            //{
+                            
                             if (!string.IsNullOrEmpty(profileName) && profileName != "нет")
                             {
                                 td.AddRow(1);
@@ -4060,11 +4052,9 @@ namespace Priem
                             }
 
                             curProfileName = profileName;
-                            //}
 
                             curObProg = ObrazProgramId;
 
-                            //if (!HeaderIsPrinted_Dogovor)
                             if (!isCel)
                             {
                                 if (header != curHeader)
@@ -4130,28 +4120,69 @@ namespace Priem
                                 curCountry = country;
                             }
                         }
-
-                        string balls = v.TotalSum;
-                        string ballToStr = " балл";
-
-                        if (balls.Length == 0)
-                            ballToStr = "";
-                        else if (balls.EndsWith("1"))
+                        string balls = "";
+                        string ballToStr = "";
+                        if (isRus)
                         {
-                            if (balls.EndsWith("11"))
-                                ballToStr += "ов";
+                            balls = v.TotalSum;
+                            ballToStr = " балл";
+
+                            if (balls.Length == 0)
+                                ballToStr = "";
+                            else if (balls.EndsWith("1"))
+                            {
+                                if (balls.EndsWith("11"))
+                                    ballToStr += "ов";
+                                else
+                                    ballToStr += "";
+                            }
+                            else if (balls.EndsWith("2") || balls.EndsWith("3") || balls.EndsWith("4"))
+                            {
+                                if ((balls.EndsWith("12") || balls.EndsWith("13") || balls.EndsWith("14")))
+                                    ballToStr += "ов";
+                                else
+                                    ballToStr += "а";
+                            }
                             else
-                                ballToStr += "";
-                        }
-                        else if (balls.EndsWith("2") || balls.EndsWith("3") || balls.EndsWith("4"))
-                        {
-                            if ((balls.EndsWith("12") || balls.EndsWith("13") || balls.EndsWith("14")))
                                 ballToStr += "ов";
-                            else
-                                ballToStr += "а";
                         }
                         else
-                            ballToStr += "ов";
+                        {
+                            string tmp = "";
+                            if (v.HasTRKI)
+                                    tmp += "ТРКИ-2";
+                            foreach (var x in ExamsMarks)
+                            {
+                                balls = x.Value.ToString();
+                                ballToStr = " балл";
+                                if (balls.Length == 0)
+                                    ballToStr = "";
+                                else
+                                {
+                                    if (tmp != "") 
+                                        tmp += ", ";
+                                    if (balls.EndsWith("1"))
+                                    {
+                                        if (balls.EndsWith("11"))
+                                            ballToStr += "ов";
+                                        else
+                                            ballToStr += "";
+                                    }
+                                    else if (balls.EndsWith("2") || balls.EndsWith("3") || balls.EndsWith("4"))
+                                    {
+                                        if ((balls.EndsWith("12") || balls.EndsWith("13") || balls.EndsWith("14")))
+                                            ballToStr += "ов";
+                                        else
+                                            ballToStr += "а";
+                                    }
+                                    else
+                                        ballToStr += "ов";
+                                }
+                                tmp += x.ExamName + " - "+balls + ballToStr;
+                            }
+                            balls = tmp;
+                            ballToStr = "";
+                        }
 
                         if (isCel && curMotivation == "-")
                             curMotivation = string.Format("ОСНОВАНИЕ: договор об организации целевого приема с {0} от … № …, Протокол заседания Приемной комиссии СПбГУ от 30.07.2013 № ..., личное заявление, оригинал документа государственного образца об образовании.", v.CelCompName);

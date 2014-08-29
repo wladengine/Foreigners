@@ -3586,11 +3586,11 @@ namespace Priem
                             profspec = "профилю";
                             educDoc = "об образовании";
                         }
-                        p.Add(new Paragraph(string.Format("по основной{4} образовательной программе подготовки {0} на {1} {2} «{3}» ", bakspec, naprspec, professionCode, profession, sec), font));
-                        p.Add(new Paragraph((form + " форма обучения,").ToLower(), font));
-                        p.Add(new Paragraph(basis, font));
-                        p.IndentationLeft = 320;
-                        document.Add(p);
+                        //p.Add(new Paragraph(string.Format("по основной{4} образовательной программе подготовки {0} на {1} {2} «{3}» ", bakspec, naprspec, professionCode, profession, sec), font));
+                        //p.Add(new Paragraph((form + " форма обучения,").ToLower(), font));
+                        //p.Add(new Paragraph(basis, font));
+                        //p.IndentationLeft = 320;
+                        //document.Add(p);
 
                         p = new Paragraph();
                         p.Add(new Paragraph("О зачислении на 1 курс", font));
@@ -3604,7 +3604,7 @@ namespace Priem
                         p.FirstLineIndent = firstLineIndent;
                         document.Add(p);
 
-                        p = new Paragraph(string.Format("Представить на рассмотрение Приемной комиссии СПбГУ по вопросу зачисления c 01.09.2012 года на 1 курс{2} с освоением основной{3} образовательной программы подготовки {0} по {1} форме обучения следующих граждан, успешно выдержавших вступительные испытания:", bakspec, form2, list, sec), font);
+                        p = new Paragraph(string.Format("Представить на рассмотрение Приемной комиссии СПбГУ по вопросу зачисления c 01.09.{4} года на 1 курс{2} с освоением основной{3} образовательной программы подготовки {0} по {1} форме обучения следующих граждан, успешно выдержавших вступительные испытания:", bakspec, form2, list, sec, DateTime.Now.Year.ToString()), font);
                         p.FirstLineIndent = firstLineIndent;
                         p.Alignment = Element.ALIGN_JUSTIFIED;
                         p.SpacingBefore = 20f;

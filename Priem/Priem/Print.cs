@@ -3950,7 +3950,8 @@ namespace Priem
                                    extabit.ProfileInObrazProgramInEntryId,
                                    extabit.ProfileInObrazProgramInEntryName,
                                    extabit.ObrazProgramInEntryObrazProgramId,
-                                   extperson.ForeignNationality
+                                   extperson.ForeignNationality,
+                                   extabit.IsGosLine
                                }).ToList().Distinct().Select(x =>
                                    new
                                    {
@@ -3976,7 +3977,8 @@ namespace Priem
                                        x.ProfileInObrazProgramInEntryId,
                                        x.ProfileInObrazProgramInEntryName,
                                        x.ForeignNationality,
-                                       x.HasTRKI
+                                       x.HasTRKI,
+                                       x.IsGosLine
                                    }
                                ).OrderBy(x => x.CelCompName).ThenBy(x => x.ObrazProgram).ThenBy(x => x.ProfileName).ThenBy(x => x.NameRod).ThenBy(x => x.SortNum).ThenBy(x => x.ФИО).ToList();
 
@@ -4247,14 +4249,27 @@ namespace Priem
                         td.AddRow(1);
                         curRow++;
                         td[0, curRow] = string.Format("\t\t1.{0}. {1} {2} {3}", counter, v.ФИО, balls + ballToStr, string.IsNullOrEmpty(Motivation) ? "" : ("\n\n\t\t" + tmpMotiv + "\n"));
+
+                        if (v.IsGosLine)
+                        {
+                            td.AddRow(1);
+                            curRow++;
+                            td[0, curRow] = string.Format("ОСНОВАНИЕ: направление Минобрнауки России от _______________ №_________________, личные заявления, документы об образовании, оформленные в установленном порядке.");
+                        }
                     }
                 }
 
                 if (!string.IsNullOrEmpty(curMotivation) && isCel)
                     td[0, curRow] += "\n\t\t" + curMotivation + "\n";
 
+
+
                 if (basisId != "2" && formId != "2")//платникам и всем очно-заочникам стипендия не платится
                 {
+                    td.AddRow(1);
+                    curRow++;
+                    td[0, curRow] = "\r с выдачей студенческого билета и зачетной книжки. Выплату государственной академической стипендии и оплату проживания в общежитии осуществлять в размерах, установленных для граждан Российской Федерации, обучающихся за счет бюджетных ассигнований федерального бюджета.";
+
                     td.AddRow(1);
                     curRow++;
                     td[0, curRow] = "\r\n2.    Назначить лицам, указанным в п. 1 настоящего приказа, стипендию в размере 1340 рублей ежемесячно с 01.09.2014 по 31.01.2015.";

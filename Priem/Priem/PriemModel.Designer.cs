@@ -11475,6 +11475,7 @@ namespace Priem
         /// <param name="isParallel">No Metadata Documentation available.</param>
         /// <param name="isReduced">No Metadata Documentation available.</param>
         /// <param name="isSecond">No Metadata Documentation available.</param>
+        /// <param name="studyPlanNumber">No Metadata Documentation available.</param>
         /// <param name="dateOfStart_Foreign">No Metadata Documentation available.</param>
         /// <param name="dateOfClose_Foreign">No Metadata Documentation available.</param>
         /// <param name="dateOfStart_GosLine">No Metadata Documentation available.</param>
@@ -11482,7 +11483,7 @@ namespace Priem
         /// <param name="dateOfStart">No Metadata Documentation available.</param>
         /// <param name="dateOfClose">No Metadata Documentation available.</param>
         /// <param name="comissionId">No Metadata Documentation available.</param>
-        public int Entry_Update(Nullable<global::System.Guid> id, Nullable<global::System.Int32> studyLevelId, Nullable<global::System.Int32> studyFormId, Nullable<global::System.Int32> studyBasisId, Nullable<global::System.Int32> facultyId, Nullable<global::System.Boolean> isClosed, Nullable<global::System.Boolean> isParallel, Nullable<global::System.Boolean> isReduced, Nullable<global::System.Boolean> isSecond, Nullable<global::System.DateTime> dateOfStart_Foreign, Nullable<global::System.DateTime> dateOfClose_Foreign, Nullable<global::System.DateTime> dateOfStart_GosLine, Nullable<global::System.DateTime> dateOfClose_GosLine, Nullable<global::System.DateTime> dateOfStart, Nullable<global::System.DateTime> dateOfClose, Nullable<global::System.Int32> comissionId)
+        public int Entry_Update(Nullable<global::System.Guid> id, Nullable<global::System.Int32> studyLevelId, Nullable<global::System.Int32> studyFormId, Nullable<global::System.Int32> studyBasisId, Nullable<global::System.Int32> facultyId, Nullable<global::System.Boolean> isClosed, Nullable<global::System.Boolean> isParallel, Nullable<global::System.Boolean> isReduced, Nullable<global::System.Boolean> isSecond, global::System.String studyPlanNumber, Nullable<global::System.DateTime> dateOfStart_Foreign, Nullable<global::System.DateTime> dateOfClose_Foreign, Nullable<global::System.DateTime> dateOfStart_GosLine, Nullable<global::System.DateTime> dateOfClose_GosLine, Nullable<global::System.DateTime> dateOfStart, Nullable<global::System.DateTime> dateOfClose, Nullable<global::System.Int32> comissionId)
         {
             ObjectParameter idParameter;
             if (id.HasValue)
@@ -11574,6 +11575,16 @@ namespace Priem
                 isSecondParameter = new ObjectParameter("IsSecond", typeof(global::System.Boolean));
             }
     
+            ObjectParameter studyPlanNumberParameter;
+            if (studyPlanNumber != null)
+            {
+                studyPlanNumberParameter = new ObjectParameter("StudyPlanNumber", studyPlanNumber);
+            }
+            else
+            {
+                studyPlanNumberParameter = new ObjectParameter("StudyPlanNumber", typeof(global::System.String));
+            }
+    
             ObjectParameter dateOfStart_ForeignParameter;
             if (dateOfStart_Foreign.HasValue)
             {
@@ -11644,7 +11655,7 @@ namespace Priem
                 comissionIdParameter = new ObjectParameter("ComissionId", typeof(global::System.Int32));
             }
     
-            return base.ExecuteFunction("Entry_Update", idParameter, studyLevelIdParameter, studyFormIdParameter, studyBasisIdParameter, facultyIdParameter, isClosedParameter, isParallelParameter, isReducedParameter, isSecondParameter, dateOfStart_ForeignParameter, dateOfClose_ForeignParameter, dateOfStart_GosLineParameter, dateOfClose_GosLineParameter, dateOfStartParameter, dateOfCloseParameter, comissionIdParameter);
+            return base.ExecuteFunction("Entry_Update", idParameter, studyLevelIdParameter, studyFormIdParameter, studyBasisIdParameter, facultyIdParameter, isClosedParameter, isParallelParameter, isReducedParameter, isSecondParameter, studyPlanNumberParameter, dateOfStart_ForeignParameter, dateOfClose_ForeignParameter, dateOfStart_GosLineParameter, dateOfClose_GosLineParameter, dateOfStartParameter, dateOfCloseParameter, comissionIdParameter);
         }
     
         /// <summary>
@@ -13678,6 +13689,101 @@ namespace Priem
             }
     
             return base.ExecuteFunction("Abiturient_UpdateIsCommonRussianCompetition", isCommonRussianCompetitionParameter, idParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="personId">No Metadata Documentation available.</param>
+        /// <param name="entryId">No Metadata Documentation available.</param>
+        /// <param name="isGosLine">No Metadata Documentation available.</param>
+        /// <param name="result">No Metadata Documentation available.</param>
+        public int CheckAbitIdentWithGosLine(Nullable<global::System.Guid> personId, Nullable<global::System.Guid> entryId, Nullable<global::System.Boolean> isGosLine, ObjectParameter result)
+        {
+            ObjectParameter personIdParameter;
+            if (personId.HasValue)
+            {
+                personIdParameter = new ObjectParameter("PersonId", personId);
+            }
+            else
+            {
+                personIdParameter = new ObjectParameter("PersonId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter entryIdParameter;
+            if (entryId.HasValue)
+            {
+                entryIdParameter = new ObjectParameter("EntryId", entryId);
+            }
+            else
+            {
+                entryIdParameter = new ObjectParameter("EntryId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter isGosLineParameter;
+            if (isGosLine.HasValue)
+            {
+                isGosLineParameter = new ObjectParameter("IsGosLine", isGosLine);
+            }
+            else
+            {
+                isGosLineParameter = new ObjectParameter("IsGosLine", typeof(global::System.Boolean));
+            }
+    
+            return base.ExecuteFunction("CheckAbitIdentWithGosLine", personIdParameter, entryIdParameter, isGosLineParameter, result);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="abitId">No Metadata Documentation available.</param>
+        /// <param name="personId">No Metadata Documentation available.</param>
+        /// <param name="entryId">No Metadata Documentation available.</param>
+        /// <param name="isGosLine">No Metadata Documentation available.</param>
+        /// <param name="result">No Metadata Documentation available.</param>
+        public int CheckAbitIdentWithIdAndGosLine(Nullable<global::System.Guid> abitId, Nullable<global::System.Guid> personId, Nullable<global::System.Guid> entryId, Nullable<global::System.Boolean> isGosLine, ObjectParameter result)
+        {
+            ObjectParameter abitIdParameter;
+            if (abitId.HasValue)
+            {
+                abitIdParameter = new ObjectParameter("AbitId", abitId);
+            }
+            else
+            {
+                abitIdParameter = new ObjectParameter("AbitId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter personIdParameter;
+            if (personId.HasValue)
+            {
+                personIdParameter = new ObjectParameter("PersonId", personId);
+            }
+            else
+            {
+                personIdParameter = new ObjectParameter("PersonId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter entryIdParameter;
+            if (entryId.HasValue)
+            {
+                entryIdParameter = new ObjectParameter("EntryId", entryId);
+            }
+            else
+            {
+                entryIdParameter = new ObjectParameter("EntryId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter isGosLineParameter;
+            if (isGosLine.HasValue)
+            {
+                isGosLineParameter = new ObjectParameter("IsGosLine", isGosLine);
+            }
+            else
+            {
+                isGosLineParameter = new ObjectParameter("IsGosLine", typeof(global::System.Boolean));
+            }
+    
+            return base.ExecuteFunction("CheckAbitIdentWithIdAndGosLine", abitIdParameter, personIdParameter, entryIdParameter, isGosLineParameter, result);
         }
 
         #endregion
@@ -20435,6 +20541,54 @@ namespace Priem
         private Nullable<global::System.Int32> _KCPQuota;
         partial void OnKCPQuotaChanging(Nullable<global::System.Int32> value);
         partial void OnKCPQuotaChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateFinishEduc
+        {
+            get
+            {
+                return _DateFinishEduc;
+            }
+            set
+            {
+                OnDateFinishEducChanging(value);
+                ReportPropertyChanging("DateFinishEduc");
+                _DateFinishEduc = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateFinishEduc");
+                OnDateFinishEducChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateFinishEduc;
+        partial void OnDateFinishEducChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateFinishEducChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateStartEduc
+        {
+            get
+            {
+                return _DateStartEduc;
+            }
+            set
+            {
+                OnDateStartEducChanging(value);
+                ReportPropertyChanging("DateStartEduc");
+                _DateStartEduc = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateStartEduc");
+                OnDateStartEducChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateStartEduc;
+        partial void OnDateStartEducChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateStartEducChanged();
 
         #endregion
 

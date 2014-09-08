@@ -118,51 +118,23 @@ namespace Priem
         }
 
         // проверка на уникальность абитуриента
-        public static bool CheckThreeAbits(PriemEntities context, Guid? personId, int? LicenseProgramId, int? ObrazProgramId, Guid? ProfileId)
+        public static bool CheckThreeAbits(PriemEntities context, Guid? personId, int? LicenseProgramId)
         {
             // если прием - то проверяем на три заявления
             if (MainClass.dbType != PriemType.Priem)
                 return true;
 
-            //просто сосчитаем количество созданных конкурсов на человека
-            var concurses = (from allab in context.qAbitAll
+            //просто сосчитаем количество созданных активных конкурсов на человека
+            var concurses = (from allab in context.Abiturient
                              where allab.PersonId == personId
-                                 //&& allab.LicenseProgramId != LicenseProgramId
+                                 && allab.Entry.LicenseProgramId != LicenseProgramId
                                  //&& allab.ObrazProgramId != ObrazProgramId
                                  //&& (ProfileId == null ? allab.ProfileId != null : allab.ProfileId != ProfileId)
-                             && allab.StudyLevelGroupId == MainClass.studyLevelGroupId
+                             && allab.Entry.StudyLevel.LevelGroupId == MainClass.studyLevelGroupId
                              && allab.BackDoc != true
-                             select new { allab.LicenseProgramId, allab.ObrazProgramId, allab.ProfileId }).Distinct();
-            int cntExist = concurses.Count();
-            
-            // теперь проверка на три заявления на образ программу!      
-            //если конкурсов три (более трёх) - не давать создавать заявление
-            if (cntExist >= 3)
-            {
-                Guid profJournId = new Guid("CC4B0B82-4A3A-453D-8B59-774AF416F964");
-                int cntJourn = concurses.Where(x => x.LicenseProgramId == 464 && x.ObrazProgramId == 39 && (x.ProfileId == null || x.ProfileId == profJournId)).Count();
-
-                if (cntJourn > 1)
-                    if (cntExist == 3)
-                        return true;
-                
-                //если подача на уже созданный конкурс
-                int iLP = LicenseProgramId ?? 0;
-                int iOP = ObrazProgramId ?? 0;
-
-                int cnt;
-
-                if(LicenseProgramId == 464 && ObrazProgramId == 39 && (ProfileId == null || ProfileId == profJournId))
-                    cnt = concurses.Where(x => x.LicenseProgramId == iLP && x.ObrazProgramId == iOP && (x.ProfileId == null || x.ProfileId == profJournId)).Count();
-                else
-                    cnt = concurses.Where(x => x.LicenseProgramId == iLP && x.ObrazProgramId == iOP && ProfileId == null ? x.ProfileId == null : x.ProfileId == ProfileId).Count();
-                
-                if (cnt > 0)
-                    return true;
-                return false;
-            }
-            else
-                return true;            
+                             && !allab.IsGosLine //считать гослинию нам не надо, только не-гослинию
+                             select new { allab.Entry.LicenseProgramId }).Distinct();
+            return (concurses.Count() < 3);
         }
 
         // проверка на уникальность абитуриента
@@ -174,7 +146,7 @@ namespace Priem
 
                 context.CheckPersonIdent(person.Surname, person.Name, person.SecondName, person.BirthDate, person.PassportSeries, person.PassportNumber,
                     person.AttestatRegion, person.AttestatSeries, person.AttestatNum, boolPar);
-               
+
                 return Convert.ToBoolean(boolPar.Value);
             }
         }

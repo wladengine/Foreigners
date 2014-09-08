@@ -441,7 +441,7 @@ namespace Priem
 
         private bool CheckThreeAbits(PriemEntities context)
         {
-            return SomeMethodsClass.CheckThreeAbits(context, _competition.PersonId, LicenseProgramId, ObrazProgramId, ProfileId);
+            return SomeMethodsClass.CheckThreeAbits(context, _competition.PersonId, LicenseProgramId);
         }
 
         private void btnSave_Click(object sender, EventArgs e)

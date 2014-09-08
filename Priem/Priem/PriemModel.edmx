@@ -1973,6 +1973,8 @@
           <Property Name="CommissionId" Type="int" />
           <Property Name="KCPCrimea" Type="int" />
           <Property Name="KCPQuota" Type="int" />
+          <Property Name="DateFinishEduc" Type="date" />
+          <Property Name="DateStartEduc" Type="date" />
         </EntityType>
         <EntityType Name="EntryHeader">
           <Key>
@@ -5534,10 +5536,23 @@
           <Parameter Name="EntryId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="result" Type="bit" Mode="InOut" />
         </Function>
+        <Function Name="CheckAbitIdentWithGosLine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
+          <Parameter Name="PersonId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="EntryId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IsGosLine" Type="bit" Mode="In" />
+          <Parameter Name="result" Type="bit" Mode="InOut" />
+        </Function>
         <Function Name="CheckAbitIdentWithId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
           <Parameter Name="AbitId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="PersonId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="EntryId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="result" Type="bit" Mode="InOut" />
+        </Function>
+        <Function Name="CheckAbitIdentWithIdAndGosLine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
+          <Parameter Name="AbitId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="PersonId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="EntryId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="IsGosLine" Type="bit" Mode="In" />
           <Parameter Name="result" Type="bit" Mode="InOut" />
         </Function>
         <Function Name="CheckPersonIdent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ed">
@@ -5679,6 +5694,7 @@
           <Parameter Name="IsParallel" Type="bit" Mode="In" />
           <Parameter Name="IsReduced" Type="bit" Mode="In" />
           <Parameter Name="IsSecond" Type="bit" Mode="In" />
+          <Parameter Name="StudyPlanNumber" Type="nvarchar" Mode="In" />
           <Parameter Name="DateOfStart_Foreign" Type="datetime" Mode="In" />
           <Parameter Name="DateOfClose_Foreign" Type="datetime" Mode="In" />
           <Parameter Name="DateOfStart_GosLine" Type="datetime" Mode="In" />
@@ -7908,6 +7924,7 @@
             <Parameter Name="IsParallel" Mode="In" Type="Boolean" />
             <Parameter Name="IsReduced" Mode="In" Type="Boolean" />
             <Parameter Name="IsSecond" Mode="In" Type="Boolean" />
+            <Parameter Name="StudyPlanNumber" Mode="In" Type="String" />
             <Parameter Name="DateOfStart_Foreign" Mode="In" Type="DateTime" />
             <Parameter Name="DateOfClose_Foreign" Mode="In" Type="DateTime" />
             <Parameter Name="DateOfStart_GosLine" Mode="In" Type="DateTime" />
@@ -8210,6 +8227,19 @@
             <End Role="ForeignCountry" EntitySet="ForeignCountry" />
             <End Role="Person_EducationInfo" EntitySet="Person_EducationInfo" />
           </AssociationSet>
+          <FunctionImport Name="CheckAbitIdentWithGosLine">
+            <Parameter Name="PersonId" Mode="In" Type="Guid" />
+            <Parameter Name="EntryId" Mode="In" Type="Guid" />
+            <Parameter Name="IsGosLine" Mode="In" Type="Boolean" />
+            <Parameter Name="result" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="CheckAbitIdentWithIdAndGosLine">
+            <Parameter Name="AbitId" Mode="In" Type="Guid" />
+            <Parameter Name="PersonId" Mode="In" Type="Guid" />
+            <Parameter Name="EntryId" Mode="In" Type="Guid" />
+            <Parameter Name="IsGosLine" Mode="In" Type="Boolean" />
+            <Parameter Name="result" Mode="InOut" Type="Boolean" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="C_SettingRoles">
           <Key>
@@ -10095,6 +10125,8 @@
           <NavigationProperty Name="SP_ObrazProgram" Relationship="Priem2012Model.FK_Entry_SP_ObrazProgram" FromRole="Entry" ToRole="SP_ObrazProgram" />
           <Property Type="Int32" Name="KCPQuota" />
           <NavigationProperty Name="ObrazProgramInEntry" Relationship="Priem2012Model.FK_ObrazProgramInEntry_Entry" FromRole="Entry" ToRole="ObrazProgramInEntry" />
+          <Property Type="DateTime" Name="DateFinishEduc" Precision="0" />
+          <Property Type="DateTime" Name="DateStartEduc" Precision="0" />
         </EntityType>
         <Association Name="FK_Abiturient_Entry">
           <End Type="Priem2012Model.Entry" Role="Entry" Multiplicity="1" />
@@ -13157,6 +13189,8 @@
           <EntitySetMapping Name="Entry">
             <EntityTypeMapping TypeName="Priem2012Model.Entry">
               <MappingFragment StoreEntitySet="Entry">
+                <ScalarProperty Name="DateStartEduc" ColumnName="DateStartEduc" />
+                <ScalarProperty Name="DateFinishEduc" ColumnName="DateFinishEduc" />
                 <ScalarProperty Name="KCPQuota" ColumnName="KCPQuota" />
                 <ScalarProperty Name="KCPCrimea" ColumnName="KCPCrimea" />
                 <ScalarProperty Name="CommissionId" ColumnName="CommissionId" />
@@ -14326,6 +14360,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CheckAbitIdentWithGosLine" FunctionName="Priem2012Model.Store.CheckAbitIdentWithGosLine" />
+          <FunctionImportMapping FunctionImportName="CheckAbitIdentWithIdAndGosLine" FunctionName="Priem2012Model.Store.CheckAbitIdentWithIdAndGosLine" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

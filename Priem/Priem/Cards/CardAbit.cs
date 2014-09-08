@@ -1150,20 +1150,23 @@ namespace Priem
 
         // проверка на уникальность заявления
         private bool CheckIdent(PriemEntities context)
-        { 
-                ObjectParameter boolPar = new ObjectParameter("result", typeof(bool));
+        {
+            if (BackDoc)
+                return true;
 
-                if (_Id == null)
-                    context.CheckAbitIdent(_personId, EntryId, boolPar);
-                else
-                    context.CheckAbitIdentWithId(GuidId, _personId, EntryId, boolPar);
+            ObjectParameter boolPar = new ObjectParameter("result", typeof(bool));
 
-                return Convert.ToBoolean(boolPar.Value);
+            if (_Id == null)
+                context.CheckAbitIdentWithGosLine(_personId, EntryId, IsGosLine, boolPar);
+            else
+                context.CheckAbitIdentWithIdAndGosLine(GuidId, _personId, EntryId, IsGosLine, boolPar);
+
+            return Convert.ToBoolean(boolPar.Value);
         }
 
         private bool CheckThreeAbits(PriemEntities context)
         {
-            return SomeMethodsClass.CheckThreeAbits(context, _personId, LicenseProgramId, ObrazProgramId, ProfileId);
+            return SomeMethodsClass.CheckThreeAbits(context, _personId, LicenseProgramId);
         }
 
         protected override void InsertRec(PriemEntities context, ObjectParameter idParam)

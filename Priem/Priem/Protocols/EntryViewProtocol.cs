@@ -358,7 +358,7 @@ namespace Priem
                         ObjectParameter paramId = new ObjectParameter("id", typeof(Guid));
                         int iProtocolTypeId = ProtocolList.TypeToInt(_type);
 
-                        context.Protocol_InsertAll(MainClass.studyLevelGroupId,
+                        context.Protocol_InsertAll(StudyLevelGroupId,
                                   _facultyId, _licenseProgramId, _studyFormId, _studyBasisId, tbNum.Text, dtpDate.Value, iProtocolTypeId,
                                   string.Empty, !isNew, null, _isSecond, _isReduced, _isParallel, _isListener, paramId);
 

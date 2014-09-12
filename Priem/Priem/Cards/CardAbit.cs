@@ -213,6 +213,19 @@ namespace Priem
                     FillStudyBasis();
                     
                     StudyBasisId = abit.StudyBasisId;
+                    if (StudyBasisId == 1)
+                    {
+                        chbIsCommonRussianCompetition.Visible = false;
+                        chbIsGosLine.Visible = true;
+                        chbIsGosLine.Enabled = true;
+                    }
+                    else
+                        if (StudyBasisId == 2)
+                        {
+                            chbIsGosLine.Visible = false;
+                            chbIsCommonRussianCompetition.Visible = true;
+                            chbIsCommonRussianCompetition.Enabled = true;
+                        }
                     FillCompetition();
 
                     IsGosLine = abit.IsGosLine;
@@ -648,6 +661,19 @@ namespace Priem
         void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillCompetition();
+            if (ComboServ.GetComboIdInt(cbStudyBasis) == 1)
+            {
+                chbIsCommonRussianCompetition.Visible = false;
+                chbIsGosLine.Visible = true;
+                chbIsGosLine.Enabled = true;
+            }
+            else
+                if (ComboServ.GetComboIdInt(cbStudyBasis) == 2)
+                {
+                    chbIsGosLine.Visible = false;
+                    chbIsCommonRussianCompetition.Visible = true;
+                    chbIsCommonRussianCompetition.Enabled = true; 
+                }
         }
         void cbCompetition_SelectedIndexChanged(object sender, EventArgs e)
         {

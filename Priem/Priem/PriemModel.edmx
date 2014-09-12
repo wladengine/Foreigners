@@ -1680,8 +1680,8 @@
           <Property Name="IsCrimea" Type="bit" Nullable="false" />
           <Property Name="IsQuota" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed._FirstWaveGreen' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed._FirstWaveGreen" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="_FirstWaveGreen">
           <Key>
@@ -1926,8 +1926,8 @@
           <Property Name="EgeExamNameId" Type="int" Nullable="false" />
           <Property Name="ExamId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.EgeToLanguage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.EgeToLanguage" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="EgeToLanguage">
           <Key>
@@ -2060,8 +2060,8 @@
           <Property Name="RoomNumber" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Number" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.ExamsVedRoomHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.ExamsVedRoomHistory" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="ExamsVedRoomHistory">
           <Key>
@@ -2078,8 +2078,8 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.Fixieren' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.Fixieren" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="Fixieren">
           <Key>
@@ -2301,8 +2301,8 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="FISName" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.PayDataEntry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.PayDataEntry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="PayDataEntry">
           <Key>
@@ -2487,8 +2487,8 @@
           <Property Name="Date" Type="smalldatetime" />
           <Property Name="FacultyId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.Privilege' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.Privilege" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="Privilege">
           <Key>
@@ -2702,28 +2702,28 @@
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Acronym" Type="nvarchar" MaxLength="10" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extAbit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extAbit" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extAbit">
           <Key>
             <PropertyRef Name="Id" />
-            
-            
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="EntryId" />
             <PropertyRef Name="IsListener" />
             <PropertyRef Name="IsPaid" />
             <PropertyRef Name="BackDoc" />
-            
-            
+            <PropertyRef Name="DocDate" />
+            <PropertyRef Name="DocInsertDate" />
             <PropertyRef Name="Checked" />
             <PropertyRef Name="NotEnabled" />
             <PropertyRef Name="CompFromOlymp" />
             <PropertyRef Name="HasOriginals" />
             <PropertyRef Name="FacultyId" />
             <PropertyRef Name="LicenseProgramId" />
-            
+            <PropertyRef Name="LicenseProgramName" />
             <PropertyRef Name="ObrazProgramId" />
-            
+            <PropertyRef Name="ObrazProgramName" />
             <PropertyRef Name="StudyBasisId" />
             <PropertyRef Name="StudyBasisName" />
             <PropertyRef Name="StudyFormId" />
@@ -2731,16 +2731,15 @@
             <PropertyRef Name="StudyLevelId" />
             <PropertyRef Name="StudyLevelName" />
             <PropertyRef Name="IsSecond" />
-            
-            
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Surname" />
             <PropertyRef Name="StudyLevelGroupId" />
-            
-            
+            <PropertyRef Name="FIO" />
+            <PropertyRef Name="ObrazProgramNameEx" />
             <PropertyRef Name="WithHE" />
             <PropertyRef Name="IsReduced" />
             <PropertyRef Name="IsParallel" />
             <PropertyRef Name="IsGosLine" />
-            <PropertyRef Name="StudyPlanId" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
@@ -2786,7 +2785,7 @@
           <Property Name="StudyFormName" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="StudyLevelId" Type="int" Nullable="false" />
           <Property Name="StudyLevelName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="StudyPlanId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StudyPlanId" Type="uniqueidentifier" />
           <Property Name="StudyPlanNumber" Type="nvarchar" MaxLength="64" />
           <Property Name="ProgramModeShortName" Type="nvarchar" MaxLength="100" />
           <Property Name="IsSecond" Type="bit" Nullable="false" />
@@ -2815,8 +2814,8 @@
           <Property Name="ObrazProgramInEntryName" Type="nvarchar" MaxLength="1000" />
           <Property Name="ObrazProgramInEntryObrazProgramId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extAbitMarksSum' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extAbitMarksSum" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extAbitMarksSum">
           <Key>
@@ -2831,8 +2830,8 @@
           <Property Name="TotalSumFiveGrade" Type="int" />
           <Property Name="TotalCount" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extCompetitiveGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extCompetitiveGroup" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extCompetitiveGroup">
           <Key>
@@ -2873,8 +2872,8 @@
           <Property Name="QualificationCode" Type="nvarchar" MaxLength="5" />
           <Property Name="StudyLevelFISName" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extDisEntryView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extDisEntryView" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extDisEntryView">
           <Key>
@@ -2906,8 +2905,8 @@
           <Property Name="IsParallel" Type="bit" />
           <Property Name="IsReduced" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extEgeMark' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extEgeMark" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extEgeMark">
           <Key>
@@ -2935,8 +2934,8 @@
           <Property Name="FISName" Type="nvarchar" MaxLength="50" />
           <Property Name="FBSStatusId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extEgeMarkMax' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extEgeMarkMax" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extEgeMarkMax">
           <Key>
@@ -2960,8 +2959,8 @@
           <Property Name="Number" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extEgeMarkMaxAbit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extEgeMarkMaxAbit" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extEgeMarkMaxAbit">
           <Key>
@@ -2987,8 +2986,8 @@
           <Property Name="Number" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extEnableProtocol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extEnableProtocol" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extEnableProtocol">
           <Key>
@@ -3018,8 +3017,8 @@
           <Property Name="IsListener" Type="bit" />
           <Property Name="ProtocolTypeName" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extEntryProtocols' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extEntryProtocols" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extEntryProtocols">
           <Key>
@@ -3049,8 +3048,8 @@
           <Property Name="IsParallel" Type="bit" />
           <Property Name="IsReduced" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extEntryView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extEntryView" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extEntryView">
           <Key>
@@ -3102,8 +3101,8 @@
           <Property Name="IsCel" Type="int" Nullable="false" />
           <Property Name="IsBE" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extEntryView_ForDisEntered' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extEntryView_ForDisEntered" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extEntryView_ForDisEntered">
           <Key>
@@ -3141,8 +3140,8 @@
           <Property Name="SignerName" Type="nvarchar" MaxLength="100" />
           <Property Name="SignerPosition" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extExamInEntry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extExamInEntry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extExamInEntry">
           <Key>
@@ -3186,8 +3185,8 @@
           <Property Name="ExamInEntryToCompetitiveGroupId" Type="uniqueidentifier" />
           <Property Name="OrderNumber" Type="tinyint" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extExamsVed' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extExamsVed" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extExamsVed">
           <Key>
@@ -3222,8 +3221,8 @@
           <Property Name="StudyBasisAcr" Type="nvarchar" MaxLength="10" />
           <Property Name="FacultyName" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extFBSStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extFBSStatus" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extFBSStatus">
           <Key>
@@ -3235,8 +3234,8 @@
           <Property Name="PersonId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Surname" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extForeignPerson' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extForeignPerson" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extForeignPerson">
           <Key>
@@ -3347,8 +3346,8 @@
           <Property Name="RegionEducId" Type="int" />
           <Property Name="ForeignCountryEducId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extOlympBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extOlympBook" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extOlympBook">
           <Key>
@@ -3365,8 +3364,8 @@
           <Property Name="OlympTypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="Number" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extOlympiads' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extOlympiads" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extOlympiads">
           <Key>
@@ -3395,8 +3394,8 @@
           <Property Name="SortOrder" Type="int" />
           <Property Name="OlympValueAcr" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extOlympiadsAll' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extOlympiadsAll" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extOlympiadsAll">
           <Key>
@@ -3418,8 +3417,8 @@
           <Property Name="PersonId" Type="uniqueidentifier" />
           <Property Name="OriginDoc" Type="bit" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extPerson' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extPerson" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extPerson">
           <Key>
@@ -3524,8 +3523,8 @@
           <Property Name="ForeignNationality" Type="nvarchar" MaxLength="100" />
           <Property Name="ForeignNationalityId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extPersonAll' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extPersonAll" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extPersonAll">
           <Key>
@@ -3637,8 +3636,8 @@
           <Property Name="TRKICertificateNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="ForeignCountryEducId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extPersonSPO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extPersonSPO" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extPersonSPO">
           <Key>
@@ -3746,8 +3745,8 @@
           <Property Name="TRKICertificateNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="RegionEducId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.extProtocol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.extProtocol" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="extProtocol">
           <Key>
@@ -3791,8 +3790,8 @@
           <Property Name="StudyFormRodName" Type="nvarchar" MaxLength="50" />
           <Property Name="ProtocolHistoryId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.hlpAbiturientProf' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.hlpAbiturientProf" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="hlpAbiturientProf">
           <Key>
@@ -3802,8 +3801,8 @@
           <Property Name="Prof" Type="int" />
           <Property Name="ProfFiveGrade" Type="tinyint" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.hlpAbiturientProfAdd' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.hlpAbiturientProfAdd" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="hlpAbiturientProfAdd">
           <Key>
@@ -3812,8 +3811,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ProfAdd" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.hlpLicenseProgramKCP' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.hlpLicenseProgramKCP" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="hlpLicenseProgramKCP">
           <Key>
@@ -3841,8 +3840,8 @@
           <Property Name="KC_OZ_QUOTA" Type="int" />
           <Property Name="KC_Z_QUOTA" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.hlpStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.hlpStatistics" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="hlpStatistics">
           <Key>
@@ -3877,8 +3876,8 @@
           <Property Name="Date" Type="date" />
           <Property Name="CNT" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qAbitAll' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qAbitAll" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qAbitAll">
           <Key>
@@ -3966,8 +3965,8 @@
           <Property Name="StudyFormFISName" Type="nvarchar" MaxLength="50" />
           <Property Name="StudyLevelFISName" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qAbiturient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qAbiturient" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qAbiturient">
           <Key>
@@ -4069,8 +4068,8 @@
           <Property Name="ObrazProgramInEntryId" Type="uniqueidentifier" />
           <Property Name="ProfileInObrazProgramInEntryId" Type="uniqueidentifier" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qCompetitiveGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qCompetitiveGroup" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qCompetitiveGroup">
           <Key>
@@ -4094,8 +4093,8 @@
           <Property Name="ProfileId" Type="uniqueidentifier" />
           <Property Name="ProfileName" Type="nvarchar" MaxLength="1000" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qEntry' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qEntry" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qEntry">
           <Key>
@@ -4154,8 +4153,8 @@
           <Property Name="KCPCrimea" Type="int" />
           <Property Name="KCPQuota" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qEntryToCompetitiveGroup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qEntryToCompetitiveGroup" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qEntryToCompetitiveGroup">
           <Key>
@@ -4166,8 +4165,8 @@
           <Property Name="CompetitiveGroupId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CompetitiveGroupName" Type="nvarchar" MaxLength="250" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qExamPackMark' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qExamPackMark" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qExamPackMark">
           <Key>
@@ -4179,8 +4178,8 @@
           <Property Name="AbiturientId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Value" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qFaculty' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qFaculty" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qFaculty">
           <Key>
@@ -4193,8 +4192,8 @@
           <Property Name="DatName" Type="nvarchar" MaxLength="100" />
           <Property Name="VinName" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qLicenseProgram' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qLicenseProgram" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qLicenseProgram">
           <Key>
@@ -4204,8 +4203,8 @@
           <Property Name="Name" Type="nvarchar" MaxLength="1000" />
           <Property Name="Code" Type="nvarchar" MaxLength="10" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qMark' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qMark" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qMark">
           <Key>
@@ -4246,8 +4245,8 @@
           <Property Name="OrderNumber" Type="tinyint" />
           <Property Name="FiveGradeValue" Type="tinyint" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qObrazProgram' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qObrazProgram" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qObrazProgram">
           <Key>
@@ -4263,8 +4262,8 @@
           <Property Name="LicenseProgramName" Type="nvarchar" Nullable="false" MaxLength="1000" />
           <Property Name="Number" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qProfile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qProfile" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qProfile">
           <Key>
@@ -4273,8 +4272,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="1000" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qProtocol' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qProtocol" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qProtocol">
           <Key>
@@ -4296,8 +4295,8 @@
           <Property Name="IsSecond" Type="bit" />
           <Property Name="IsListener" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qProtocolHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qProtocolHistory" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qProtocolHistory">
           <Key>
@@ -4326,8 +4325,8 @@
           <Property Name="IsListener" Type="bit" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'Priem.ed.qStudyLevel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+        <!--Ошибки, обнаруженные при создании:
+      предупреждение 6002: В таблице или представлении "Priem.ed.qStudyLevel" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.
       -->
         <EntityType Name="qStudyLevel">
           <Key>
@@ -7286,7 +7285,6 @@
           </FunctionImport>
           <EntitySet Name="Abiturient" EntityType="Priem2012Model.Abiturient" />
           <EntitySet Name="Protocol" EntityType="Priem2012Model.Protocol" />
-          <EntitySet Name="extAbit" EntityType="Priem2012Model.extAbit" />
           <EntitySet Name="extExamInEntry" EntityType="Priem2012Model.extExamInEntry" />
           <EntitySet Name="qAbitAll" EntityType="Priem2012Model.qAbitAll" />
           <EntitySet Name="qProtocol" EntityType="Priem2012Model.qProtocol" />
@@ -8240,6 +8238,7 @@
             <Parameter Name="IsGosLine" Mode="In" Type="Boolean" />
             <Parameter Name="result" Mode="InOut" Type="Boolean" />
           </FunctionImport>
+          <EntitySet Name="extAbit" EntityType="Priem2012Model.extAbit" />
           </EntityContainer>
         <EntityType Name="C_SettingRoles">
           <Key>
@@ -9288,106 +9287,6 @@
           <NavigationProperty Name="StudyForm" Relationship="Priem2012Model.fk_Protocol_StudyForm" FromRole="Protocol" ToRole="StudyForm" />
           <Property Type="Boolean" Name="IsParallel" />
           <Property Type="Boolean" Name="IsReduced" />
-        </EntityType>
-        <EntityType Name="extAbit">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="IsListener" />
-            <PropertyRef Name="IsPaid" />
-            <PropertyRef Name="BackDoc" />
-            <PropertyRef Name="Checked" />
-            <PropertyRef Name="NotEnabled" />
-            <PropertyRef Name="CompFromOlymp" />
-            <PropertyRef Name="HasOriginals" />
-            <PropertyRef Name="FacultyId" />
-            <PropertyRef Name="LicenseProgramId" />
-            <PropertyRef Name="ObrazProgramId" />
-            <PropertyRef Name="StudyBasisId" />
-            <PropertyRef Name="StudyBasisName" />
-            <PropertyRef Name="StudyFormId" />
-            <PropertyRef Name="StudyFormName" />
-            <PropertyRef Name="StudyLevelId" />
-            <PropertyRef Name="StudyLevelName" />
-            <PropertyRef Name="StudyPlanId" />
-            <PropertyRef Name="IsSecond" />
-            <PropertyRef Name="StudyLevelGroupId" />
-            <PropertyRef Name="WithHE" />
-            <PropertyRef Name="IsReduced" />
-            <PropertyRef Name="IsParallel" />
-            <PropertyRef Name="IsGosLine" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="PersonId" Nullable="false" />
-          <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="EntryId" Nullable="false" />
-          <Property Type="Int32" Name="CompetitionId" />
-          <Property Type="Boolean" Name="IsListener" Nullable="false" />
-          <Property Type="Boolean" Name="IsPaid" Nullable="false" />
-          <Property Type="Boolean" Name="BackDoc" Nullable="false" />
-          <Property Type="DateTime" Name="BackDocDate" Precision="0" />
-          <Property Type="DateTime" Name="DocDate" Precision="0" Nullable="false" />
-          <Property Type="DateTime" Name="DocInsertDate" Precision="0" Nullable="false" />
-          <Property Type="Boolean" Name="Checked" Nullable="false" />
-          <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
-          <Property Type="Double" Name="Coefficient" />
-          <Property Type="Int32" Name="Sum" />
-          <Property Type="Int32" Name="OtherCompetitionId" />
-          <Property Type="Int32" Name="CelCompetitionId" />
-          <Property Type="String" Name="CelCompetitionText" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="CompFromOlymp" Nullable="false" />
-          <Property Type="Int32" Name="LanguageId" />
-          <Property Type="Boolean" Name="HasOriginals" Nullable="false" />
-          <Property Type="String" Name="StudyNumber" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudentStatus" />
-          <Property Type="Double" Name="SessionAVG" />
-          <Property Type="Int32" Name="Priority" />
-          <Property Type="Int32" Name="Barcode" />
-          <Property Type="Int32" Name="FacultyId" Nullable="false" />
-          <Property Type="String" Name="FacultyAcr" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="LicenseProgramId" Nullable="false" />
-          <Property Type="String" Name="LicenseProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="String" Name="FacultyName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="LicenseProgramCode" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="ObrazProgramId" Nullable="false" />
-          <Property Type="String" Name="ObrazProgramName" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="String" Name="ObrazProgramNumber" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="ProfileId" />
-          <Property Type="String" Name="ProfileName" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyBasisId" Nullable="false" />
-          <Property Type="String" Name="StudyBasisName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyFormId" Nullable="false" />
-          <Property Type="String" Name="StudyFormName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyLevelId" Nullable="false" />
-          <Property Type="String" Name="StudyLevelName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="StudyPlanId" Nullable="false" />
-          <Property Type="String" Name="StudyPlanNumber" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ProgramModeShortName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="IsSecond" Nullable="false" />
-          <Property Type="String" Name="PersonNum" MaxLength="7" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="String" Name="SecondName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Surname" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="String" Name="StudyFormOldName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="LanguageName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="StudyLevelGroupId" Nullable="false" />
-          <Property Type="String" Name="FIO" MaxLength="152" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="String" Name="PassportData" MaxLength="532" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramNameEx" MaxLength="1014" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Type="Boolean" Name="WithHE" Nullable="false" />
-          <Property Type="Boolean" Name="IsReduced" Nullable="false" />
-          <Property Type="Boolean" Name="IsParallel" Nullable="false" />
-          <Property Type="String" Name="StudyBasisFISName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="StudyFormFISName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="CommitId" />
-          <Property Type="Int32" Name="CommitNumber" />
-          <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
-          <Property Type="Guid" Name="ObrazProgramInEntryId" />
-          <Property Type="Guid" Name="ProfileInObrazProgramInEntryId" />
-          <Property Type="String" Name="ProfileInObrazProgramInEntryName" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramInEntryCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ObrazProgramInEntryName" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="ObrazProgramInEntryObrazProgramId" />
         </EntityType>
         <EntityType Name="extExamInEntry">
           <Key>
@@ -11972,6 +11871,115 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="extAbit">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="EntryId" />
+            <PropertyRef Name="IsListener" />
+            <PropertyRef Name="IsPaid" />
+            <PropertyRef Name="BackDoc" />
+            <PropertyRef Name="DocDate" />
+            <PropertyRef Name="DocInsertDate" />
+            <PropertyRef Name="Checked" />
+            <PropertyRef Name="NotEnabled" />
+            <PropertyRef Name="CompFromOlymp" />
+            <PropertyRef Name="HasOriginals" />
+            <PropertyRef Name="FacultyId" />
+            <PropertyRef Name="LicenseProgramId" />
+            <PropertyRef Name="LicenseProgramName" />
+            <PropertyRef Name="ObrazProgramId" />
+            <PropertyRef Name="ObrazProgramName" />
+            <PropertyRef Name="StudyBasisId" />
+            <PropertyRef Name="StudyBasisName" />
+            <PropertyRef Name="StudyFormId" />
+            <PropertyRef Name="StudyFormName" />
+            <PropertyRef Name="StudyLevelId" />
+            <PropertyRef Name="StudyLevelName" />
+            <PropertyRef Name="IsSecond" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Surname" />
+            <PropertyRef Name="StudyLevelGroupId" />
+            <PropertyRef Name="FIO" />
+            <PropertyRef Name="ObrazProgramNameEx" />
+            <PropertyRef Name="WithHE" />
+            <PropertyRef Name="IsReduced" />
+            <PropertyRef Name="IsParallel" />
+            <PropertyRef Name="IsGosLine" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="PersonId" Nullable="false" />
+          <Property Type="String" Name="RegNum" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="EntryId" Nullable="false" />
+          <Property Type="Int32" Name="CompetitionId" />
+          <Property Type="Boolean" Name="IsListener" Nullable="false" />
+          <Property Type="Boolean" Name="IsPaid" Nullable="false" />
+          <Property Type="Boolean" Name="BackDoc" Nullable="false" />
+          <Property Type="DateTime" Name="BackDocDate" />
+          <Property Type="DateTime" Name="DocDate" Nullable="false" />
+          <Property Type="DateTime" Name="DocInsertDate" Nullable="false" />
+          <Property Type="Boolean" Name="Checked" Nullable="false" />
+          <Property Type="Boolean" Name="NotEnabled" Nullable="false" />
+          <Property Type="Double" Name="Coefficient" />
+          <Property Type="Int32" Name="Sum" />
+          <Property Type="Int32" Name="OtherCompetitionId" />
+          <Property Type="Int32" Name="CelCompetitionId" />
+          <Property Type="String" Name="CelCompetitionText" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="CompFromOlymp" Nullable="false" />
+          <Property Type="Int32" Name="LanguageId" />
+          <Property Type="Boolean" Name="HasOriginals" Nullable="false" />
+          <Property Type="String" Name="StudyNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudentStatus" />
+          <Property Type="Double" Name="SessionAVG" />
+          <Property Type="Int32" Name="Priority" />
+          <Property Type="Int32" Name="Barcode" />
+          <Property Type="Int32" Name="FacultyId" Nullable="false" />
+          <Property Type="String" Name="FacultyAcr" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="LicenseProgramId" Nullable="false" />
+          <Property Type="String" Name="LicenseProgramName" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FacultyName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LicenseProgramCode" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ObrazProgramId" Nullable="false" />
+          <Property Type="String" Name="ObrazProgramName" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramNumber" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="ProfileId" />
+          <Property Type="String" Name="ProfileName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyBasisId" Nullable="false" />
+          <Property Type="String" Name="StudyBasisName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyFormId" Nullable="false" />
+          <Property Type="String" Name="StudyFormName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyLevelId" Nullable="false" />
+          <Property Type="String" Name="StudyLevelName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="StudyPlanId" />
+          <Property Type="String" Name="StudyPlanNumber" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ProgramModeShortName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsSecond" Nullable="false" />
+          <Property Type="String" Name="PersonNum" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Surname" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyFormOldName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LanguageName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="StudyLevelGroupId" Nullable="false" />
+          <Property Type="String" Name="FIO" Nullable="false" MaxLength="152" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PassportData" MaxLength="532" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramNameEx" Nullable="false" MaxLength="1014" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="WithHE" Nullable="false" />
+          <Property Type="Boolean" Name="IsReduced" Nullable="false" />
+          <Property Type="Boolean" Name="IsParallel" Nullable="false" />
+          <Property Type="String" Name="StudyBasisFISName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="StudyFormFISName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="CommitId" />
+          <Property Type="Int32" Name="CommitNumber" />
+          <Property Type="Boolean" Name="IsGosLine" Nullable="false" />
+          <Property Type="Guid" Name="ObrazProgramInEntryId" />
+          <Property Type="Guid" Name="ProfileInObrazProgramInEntryId" />
+          <Property Type="String" Name="ProfileInObrazProgramInEntryName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramInEntryCrypt" MaxLength="66" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ObrazProgramInEntryName" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ObrazProgramInEntryObrazProgramId" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -12670,84 +12678,6 @@
                 <ScalarProperty Name="LicenseProgramId" ColumnName="LicenseProgramId" />
                 <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
                 <ScalarProperty Name="StudyLevelGroupId" ColumnName="StudyLevelGroupId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="extAbit">
-            <EntityTypeMapping TypeName="Priem2012Model.extAbit">
-              <MappingFragment StoreEntitySet="extAbit">
-                <ScalarProperty Name="ObrazProgramInEntryObrazProgramId" ColumnName="ObrazProgramInEntryObrazProgramId" />
-                <ScalarProperty Name="ObrazProgramInEntryName" ColumnName="ObrazProgramInEntryName" />
-                <ScalarProperty Name="ObrazProgramInEntryCrypt" ColumnName="ObrazProgramInEntryCrypt" />
-                <ScalarProperty Name="ProfileInObrazProgramInEntryName" ColumnName="ProfileInObrazProgramInEntryName" />
-                <ScalarProperty Name="ProfileInObrazProgramInEntryId" ColumnName="ProfileInObrazProgramInEntryId" />
-                <ScalarProperty Name="ObrazProgramInEntryId" ColumnName="ObrazProgramInEntryId" />
-                <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
-                <ScalarProperty Name="CommitNumber" ColumnName="CommitNumber" />
-                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
-                <ScalarProperty Name="StudyFormFISName" ColumnName="StudyFormFISName" />
-                <ScalarProperty Name="StudyBasisFISName" ColumnName="StudyBasisFISName" />
-                <ScalarProperty Name="IsParallel" ColumnName="IsParallel" />
-                <ScalarProperty Name="IsReduced" ColumnName="IsReduced" />
-                <ScalarProperty Name="WithHE" ColumnName="WithHE" />
-                <ScalarProperty Name="ObrazProgramNameEx" ColumnName="ObrazProgramNameEx" />
-                <ScalarProperty Name="PassportData" ColumnName="PassportData" />
-                <ScalarProperty Name="FIO" ColumnName="FIO" />
-                <ScalarProperty Name="StudyLevelGroupId" ColumnName="StudyLevelGroupId" />
-                <ScalarProperty Name="LanguageName" ColumnName="LanguageName" />
-                <ScalarProperty Name="StudyFormOldName" ColumnName="StudyFormOldName" />
-                <ScalarProperty Name="Surname" ColumnName="Surname" />
-                <ScalarProperty Name="SecondName" ColumnName="SecondName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PersonNum" ColumnName="PersonNum" />
-                <ScalarProperty Name="IsSecond" ColumnName="IsSecond" />
-                <ScalarProperty Name="ProgramModeShortName" ColumnName="ProgramModeShortName" />
-                <ScalarProperty Name="StudyPlanNumber" ColumnName="StudyPlanNumber" />
-                <ScalarProperty Name="StudyPlanId" ColumnName="StudyPlanId" />
-                <ScalarProperty Name="StudyLevelName" ColumnName="StudyLevelName" />
-                <ScalarProperty Name="StudyLevelId" ColumnName="StudyLevelId" />
-                <ScalarProperty Name="StudyFormName" ColumnName="StudyFormName" />
-                <ScalarProperty Name="StudyFormId" ColumnName="StudyFormId" />
-                <ScalarProperty Name="StudyBasisName" ColumnName="StudyBasisName" />
-                <ScalarProperty Name="StudyBasisId" ColumnName="StudyBasisId" />
-                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
-                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
-                <ScalarProperty Name="ObrazProgramCrypt" ColumnName="ObrazProgramCrypt" />
-                <ScalarProperty Name="ObrazProgramNumber" ColumnName="ObrazProgramNumber" />
-                <ScalarProperty Name="ObrazProgramName" ColumnName="ObrazProgramName" />
-                <ScalarProperty Name="ObrazProgramId" ColumnName="ObrazProgramId" />
-                <ScalarProperty Name="LicenseProgramCode" ColumnName="LicenseProgramCode" />
-                <ScalarProperty Name="FacultyName" ColumnName="FacultyName" />
-                <ScalarProperty Name="LicenseProgramName" ColumnName="LicenseProgramName" />
-                <ScalarProperty Name="LicenseProgramId" ColumnName="LicenseProgramId" />
-                <ScalarProperty Name="FacultyAcr" ColumnName="FacultyAcr" />
-                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
-                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="SessionAVG" ColumnName="SessionAVG" />
-                <ScalarProperty Name="StudentStatus" ColumnName="StudentStatus" />
-                <ScalarProperty Name="StudyNumber" ColumnName="StudyNumber" />
-                <ScalarProperty Name="HasOriginals" ColumnName="HasOriginals" />
-                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
-                <ScalarProperty Name="CompFromOlymp" ColumnName="CompFromOlymp" />
-                <ScalarProperty Name="CelCompetitionText" ColumnName="CelCompetitionText" />
-                <ScalarProperty Name="CelCompetitionId" ColumnName="CelCompetitionId" />
-                <ScalarProperty Name="OtherCompetitionId" ColumnName="OtherCompetitionId" />
-                <ScalarProperty Name="Sum" ColumnName="Sum" />
-                <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
-                <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
-                <ScalarProperty Name="Checked" ColumnName="Checked" />
-                <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
-                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
-                <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
-                <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
-                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
-                <ScalarProperty Name="IsListener" ColumnName="IsListener" />
-                <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
-                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
-                <ScalarProperty Name="RegNum" ColumnName="RegNum" />
-                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -14362,6 +14292,84 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="CheckAbitIdentWithGosLine" FunctionName="Priem2012Model.Store.CheckAbitIdentWithGosLine" />
           <FunctionImportMapping FunctionImportName="CheckAbitIdentWithIdAndGosLine" FunctionName="Priem2012Model.Store.CheckAbitIdentWithIdAndGosLine" />
+          <EntitySetMapping Name="extAbit">
+            <EntityTypeMapping TypeName="Priem2012Model.extAbit">
+              <MappingFragment StoreEntitySet="extAbit">
+                <ScalarProperty Name="ObrazProgramInEntryObrazProgramId" ColumnName="ObrazProgramInEntryObrazProgramId" />
+                <ScalarProperty Name="ObrazProgramInEntryName" ColumnName="ObrazProgramInEntryName" />
+                <ScalarProperty Name="ObrazProgramInEntryCrypt" ColumnName="ObrazProgramInEntryCrypt" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryName" ColumnName="ProfileInObrazProgramInEntryName" />
+                <ScalarProperty Name="ProfileInObrazProgramInEntryId" ColumnName="ProfileInObrazProgramInEntryId" />
+                <ScalarProperty Name="ObrazProgramInEntryId" ColumnName="ObrazProgramInEntryId" />
+                <ScalarProperty Name="IsGosLine" ColumnName="IsGosLine" />
+                <ScalarProperty Name="CommitNumber" ColumnName="CommitNumber" />
+                <ScalarProperty Name="CommitId" ColumnName="CommitId" />
+                <ScalarProperty Name="StudyFormFISName" ColumnName="StudyFormFISName" />
+                <ScalarProperty Name="StudyBasisFISName" ColumnName="StudyBasisFISName" />
+                <ScalarProperty Name="IsParallel" ColumnName="IsParallel" />
+                <ScalarProperty Name="IsReduced" ColumnName="IsReduced" />
+                <ScalarProperty Name="WithHE" ColumnName="WithHE" />
+                <ScalarProperty Name="ObrazProgramNameEx" ColumnName="ObrazProgramNameEx" />
+                <ScalarProperty Name="PassportData" ColumnName="PassportData" />
+                <ScalarProperty Name="FIO" ColumnName="FIO" />
+                <ScalarProperty Name="StudyLevelGroupId" ColumnName="StudyLevelGroupId" />
+                <ScalarProperty Name="LanguageName" ColumnName="LanguageName" />
+                <ScalarProperty Name="StudyFormOldName" ColumnName="StudyFormOldName" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="SecondName" ColumnName="SecondName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PersonNum" ColumnName="PersonNum" />
+                <ScalarProperty Name="IsSecond" ColumnName="IsSecond" />
+                <ScalarProperty Name="ProgramModeShortName" ColumnName="ProgramModeShortName" />
+                <ScalarProperty Name="StudyPlanNumber" ColumnName="StudyPlanNumber" />
+                <ScalarProperty Name="StudyPlanId" ColumnName="StudyPlanId" />
+                <ScalarProperty Name="StudyLevelName" ColumnName="StudyLevelName" />
+                <ScalarProperty Name="StudyLevelId" ColumnName="StudyLevelId" />
+                <ScalarProperty Name="StudyFormName" ColumnName="StudyFormName" />
+                <ScalarProperty Name="StudyFormId" ColumnName="StudyFormId" />
+                <ScalarProperty Name="StudyBasisName" ColumnName="StudyBasisName" />
+                <ScalarProperty Name="StudyBasisId" ColumnName="StudyBasisId" />
+                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
+                <ScalarProperty Name="ProfileId" ColumnName="ProfileId" />
+                <ScalarProperty Name="ObrazProgramCrypt" ColumnName="ObrazProgramCrypt" />
+                <ScalarProperty Name="ObrazProgramNumber" ColumnName="ObrazProgramNumber" />
+                <ScalarProperty Name="ObrazProgramName" ColumnName="ObrazProgramName" />
+                <ScalarProperty Name="ObrazProgramId" ColumnName="ObrazProgramId" />
+                <ScalarProperty Name="LicenseProgramCode" ColumnName="LicenseProgramCode" />
+                <ScalarProperty Name="FacultyName" ColumnName="FacultyName" />
+                <ScalarProperty Name="LicenseProgramName" ColumnName="LicenseProgramName" />
+                <ScalarProperty Name="LicenseProgramId" ColumnName="LicenseProgramId" />
+                <ScalarProperty Name="FacultyAcr" ColumnName="FacultyAcr" />
+                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="SessionAVG" ColumnName="SessionAVG" />
+                <ScalarProperty Name="StudentStatus" ColumnName="StudentStatus" />
+                <ScalarProperty Name="StudyNumber" ColumnName="StudyNumber" />
+                <ScalarProperty Name="HasOriginals" ColumnName="HasOriginals" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="CompFromOlymp" ColumnName="CompFromOlymp" />
+                <ScalarProperty Name="CelCompetitionText" ColumnName="CelCompetitionText" />
+                <ScalarProperty Name="CelCompetitionId" ColumnName="CelCompetitionId" />
+                <ScalarProperty Name="OtherCompetitionId" ColumnName="OtherCompetitionId" />
+                <ScalarProperty Name="Sum" ColumnName="Sum" />
+                <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
+                <ScalarProperty Name="NotEnabled" ColumnName="NotEnabled" />
+                <ScalarProperty Name="Checked" ColumnName="Checked" />
+                <ScalarProperty Name="DocInsertDate" ColumnName="DocInsertDate" />
+                <ScalarProperty Name="DocDate" ColumnName="DocDate" />
+                <ScalarProperty Name="BackDocDate" ColumnName="BackDocDate" />
+                <ScalarProperty Name="BackDoc" ColumnName="BackDoc" />
+                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+                <ScalarProperty Name="IsListener" ColumnName="IsListener" />
+                <ScalarProperty Name="CompetitionId" ColumnName="CompetitionId" />
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="RegNum" ColumnName="RegNum" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -14433,11 +14441,12 @@
           <ConnectorPoint PointX="6" PointY="2.2424247578124703" />
         </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.fk_ed_EgeMark_EgeCertificate" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="2.8361006673176661" />
-          <ConnectorPoint PointX="13.510416666666666" PointY="2.8361006673176656" />
-          <ConnectorPoint PointX="13.677083333333334" PointY="2.8361006673176661" />
-          <ConnectorPoint PointX="15.65625" PointY="2.8361006673176661" />
-          <ConnectorPoint PointX="15.65625" PointY="8.5" />
+          <ConnectorPoint PointX="18" PointY="14.528595377604166" />
+          <ConnectorPoint PointX="18.322916666666668" PointY="14.528595377604166" />
+          <ConnectorPoint PointX="18.489583333333332" PointY="14.528595377604166" />
+          <ConnectorPoint PointX="19.041666666666668" PointY="14.528595377604164" />
+          <ConnectorPoint PointX="19.333333333333332" PointY="14.528595377604166" />
+          <ConnectorPoint PointX="19.5" PointY="14.528595377604166" />
         </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.fk_ed_EgeMark_EgeExamName" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="13.170931188151043" />
@@ -14517,52 +14526,40 @@
         <EntityTypeShape EntityType="Priem2012Model.extEgeMark" Width="1.5" PointX="8.75" PointY="6.75" Height="2.5783902994791674" />
         <EntityTypeShape EntityType="Priem2012Model.EgeToExam" Width="1.5" PointX="22.5" PointY="17" Height="1.7566536458333388" />
         <AssociationConnector Association="Priem2012Model.FK_EgeToExam_EgeExamName" >
-          <ConnectorPoint PointX="2.25" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="2.6666666666666665" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="2.8958333333333335" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="5.291666666666667" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="5.458333333333333" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="13.790363113606743" />
-          <ConnectorPoint PointX="5.802083333333333" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="5.875" PointY="13.790363113606745" />
-          <ConnectorPoint PointX="5.875" PointY="15.195354003906218" />
-          <ConnectorPoint PointX="7.7916988135785052" PointY="15.142099688785244" />
-          <ConnectorPoint PointX="8.0520511864214956" PointY="15.134865955865054" />
-          <ConnectorPoint PointX="8.5104488135785044" PointY="15.122129655558304" />
-          <ConnectorPoint PointX="8.6770511864214956" PointY="15.117500709580758" />
-          <ConnectorPoint PointX="10.822948813578504" PointY="15.057878244306412" />
-          <ConnectorPoint PointX="10.989551186421496" PointY="15.053249298328867" />
-          <ConnectorPoint PointX="11" PointY="15.052958984374996" />
-          <ConnectorPoint PointX="11" PointY="16.5181689453125" />
-          <ConnectorPoint PointX="14.260815459637628" PointY="16.1972001145605" />
-          <ConnectorPoint PointX="14.426680540362371" PointY="16.180873670552312" />
-          <ConnectorPoint PointX="14.75" PointY="16.14904866536456" />
-          <ConnectorPoint PointX="14.75" PointY="16.660563964843721" />
+          <ConnectorPoint PointX="18.40625" PointY="13.057190755208334" />
+          <ConnectorPoint PointX="18.40625" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="18.916666666666668" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="19.083333333333332" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="19.166666666666668" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="19.333333333333332" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="21.416666666666668" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="21.583333333333332" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="22.166666666666668" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="22.333333333333332" PointY="18.706451822916669" />
+          <ConnectorPoint PointX="22.5" PointY="18.706451822916669" />
         </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.FK_EgeToExam_Exam" >
-          <ConnectorPoint PointX="2.25" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="2.5416666666666665" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="2.8333333333333335" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="4.666666666666667" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="4.833333333333333" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="4.9511281407502059" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="5.117794807416872" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="5.291666666666667" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="5.770833333333333" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="5.875" PointY="16.591691372070304" />
-          <ConnectorPoint PointX="5.875" PointY="15.75" />
-          <ConnectorPoint PointX="7.7917012999236785" PointY="15.805276702590005" />
-          <ConnectorPoint PointX="8.0520487000763215" PointY="15.812784990818793" />
-          <ConnectorPoint PointX="8.5104512999236785" PointY="15.826005091509106" />
-          <ConnectorPoint PointX="8.6770487000763215" PointY="15.830809676835404" />
-          <ConnectorPoint PointX="10.8125" PointY="15.892395019531222" />
-          <ConnectorPoint PointX="10.8125" PointY="16.7681689453125" />
-          <ConnectorPoint PointX="10.822916666666666" PointY="16.7681689453125" />
-          <ConnectorPoint PointX="10.989583333333334" PointY="16.7681689453125" />
-          <ConnectorPoint PointX="14.343748" PointY="16.7681689453125" />
-          <ConnectorPoint PointX="14.343748" PointY="16.006653645833339" />
+          <ConnectorPoint PointX="12.75" PointY="24.12474609375" />
+          <ConnectorPoint PointX="13.25" PointY="24.12474609375" />
+          <ConnectorPoint PointX="13.25" PointY="19.5" />
+          <ConnectorPoint PointX="13.291666666666666" PointY="19.5" />
+          <ConnectorPoint PointX="13.458333333333334" PointY="19.5" />
+          <ConnectorPoint PointX="15.416666666666666" PointY="19.5" />
+          <ConnectorPoint PointX="15.583333333333334" PointY="19.5" />
+          <ConnectorPoint PointX="17.541666666666668" PointY="19.5" />
+          <ConnectorPoint PointX="17.708333333333332" PointY="19.5" />
+          <ConnectorPoint PointX="18.916666666666668" PointY="19.5" />
+          <ConnectorPoint PointX="19.083333333333332" PointY="19.5" />
+          <ConnectorPoint PointX="19.25" PointY="19.5" />
+          <ConnectorPoint PointX="19.25" PointY="18.5" />
+          <ConnectorPoint PointX="19.861977666666665" PointY="18.5" />
+          <ConnectorPoint PointX="20.028644333333329" PointY="18.5" />
+          <ConnectorPoint PointX="21.416666666666668" PointY="18.5" />
+          <ConnectorPoint PointX="21.583333333333332" PointY="18.5" />
+          <ConnectorPoint PointX="22.25" PointY="18.5" />
+          <ConnectorPoint PointX="22.25" PointY="19.230286458333339" />
+          <ConnectorPoint PointX="23.25" PointY="19.230286458333339" />
+          <ConnectorPoint PointX="23.25" PointY="18.980286458333335" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Priem2012Model.OlympBook" Width="1.5" PointX="21.75" PointY="36.5" Height="2.5783902994791674" />
         <AssociationConnector Association="Priem2012Model.fk_OlympBook_OlympLevel" >
@@ -14582,9 +14579,19 @@
         <EntityTypeShape EntityType="Priem2012Model.Olympiads" Width="1.5" PointX="15.75" PointY="28.625" Height="3.4001269531249996" />
         <EntityTypeShape EntityType="Priem2012Model.OlympType" Width="1.5" PointX="13.5" PointY="11.75" Height="1.5923063151041674" />
         <AssociationConnector Association="Priem2012Model.FK_OlympBook_OlympType" >
-          <ConnectorPoint PointX="10.5" PointY="7.233746311398245" />
-          <ConnectorPoint PointX="12" PointY="7.233746311398245" />
-          <ConnectorPoint PointX="12" PointY="8.75" />
+          <ConnectorPoint PointX="15" PointY="12.549094458984349" />
+          <ConnectorPoint PointX="17" PointY="12.549094458984349" />
+          <ConnectorPoint PointX="17" PointY="13.307190755208332" />
+          <ConnectorPoint PointX="18.322916666666668" PointY="13.307190755208332" />
+          <ConnectorPoint PointX="18.489583333333332" PointY="13.307190755208332" />
+          <ConnectorPoint PointX="18.916666666666668" PointY="13.307190755208332" />
+          <ConnectorPoint PointX="19.083333333333332" PointY="13.307190755208332" />
+          <ConnectorPoint PointX="19.25" PointY="13.307190755208332" />
+          <ConnectorPoint PointX="19.25" PointY="15.057190755208332" />
+          <ConnectorPoint PointX="21.5" PointY="15.057190755208332" />
+          <ConnectorPoint PointX="21.5" PointY="36.125" />
+          <ConnectorPoint PointX="22.5" PointY="36.125" />
+          <ConnectorPoint PointX="22.5" PointY="36.5" />
         </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.fk_Olympiads_OlympLevel" >
           <ConnectorPoint PointX="10.5" PointY="11.154997622796477" />
@@ -14622,7 +14629,6 @@
         <EntityTypeShape EntityType="Priem2012Model.ExamsVedRoomHistory" Width="1.5" PointX="5.75" PointY="9.75" Height="1.2636116536458246" />
         <EntityTypeShape EntityType="Priem2012Model.Abiturient" Width="1.5" PointX="10.5" PointY="26.625" Height="8.1661995442708317" />
         <EntityTypeShape EntityType="Priem2012Model.Protocol" Width="1.5" PointX="13.5" PointY="59" Height="4.2218636067708388" />
-        <EntityTypeShape EntityType="Priem2012Model.extAbit" Width="1.5" PointX="21.75" PointY="0.75" Height="11.453146158854167" />
         <EntityTypeShape EntityType="Priem2012Model.extExamInEntry" Width="1.5" PointX="14.75" PointY="0.75" Height="4.2218636067708388" />
         <EntityTypeShape EntityType="Priem2012Model.qAbitAll" Width="1.5" PointX="23.75" PointY="0.75" Height="10.138367513020832" />
         <EntityTypeShape EntityType="Priem2012Model.qProtocol" Width="1.5" PointX="0.75" PointY="14.75" Height="3.2357796223958317" />
@@ -14732,10 +14738,10 @@
         <EntityTypeShape EntityType="Priem2012Model.extEgeMarkMaxAbit" Width="1.5" PointX="16.75" PointY="6.75" Height="2.5783902994791674" />
         <EntityTypeShape EntityType="Priem2012Model.EgeToLanguage" Width="1.5" PointX="19.5" PointY="15.75" Height="1.921000976562512" />
         <AssociationConnector Association="Priem2012Model.FK_EgeToLanguage_EgeExamName" >
-          <ConnectorPoint PointX="2.25" PointY="14.437347819010416" />
-          <ConnectorPoint PointX="2.6666666666666665" PointY="14.437347819010416" />
-          <ConnectorPoint PointX="2.8958333333333335" PointY="14.437347819010416" />
-          <ConnectorPoint PointX="3" PointY="14.437347819010416" />
+          <ConnectorPoint PointX="18.75" PointY="13.057190755208334" />
+          <ConnectorPoint PointX="19.125" PointY="13.432190755208332" />
+          <ConnectorPoint PointX="19.125" PointY="16.8362939453125" />
+          <ConnectorPoint PointX="19.5" PointY="16.8362939453125" />
         </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.FK_EgeToLanguage_Exam" >
           <ConnectorPoint PointX="2.25" PointY="15.648000488281255" />
@@ -15126,7 +15132,21 @@
         <EntityTypeShape EntityType="Priem2012Model.ApplicationDetails" Width="1.5" PointX="21.75" PointY="30.75" />
         <EntityTypeShape EntityType="Priem2012Model.ApplicationVersion" Width="1.5" PointX="12.75" PointY="40" />
         <EntityTypeShape EntityType="Priem2012Model.ApplicationVersionDetails" Width="1.5" PointX="15.75" PointY="35" />
-        <AssociationConnector Association="Priem2012Model.FK_ApplicationDetails_Abiturient" />
+        <AssociationConnector Association="Priem2012Model.FK_ApplicationDetails_Abiturient" >
+          <ConnectorPoint PointX="12" PointY="27.918000174479168" />
+          <ConnectorPoint PointX="13.1875" PointY="27.918000174479168" />
+          <ConnectorPoint PointX="13.1875" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="15.291666666666666" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="15.739583333333334" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="17.541666666666668" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="17.708333333333332" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="18.291666666666668" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="18.458333333333332" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="21.416666666666668" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="21.583333333333332" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="22.5" PointY="34.134095052083339" />
+          <ConnectorPoint PointX="22.5" PointY="33.4994921875" />
+        </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.FK_ApplicationVersion_Abiturient" />
         <AssociationConnector Association="Priem2012Model.FK_ApplicationVersionDetails_ApplicationVersion" />
         <AssociationConnector Association="Priem2012Model.FK_Olympiads_OlympName" />
@@ -15176,10 +15196,34 @@
         <EntityTypeShape EntityType="Priem2012Model.extPerson" Width="1.5" PointX="31.75" PointY="32.75" />
         <EntityTypeShape EntityType="Priem2012Model.ObrazProgramInEntry" Width="1.5" PointX="13.5" PointY="30.5" />
         <EntityTypeShape EntityType="Priem2012Model.ProfileInObrazProgramInEntry" Width="1.5" PointX="21.75" PointY="26.625" />
-        <AssociationConnector Association="Priem2012Model.FK_ApplicationDetails_ObrazProgramInEntry" />
+        <AssociationConnector Association="Priem2012Model.FK_ApplicationDetails_ObrazProgramInEntry" >
+          <ConnectorPoint PointX="15" PointY="33.607555590544877" />
+          <ConnectorPoint PointX="15.15625" PointY="34.009095052083339" />
+          <ConnectorPoint PointX="15.15625" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="15.291666666666666" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="15.739583333333334" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="17.541666666666668" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="17.708333333333332" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="18.291666666666668" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="18.458333333333332" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="21.4375" PointY="33.81199218750001" />
+          <ConnectorPoint PointX="21.441074434901122" PointY="33.808417752598892" />
+          <ConnectorPoint PointX="21.558925565098878" PointY="33.690566622401128" />
+          <ConnectorPoint PointX="21.75" PointY="33.49949218750001" />
+        </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.FK_ApplicationDetails_ProfileInObrazProgramInEntry" />
         <AssociationConnector Association="Priem2012Model.FK_ApplicationVersionDetails_ObrazProgramInEntry" />
-        <AssociationConnector Association="Priem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry" />
+        <AssociationConnector Association="Priem2012Model.FK_ApplicationVersionDetails_ProfileInObrazProgramInEntry" >
+          <ConnectorPoint PointX="21.749999999999996" PointY="29.566793619791671" />
+          <ConnectorPoint PointX="21.558925565098878" PointY="29.757868054692789" />
+          <ConnectorPoint PointX="21.441074434901122" PointY="29.875719184890546" />
+          <ConnectorPoint PointX="21.375" PointY="29.941793619791667" />
+          <ConnectorPoint PointX="18.270833333333332" PointY="29.941793619791667" />
+          <ConnectorPoint PointX="18.104166666666668" PointY="29.941793619791667" />
+          <ConnectorPoint PointX="17.625" PointY="29.941793619791667" />
+          <ConnectorPoint PointX="17.625" PointY="34.625" />
+          <ConnectorPoint PointX="17.25" PointY="35" />
+        </AssociationConnector>
         <AssociationConnector Association="Priem2012Model.FK_Mark_EgeCertificate" />
         <AssociationConnector Association="Priem2012Model.FK_ObrazProgramInEntry_Entry" >
           <ConnectorPoint PointX="9.406252" PointY="36.335836588541667" />
@@ -15221,8 +15265,32 @@
           <ConnectorPoint PointX="13.458333333333334" PointY="33.043290774251304" />
           <ConnectorPoint PointX="13.5" PointY="33.043290774251304" />
         </AssociationConnector>
-        <AssociationConnector Association="Priem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry" />
-        <AssociationConnector Association="Priem2012Model.FK_ProfileInObrazProgramInEntry_SP_Profile" />
+        <AssociationConnector Association="Priem2012Model.FK_ProfileInObrazProgramInEntry_ObrazProgramInEntry" >
+          <ConnectorPoint PointX="15" PointY="32.30122728094959" />
+          <ConnectorPoint PointX="15.125" PointY="32.30122728094959" />
+          <ConnectorPoint PointX="15.125" PointY="28.375" />
+          <ConnectorPoint PointX="15.166666666666666" PointY="28.375" />
+          <ConnectorPoint PointX="15.333333333333334" PointY="28.375" />
+          <ConnectorPoint PointX="16.416666666666668" PointY="28.375" />
+          <ConnectorPoint PointX="16.583333333333332" PointY="28.375" />
+          <ConnectorPoint PointX="18.104166666666668" PointY="28.375" />
+          <ConnectorPoint PointX="18.270833333333332" PointY="28.375" />
+          <ConnectorPoint PointX="18.5" PointY="28.375" />
+          <ConnectorPoint PointX="18.5" PointY="29.816793619791667" />
+          <ConnectorPoint PointX="21.416666666666668" PointY="29.816793619791667" />
+          <ConnectorPoint PointX="21.583333333333332" PointY="29.816793619791667" />
+          <ConnectorPoint PointX="22.416666666666668" PointY="29.816793619791667" />
+          <ConnectorPoint PointX="22.583333333333332" PointY="29.816793619791667" />
+          <ConnectorPoint PointX="22.906252000000002" PointY="29.816793619791667" />
+          <ConnectorPoint PointX="22.906252000000002" PointY="29.566793619791671" />
+        </AssociationConnector>
+        <AssociationConnector Association="Priem2012Model.FK_ProfileInObrazProgramInEntry_SP_Profile" >
+          <ConnectorPoint PointX="20.65625" PointY="21.432190755208335" />
+          <ConnectorPoint PointX="20.65625" PointY="29.535541119791731" />
+          <ConnectorPoint PointX="21.416666666666668" PointY="29.535541119791731" />
+          <ConnectorPoint PointX="21.583333333333332" PointY="29.535541119791731" />
+          <ConnectorPoint PointX="21.75" PointY="29.535541119791731" />
+        </AssociationConnector>
         <EntityTypeShape EntityType="Priem2012Model.extPersonSPO" Width="1.5" PointX="34.375" PointY="0.75" Height="18.710511067708353" />
         <EntityTypeShape EntityType="Priem2012Model.ForeignCountry" Width="1.5" PointX="0.75" PointY="35" Height="2.7494921874999818" />
         <AssociationConnector Association="Priem2012Model.FK_Person_Contacts_ForeignCountry" >
@@ -15259,6 +15327,7 @@
           <ConnectorPoint PointX="8.1458333333333339" PointY="39.893992513020834" />
           <ConnectorPoint PointX="10.5" PointY="39.893992513020834" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="Priem2012Model.extAbit" Width="1.5" PointX="34.375" PointY="20.75" Height="14.864482421874982" />
         </Diagram>
     </Diagrams>
   </Designer>

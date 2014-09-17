@@ -36,7 +36,7 @@ namespace Priem
              FROM ed.extAbit 
              INNER JOIN ed.extPerson ON ed.extAbit.PersonId = ed.extPerson.Id   
              INNER JOIN ed.qAbiturientForeignApplicationsOnly qqq ON qqq.Id = extAbit.Id
-             LEFT JOIN ed.hlpMinEgeAbiturient ON ed.hlpMinEgeAbiturient.Id = ed.extAbit.Id          
+             LEFT JOIN ed.hlpMinEgeAbiturient ON ed.hlpMinEgeAbiturient.Id = ed.extAbit.Id 
              LEFT JOIN ed.Competition ON ed.Competition.Id = ed.extAbit.CompetitionId";
 
             base.InitControls();

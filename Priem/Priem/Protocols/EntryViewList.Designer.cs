@@ -40,7 +40,6 @@
             this.btnPrintOrder = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnCancelView = new System.Windows.Forms.Button();
-            this.chbIsForeign = new System.Windows.Forms.CheckBox();
             this.btnOrderReview = new System.Windows.Forms.Button();
             this.chbIsListener = new System.Windows.Forms.CheckBox();
             this.chbIsSecond = new System.Windows.Forms.CheckBox();
@@ -174,15 +173,6 @@
             this.btnCancelView.UseVisualStyleBackColor = true;
             this.btnCancelView.Click += new System.EventHandler(this.btnCancelView_Click);
             // 
-            // chbIsForeign
-            // 
-            this.chbIsForeign.Location = new System.Drawing.Point(139, 515);
-            this.chbIsForeign.Name = "chbIsForeign";
-            this.chbIsForeign.Size = new System.Drawing.Size(94, 40);
-            this.chbIsForeign.TabIndex = 89;
-            this.chbIsForeign.Text = "для иностранцев";
-            this.chbIsForeign.UseVisualStyleBackColor = true;
-            // 
             // btnOrderReview
             // 
             this.btnOrderReview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -292,14 +282,14 @@
             this.chbCel.Text = "Целевики";
             this.chbCel.UseVisualStyleBackColor = true;
             // 
-            // cbStudyLevel
+            // cbStudyLevelGroup
             // 
             this.cbStudyLevelGroup.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbStudyLevelGroup.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyLevelGroup.FormattingEnabled = true;
             this.cbStudyLevelGroup.Location = new System.Drawing.Point(12, 26);
-            this.cbStudyLevelGroup.Name = "cbStudyLevel";
+            this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
             this.cbStudyLevelGroup.Size = new System.Drawing.Size(342, 21);
             this.cbStudyLevelGroup.TabIndex = 152;
             // 
@@ -328,7 +318,6 @@
             this.Controls.Add(this.cbLicenseProgram);
             this.Controls.Add(this.cbFaculty);
             this.Controls.Add(this.chbIsListener);
-            this.Controls.Add(this.chbIsForeign);
             this.Controls.Add(this.btnCancelView);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCreate);
@@ -360,7 +349,6 @@
         private System.Windows.Forms.Button btnPrintOrder;       
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnCancelView;
-        private System.Windows.Forms.CheckBox chbIsForeign;
         private System.Windows.Forms.Button btnOrderReview;
         private System.Windows.Forms.CheckBox chbIsListener;
         private System.Windows.Forms.CheckBox chbIsSecond;

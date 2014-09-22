@@ -31,7 +31,6 @@ namespace Priem
             InitControls();
             
             btnPrintOrder.Visible = btnPrintOrder.Enabled = btnCancelView.Enabled = btnCancelView.Visible = false;
-            chbIsForeign.Visible = false;
             btnCreate.Enabled = false;
 
             if (MainClass.IsFacMain())
@@ -42,20 +41,12 @@ namespace Priem
             if (MainClass.IsPasha())
             {                
                 btnPrintOrder.Visible = btnPrintOrder.Enabled = btnCancelView.Enabled = btnCancelView.Visible = true;
-                chbIsForeign.Visible = true;
                 btnCreate.Enabled = true;
             } 
 
             if (MainClass.IsPrintOrder())
             {
-                btnPrintOrder.Visible = btnPrintOrder.Enabled = chbIsForeign.Visible = true;
-            }
-
-            //если кнопки "печать приказа" не видно, то галочка "иностранцы" съезжает на место кнопки
-            if (!MainClass.IsPasha() && !MainClass.IsPrintOrder())
-            {
-                chbIsForeign.Location = new Point(28, 515);
-                chbIsForeign.Visible = chbIsForeign.Enabled = true;
+                btnPrintOrder.Visible = btnPrintOrder.Enabled = true;
             }
 
             //// посомтреть, почему отдельные факультеты
@@ -246,7 +237,7 @@ QueryServ.StringParseFromBool(IsListener), QueryServ.StringParseFromBool(IsSecon
 
             Guid protocolId = (Guid)dgvViews.CurrentRow.Cells["Id"].Value;
 
-            Print.PrintOrder(protocolId, !chbIsForeign.Checked, chbCel.Checked);
+            Print.PrintOrder(protocolId, chbCel.Checked);
         }
         private void btnOrderReview_Click(object sender, EventArgs e)
         {
@@ -258,7 +249,7 @@ QueryServ.StringParseFromBool(IsListener), QueryServ.StringParseFromBool(IsSecon
 
             Guid protocolId = (Guid)dgvViews.CurrentRow.Cells["Id"].Value;
 
-            Print.PrintOrderReview(protocolId, !chbIsForeign.Checked);
+            Print.PrintOrderReview(protocolId);
         }
         private void btnCancelView_Click(object sender, EventArgs e)
         {

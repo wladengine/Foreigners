@@ -3725,7 +3725,7 @@ namespace Priem
             }
         }
 
-        public static void PrintOrder(Guid protocolId, bool isRus, bool isCel)
+        public static void PrintOrder(Guid protocolId, bool isCel)
         {
             try
             {
@@ -3886,8 +3886,8 @@ namespace Priem
                         break;
                 }
 
-                wd.SetFields("Граждан", isRus ? "граждан Российской Федерации" : "иностранных граждан");
-                wd.SetFields("Граждан2", isRus ? "граждан Российской Федерации" : "");
+                wd.SetFields("Граждан", "иностранных граждан");
+                wd.SetFields("Граждан2", "");
                 wd.SetFields("Стипендия", (basisId == "2" || formId == "2") ? "" : "и назначении стипендии");
                 wd.SetFields("Форма2", form2);
                 wd.SetFields("Основа2", basis2);
@@ -3917,6 +3917,10 @@ namespace Priem
                                join extentryView in ctx.extEntryView on extabit.Id equals extentryView.AbiturientId
                                join extperson in ctx.extPerson on extabit.PersonId equals extperson.Id
                                join country in ctx.ForeignCountry on extperson.ForeignNationalityId equals country.Id
+
+                               join country_live in ctx.ForeignCountry on extperson.ForeignCountryId equals country_live.Id into country_live2
+                               from country_live in country_live2.DefaultIfEmpty()
+
                                join competition in ctx.Competition on extabit.CompetitionId equals competition.Id
                                join extabitMarksSum in ctx.extAbitMarksSum on extabit.Id equals extabitMarksSum.Id into extabitMarksSum2
                                from extabitMarksSum in extabitMarksSum2.DefaultIfEmpty()
@@ -3924,7 +3928,7 @@ namespace Priem
                                from entryHeader in entryHeader2.DefaultIfEmpty()
                                join celCompetition in ctx.CelCompetition on extabit.CelCompetitionId equals celCompetition.Id into celCompetition2
                                from celCompetition in celCompetition2.DefaultIfEmpty()
-                               where extentryView.Id == protocolId && (isRus ? extperson.NationalityId == 1 : extperson.NationalityId != 1)
+                               where extentryView.Id == protocolId
                                orderby celCompetition.TvorName, extabit.ObrazProgramName, extabit.ProfileName, country.NameRod, entryHeader.SortNum, extabit.FIO
                                select new
                                {
@@ -3944,6 +3948,8 @@ namespace Priem
                                    SortNum = entryHeader.SortNum,
                                    EntryHeaderName = entryHeader.Name,
                                    NameRod = country.NameRod,
+                                   country_live = country_live.Name,
+                                   extperson.NationalityId,
                                    extabit.ObrazProgramInEntryCrypt,
                                    extabit.ObrazProgramInEntryName,
                                    extabit.ObrazProgramInEntryId,
@@ -3977,8 +3983,10 @@ namespace Priem
                                        x.ProfileInObrazProgramInEntryId,
                                        x.ProfileInObrazProgramInEntryName,
                                        x.ForeignNationality,
+                                       x.NationalityId,
                                        x.HasTRKI,
-                                       x.IsGosLine
+                                       x.IsGosLine,
+                                       x.country_live
                                    }
                                ).OrderBy(x => x.CelCompName).ThenBy(x => x.ObrazProgram).ThenBy(x => x.ProfileName).ThenBy(x => x.NameRod).ThenBy(x => x.SortNum).ThenBy(x => x.ФИО).ToList();
 
@@ -4110,9 +4118,11 @@ namespace Priem
                         }
 
 
-                        if (!isRus)
-                        {
+                        //if (!isRus)
+                        //{
                             string country = v.NameRod;
+                            if (v.NationalityId == 1)
+                                country += " (" + v.country_live + ")";
                             if (country != curCountry)
                             {
                                 td.AddRow(1);
@@ -4121,34 +4131,34 @@ namespace Priem
 
                                 curCountry = country;
                             }
-                        }
+                        //}
                         string balls = "";
                         string ballToStr = "";
-                        if (isRus)
-                        {
-                            balls = v.TotalSum;
-                            ballToStr = " балл";
+                        //if (isRus)
+                        //{
+                        //    balls = v.TotalSum;
+                        //    ballToStr = " балл";
 
-                            if (balls.Length == 0)
-                                ballToStr = "";
-                            else if (balls.EndsWith("1"))
-                            {
-                                if (balls.EndsWith("11"))
-                                    ballToStr += "ов";
-                                else
-                                    ballToStr += "";
-                            }
-                            else if (balls.EndsWith("2") || balls.EndsWith("3") || balls.EndsWith("4"))
-                            {
-                                if ((balls.EndsWith("12") || balls.EndsWith("13") || balls.EndsWith("14")))
-                                    ballToStr += "ов";
-                                else
-                                    ballToStr += "а";
-                            }
-                            else
-                                ballToStr += "ов";
-                        }
-                        else
+                        //    if (balls.Length == 0)
+                        //        ballToStr = "";
+                        //    else if (balls.EndsWith("1"))
+                        //    {
+                        //        if (balls.EndsWith("11"))
+                        //            ballToStr += "ов";
+                        //        else
+                        //            ballToStr += "";
+                        //    }
+                        //    else if (balls.EndsWith("2") || balls.EndsWith("3") || balls.EndsWith("4"))
+                        //    {
+                        //        if ((balls.EndsWith("12") || balls.EndsWith("13") || balls.EndsWith("14")))
+                        //            ballToStr += "ов";
+                        //        else
+                        //            ballToStr += "а";
+                        //    }
+                        //    else
+                        //        ballToStr += "ов";
+                        //}
+                        //else
                         {
                             string tmp = "";
                             if (v.HasTRKI)
@@ -4285,7 +4295,7 @@ namespace Priem
             }
         }
 
-        public static void PrintOrderReview(Guid protocolId, bool isRus)
+        public static void PrintOrderReview(Guid protocolId)
         {
             try
             {
@@ -4303,7 +4313,7 @@ namespace Priem
                 string professionCode;
                 int StudyLevelId;
 
-                string naprspecRod = "";
+                string naprspecRod = "направлению подготовки";
                 using (PriemEntities ctx = new PriemEntities())
                 {
 
@@ -4357,31 +4367,23 @@ namespace Priem
                         case "2":
                             form2 = "очно-заочной (вечерней) форме";
                             break;
+                        case "3":
+                            form2 = "заочной форме";
+                            break;
                     }
 
-                    string bakspec = "", profspec = "";
+                    string bakspec = "", profspec = "профилю";
                     string naprobProgRod = "образовательной программе";
 
-                    if (MainClass.dbType == PriemType.PriemMag)
+                    switch (StudyLevelId)
                     {
-                        bakspec = "магистратуры";
-                        profspec = "профилю";
-                        naprspecRod = "направлению подготовки";
-
-                    }
-                    else
-                    {
-                        if (StudyLevelId == 16)
-                        {
-                            bakspec = "бакалавриата";
-                        }
-                        else if (StudyLevelId == 18)
-                        {
-                            bakspec = "специалитета";
-                        }
-                        profspec = "профилю";
-                        naprspecRod = "направлению подготовки";
-
+                        case 8: { bakspec = "специалитета"; break; }
+                        case 10: { bakspec = "специалитета"; break; }
+                        case 15: { bakspec = "аспирантуры"; break; }
+                        case 16: { bakspec = "бакалавриата"; break; }
+                        case 17: { bakspec = "магистратуры"; break; }
+                        case 18: { bakspec = "специалитета"; break; }
+                        default: { bakspec = "бакалавриата"; break; }
                     }
 
                     int curRow = 5, counter = 0;
@@ -4399,44 +4401,20 @@ namespace Priem
 
                     string docNum = "НОМЕР";
                     string docDate = "ДАТА";
-                    DateTime tempDate;
-                    if (isRus)
-                    {
-                        //docNum = MainClass.Bdc.GetStringValue(string.Format("SELECT OrderNum FROM ed.OrderNumbers WHERE ProtocolId='{0}'", protocolId));
-                        docNum = (from orderNumbers in ctx.OrderNumbers
-                                  where orderNumbers.ProtocolId == protocolId
-                                  select orderNumbers.OrderNum).FirstOrDefault();
-
-                        //DateTime.TryParse( MainClass.Bdc.GetStringValue(string.Format("SELECT OrderDate FROM ed.OrderNumbers WHERE ProtocolId='{0}'", protocolId)), out tempDate);
-                        tempDate = (DateTime)(from orderNumbers in ctx.OrderNumbers where orderNumbers.ProtocolId == protocolId select orderNumbers.OrderDate).FirstOrDefault();
-
-                        docDate = tempDate.ToShortDateString();
-                    }
-                    else
-                    {
-                        //docNum = MainClass.Bdc.GetStringValue(string.Format("SELECT OrderNumFor FROM ed.OrderNumbers WHERE ProtocolId='{0}'", protocolId));
-                        docNum = (from orderNumbers in ctx.OrderNumbers
-                                  where orderNumbers.ProtocolId == protocolId
-                                  select orderNumbers.OrderNumFor).FirstOrDefault();
-
-                        //DateTime.TryParse(MainClass.Bdc.GetStringValue(string.Format("SELECT OrderDateFor FROM ed.OrderNumbers WHERE ProtocolId='{0}'", protocolId)), out tempDate);
-                        tempDate = (DateTime)(from orderNumbers in ctx.OrderNumbers
-                                              where orderNumbers.ProtocolId == protocolId
-                                              select orderNumbers.OrderDateFor).FirstOrDefault();
-
-                        docDate = tempDate.ToShortDateString();
-                    }
-
+                    DateTime? tempDate;
+                    
                     var lst = (from extabit in ctx.extAbit
                                join extentryView in ctx.extEntryView on extabit.Id equals extentryView.AbiturientId
                                join extperson in ctx.extPerson on extabit.PersonId equals extperson.Id
-                               join country in ctx.Country on extperson.NationalityId equals country.Id
+                               join country in ctx.ForeignCountry on extperson.ForeignNationalityId equals country.Id
+                               join country_live in ctx.ForeignCountry on extperson.ForeignCountryId equals country_live.Id into country_live2
+                               from country_live in country_live2.DefaultIfEmpty()
                                join competition in ctx.Competition on extabit.CompetitionId equals competition.Id
                                join entryHeader in ctx.EntryHeader on extentryView.EntryHeaderId equals entryHeader.Id into entryHeader2
                                from entryHeader in entryHeader2.DefaultIfEmpty()
                                join extabitMarksSum in ctx.extAbitMarksSum on extabit.Id equals extabitMarksSum.Id into extabitMarksSum2
                                from extabitMarksSum in extabitMarksSum2.DefaultIfEmpty()
-                               where extentryView.Id == protocolId && (isRus ? extperson.NationalityId == 1 : extperson.NationalityId != 1)
+                               where extentryView.Id == protocolId //&& (isRus ? extperson.NationalityId == 1 : extperson.NationalityId != 1)
                                orderby extabit.ObrazProgramName, extabit.ProfileName, country.NameRod, entryHeader.SortNum, extabit.FIO
                                select new
                                {
@@ -4459,7 +4437,9 @@ namespace Priem
                                    extentryView.SignerPosition,
                                    extabit.CompetitionId,
                                    extperson.NationalityName,
-                                   extperson.ForeignNationality
+                                   extperson.ForeignNationality,
+                                   extperson.NationalityId,
+                                   country_live = country_live.Name
                                }).ToList().Distinct().Select(x =>
                                    new
                                    {
@@ -4479,12 +4459,37 @@ namespace Priem
                                        x.SignerName,
                                        x.SignerPosition,
                                        CompetitionId = x.CompetitionId,
-                                       x.ForeignNationality
+                                       x.ForeignNationality,
+                                       x.NationalityId,
+                                       x.country_live
                                    }
                                );
 
                     foreach (var v in lst)
                     {
+                        if (v.NationalityId == 1)
+                        {
+                            docNum = (from orderNumbers in ctx.OrderNumbers
+                                      where orderNumbers.ProtocolId == protocolId
+                                      select orderNumbers.OrderNum).FirstOrDefault();
+
+                            tempDate = (DateTime?)(from orderNumbers in ctx.OrderNumbers where orderNumbers.ProtocolId == protocolId select orderNumbers.OrderDate).FirstOrDefault();
+
+                            docDate = tempDate.HasValue ? tempDate.Value.ToShortDateString() : "НЕТ ДАТЫ";
+                        }
+                        else
+                        {
+                            docNum = (from orderNumbers in ctx.OrderNumbers
+                                      where orderNumbers.ProtocolId == protocolId
+                                      select orderNumbers.OrderNumFor).FirstOrDefault();
+
+                            tempDate = (DateTime?)(from orderNumbers in ctx.OrderNumbers
+                                                  where orderNumbers.ProtocolId == protocolId
+                                                  select orderNumbers.OrderDateFor).FirstOrDefault();
+
+                            docDate = tempDate.HasValue ? tempDate.Value.ToShortDateString() : "НЕТ ДАТЫ";
+                        }
+
                         if (v.CompetitionId == 11 || v.CompetitionId == 12)
                             wd.InsertAutoTextInEnd("выпискаКРЫМ", true);
                         else
@@ -4493,8 +4498,8 @@ namespace Priem
                         wd.GetLastFields(13);
                         td = wd.Tables[counter];
 
-                        wd.SetFields("Граждан", isRus ? "граждан РФ" : "иностранных граждан");
-                        wd.SetFields("Граждан2", isRus ? "граждан Российской Федерации" : " граждан " + v.ForeignNationality);
+                        wd.SetFields("Граждан", v.NationalityId == 1 ? "граждан РФ" : "иностранных граждан");
+                        wd.SetFields("Граждан2", v.NationalityId == 1 ? "граждан Российской Федерации" : " граждан " + v.ForeignNationality);
                         wd.SetFields("Стипендия", (basisId == "2" || formId == "2") ? "" : "и назначении стипендии");
                         // wd.SetFields("Факультет", facDat);
                         // wd.SetFields("Форма", form);
@@ -4575,18 +4580,17 @@ namespace Priem
                                 curSpez = spez;
                             }
                         }
-
-                        if (!isRus)
+                        
+                        string country = v.NameRod;
+                        if (v.NationalityId == 1)
+                            country += " (" + v.country_live + ")";
+                        if (country != curCountry)
                         {
-                            string country = v.NameRod;
-                            if (country != curCountry)
-                            {
-                                td.AddRow(1);
-                                curRow++;
-                                td[0, curRow] = string.Format("\r\n граждан {0}:", country);
+                            td.AddRow(1);
+                            curRow++;
+                            td[0, curRow] = string.Format("\r\n граждан {0}:", country);
 
-                                curCountry = country;
-                            }
+                            curCountry = country;
                         }
 
                         string header = v.EntryHeaderName;

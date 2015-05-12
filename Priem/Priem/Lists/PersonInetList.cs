@@ -10,6 +10,7 @@ using System.Linq;
 using EducServLib;
 using BDClassLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -142,8 +143,8 @@ LEFT JOIN ed.StudyLevel ON StudyLevel.Id=Entry.StudyLevelId ";
                     //    dtEge = dsEge.Tables[0];
                     //}
 
-                    CardFromInet crd = new CardFromInet(fileNum, true, null, null);
-                    crd.ToUpdateList += new UpdateListHandler(UpdateDataGrid);
+                    CardFromInet crd = new CardFromInet(fileNum, null, true);
+                    crd.ToUpdateList += UpdateDataGrid;
                     crd.Show();
                 }
                 catch (Exception exc)
@@ -200,13 +201,13 @@ LEFT JOIN ed.StudyLevel ON StudyLevel.Id=Entry.StudyLevelId ";
 
         private void dgvAbiturients_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex < 0)
-                return;
-            if (e.ColumnIndex == dgvAbiturients.Columns["FIO"].Index && dgvAbiturients["PersonTypeId", e.RowIndex].Value.ToString() == "1")
-            {
-                e.CellStyle.BackColor = Color.LightCoral;
-                e.CellStyle.SelectionBackColor = Color.Coral;
-            }
-        }  
+            //if (e.RowIndex < 0)
+            //    return;
+            //if (e.ColumnIndex == dgvAbiturients.Columns["FIO"].Index && dgvAbiturients["PersonTypeId", e.RowIndex].Value.ToString() == "1")
+            //{
+            //    e.CellStyle.BackColor = Color.LightCoral;
+            //    e.CellStyle.SelectionBackColor = Color.Coral;
+            //}
+        }
     }
 }

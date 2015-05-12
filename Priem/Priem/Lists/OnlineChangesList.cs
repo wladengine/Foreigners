@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using EducServLib;
 using BDClassLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -128,7 +129,7 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.LicenseProgramId,
-                                                               Name = ent.SP_LicenseProgram.Name
+                                                               Name = ent.LicenseProgramName
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, false);
@@ -145,8 +146,8 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.ObrazProgramId,
-                                                               Name = ent.SP_ObrazProgram.Name,
-                                                               Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
+                                                               Name = ent.ObrazProgramName,
+                                                               Crypt = ent.ObrazProgramCrypt
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, false);
@@ -296,14 +297,14 @@ namespace Priem
             string query = @"SELECT DISTINCT qAbiturient.Id, qAbiturient.Barcode FROM qAbiturient WHERE 
 (qAbiturient.Id IN 
 (
-SELECT DISTINCT ab.Id FROM extAbitFiles_All INNER JOIN qAbiturient AS ab ON extAbitFiles_All.ApplicationId = ab.Id 
-WHERE (ab.DateReviewDocs IS NULL OR DateDiff(MINUTE, ab.DateReviewDocs, extAbitFiles_All.LoadDate) > 0)
+SELECT DISTINCT ab.Id FROM extAbitFileNames_All INNER JOIN qAbiturient AS ab ON extAbitFileNames_All.ApplicationId = ab.Id 
+WHERE (ab.DateReviewDocs IS NULL OR DateDiff(MINUTE, ab.DateReviewDocs, extAbitFileNames_All.LoadDate) > 0)
 )
 OR
 qAbiturient.PersonId IN 
 (
-SELECT DISTINCT pers.Id FROM extAbitFiles_All INNER JOIN Person AS pers ON extAbitFiles_All.PersonId = pers.Id 
-WHERE extAbitFiles_All.ApplicationId IS NULL AND (pers.DateReviewDocs IS NULL OR DateDiff(MINUTE, pers.DateReviewDocs, extAbitFiles_All.LoadDate) > 0)
+SELECT DISTINCT pers.Id FROM extAbitFileNames_All INNER JOIN Person AS pers ON extAbitFileNames_All.PersonId = pers.Id 
+WHERE extAbitFileNames_All.ApplicationId IS NULL AND (pers.DateReviewDocs IS NULL OR DateDiff(MINUTE, pers.DateReviewDocs, extAbitFileNames_All.LoadDate) > 0)
 ))
 AND qAbiturient.IsImported = 1 "; 
             
@@ -617,7 +618,7 @@ AND qAbiturient.IsImported = 1 ";
                         // новые документы
                         case 4:
                             {
-                                new DocCard(persBarcode, abitBarcode).ShowDialog();
+                                new DocCard(persBarcode, abitBarcode, true, MainClass.dbType == PriemType.PriemForeigners).ShowDialog();
                                 break;                                
                             }                            
                     }

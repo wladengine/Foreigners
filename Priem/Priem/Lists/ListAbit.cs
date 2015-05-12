@@ -13,6 +13,7 @@ using BDClassLib;
 using WordOut;
 using BaseFormsLib;
 using Excel = Microsoft.Office.Interop.Excel;
+using PriemLib;
 
 namespace Priem
 {

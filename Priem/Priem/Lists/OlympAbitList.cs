@@ -11,6 +11,7 @@ using EducServLib;
 using BDClassLib;
 using WordOut;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -197,7 +198,7 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.LicenseProgramId,
-                                                               Name = ent.SP_LicenseProgram.Name
+                                                               Name = ent.LicenseProgramName
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, false);
@@ -214,8 +215,8 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.ObrazProgramId,
-                                                               Name = ent.SP_ObrazProgram.Name,
-                                                               Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
+                                                               Name = ent.ObrazProgramName,
+                                                               Crypt = ent.ObrazProgramCrypt
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, false);

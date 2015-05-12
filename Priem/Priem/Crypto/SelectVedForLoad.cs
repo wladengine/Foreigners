@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -68,6 +69,7 @@ namespace Priem
 
         private void InitControls()
         {
+            ComboServ.FillCombo(cbStudyLevelGroup, HelpClass.GetComboListByTable("ed.StudyLevelGroup"), false, false);
             ComboServ.FillCombo(cbFaculty, HelpClass.GetComboListByTable("ed.SP_Faculty"), false, false);
             ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByTable("ed.StudyBasis"), false, true);
                         
@@ -76,15 +78,19 @@ namespace Priem
             
             UpdateVedList();
 
-            cbFaculty.SelectedIndexChanged += new EventHandler(cbFaculty_SelectedIndexChanged);            
-            cbFaculty.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);              
+            cbStudyLevelGroup.SelectedIndexChanged += cbStudyLevelGroup_SelectedIndexChanged;
+            cbFaculty.SelectedIndexChanged += new EventHandler(cbFaculty_SelectedIndexChanged);
+            cbStudyBasis.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);              
         }
 
+        void cbStudyLevelGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateVedList();
+        }
         void cbFaculty_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateVedList();
         }
-
         void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateVedList();
@@ -95,7 +101,11 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbStudyBasis); }
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
-
+        public int? StudyLevelGroupId
+        {
+            get { return ComboServ.GetComboIdInt(cbStudyLevelGroup); }
+            set { ComboServ.SetComboId(cbStudyLevelGroup, value); }
+        }
         public int? FacultyId
         {
             get { return ComboServ.GetComboIdInt(cbFaculty); }
@@ -117,7 +127,7 @@ namespace Priem
                 (Case When StudyBasisId IS NULL then '' else (case when StudyBasisId = 1 then ' г/б' else ' дог' end) end) + 
                 (Case When IsAddVed = 1 then ' дополнительная' + (case when Convert(nvarchar, AddCount) = '1' then '' else '(' + Convert(nvarchar, AddCount) + ')' end) 
                 else '' end) as Name, IsLoad  
-                FROM ed.extExamsVed WHERE ed.extExamsVed.IsLocked = 1 AND ed.extExamsVed.StudyLevelGroupId = {2} AND ed.extExamsVed.FacultyId = {0} {1} ORDER BY IsLoad, Name ", FacultyId, flt_appeal, MainClass.studyLevelGroupId);
+                FROM ed.extExamsVed WHERE ed.extExamsVed.IsLocked = 1 AND ed.extExamsVed.StudyLevelGroupId = {2} AND ed.extExamsVed.FacultyId = {0} {1} ORDER BY IsLoad, Name ", FacultyId, flt_appeal, StudyLevelGroupId);
                 
                 DataTable dt = MainClass.Bdc.GetDataSet(query).Tables[0];
 

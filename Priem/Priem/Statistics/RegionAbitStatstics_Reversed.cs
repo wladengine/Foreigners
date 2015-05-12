@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 using EducServLib;
 using RtfWriter;
+using PriemLib;
 
 namespace Priem
 {

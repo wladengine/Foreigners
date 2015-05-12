@@ -12,42 +12,42 @@ using System.Transactions;
 
 using BaseFormsLib;
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {
     public partial class CardFromInet : CardFromList
-    {        
-        private DBPriem _bdcInet;    
-        private int _abitBarc;
-        private int _personBarc;
+    {
+        #region Fields
+        private DBPriem _bdcInet;
+        private int? _abitBarc;
+        private int? _personBarc;
+        private int _currentEducRow;
 
         private Guid? personId;
         private bool _closePerson;
         private bool _closeAbit;
 
-        private int? RegionEducId { get; set; }
-
+        PriemLib.LoadFromInet load;
         private List<ShortCompetition> LstCompetitions;
+        private List<Person_EducationInfo> lstEducationInfo;
 
-        LoadFromInet load;
-
-        private DocsClass _docs;   
+        private DocsClass _docs;
+        #endregion
 
         // конструктор формы
-        public CardFromInet(int abitBarcode, bool closeAbit, BaseFormEx fOwner, int? fOwnerRwInd)
+        public CardFromInet(int? personBarcode, int? abitBarcode, bool closeAbit)
         {
             InitializeComponent();
             _Id = null;
            
             _abitBarc = abitBarcode;
+            _personBarc = personBarcode;
             _closeAbit = closeAbit;
             tcCard = tabCard;
-
-            if (fOwner != null)
-                this.formOwner = fOwner;
-
-            if (fOwnerRwInd.HasValue)
-                this.ownerRowIndex = fOwnerRwInd.Value;
+            
+            if (_abitBarc == null)
+                _closeAbit = true;
 
             InitControls();     
         }      
@@ -62,12 +62,14 @@ namespace Priem
             _bdc = MainClass.Bdc;
             _isModified = true;
 
-            _personBarc = (int)_bdcInet.GetValue(string.Format("SELECT Person.Barcode FROM qAbiturient INNER JOIN Person ON qAbiturient.PersonId = Person.Id WHERE qAbiturient.CommitNumber = {0}", _abitBarc));
+            if (_personBarc == null)
+                _personBarc = (int)_bdcInet.GetValue(string.Format("SELECT Person.Barcode FROM Abiturient INNER JOIN Person ON Abiturient.PersonId = Person.Id WHERE Abiturient.ApplicationCommitNumber = {0}", _abitBarc));
 
             lblBarcode.Text = _personBarc.ToString();
-            lblBarcode.Text += @"\" + _abitBarc.ToString();
+            if (_abitBarc != null)
+                lblBarcode.Text += @"\" + _abitBarc.ToString();
 
-            _docs = new DocsClass(_personBarc, _abitBarc);
+            _docs = new DocsClass(_personBarc.Value, _abitBarc);
 
             tbNum.Enabled = false;
 
@@ -76,6 +78,9 @@ namespace Priem
 
             chbHostelAbitYes.Checked = false;
             chbHostelAbitNo.Checked = false;
+            chbHostelEducYes.Checked = false;
+            chbHostelEducNo.Checked = false;
+
             cbHEQualification.DropDownStyle = ComboBoxStyle.DropDown;
             
             try
@@ -83,13 +88,15 @@ namespace Priem
                 using (PriemEntities context = new PriemEntities())
                 {
                     ComboServ.FillCombo(cbPassportType, HelpClass.GetComboListByTable("ed.PassportType"), true, false);
-                    ComboServ.FillCombo(cbCountry, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY LevelOfUsing DESC, Name"), true, false);
-                    ComboServ.FillCombo(cbNationality, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY LevelOfUsing DESC, Name"), true, false);
+                    ComboServ.FillCombo(cbCountry, HelpClass.GetComboListByTable("ed.Country", "ORDER BY Distance, Name"), true, false);
+                    ComboServ.FillCombo(cbNationality, HelpClass.GetComboListByTable("ed.Country", "ORDER BY Distance, Name"), true, false);
                     ComboServ.FillCombo(cbRegion, HelpClass.GetComboListByTable("ed.Region", "ORDER BY Distance, Name"), true, false);
+                    ComboServ.FillCombo(cbRegionEduc, HelpClass.GetComboListByTable("ed.Region", "ORDER BY Distance, Name"), true, false);
                     ComboServ.FillCombo(cbLanguage, HelpClass.GetComboListByTable("ed.Language"), true, false);
-                    ComboServ.FillCombo(cbCountryEduc, HelpClass.GetComboListByTable("ed.ForeignCountry", "ORDER BY LevelOfUsing DESC, Name"), true, false);                    
+                    ComboServ.FillCombo(cbCountryEduc, HelpClass.GetComboListByTable("ed.Country", "ORDER BY Distance, Name"), true, false);                    
                     ComboServ.FillCombo(cbHEStudyForm, HelpClass.GetComboListByTable("ed.StudyForm"), true, false);
-                    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType"), false, false);
+                    ComboServ.FillCombo(cbMSStudyForm, HelpClass.GetComboListByTable("ed.StudyForm"), true, false);
+                    ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType", "ORDER BY 1"), true, false);
 
                     cbSchoolCity.DataSource = context.ExecuteStoreQuery<string>("SELECT DISTINCT ed.Person_EducationInfo.SchoolCity AS Name FROM ed.Person_EducationInfo WHERE ed.Person_EducationInfo.SchoolCity > '' ORDER BY 1");
                     cbAttestatSeries.DataSource = context.ExecuteStoreQuery<string>("SELECT DISTINCT ed.Person_EducationInfo.AttestatSeries AS Name FROM ed.Person_EducationInfo WHERE ed.Person_EducationInfo.AttestatSeries > '' ORDER BY 1");
@@ -100,28 +107,14 @@ namespace Priem
                     cbHEQualification.SelectedIndex = -1;
                     
                     ComboServ.FillCombo(cbLanguage, HelpClass.GetComboListByTable("ed.Language"), true, false);
+                }
 
-                    chbHostelEducYes.Checked = false;
-                    chbHostelEducNo.Checked = false;
-                }               
-
-                //ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByTable("ed.SchoolType", "ORDER BY 1"), true, false);  
-                //ComboServ.FillCombo(cbSchoolType, HelpClass.GetComboListByQuery("SELECT Cast(ed.SchoolType.Id as nvarchar(100)) AS Id, ed.SchoolType.Name FROM ed.SchoolType WHERE ed.SchoolType.Id = 4 ORDER BY 1"), true, false);
-                //tbSchoolNum.Visible = false;
-                //tbSchoolName.Width = 200;
-                //lblSchoolNum.Visible = false;
-               
-                //gbAtt.Visible = false;
-                //gbDipl.Visible = true;
-                
-                //chbIsExcellent.Text = "Диплом с отличием";
-                //btnAttMarks.Visible = false;
-                //gbSchool.Visible = false;                   
-
-                //gbEduc.Location = new Point(11, 7);
-                //gbFinishStudy.Location = new Point(11, 222);
-
-                //tpDocs.Parent = null;
+                // ЕГЭ только для 1 курса!
+                if (MainClass.dbType != PriemType.Priem)
+                {
+                    tpEge.Parent = null;
+                    tpSecond.Parent = null;
+                }
 
                 if (_closeAbit)
                     tpApplication.Parent = null;
@@ -131,22 +124,47 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при инициализации формы " + exc.Message);
             }
         }
-
         protected override bool IsForReadOnly()
         {
             return !MainClass.RightsToEditCards();
         }
-        
+        protected override void SetReadOnlyFieldsAfterFill()
+        {
+            base.SetReadOnlyFieldsAfterFill();
+
+            if (_closePerson)
+            {
+                tcCard.SelectedTab = tpApplication;
+
+                foreach (TabPage tp in tcCard.TabPages)
+                {
+                    if (tp != tpApplication && tp != tpDocs)
+                    {
+                        foreach (Control control in tp.Controls)
+                        {
+                            control.Enabled = false;
+                            foreach (Control crl in control.Controls)
+                                crl.Enabled = false;
+                        }
+                    }
+                }
+            }
+
+            if (MainClass.dbType == PriemType.PriemMag)
+            {
+                btnSaveChange.Text = "Одобрить";
+                btnSaveChange.Enabled = (MainClass.bMagImportApplicationsEnabled || MainClass.IsTestDB);
+            }
+        }
+
         #region handlers
 
-        //инициализация обработчиков мегакомбов
         protected override void InitHandlers()
         {
             cbSchoolType.SelectedIndexChanged += new EventHandler(UpdateAfterSchool);
             cbCountry.SelectedIndexChanged += new EventHandler(UpdateAfterCountry);
             cbCountryEduc.SelectedIndexChanged += new EventHandler(UpdateAfterCountryEduc);
         }
-
         protected override void NullHandlers()
         {
             cbSchoolType.SelectedIndexChanged -= new EventHandler(UpdateAfterSchool);
@@ -156,25 +174,20 @@ namespace Priem
 
         private void UpdateAfterSchool(object sender, EventArgs e)
         {
-            if (SchoolTypeId == MainClass.educSchoolId)
+            if (SchoolTypeId == 1)
             {
                 gbAtt.Visible = true;
                 gbDipl.Visible = false;
-                tbSchoolName.Width = 217;
             }
             else
             {
-                if (SchoolTypeId == 4)
-                    tbSchoolName.Width = 281;
-                else
-                    tbSchoolName.Width = 217;
-                gbAtt.Visible = false;
                 gbDipl.Visible = true;
+                gbAtt.Visible = false;
             }
         }
         private void UpdateAfterCountry(object sender, EventArgs e)
         {
-            if (CountryId == MainClass.countryRussiaId_Foreign)
+            if (CountryId == MainClass.countryRussiaId)
             {
                 cbRegion.Enabled = true;
                 cbRegion.SelectedItem = "нет";
@@ -187,7 +200,7 @@ namespace Priem
         }
         private void UpdateAfterCountryEduc(object sender, EventArgs e)
         {
-            if (CountryEducId == MainClass.countryRussiaId_Foreign)
+            if (CountryEducId == MainClass.countryRussiaId)
                 chbEkvivEduc.Visible = false;
             else
                 chbEkvivEduc.Visible = true;
@@ -200,8 +213,31 @@ namespace Priem
         {
             chbHostelAbitYes.Checked = !chbHostelAbitNo.Checked;
         }
+        private void tabCard_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.D1)
+                this.tcCard.SelectedIndex = 0;
+            if (e.Control && e.KeyCode == Keys.D2)
+                this.tcCard.SelectedIndex = 1;
+            if (e.Control && e.KeyCode == Keys.D3)
+                this.tcCard.SelectedIndex = 2;
+            if (e.Control && e.KeyCode == Keys.D4)
+                this.tcCard.SelectedIndex = 3;
+            if (e.Control && e.KeyCode == Keys.D5)
+                this.tcCard.SelectedIndex = 4;
+            if (e.Control && e.KeyCode == Keys.D6)
+                this.tcCard.SelectedIndex = 5;
+            if (e.Control && e.KeyCode == Keys.D7)
+                this.tcCard.SelectedIndex = 6;
+            if (e.Control && e.KeyCode == Keys.D8)
+                this.tcCard.SelectedIndex = 7;
+            if (e.Control && e.KeyCode == Keys.S)
+                SaveRecord();
+        }
 
         #endregion
+
+        #region Fill Card
 
         protected override void FillCard()
         {
@@ -220,7 +256,372 @@ namespace Priem
                 WinFormsServ.Error("Ошибка при заполнении формы " + ex.Message);
             }
         }
+        private extPerson GetPerson()
+        {
+            if (_personBarc == null)
+                return null;
 
+            try
+            {
+                if (!MainClass.CheckPersonBarcode(_personBarc))
+                {
+                    _closePerson = true;
+
+                    using (PriemEntities context = new PriemEntities())
+                    {
+                        extPerson person = (from pers in context.extPerson
+                                            where pers.Barcode == _personBarc
+                                            select pers).FirstOrDefault();
+
+                        personId = person.Id;
+
+                        tbNum.Text = person.PersonNum.ToString();
+                        this.Text = "ПРОВЕРКА ДАННЫХ " + person.FIO;
+
+                        return person;
+                    }
+                }
+                else
+                {
+                    if (_personBarc == 0)
+                        return null;
+
+                    _closePerson = false;
+                    personId = null;
+
+                    tcCard.SelectedIndex = 0;
+                    tbSurname.Focus();
+
+                    extPerson person = load.GetPersonByBarcode(_personBarc.Value);
+
+                    this.Text = "ЗАГРУЗКА " + person.FIO;
+                    return person;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                WinFormsServ.Error("Ошибка при заполнении формы " + ex.Message);
+                return null;
+            }
+        }
+        private void FillPersonData(extPerson person)
+        {
+            if (person == null)
+            {
+                WinFormsServ.Error("Не найдены записи!");
+                _isModified = false;
+                this.Close();
+            }
+
+            try
+            {
+                PersonName = person.Name;
+                SecondName = person.SecondName;
+                Surname = person.Surname;
+                BirthDate = person.BirthDate;
+                BirthPlace = person.BirthPlace;
+                PassportTypeId = person.PassportTypeId;
+                PassportSeries = person.PassportSeries;
+                PassportNumber = person.PassportNumber;
+                PassportAuthor = person.PassportAuthor;
+                PassportDate = person.PassportDate;
+                PassportCode = person.PassportCode;
+                PersonalCode = person.PersonalCode;
+                SNILS = person.SNILS;
+                Sex = person.Sex;
+                CountryId = person.CountryId;
+                NationalityId = person.NationalityId;
+                RegionId = person.RegionId;
+                Phone = person.Phone;
+                Mobiles = person.Mobiles;
+                Email = person.Email;
+                Code = person.Code;
+                City = person.City;
+                Street = person.Street;
+                House = person.House;
+                Korpus = person.Korpus;
+                Flat = person.Flat;
+                CodeReal = person.CodeReal;
+                CityReal = person.CityReal;
+                StreetReal = person.StreetReal;
+                HouseReal = person.HouseReal;
+                KorpusReal = person.KorpusReal;
+                FlatReal = person.FlatReal;
+                KladrCode = person.KladrCode;
+                HostelAbit = person.HostelAbit;
+                HostelEduc = person.HostelEduc;
+                LanguageId = person.LanguageId;
+                Stag = person.Stag;
+                WorkPlace = person.WorkPlace;
+                MSVuz = person.MSVuz;
+                MSCourse = person.MSCourse;
+                MSStudyFormId = person.MSStudyFormId;
+                Privileges = person.Privileges;
+                ExtraInfo = person.ExtraInfo;
+                PersonInfo = person.PersonInfo;
+                ScienceWork = person.ScienceWork;
+                StartEnglish = person.StartEnglish;
+                EnglishMark = person.EnglishMark;
+
+                FillEducationData(load.GetPersonEducationDocumentsByBarcode(_personBarc.Value));
+
+                if (MainClass.dbType == PriemType.Priem)
+                {
+                    DataTable dtEge = load.GetPersonEgeByBarcode(_personBarc.Value);
+                    FillEgeFirst(dtEge);
+                }
+            }
+            catch (DataException de)
+            {
+                WinFormsServ.Error("Ошибка при заполнении формы (DataException)" + de.Message);
+            }
+            catch (Exception ex)
+            {
+                WinFormsServ.Error("Ошибка при заполнении формы " + ex.Message);
+            }
+        }
+        private void FillEgeFirst(DataTable dtEge)
+        {
+            if (MainClass.dbType == PriemType.PriemMag)
+                return;
+
+            try
+            {
+                DataTable examTable = new DataTable();
+
+                DataColumn clm;
+                clm = new DataColumn();
+                clm.ColumnName = "Предмет";
+                clm.ReadOnly = true;
+                examTable.Columns.Add(clm);
+
+                clm = new DataColumn();
+                clm.ColumnName = "ExamId";
+                clm.ReadOnly = true;
+                examTable.Columns.Add(clm);
+
+                clm = new DataColumn();
+                clm.ColumnName = "Баллы";
+                examTable.Columns.Add(clm);
+
+                clm = new DataColumn();
+                clm.ColumnName = "Номер сертификата";
+                examTable.Columns.Add(clm);
+
+                clm = new DataColumn();
+                clm.ColumnName = "Типографский номер";
+                examTable.Columns.Add(clm);
+
+                clm = new DataColumn();
+                clm.ColumnName = "EgeCertificateId";
+                examTable.Columns.Add(clm);
+
+
+                string defQuery = "SELECT ed.EgeExamName.Name AS 'Предмет', ed.EgeExamName.Id AS ExamId FROM ed.EgeExamName";
+                DataSet ds = _bdc.GetDataSet(defQuery);
+                foreach (DataRow dsRow in ds.Tables[0].Rows)
+                {
+                    DataRow newRow;
+                    newRow = examTable.NewRow();
+                    newRow["Предмет"] = dsRow["Предмет"].ToString();
+                    newRow["ExamId"] = dsRow["ExamId"].ToString();
+                    examTable.Rows.Add(newRow);
+                }
+
+                foreach (DataRow dsRow in dtEge.Rows)
+                {
+                    for (int i = 0; i < examTable.Rows.Count; i++)
+                    {
+                        if (examTable.Rows[i]["ExamId"].ToString() == dsRow["ExamId"].ToString())
+                        {
+                            examTable.Rows[i]["Баллы"] = dsRow["Value"].ToString();
+                            examTable.Rows[i]["Номер сертификата"] = dsRow["Number"].ToString();
+                        }
+                    }
+                }
+
+                DataView dv = new DataView(examTable);
+                dv.AllowNew = false;
+
+                dgvEGE.DataSource = dv;
+                dgvEGE.Columns["ExamId"].Visible = false;
+                dgvEGE.Columns["EgeCertificateId"].Visible = false;
+
+                dgvEGE.Columns["Предмет"].Width = 162;
+                dgvEGE.Columns["Баллы"].Width = 45;
+                dgvEGE.Columns["Номер сертификата"].Width = 110;
+                dgvEGE.ReadOnly = false;
+
+                dgvEGE.Update();
+            }
+            catch (DataException de)
+            {
+                WinFormsServ.Error("Ошибка при заполнении формы " + de.Message);
+            }
+        }
+        private void FillFiles()
+        {
+            List<KeyValuePair<string, string>> lstFiles = _docs.UpdateFiles();
+            if (lstFiles == null || lstFiles.Count == 0)
+                return;
+
+            dgvFiles.DataSource = _docs.UpdateFilesTable();
+            if (dgvFiles.Rows.Count > 0)
+            {
+                foreach (DataGridViewColumn clm in dgvFiles.Columns)
+                    clm.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                
+                if (!dgvFiles.Columns.Contains("Открыть"))
+                {
+                    DataGridViewCheckBoxCell cl = new DataGridViewCheckBoxCell();
+                    cl.TrueValue = true;
+                    cl.FalseValue = false;
+
+                    DataGridViewCheckBoxColumn clm = new DataGridViewCheckBoxColumn();
+                    clm.CellTemplate = cl;
+                    clm.Name = "Открыть";
+                    dgvFiles.Columns.Add(clm);
+                    dgvFiles.Columns["Открыть"].DisplayIndex = 0;
+                    dgvFiles.Columns["Открыть"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader; 
+                }
+                if (dgvFiles.Columns.Contains("Id"))
+                    dgvFiles.Columns["Id"].Visible = false;
+                if (dgvFiles.Columns.Contains("FileExtention"))
+                    dgvFiles.Columns["FileExtention"].Visible = false;
+                dgvFiles.Columns["FileName"].HeaderText = "Файл";
+                dgvFiles.Columns["Comment"].HeaderText = "Комментарий";
+                dgvFiles.Columns["FileTypeName"].HeaderText = "Тип файла";
+                dgvFiles.Columns["FileName"].ReadOnly = true;
+                dgvFiles.Columns["Comment"].ReadOnly = true;
+                dgvFiles.Columns["FileTypeName"].ReadOnly = true;
+            }
+        }
+        private void btnOpenFile_Click(object sender, EventArgs e)
+        {
+            List<KeyValuePair<string, string>> lstFiles = new List<KeyValuePair<string, string>>();
+            lstFiles = new List<KeyValuePair<string, string>>();
+            foreach (DataGridViewRow rw in dgvFiles.Rows)
+            {
+                DataGridViewCheckBoxCell cell = rw.Cells["Открыть"] as DataGridViewCheckBoxCell;
+                if (cell.Value == cell.TrueValue)
+                {
+                    if (dgvFiles.Columns.Contains("FileName"))
+                    {
+                        string fileName = rw.Cells["FileName"].Value.ToString(); 
+                        KeyValuePair<string, string> file = new KeyValuePair<string, string>(rw.Cells["Id"].Value.ToString(), fileName);
+                        lstFiles.Add(file);
+                    }
+                }
+            }
+            _docs.OpenFile(lstFiles);
+        }
+        private void btnDocCardOpen_Click(object sender, EventArgs e)
+        {
+            if (_personBarc != null)
+                new PriemLib.DocCard(_personBarc.Value, null, false).Show();
+        }
+
+        #region Applications
+        public void FillApplication()
+        {
+            try
+            {
+                LstCompetitions = load.GetCompetitionList(_abitBarc.Value);
+                if (LstCompetitions.Count == 0)
+                {
+                    WinFormsServ.Error("Заявления отсутствуют!");
+                    _isModified = false;
+                    this.Close();
+                }
+
+                tbApplicationVersion.Text = (LstCompetitions[0].VersionNum.HasValue ? "№ " + LstCompetitions[0].VersionNum.Value.ToString() : "n/a") +
+                    (LstCompetitions[0].VersionDate.HasValue ? (" от " + LstCompetitions[0].VersionDate.Value.ToShortDateString() + " " + LstCompetitions[0].VersionDate.Value.ToShortTimeString()) : "n/a");
+
+                UpdateApplicationGrid();
+            }
+            catch (Exception ex)
+            {
+                WinFormsServ.Error("Ошибка при заполнении формы заявления" + ex.Message);
+            }
+        }
+        private void UpdateApplicationGrid()
+        {
+            dgvApplications.DataSource = LstCompetitions.OrderBy(x => x.Priority)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Priority,
+                    x.LicenseProgramName,
+                    x.ObrazProgramName,
+                    x.ProfileName,
+                    x.StudyFormName,
+                    x.StudyBasisName,
+                    HasCompetition = x.HasCompetition || x.IsApprovedByComission,
+                    comp = x.lstInnerEntryInEntry.Count > 0 ? "есть приоритеты" : ""
+                }).ToList();
+
+            dgvApplications.Columns["Id"].Visible = false;
+            dgvApplications.Columns["Priority"].HeaderText = "Приор";
+            dgvApplications.Columns["Priority"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            dgvApplications.Columns["LicenseProgramName"].HeaderText = "Направление";
+            dgvApplications.Columns["ObrazProgramName"].HeaderText = "Образ. программа";
+            dgvApplications.Columns["ProfileName"].HeaderText = "Профиль";
+            dgvApplications.Columns["StudyFormName"].HeaderText = "Форма обуч";
+            dgvApplications.Columns["StudyBasisName"].HeaderText = "Основа обуч";
+            dgvApplications.Columns["comp"].HeaderText = "";
+            dgvApplications.Columns["HasCompetition"].Visible = false;
+        }
+        private void dgvApplications_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                if ((bool)dgvApplications["HasCompetition", e.RowIndex].Value)
+                {
+                    e.CellStyle.BackColor = Color.Cyan;
+                    e.CellStyle.SelectionBackColor = Color.Cyan;
+                }
+                else
+                {
+                    e.CellStyle.BackColor = Color.Coral;
+                    e.CellStyle.SelectionBackColor = Color.Coral;
+                }
+            }
+        }
+        private void dgvApplications_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rwNum = e.RowIndex;
+            OpenCardCompetitionInInet(rwNum);
+        }
+        private void btnOpenCompetition_Click(object sender, EventArgs e)
+        {
+            if (dgvApplications.SelectedCells.Count == 0)
+                return;
+
+            int rwNum = dgvApplications.SelectedCells[0].RowIndex;
+            OpenCardCompetitionInInet(rwNum);
+        }
+        private ShortCompetition GetCompFromGrid(int rwNum)
+        {
+            if (rwNum < 0)
+                return null;
+
+            Guid Id = (Guid)dgvApplications["Id", rwNum].Value;
+            return LstCompetitions.Where(x => x.Id == Id).FirstOrDefault();
+        }
+        private void OpenCardCompetitionInInet(int rwNum)
+        {
+            if (rwNum >= 0)
+            {
+                var ent = GetCompFromGrid(rwNum);
+                if (ent != null)
+                {
+                    var crd = new CardCompetitionInInet(ent);
+                    crd.OnUpdate += UpdateCommitCompetition;
+                    crd.Show();
+                }
+            }
+        }
         private void UpdateCommitCompetition(ShortCompetition comp)
         {
             int ind = LstCompetitions.FindIndex(x => comp.Id == x.Id);
@@ -255,406 +656,106 @@ namespace Priem
                 LstCompetitions[ind].HasCompetition = comp.HasCompetition;
                 LstCompetitions[ind].ChangeEntry();
 
-                string userName = MainClass.GetUserName();
-
-                string query = @"UPDATE [Application] SET IsApprovedByComission=1, ApproverName=@ApproverName, CompetitionId=@CompId, 
-DocInsertDate=@DocInsertDate, IsCommonRussianCompetition=@IsCommonRussianCompetition, IsGosLine=@IsGosLine WHERE Id=@Id";
-                _bdcInet.ExecuteQuery(query, new SortedList<string, object>() { 
-                    { "@Id", comp.Id }, 
-                    { "@CompId", comp.CompetitionId }, 
-                    { "@DocInsertDate", comp.DocInsertDate }, 
-                    { "@ApproverName", userName }, 
-                    { "@IsCommonRussianCompetition", comp.IsCommonRussianCompetition },
-                    { "@IsGosLine", comp.IsGosLine } 
-                });
+                load.UpdateApplicationSetApprovedByComission(comp);
 
                 UpdateApplicationGrid();
             }
         }
+        #endregion
 
-        private void FillFiles()
+        #region EducationInfo
+        private void FillEducationData(List<Person_EducationInfo> lstVals)
         {
-            List<KeyValuePair<string, string>> lstFiles = _docs.UpdateFiles();
-            if (lstFiles == null || lstFiles.Count == 0)
-                return;
+            lstEducationInfo = lstVals;
 
-            chlbFile.DataSource = new BindingSource(lstFiles, null);
-            chlbFile.ValueMember = "Key";
-            chlbFile.DisplayMember = "Value";   
+            dgvEducationDocuments.DataSource = lstVals.Select(x => new
+            {
+                x.Id,
+                School = x.SchoolName,
+                Series = (x.SchoolTypeId == 1 ? x.AttestatSeries : x.DiplomSeries),
+                Num = x.SchoolTypeId == 1 ? x.AttestatNum : x.DiplomNum,
+            }).ToList();
+
+            dgvEducationDocuments.Columns["Id"].Visible = false;
+            dgvEducationDocuments.Columns["School"].HeaderText = "Уч. учреждение";
+            dgvEducationDocuments.Columns["School"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgvEducationDocuments.Columns["Series"].HeaderText = "Серия";
+            dgvEducationDocuments.Columns["Series"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgvEducationDocuments.Columns["Num"].HeaderText = "Номер";
+            dgvEducationDocuments.Columns["Num"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+            if (lstVals.Count > 0)
+                ViewEducationInfo(lstVals.First().Id);
+
+            _currentEducRow = 0;
         }
-
-        private extPersonAll GetPerson()
+        private void dgvEducationDocuments_CurrentCellChanged(object sender, EventArgs e)
         {
-            if (_personBarc == null)
-                return null;
-
-            try
-            {
-                if (!MainClass.CheckPersonBarcode(_personBarc))
+            if (dgvEducationDocuments.CurrentRow != null)
+                if (dgvEducationDocuments.CurrentRow.Index != _currentEducRow)
                 {
-                    _closePerson = true;
-
-                    using (PriemEntities context = new PriemEntities())
-                    {
-                        extPersonAll person = (from pers in context.extPersonAll
-                                            where pers.Barcode == _personBarc
-                                            select pers).FirstOrDefault();
-
-                        personId = person.Id;
-
-                        tbNum.Text = person.PersonNum.ToString();
-                        this.Text = "ПРОВЕРКА ДАННЫХ " + person.FIO;
-                        
-                        return person;
-                    }
+                    _currentEducRow = dgvEducationDocuments.CurrentRow.Index;
+                    ViewEducationInfo(lstEducationInfo[_currentEducRow].Id);
                 }
-                else
-                {
-                    if (_personBarc == 0)
-                        return null;
-
-                    _closePerson = false;
-                    personId = null;
-
-                    tcCard.SelectedIndex = 0;
-                    tbSurname.Focus();
-
-                    extPersonAll person = load.GetPersonByBarcode(_personBarc); 
-                    
-                    this.Text = "ЗАГРУЗКА " + person.FIO;
-                    return person;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                WinFormsServ.Error("Ошибка при заполнении формы " + ex.Message);
-                return null;
-            }       
         }
-
-        private void FillPersonData(extPersonAll person)
+        private void ViewEducationInfo(int id)
         {
-            if (person == null)
+            int ind = lstEducationInfo.FindIndex(x => x.Id == id);
+
+            CountryEducId = lstEducationInfo[ind].CountryEducId;
+            RegionEducId = lstEducationInfo[ind].RegionEducId;
+
+            tbEqualityDocumentNumber.Visible = CountryEducId != MainClass.countryRussiaId;
+            chbEkvivEduc.Visible = CountryEducId != MainClass.countryRussiaId;
+            IsEqual = lstEducationInfo[ind].IsEqual;
+            EqualDocumentNumber = lstEducationInfo[ind].EqualDocumentNumber;
+
+            SchoolTypeId = lstEducationInfo[ind].SchoolTypeId;
+            if (SchoolTypeId == 1)
             {
-                WinFormsServ.Error("Не найдены записи!");
-                _isModified = false;
-                this.Close();
+                gbAtt.Visible = true;
+                gbDipl.Visible = false;
+                AttestatSeries = lstEducationInfo[ind].AttestatSeries;
+                AttestatNum = lstEducationInfo[ind].AttestatNum;
+
+                gbFinishStudy.Visible = false;
+                lblSchoolNum.Visible = true;
+                tbSchoolNum.Visible = true;
+                btnAttMarks.Visible = true;
+                chbIsExcellent.Text = "Медалист (отличник)";
             }
-
-            try
+            else
             {
-                PersonName = person.Name;
-                SecondName = person.SecondName;
-                Surname = person.Surname;
-                BirthDate = person.BirthDate;
-                BirthPlace = person.BirthPlace;
-                PassportTypeId = person.PassportTypeId;
-                PassportSeries = person.PassportSeries;
-                PassportNumber = person.PassportNumber;
-                PassportAuthor = person.PassportAuthor;
-                PassportDate = person.PassportDate;
-                PassportCode = person.PassportCode;
-                PersonalCode = person.PersonalCode;
-                Sex = person.Sex;
-                CountryId = person.ForeignCountryId;
-                NationalityId = person.ForeignNationalityId;
-                RegionId = person.RegionId;
-                Phone = person.Phone;
-                Mobiles = person.Mobiles;
-                Email = person.Email;
-                Code = person.Code;
-                City = person.City;
-                Street = person.Street;
-                House = person.House;
-                Korpus = person.Korpus;
-                Flat = person.Flat;
+                gbAtt.Visible = false;
+                gbDipl.Visible = true;
+                DiplomSeries = lstEducationInfo[ind].DiplomSeries;
+                DiplomNum = lstEducationInfo[ind].DiplomNum;
 
-                CodeReal = person.CodeReal;
-                CityReal = person.CityReal;
-                StreetReal = person.StreetReal;
-                HouseReal = person.HouseReal;
-                KorpusReal = person.KorpusReal;
-                FlatReal = person.FlatReal;
+                gbFinishStudy.Visible = true;
+                lblSchoolNum.Visible = false;
+                tbSchoolNum.Visible = false;
+                btnAttMarks.Visible = false;
+                chbIsExcellent.Text = "Диплом с отличием";
 
-                HostelAbit = person.HostelAbit ?? false;
-                HostelEduc = person.HostelEduc ?? false;
-                IsExcellent = person.IsExcellent ?? false;
-                
-                LanguageId = person.LanguageId;
-                SchoolCity = person.SchoolCity;
-                SchoolTypeId = person.SchoolTypeId;
-                
-                SchoolName = person.SchoolName;
-                SchoolNum = person.SchoolNum;
-                SchoolExitYear = person.SchoolExitYear;
-                CountryEducId = person.ForeignCountryEducId;
-                RegionEducId = person.RegionEducId;
-                
-                IsEqual = person.IsEqual ?? false;
-                EqualDocumentNumber = person.EqualDocumentNumber;
-                HasTRKI = person.HasTRKI ?? false;
-                TRKISertificateNumber = person.TRKICertificateNumber;
-
-                AttestatRegion = person.AttestatRegion;
-                AttestatSeries = person.AttestatSeries;
-                AttestatNum = person.AttestatNum;
-                DiplomSeries = person.DiplomSeries;
-                DiplomNum = person.DiplomNum;
-                SchoolAVG = person.SchoolAVG;
-                HighEducation = person.HighEducation;
-                HEProfession = person.HEProfession;
-                HEQualification = person.HEQualification;
-                HEEntryYear = person.HEEntryYear;
-                HEExitYear = person.HEExitYear;
-                HEWork = person.HEWork;
-                HEStudyFormId = person.HEStudyFormId;
-                Stag = person.Stag;
-                WorkPlace = person.WorkPlace;
-                Privileges = person.Privileges;
-                ExtraInfo = person.ExtraInfo;
-                PersonInfo = person.PersonInfo;
-                ScienceWork = person.ScienceWork;
-                StartEnglish = person.StartEnglish ?? false;
-                EnglishMark = person.EnglishMark;
-
-
-
-                if (SchoolTypeId != 1)
-                {
-                    gbAtt.Visible = false;
-                    gbDipl.Visible = true;
-
-                    chbIsExcellent.Text = "Диплом с отличием";
-                    btnAttMarks.Visible = false;
-                    gbSchool.Visible = false;
-
-                    gbEduc.Location = gbSchool.Location;
-                    gbFinishStudy.Location = new Point(gbFinishStudy.Location.X, gbFinishStudy.Location.Y - gbSchool.Height);
-
-                }
-                else
-                {
-                    gbAtt.Visible = true;
-                    gbDipl.Visible = false;
-                }
+                HighEducation = lstEducationInfo[ind].HighEducation;
+                HEProfession = lstEducationInfo[ind].HEProfession;
+                HEQualification = lstEducationInfo[ind].HEQualification;
+                HEEntryYear = lstEducationInfo[ind].HEEntryYear;
+                HEExitYear = lstEducationInfo[ind].HEExitYear;
+                HEWork = lstEducationInfo[ind].HEWork;
+                HEStudyFormId = lstEducationInfo[ind].HEStudyFormId;
             }
-            catch (DataException de)
-            {
-                WinFormsServ.Error("Ошибка при заполнении формы (DataException)" + de.Message);
-            }
-            catch (Exception ex)
-            {
-                WinFormsServ.Error("Ошибка при заполнении формы " + ex.Message);
-            } 
-        }
-
-        public void FillApplication()
-        {
-            try
-            {
-                string query =
-@"SELECT Abiturient.[Id]
-,[Priority]
-,[PersonId]
-,[Priority]
-,[Barcode]
-,[DateOfStart]
-,[EntryId]
-,[FacultyId]
-,[FacultyName]
-,[LicenseProgramId]
-,[LicenseProgramCode]
-,[LicenseProgramName]
-,[ObrazProgramId]
-,[ObrazProgramCrypt]
-,[ObrazProgramName]
-,[ProfileId]
-,[ProfileName]
-,[StudyBasisId]
-,[StudyBasisName]
-,[StudyFormId]
-,[StudyFormName]
-,[StudyLevelId]
-,[StudyLevelName]
-,[IsSecond]
-,[IsReduced]
-,[IsParallel]
-,[IsGosLine]
-,[CommitId]
-,[DateOfStart]
-,(SELECT MAX(ApplicationCommitVersion.Id) FROM ApplicationCommitVersion WHERE ApplicationCommitVersion.CommitId = [Abiturient].CommitId) AS VersionNum
-,(SELECT MAX(ApplicationCommitVersion.VersionDate) FROM ApplicationCommitVersion WHERE ApplicationCommitVersion.CommitId = [Abiturient].CommitId) AS VersionDate
-,ApplicationCommit.IntNumber
-,[Abiturient].HasInnerPriorities
-,[Abiturient].IsApprovedByComission
-,[Abiturient].CompetitionId
-,[Abiturient].ApproverName
-,[Abiturient].DocInsertDate
-,[Abiturient].IsCommonRussianCompetition
-FROM [Abiturient] 
-INNER JOIN ApplicationCommit ON ApplicationCommit.Id = Abiturient.CommitId
-WHERE IsCommited = 1 AND IntNumber=@CommitId";
-
-                DataTable tbl = _bdcInet.GetDataSet(query, new SortedList<string, object>() { { "@CommitId", _abitBarc } }).Tables[0];
-
-                LstCompetitions =
-                         (from DataRow rw in tbl.Rows
-                          select new ShortCompetition(rw.Field<Guid>("Id"), rw.Field<Guid>("CommitId"), rw.Field<Guid>("EntryId"), rw.Field<Guid>("PersonId"),
-                              rw.Field<int?>("VersionNum"), rw.Field<DateTime?>("VersionDate"))
-                          {
-                              Barcode = rw.Field<int>("Barcode"),
-                              CompetitionId = rw.Field<int?>("CompetitionId") ?? (rw.Field<int>("StudyBasisId") == 1 ? 4 : 3),
-                              CompetitionName = "не указана",
-                              HasCompetition = rw.Field<bool>("IsApprovedByComission"),
-                              LicenseProgramId = rw.Field<int>("LicenseProgramId"),
-                              LicenseProgramName = rw.Field<string>("LicenseProgramName"),
-                              ObrazProgramId = rw.Field<int>("ObrazProgramId"),
-                              ObrazProgramName = rw.Field<string>("ObrazProgramName"),
-                              ProfileId = rw.Field<Guid?>("ProfileId"),
-                              ProfileName = rw.Field<string>("ProfileName"),
-                              StudyBasisId = rw.Field<int>("StudyBasisId"),
-                              StudyBasisName = rw.Field<string>("StudyBasisName"),
-                              StudyFormId = rw.Field<int>("StudyFormId"),
-                              StudyFormName = rw.Field<string>("StudyFormName"),
-                              StudyLevelId = rw.Field<int>("StudyLevelId"),
-                              StudyLevelName = rw.Field<string>("StudyLevelName"),
-                              FacultyId = rw.Field<int>("FacultyId"),
-                              FacultyName = rw.Field<string>("FacultyName"),
-                              DocDate = rw.Field<DateTime>("DateOfStart"),
-                              DocInsertDate = rw.Field<DateTime?>("DocInsertDate") ?? DateTime.Now,
-                              Priority = rw.Field<int>("Priority"),
-                              IsGosLine = rw.Field<bool>("IsGosLine"),
-                              HasInnerPriorities = rw.Field<bool>("HasInnerPriorities"),
-                              IsApprovedByComission = rw.Field<bool>("IsApprovedByComission"),
-                              ApproverName = rw.Field<string>("ApproverName"),
-                              lstObrazProgramsInEntry = new List<ShortObrazProgramInEntry>(),
-                              IsCommonRussianCompetition = rw.Field<bool>("IsCommonRussianCompetition"),
-                          }).ToList();
-
-                if (LstCompetitions.Count == 0)
-                {
-                    WinFormsServ.Error("Заявления отсутствуют!");
-                    _isModified = false;
-                    this.Close();
-                }
-
-                tbApplicationVersion.Text = (LstCompetitions[0].VersionNum.HasValue ? "№ " + LstCompetitions[0].VersionNum.Value.ToString() : "n/a") +
-                    (LstCompetitions[0].VersionDate.HasValue ? (" от " + LstCompetitions[0].VersionDate.Value.ToShortDateString() + " " + LstCompetitions[0].VersionDate.Value.ToShortTimeString()) : "n/a");
-
-
-                //ObrazProgramInEntry
-                foreach (var C in LstCompetitions.Where(x => x.HasInnerPriorities))
-                {
-                    C.lstObrazProgramsInEntry = new List<ShortObrazProgramInEntry>();
-                    query = @"SELECT ObrazProgramInEntryId, ObrazProgramInEntryPriority, ObrazProgramName, ProfileInObrazProgramInEntryId, ProfileInObrazProgramInEntryPriority, ProfileName, 
-ISNULL(CurrVersion, 1) AS CurrVersion, ISNULL(CurrDate, GETDATE()) AS CurrDate
-FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
-                    tbl = _bdcInet.GetDataSet(query, new SortedList<string, object>() { { "@AppId", C.Id } }).Tables[0];
-
-                    var data = (from DataRow rw in tbl.Rows
-                                select new
-                                {
-                                    ObrazProgramInEntryId = rw.Field<Guid>("ObrazProgramInEntryId"),
-                                    ObrazProgramInEntryPriority = rw.Field<int>("ObrazProgramInEntryPriority"),
-                                    ObrazProgramName = rw.Field<string>("ObrazProgramName"),
-                                    ProfileInObrazProgramInEntryId = rw.Field<Guid?>("ProfileInObrazProgramInEntryId"),
-                                    ProfileInObrazProgramInEntryPriority = rw.Field<int?>("ProfileInObrazProgramInEntryPriority"),
-                                    ProfileName = rw.Field<string>("ProfileName"),
-                                    CurrVersion = rw.Field<int>("CurrVersion"),
-                                    CurrDate = rw.Field<DateTime>("CurrDate")
-                                }).ToList();
-                    using (PriemEntities context = new PriemEntities())
-                    {
-                        foreach (var OPIE in data.Select(x => new { x.ObrazProgramInEntryId, x.ObrazProgramInEntryPriority, x.ObrazProgramName, x.CurrDate, x.CurrVersion }).Distinct())
-                        {
-
-
-                            var OP = new ShortObrazProgramInEntry(OPIE.ObrazProgramInEntryId, OPIE.ObrazProgramName) { ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority, CurrVersion = OPIE.CurrVersion, CurrDate = OPIE.CurrDate };
-                            OP.ListProfiles = new List<ShortProfileInObrazProgramInEntry>();
-                            int profPriorVal = 0;
-                            foreach (var PROF in data.Where(x => x.ObrazProgramInEntryId == OPIE.ObrazProgramInEntryId && x.ProfileInObrazProgramInEntryId.HasValue).Select(x => new { x.ProfileInObrazProgramInEntryId, ProfileInObrazProgramInEntryPriority = x.ProfileInObrazProgramInEntryPriority, x.ProfileName }).OrderBy(x => x.ProfileInObrazProgramInEntryPriority))
-                            {
-                                profPriorVal++;
-                                OP.ListProfiles.Add(new ShortProfileInObrazProgramInEntry(PROF.ProfileInObrazProgramInEntryId.Value, PROF.ProfileName) { ProfileInObrazProgramInEntryPriority = PROF.ProfileInObrazProgramInEntryPriority ?? profPriorVal });
-                            }
-
-                            C.lstObrazProgramsInEntry.Add(OP);
-                        }
-                    }
-                }
-
-                UpdateApplicationGrid();
-
-                //if (_closeAbit || _abitBarc == null)
-                //    return;
-            }
-            catch (Exception ex)
-            {
-                WinFormsServ.Error("Ошибка при заполнении формы заявления" + ex.Message);
-            }
-        }
-
-        private void UpdateApplicationGrid()
-        {
-            dgvApplications.DataSource = LstCompetitions.OrderBy(x => x.Priority)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Priority,
-                    x.LicenseProgramName,
-                    x.ObrazProgramName,
-                    x.ProfileName,
-                    x.StudyFormName,
-                    x.StudyBasisName,
-                    x.HasCompetition,
-                    comp = x.lstObrazProgramsInEntry.Count > 0 ? "приоритеты" : ""
-                }).ToList();
-            dgvApplications.Columns["Id"].Visible = false;
-            dgvApplications.Columns["Priority"].HeaderText = "Приор";
-            dgvApplications.Columns["Priority"].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            dgvApplications.Columns["LicenseProgramName"].HeaderText = "Направление";
-            dgvApplications.Columns["ObrazProgramName"].HeaderText = "Образ. программа";
-            dgvApplications.Columns["ProfileName"].HeaderText = "Профиль";
-            dgvApplications.Columns["StudyFormName"].HeaderText = "Форма обуч";
-            dgvApplications.Columns["StudyBasisName"].HeaderText = "Основа обуч";
-            dgvApplications.Columns["comp"].HeaderText = "";
-            dgvApplications.Columns["HasCompetition"].Visible = false;
-        }
-        private void dgvApplications_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                if ((bool)dgvApplications["HasCompetition", e.RowIndex].Value)
-                {
-                    e.CellStyle.BackColor = Color.Cyan;
-                    e.CellStyle.SelectionBackColor = Color.Cyan;
-                }
-            }
-        }
-
-        protected override void SetReadOnlyFieldsAfterFill()
-        {
-            base.SetReadOnlyFieldsAfterFill();
             
-            if (_closePerson)
-            {
-                tcCard.SelectedTab = tpApplication;
-
-                foreach (TabPage tp in tcCard.TabPages)
-                {
-                    if (tp != tpApplication && tp != tpDocs)
-                    {
-                        foreach (Control control in tp.Controls)
-                        {
-                            control.Enabled = false;
-                            foreach (Control crl in control.Controls)
-                                crl.Enabled = false;
-                        }
-                    }
-                }
-            }
+            SchoolAVG = lstEducationInfo[ind].SchoolAVG;
+            IsExcellent = lstEducationInfo[ind].IsExcellent;
+            SchoolCity = lstEducationInfo[ind].SchoolCity;
+            SchoolName = lstEducationInfo[ind].SchoolName;
+            SchoolNum = lstEducationInfo[ind].SchoolNum;
+            SchoolExitYear = lstEducationInfo[ind].SchoolExitYear;
         }
+        #endregion
+
+        #endregion
 
         #region Save
 
@@ -666,9 +767,9 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                 ObjectParameter boolPar = new ObjectParameter("result", typeof(bool));
 
                 if(_Id == null)
-                    context.CheckPersonIdent(Surname, PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatRegion, AttestatSeries, AttestatNum, boolPar);
+                    context.CheckPersonIdent(Surname, PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatSeries, AttestatNum, boolPar);
                 else
-                    context.CheckPersonIdentWithId(Surname, PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatRegion, AttestatSeries, AttestatNum, GuidId, boolPar);
+                    context.CheckPersonIdentWithId(Surname, PersonName, SecondName, BirthDate, PassportSeries, PassportNumber, AttestatSeries, AttestatNum, GuidId, boolPar);
 
                 return Convert.ToBoolean(boolPar.Value);
             }
@@ -695,7 +796,7 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                 epError.Clear();
 
             //Для О'Коннор сделал добавку в регулярное выражение: \'
-            if (!Regex.IsMatch(Surname, @"^[A-Za-zА-Яа-яёЁ\-\'\s]+$"))
+            if (!Regex.IsMatch(Surname, @"^[А-Яа-яёЁ\-\'\s]+$"))
             {
                 epError.SetError(tbSurname, "Неправильный формат");
                 tabCard.SelectedIndex = 0;
@@ -704,7 +805,7 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
             else
                 epError.Clear();
 
-            if (!Regex.IsMatch(PersonName, @"^[A-Za-zА-Яа-яёЁ\-\s]+$"))
+            if (!Regex.IsMatch(PersonName, @"^[А-Яа-яёЁ\-\s]+$"))
             {
                 epError.SetError(tbName, "Неправильный формат");
                 tabCard.SelectedIndex = 0;
@@ -713,7 +814,7 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
             else
                 epError.Clear();
 
-            if (!Regex.IsMatch(SecondName, @"^[A-Za-zА-Яа-яёЁ\-\s]*$"))
+            if (!Regex.IsMatch(SecondName, @"^[А-Яа-яёЁ\-\s]*$"))
             {
                 epError.SetError(tbSecondName, "Неправильный формат");
                 tabCard.SelectedIndex = 0;
@@ -727,33 +828,33 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                 SecondName = SecondName.Replace("-", "");
             }
 
-            //// проверка на англ. буквы
-            //if (!Util.IsRussianString(PersonName))
-            //{
-            //    epError.SetError(tbName, "Имя содержит английские символы, используйте только русскую раскладку");
-            //    tabCard.SelectedIndex = 0;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            // проверка на англ. буквы
+            if (!Util.IsRussianString(PersonName))
+            {
+                epError.SetError(tbName, "Имя содержит английские символы, используйте только русскую раскладку");
+                tabCard.SelectedIndex = 0;
+                return false;
+            }
+            else
+                epError.Clear();
 
-            //if (!Util.IsRussianString(Surname))
-            //{
-            //    epError.SetError(tbSurname, "Фамилия содержит английские символы, используйте только русскую раскладку");
-            //    tabCard.SelectedIndex = 0;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            if (!Util.IsRussianString(Surname))
+            {
+                epError.SetError(tbSurname, "Фамилия содержит английские символы, используйте только русскую раскладку");
+                tabCard.SelectedIndex = 0;
+                return false;
+            }
+            else
+                epError.Clear();
 
-            //if (!Util.IsRussianString(SecondName))
-            //{
-            //    epError.SetError(tbSecondName, "Отчество содержит английские символы, используйте только русскую раскладку");
-            //    tabCard.SelectedIndex = 0;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            if (!Util.IsRussianString(SecondName))
+            {
+                epError.SetError(tbSecondName, "Отчество содержит английские символы, используйте только русскую раскладку");
+                tabCard.SelectedIndex = 0;
+                return false;
+            }
+            else
+                epError.Clear();
 
             if (BirthDate == null)
             {
@@ -853,15 +954,6 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
             else
                 epError.Clear();
 
-            if (!chbHostelEducYes.Checked && !chbHostelEducNo.Checked)
-            {
-                epError.SetError(chbHostelEducNo, "Не указаны данные о предоставлении общежития");
-                tabCard.SelectedIndex = 1;
-                return false;
-            }
-            else
-                epError.Clear();
-
             if (!Regex.IsMatch(SchoolExitYear.ToString(), @"^\d{0,4}$"))
             {
                 epError.SetError(tbSchoolExitYear, "Неправильно указан год");
@@ -893,50 +985,50 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                     epError.Clear();
             }
 
-            //if (tbHEProfession.Text.Length >= 100)
-            //{
-            //    epError.SetError(tbHEProfession, "Длина поля превышает 100 символов.");
-            //    tabCard.SelectedIndex = 2;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            if (tbHEProfession.Text.Length >= 1000)
+            {
+                epError.SetError(tbHEProfession, "Длина поля превышает 1000 символов.");
+                tabCard.SelectedIndex = 2;
+                return false;
+            }
+            else
+                epError.Clear();
 
-            //if (tbScienceWork.Text.Length >= 2000)
-            //{
-            //    epError.SetError(tbScienceWork, "Длина поля превышает 2000 символов. Укажите только самое основное.");
-            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            if (tbScienceWork.Text.Length >= 2000)
+            {
+                epError.SetError(tbScienceWork, "Длина поля превышает 2000 символов. Укажите только самое основное.");
+                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+                return false;
+            }
+            else
+                epError.Clear();
 
-            //if (tbExtraInfo.Text.Length >= 1000)
-            //{
-            //    epError.SetError(tbExtraInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
-            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            if (tbExtraInfo.Text.Length >= 1000)
+            {
+                epError.SetError(tbExtraInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
+                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+                return false;
+            }
+            else
+                epError.Clear();
 
-            //if (tbPersonInfo.Text.Length > 1000)
-            //{
-            //    epError.SetError(tbPersonInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
-            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            if (tbPersonInfo.Text.Length > 1000)
+            {
+                epError.SetError(tbPersonInfo, "Длина поля превышает 1000 символов. Укажите только самое основное.");
+                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+                return false;
+            }
+            else
+                epError.Clear();
 
-            //if (tbWorkPlace.Text.Length > 1000)
-            //{
-            //    epError.SetError(tbWorkPlace, "Длина поля превышает 1000 символов. Укажите только самое основное.");
-            //    tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
-            //    return false;
-            //}
-            //else
-            //    epError.Clear();
+            if (tbWorkPlace.Text.Length > 1000)
+            {
+                epError.SetError(tbWorkPlace, "Длина поля превышает 1000 символов. Укажите только самое основное.");
+                tabCard.SelectedIndex = MainClass.dbType == PriemType.Priem ? 4 : 3;
+                return false;
+            }
+            else
+                epError.Clear();
 
             if (!CheckIdent())
             {
@@ -944,20 +1036,54 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                 return false;
             }
 
-            return true;
-        }
-
-        private bool CheckFieldsAbit()
-        {
-
-            if (LstCompetitions.Where(x => !x.HasCompetition).Count() > 0)
+            if (MainClass.dbType == PriemType.Priem)
             {
-                epError.SetError(dgvApplications, "Не по всем конкурсным позициям указаны типы конкурсов");
-                tabCard.SelectedIndex = 5;
-                return false;
+                SortedList<string, string> slNumbers = new SortedList<string, string>();
+
+                foreach (DataGridViewRow dr in dgvEGE.Rows)
+                {
+                    string num = dr.Cells["Номер сертификата"].Value.ToString();
+                    string prNum = dr.Cells["Типографский номер"].Value.ToString();
+                    string balls = dr.Cells["Баллы"].Value.ToString();
+
+                    if (num.Length == 0 && balls.Length == 0)
+                        continue;
+
+                    int bls;
+                    if (!(int.TryParse(balls, out bls) && bls > 0 && bls < 101))
+                    {
+                        epError.SetError(dgvEGE, "Неверно введены баллы");
+                        tabCard.SelectedIndex = 3;
+                        return false;
+                    }
+                    else
+                        epError.Clear();
+
+                    if (!EgeDataProvider.GetIsMatchEgeNumber(num))
+                    {
+                        epError.SetError(dgvEGE, "Номер свидетельства не соответствует формату **-*********-**");
+                        tabCard.SelectedIndex = 3;
+                        return false;
+                    }
+                    else
+                        epError.Clear();
+
+                    if (slNumbers.Keys.Contains(num))
+                    {
+                        if (slNumbers[num].CompareTo(prNum) != 0)
+                        {
+                            epError.SetError(dgvEGE, "У свидетельств с одним номером разные типографские номера");
+                            tabCard.SelectedIndex = 3;
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        epError.Clear();
+                        slNumbers.Add(num, prNum);
+                    }
+                }
             }
-            else
-                epError.Clear();
 
             return true;
         }
@@ -973,7 +1099,7 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                 }
                 else
                 {
-                    if (!CheckFields() || !CheckFieldsAbit())
+                    if (!CheckFields())
                         return false;
 
                     using (PriemEntities context = new PriemEntities())
@@ -983,37 +1109,31 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
                             try
                             {
                                 ObjectParameter entId = new ObjectParameter("id", typeof(Guid));
-                                context.Person_Foreign_insert(_personBarc, PersonName, SecondName, Surname, BirthDate, BirthPlace, PassportTypeId, PassportSeries, PassportNumber,
-                                    PassportAuthor, PassportDate, Sex, CountryId, NationalityId, RegionId, Phone, Mobiles, Email, 
-                                    Code, City, Street, House, Korpus, Flat,
-                                    CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal,
-                                    HostelAbit, false,
-                                    null, false, null, IsExcellent, LanguageId, SchoolCity, SchoolTypeId, SchoolName, SchoolNum, SchoolExitYear,
-                                    SchoolAVG, CountryEducId, RegionEducId, IsEqual, EqualDocumentNumber, HasTRKI, TRKISertificateNumber, AttestatRegion, AttestatSeries, AttestatNum, DiplomSeries, DiplomNum, HighEducation, HEProfession,
-                                    HEQualification, HEEntryYear, HEExitYear, HEStudyFormId, HEWork, Stag, WorkPlace, Privileges, PassportCode,
-                                    PersonalCode, PersonInfo, ExtraInfo, ScienceWork, StartEnglish, EnglishMark, entId);
+                                context.Person_insert(_personBarc, PersonName, SecondName, Surname, BirthDate, BirthPlace, PassportTypeId, PassportSeries, PassportNumber,
+                                    PassportAuthor, PassportDate, Sex, CountryId, NationalityId, RegionId, Phone, Mobiles, Email,
+                                    Code, City, Street, House, Korpus, Flat, CodeReal, CityReal, StreetReal, HouseReal, KorpusReal, FlatReal, KladrCode, HostelAbit, HostelEduc, false,
+                                    null, false, null, LanguageId, Stag, WorkPlace, MSVuz, MSCourse, MSStudyFormId, Privileges, PassportCode,
+                                    PersonalCode, PersonInfo, ExtraInfo, ScienceWork, StartEnglish, EnglishMark, EgeInSpbgu, SNILS, HasTRKI, TRKICertificateNumber, entId);
 
                                 personId = (Guid)entId.Value;
 
-
-                                if (!SaveApplication(personId.Value))
-                                    return false;
-
+                                SaveEducationDocuments();
+                                SaveEgeFirst();
                                 transaction.Complete();
                             }
                             catch (Exception exc)
                             {
-                                WinFormsServ.Error("Ошибка при сохранении:\n" + exc.Message + (exc.InnerException != null ? "\n\nВнутреннее исключение:\n" + exc.InnerException.Message : ""));
-                                return false;
+                                WinFormsServ.Error("Ошибка при сохранении:", exc);
                             }
                         }
-                        //if (!SaveApplication())
-                        //{
-                        //    _closePerson = true;
-                        //    return false;
-                        //}
+                        if (!SaveApplication(personId.Value))
+                        {
+                            _closePerson = true;
+                            return false;
+                        }
                         
-                        _bdcInet.ExecuteQuery("UPDATE Person SET IsImported = 1 WHERE Person.Barcode = " + _personBarc);                       
+                        if (!MainClass.IsTestDB)
+                            _bdcInet.ExecuteQuery("UPDATE Person SET IsImported = 1 WHERE Person.Barcode = " + _personBarc);                       
                     }
                 }  
                              
@@ -1039,214 +1159,79 @@ FROM [extApplicationDetails] WHERE [ApplicationId]=@AppId";
             if (personId == null)
                 return false;
 
-            if (!CheckFieldsAbit())
-                return false;
+            //if (!CheckFieldsAbit())
+            //    return false;
 
             try
             {
                 using (TransactionScope trans = new TransactionScope(TransactionScopeOption.Required))
                 {
-                    using (PriemEntities context = new PriemEntities())
-                    {
-                        ObjectParameter entId = new ObjectParameter("id", typeof(Guid));
-
-                        foreach (var Comp in LstCompetitions)
-                        {
-                            var DocDate = Comp.DocDate;
-                            var DocInsertDate = Comp.DocInsertDate == DateTime.MinValue ? DateTime.Now : Comp.DocInsertDate;
-
-                            bool isViewed = Comp.HasCompetition;
-                            Guid ApplicationId = Comp.Id;
-                            bool hasLoaded = context.Abiturient.Where(x => x.PersonId == PersonId && x.EntryId == Comp.EntryId && !x.BackDoc).Count() == 0;
-                            if (hasLoaded)
-                            {
-                                context.Abiturient_InsertDirectly(PersonId, Comp.EntryId, Comp.CompetitionId, Comp.IsListener,
-                                    false, false, false, null, DocDate, DocInsertDate,
-                                    false, false, null, Comp.OtherCompetitionId, Comp.CelCompetitionId, Comp.CelCompetitionText,
-                                    LanguageId, Comp.HasOriginals, Comp.Priority, Comp.Barcode, Comp.CommitId, _abitBarc, Comp.IsGosLine, isViewed, ApplicationId);
-                                context.Abiturient_UpdateIsCommonRussianCompetition(Comp.IsCommonRussianCompetition, ApplicationId);
-                            }
-                            else
-                                ApplicationId = context.Abiturient.Where(x => x.PersonId == PersonId && x.EntryId == Comp.EntryId && !x.BackDoc).Select(x => x.Id).First();
-                            if (Comp.lstObrazProgramsInEntry.Count > 0)
-                            {
-                                //загружаем внутренние приоритеты по профилям
-                                int currVersion = Comp.lstObrazProgramsInEntry.Select(x => x.CurrVersion).FirstOrDefault();
-                                DateTime currDate = Comp.lstObrazProgramsInEntry.Select(x => x.CurrDate).FirstOrDefault();
-                                Guid ApplicationVersionId = Guid.NewGuid();
-                                context.ApplicationVersion.AddObject(new ApplicationVersion() { IntNumber = currVersion, Id = ApplicationVersionId, ApplicationId = ApplicationId, VersionDate = currDate });
-                                foreach (var OPIE in Comp.lstObrazProgramsInEntry)
-                                {
-                                    if (OPIE.ListProfiles.Count == 0)
-                                    {
-                                        context.ApplicationDetails.AddObject(new ApplicationDetails()
-                                        {
-                                            ApplicationId = ApplicationId,
-                                            Id = Guid.NewGuid(),
-                                            ObrazProgramInEntryId = OPIE.Id,
-                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,
-                                        });
-
-                                        context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
-                                        {
-                                            ApplicationVersionId = ApplicationVersionId,
-                                            ObrazProgramInEntryId = OPIE.Id,
-                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority
-                                        });
-                                    }
-
-                                    foreach (var ProfInOPIE in OPIE.ListProfiles)
-                                    {
-                                        context.ApplicationDetails.AddObject(new ApplicationDetails()
-                                        {
-                                            ApplicationId = ApplicationId,
-                                            Id = Guid.NewGuid(),
-                                            ObrazProgramInEntryId = OPIE.Id,
-                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,
-                                            ProfileInObrazProgramInEntryId = ProfInOPIE.Id,
-                                            ProfileInObrazProgramInEntryPriority = ProfInOPIE.ProfileInObrazProgramInEntryPriority
-                                        });
-
-                                        context.ApplicationVersionDetails.AddObject(new ApplicationVersionDetails()
-                                        {
-                                            ApplicationVersionId = ApplicationVersionId,
-                                            ObrazProgramInEntryId = OPIE.Id,
-                                            ObrazProgramInEntryPriority = OPIE.ObrazProgramInEntryPriority,
-                                            ProfileInObrazProgramInEntryId = ProfInOPIE.Id,
-                                            ProfileInObrazProgramInEntryPriority = ProfInOPIE.ProfileInObrazProgramInEntryPriority
-                                        });
-                                    }
-                                }
-                            }
-                        }
-
-                        context.SaveChanges();
-
-                        //context.Abiturient_Insert(personId, EntryId, CompetitionId, HostelEduc, IsListener, WithHE, false, false, null, DocDate, DateTime.Now,
-                        //AttDocOrigin, EgeDocOrigin, false, false, null, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, false,
-                        //Priority, _abitBarc, entId);
-                    }
-
-                    _bdcInet.ExecuteQuery("UPDATE ApplicationCommit SET IsImported = 1 WHERE IntNumber = '" + _abitBarc + "'");
-
+                    ApplicationCommitSaveProvider.CheckAndUpdateNotUsedApplications(personId.Value, LstCompetitions);
+                    ApplicationCommitSaveProvider.SaveApplicationCommitInWorkBase(personId.Value, LstCompetitions, LanguageId, _abitBarc);
+                    
                     trans.Complete();
-                    return true;
                 }
+                
+                load.UpdateApplicationCommitSetIsImported(_abitBarc);
+                return true;
             }
             catch (Exception de)
             {
-                WinFormsServ.Error("Ошибка обновления данных Abiturient" + de.Message);
+                WinFormsServ.Error("Ошибка обновления данных Abiturient\n" + de.Message + "\n" + de.InnerException.Message);
                 return false;
             }
         }
-       
-        public bool IsMatchEgeNumber(string number)
+        private void SaveEgeFirst()
         {
-            string num = number.Trim();
-            if (Regex.IsMatch(num, @"^\d{2}-\d{9}-(10|11|12)$"))//не даёт перегрузить воякам свои древние ЕГЭ, добавлен 2010 год
-                return true;
-            else
-                return false;
+            if (MainClass.dbType == PriemType.PriemMag)
+                return;
+
+            try
+            {
+                EgeList egeLst = new EgeList();
+                foreach (DataGridViewRow dr in dgvEGE.Rows)
+                {
+                    if (dr.Cells["Баллы"].Value.ToString().Trim() != string.Empty)
+                        egeLst.Add(new EgeMarkCert(dr.Cells["ExamId"].Value.ToString().Trim(), dr.Cells["Баллы"].Value.ToString().Trim(), dr.Cells["Номер сертификата"].Value.ToString().Trim(), dr.Cells["Типографский номер"].Value.ToString()));
+                }
+
+                EgeDataProvider.SaveEgeFromEgeList(egeLst, personId.Value);
+            }
+            catch (Exception de)
+            {          
+                WinFormsServ.Error("Ошибка сохранения данные ЕГЭ - данные не были сохранены. Введите их заново! \n" + de.Message);
+            }
+        }
+        private void SaveEducationDocuments()
+        {
+            try
+            {
+                foreach (var ED in lstEducationInfo)
+                    PersonDataProvider.SaveEducationDocument(ED);
+            }
+            catch (Exception de)
+            {
+                WinFormsServ.Error("Ошибка сохранения данных об образовании - данные не были сохранены. \n" + de.Message);
+            }
         }
 
         #endregion 
-        
+
         protected override void OnClosed()
         {
             base.OnClosed();
             load.CloseDB();                
         }
-
         protected override void OnSave()
         {
             base.OnSave();
             using (PriemEntities context = new PriemEntities())
             {
-                if (_abitBarc != null)
-                {
-                    Guid? perId = (from ab in context.qAbiturient
-                                  where ab.CommitNumber == _abitBarc
-                                  select ab.PersonId).FirstOrDefault();
+                Guid? perId = (from per in context.extPerson
+                               where per.Barcode == _personBarc
+                               select per.Id).FirstOrDefault();
 
-                    //MainClass.OpenCardAbit(abId.ToString(), null, null);
-                    MainClass.OpenCardPerson(perId.ToString(), null, null);
-
-                }
-                else
-                {
-                    Guid? perId = (from per in context.extForeignPerson
-                                   where per.Barcode == _personBarc
-                                   select per.Id).FirstOrDefault();
-
-                    MainClass.OpenCardPerson(perId.ToString(), null, null);
-                }
-            }
-        }
-
-        private void btnOpenFile_Click(object sender, EventArgs e)
-        {
-            List<KeyValuePair<string, string>> lstFiles = new List<KeyValuePair<string, string>>();
-            foreach (KeyValuePair<string, string> file in chlbFile.CheckedItems)
-            {
-                lstFiles.Add(file);
-            }
-
-            _docs.OpenFile(lstFiles);
-        }
-        private void tabCard_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyCode == Keys.D1)
-                this.tcCard.SelectedIndex = 0;
-            if (e.Control && e.KeyCode == Keys.D2)
-                this.tcCard.SelectedIndex = 1;
-            if (e.Control && e.KeyCode == Keys.D3)
-                this.tcCard.SelectedIndex = 2;
-            if (e.Control && e.KeyCode == Keys.D4)
-                this.tcCard.SelectedIndex = 3;
-            if (e.Control && e.KeyCode == Keys.D5)
-                this.tcCard.SelectedIndex = 4;
-            if (e.Control && e.KeyCode == Keys.D6)
-                this.tcCard.SelectedIndex = 5;
-            if (e.Control && e.KeyCode == Keys.D7)
-                this.tcCard.SelectedIndex = 6;
-            if (e.Control && e.KeyCode == Keys.D8)
-                this.tcCard.SelectedIndex = 7;
-            if (e.Control && e.KeyCode == Keys.S)
-                SaveRecord();
-        }
-
-        private void dgvApplications_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int rwNum = e.RowIndex;
-            OpenCardCompetitionInInet(rwNum);
-        }
-        private void btnOpenCompetition_Click(object sender, EventArgs e)
-        {
-            if (dgvApplications.SelectedCells.Count == 0)
-                return;
-
-            int rwNum = dgvApplications.SelectedCells[0].RowIndex;
-            OpenCardCompetitionInInet(rwNum);
-        }
-        private ShortCompetition GetCompFromGrid(int rwNum)
-        {
-            if (rwNum < 0)
-                return null;
-
-            Guid Id = (Guid)dgvApplications["Id", rwNum].Value;
-            return LstCompetitions.Where(x => x.Id == Id).FirstOrDefault();
-        }
-        private void OpenCardCompetitionInInet(int rwNum)
-        {
-            if (rwNum >= 0)
-            {
-                var ent = GetCompFromGrid(rwNum);
-                if (ent != null)
-                {
-                    var crd = new CardCompetitionInInet(ent);
-                    crd.OnUpdate += UpdateCommitCompetition;
-                    crd.Show();
-                }
+                MainClass.OpenCardPerson(perId.ToString(), null, null);
             }
         }
     }

@@ -13,6 +13,7 @@ using System.Transactions;
 
 using BaseFormsLib;
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -259,7 +260,6 @@ namespace Priem
             HasTRKI = person.HasTRKI ?? false;
             TRKISertificateNumber = person.TRKICertificateNumber;
 
-            AttestatRegion = person.AttestatRegion;
             AttestatSeries = person.AttestatSeries;
             AttestatNum = person.AttestatNum;
             DiplomSeries = person.DiplomSeries;
@@ -872,7 +872,6 @@ namespace Priem
                 }
                 else
                     epErrorInput.Clear();
-
             }
 
             if (MainClass.dbType == PriemType.Priem)
@@ -1066,7 +1065,7 @@ namespace Priem
                 return;
 
             if(personBarc != null)
-                new DocCard(personBarc.Value, null).Show();
+                new DocCard(personBarc.Value, null, false).Show();
         }
 
         private void btnGetAssignToHostel_Click(object sender, EventArgs e)

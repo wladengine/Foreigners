@@ -1,4 +1,5 @@
-﻿namespace Priem
+﻿using PriemLib;
+namespace Priem
 {
     partial class OrderNumbersList
     {
@@ -346,7 +347,7 @@
             this.Controls.Add(this.gbOrders);
             this.Controls.Add(this.dgvViews);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            //this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OrderNumbers";
             this.Text = "Номера приказов";
             ((System.ComponentModel.ISupportInitialize)(this.dgvViews)).EndInit();

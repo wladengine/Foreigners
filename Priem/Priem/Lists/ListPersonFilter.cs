@@ -12,6 +12,7 @@ using EducServLib;
 using BDClassLib;
 using WordOut;
 using Excel = Microsoft.Office.Interop.Excel;
+using PriemLib;
 
 namespace Priem
 {

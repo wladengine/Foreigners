@@ -12,6 +12,7 @@ using WordOut;
 using EducServLib;
 using BDClassLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -95,15 +96,11 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbObrazProgram); }
             set { ComboServ.SetComboId(cbObrazProgram, value); }
         }
-        public Guid? ProfileId
+        public int? ProfileId
         {
             get
             {
-                string prId = ComboServ.GetComboId(cbProfile);
-                if (string.IsNullOrEmpty(prId))
-                    return null;
-                else
-                    return new Guid(prId);
+                return ComboServ.GetComboIdInt(cbProfile);
             }
             set
             {
@@ -140,7 +137,7 @@ namespace Priem
             {
                 var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyForm.Name)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyFormName)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, true);
                 cbStudyForm.SelectedIndex = 0;
@@ -155,7 +152,7 @@ namespace Priem
                 if(StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramName)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, true);
                 cbLicenseProgram.SelectedIndex = 0;
@@ -172,7 +169,7 @@ namespace Priem
                 if (LicenseProgramId != null)
                     ent = ent.Where(c => c.LicenseProgramId == LicenseProgramId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.SP_ObrazProgram.Name + ' ' + u.StudyLevel.Acronym + "." + u.SP_ObrazProgram.Number + "." + MainClass.PriemYear)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ObrazProgramId.ToString(), u.ObrazProgramName + ' ' + u.ObrazProgramCrypt)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);
             }
@@ -215,7 +212,7 @@ namespace Priem
         {            
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = Exams.GetExamsWithFilters(context, StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyFormId, StudyBasisId, null, null, null);
+                var ent = Exams.GetExamsWithFilters(context, StudyLevelGroupId.Value, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyFormId, StudyBasisId, null, null, null);
                 List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ExamId.ToString(), u.ExamName)).Distinct().ToList();
                 ComboServ.FillCombo(cbExam, lst, false, true);
             }            

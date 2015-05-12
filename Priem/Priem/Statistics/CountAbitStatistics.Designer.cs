@@ -41,6 +41,8 @@
             this.btnExcel = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.cbRegion = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cbStudyLevelGroup = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStatGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -169,11 +171,31 @@
             this.cbRegion.Size = new System.Drawing.Size(208, 21);
             this.cbRegion.TabIndex = 11;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(288, 59);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(94, 13);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Основа обучения";
+            // 
+            // cbStudyLevelGroup
+            // 
+            this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStudyLevelGroup.FormattingEnabled = true;
+            this.cbStudyLevelGroup.Location = new System.Drawing.Point(388, 56);
+            this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
+            this.cbStudyLevelGroup.Size = new System.Drawing.Size(162, 21);
+            this.cbStudyLevelGroup.TabIndex = 13;
+            // 
             // CountAbitStatistics
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1081, 591);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.cbStudyLevelGroup);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cbRegion);
             this.Controls.Add(this.btnExcel);
@@ -210,5 +232,7 @@
         private System.Windows.Forms.Button btnExcel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cbRegion;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cbStudyLevelGroup;
     }
 }

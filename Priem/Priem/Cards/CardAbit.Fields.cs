@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -59,15 +60,11 @@ namespace Priem
             set { ComboServ.SetComboId(cbObrazProgram, value); }
         }
 
-        public Guid? ProfileId
+        public int? ProfileId
         {
             get 
             {
-                string prId = ComboServ.GetComboId(cbProfile);
-                if(string.IsNullOrEmpty(prId))
-                    return null;
-                else
-                    return new Guid(prId);               
+                return ComboServ.GetComboIdInt(cbProfile);
             }
             set 
             { 

@@ -11,6 +11,7 @@ using System.Linq;
 using EducServLib;
 using BDClassLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -74,10 +75,13 @@ namespace Priem
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = Exams.GetExamsWithFilters(context, studyLevelGroupId, facultyId, null, null, null, null, studyBasisId, null, null, null);
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ExamId.ToString(), u.ExamName)).Distinct().ToList();
-                ComboServ.FillCombo(cbExam, lst, false, false);                 
-            }          
+                if (studyLevelGroupId.HasValue)
+                {
+                    var ent = Exams.GetExamsWithFilters(context, studyLevelGroupId.Value, facultyId, null, null, null, null, studyBasisId, null, null, null);
+                    List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.ExamId.ToString(), u.ExamName)).Distinct().ToList();
+                    ComboServ.FillCombo(cbExam, lst, false, false);
+                }
+            }
         } 
 
         private void btnOk_Click(object sender, EventArgs e)

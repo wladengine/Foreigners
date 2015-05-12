@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 using EducServLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -218,17 +219,17 @@ namespace Priem
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var src = (from x in context.Entry
+                var src = (from x in context.extEntry
                            join y in context.StudyLevel
                            on x.StudyLevelId equals y.Id
                            where y.LevelGroupId == MainClass.studyLevelGroupId && x.FacultyId == FacultyId
-                           orderby x.SP_ObrazProgram.Number
+                           orderby x.ObrazProgramNumber
                            select new
                            {
                                x.LicenseProgramId,
                                x.ObrazProgramId,
-                               ObrazProgramName = x.SP_ObrazProgram.Name,
-                               ObrazProgramCrypt = x.StudyLevel.Acronym + "." + x.SP_ObrazProgram.Number + "." + MainClass.PriemYear
+                               ObrazProgramName = x.ObrazProgramName,
+                               ObrazProgramCrypt = x.ObrazProgramCrypt
                            }).Distinct();
                 if (LicenseProgramId.HasValue)
                     src = src.Where(x => x.LicenseProgramId == LicenseProgramId);
@@ -318,17 +319,17 @@ namespace Priem
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var src = (from x in context.Entry
+                var src = (from x in context.extEntry
                            join y in context.StudyLevel
                            on x.StudyLevelId equals y.Id
                            where y.LevelGroupId == MainClass.studyLevelGroupId && x.FacultyId == OtherFacultyId
-                           orderby x.SP_ObrazProgram.Number
+                           orderby x.ObrazProgramNumber
                            select new
                            {
                                x.LicenseProgramId,
                                x.ObrazProgramId,
-                               ObrazProgramName = x.SP_ObrazProgram.Name,
-                               ObrazProgramCrypt = x.StudyLevel.Acronym + "." + x.SP_ObrazProgram.Number + "." + MainClass.PriemYear
+                               ObrazProgramName = x.ObrazProgramName,
+                               ObrazProgramCrypt = x.ObrazProgramCrypt
                            }).Distinct();
                 if (OtherLicenseProgramId.HasValue)
                     src = src.Where(x => x.LicenseProgramId == OtherLicenseProgramId);

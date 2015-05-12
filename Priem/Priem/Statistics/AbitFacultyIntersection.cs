@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using EducServLib;
 using BaseFormsLib;
 using RtfWriter;
+using PriemLib;
 
 //using Excel = Microsoft.Office.Interop.Excel;
 

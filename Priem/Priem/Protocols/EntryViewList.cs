@@ -10,13 +10,14 @@ using System.Windows.Forms;
 using BaseFormsLib;
 using EducServLib;
 using WordOut;
+using PriemLib;
 
 namespace Priem
 {
     public partial class EntryViewList : BaseForm
     {
         private DBPriem _bdc;
-        private string sQuery;
+        //private string sQuery;
         protected ProtocolRefreshHandler prh = null;
 
         public EntryViewList()
@@ -156,9 +157,9 @@ namespace Priem
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = MainClass.GetEntry(context).Where(c => c.StudyLevel.LevelGroupId == StudyLevelGroupId);
-                List<KeyValuePair<string, string>> lst = ent.Select(x => new { x.SP_Faculty.Name, x.FacultyId }).Distinct().ToList()
-                    .Select(u => new KeyValuePair<string, string>(u.FacultyId.ToString(), u.Name)).OrderBy(x => x.Value).Distinct().ToList();
+                var ent = MainClass.GetEntry(context).Where(c => c.StudyLevelGroupId == StudyLevelGroupId);
+                List<KeyValuePair<string, string>> lst = ent.Select(x => new { x.FacultyName, x.FacultyId }).Distinct().ToList()
+                    .Select(u => new KeyValuePair<string, string>(u.FacultyId.ToString(), u.FacultyName)).OrderBy(x => x.Value).Distinct().ToList();
 
                 ComboServ.FillCombo(cbFaculty, lst, false, false);
             }
@@ -171,7 +172,7 @@ namespace Priem
 
                 ent = ent.Where(c => c.IsSecond == IsSecond && c.IsReduced == IsReduced && c.IsParallel == IsParallel);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyForm.Name)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyFormName)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, false);
             }
@@ -189,7 +190,7 @@ namespace Priem
                 if (StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramCode + ' ' + u.LicenseProgramName)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, true);
             }

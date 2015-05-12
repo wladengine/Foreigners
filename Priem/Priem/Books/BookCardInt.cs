@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.Objects;
 using System.Transactions;
+using PriemLib;
 
 namespace Priem
 {

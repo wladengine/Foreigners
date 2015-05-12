@@ -666,13 +666,6 @@
             this.smiExportStudent.Text = "Выгрузка для студента";
             this.smiExportStudent.Click += new System.EventHandler(this.smiExportStudent_Click);
             // 
-            // smiImportMags
-            // 
-            this.smiImportMags.Name = "smiImportMags";
-            this.smiImportMags.Size = new System.Drawing.Size(424, 22);
-            this.smiImportMags.Text = "Импорт магистров";
-            this.smiImportMags.Click += new System.EventHandler(this.smiImportMags_Click);
-            // 
             // smiRatingBackUp
             // 
             this.smiRatingBackUp.Name = "smiRatingBackUp";
@@ -744,41 +737,6 @@
             this.smiFBS.Name = "smiFBS";
             this.smiFBS.Size = new System.Drawing.Size(114, 20);
             this.smiFBS.Text = "Проверка ФБС ЕГЭ";
-            // 
-            // smiGetByFIOPasp
-            // 
-            this.smiGetByFIOPasp.Name = "smiGetByFIOPasp";
-            this.smiGetByFIOPasp.Size = new System.Drawing.Size(368, 22);
-            this.smiGetByFIOPasp.Text = "Сформировать запрос по номеру паспорта";
-            this.smiGetByFIOPasp.Click += new System.EventHandler(this.smiGetByFIOPasp_Click);
-            // 
-            // smiGetByFIOPasp2
-            // 
-            this.smiGetByFIOPasp2.Name = "smiGetByFIOPasp2";
-            this.smiGetByFIOPasp2.Size = new System.Drawing.Size(368, 22);
-            this.smiGetByFIOPasp2.Text = "Запрос по номеру паспорта 2";
-            this.smiGetByFIOPasp2.Click += new System.EventHandler(this.smiGetByFIOPasp2_Click);
-            // 
-            // smiGetByBalls
-            // 
-            this.smiGetByBalls.Name = "smiGetByBalls";
-            this.smiGetByBalls.Size = new System.Drawing.Size(368, 22);
-            this.smiGetByBalls.Text = "Сформировать запрос по номеру свидетельства и баллам";
-            this.smiGetByBalls.Click += new System.EventHandler(this.smiGetByBalls_Click);
-            // 
-            // smiLoadFBS
-            // 
-            this.smiLoadFBS.Name = "smiLoadFBS";
-            this.smiLoadFBS.Size = new System.Drawing.Size(368, 22);
-            this.smiLoadFBS.Text = "Загрузить ответ ФБС";
-            this.smiLoadFBS.Click += new System.EventHandler(this.smiLoadFBS_Click);
-            // 
-            // smiEgeLoad
-            // 
-            this.smiEgeLoad.Name = "smiEgeLoad";
-            this.smiEgeLoad.Size = new System.Drawing.Size(368, 22);
-            this.smiEgeLoad.Text = "Загрузить ЕГЭ";
-            this.smiEgeLoad.Click += new System.EventHandler(this.smiEgeLoad_Click);
             // 
             // smiExport
             // 

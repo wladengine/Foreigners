@@ -11,6 +11,7 @@ using EducServLib;
 using WordOut;
 using BaseFormsLib;
 using RtfWriter;
+using PriemLib;
 
 namespace Priem
 {

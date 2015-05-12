@@ -11,12 +11,23 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 using BaseFormsLib;
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {
     public partial class CountAbitStatistics : BaseForm
     {
-        private int iStudyLevelGroupId;
+        public int? StudyLevelGroupId
+        {
+            get
+            {
+                return ComboServ.GetComboIdInt(cbStudyLevelGroup);
+            }
+            set
+            {
+                ComboServ.SetComboId(cbStudyLevelGroup, value);
+            }
+        }
         public int? FacultyId
         {
             get
@@ -58,7 +69,6 @@ namespace Priem
             InitializeComponent();
             this.MdiParent = MainClass.mainform;
 
-            iStudyLevelGroupId = MainClass.dbType == PriemType.Priem ? 1 : 2;
             DateTime priemStartDay = new DateTime(2012, 6, 20);
             dtpStart.Value = DateTime.Now.AddDays(-7).Date < priemStartDay ? priemStartDay : DateTime.Now.AddDays(-7).Date;
             dtpEnd.Value = DateTime.Now;
@@ -71,13 +81,31 @@ namespace Priem
             this.cbFaculty.SelectedIndexChanged += new EventHandler(cbFaculty_SelectedIndexChanged);
             this.cbStudyBasis.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);
             this.cbRegion.SelectedIndexChanged += new EventHandler(cbRegion_SelectedIndexChanged);
+            cbStudyLevelGroup.SelectedIndexChanged += cbStudyLevelGroup_SelectedIndexChanged;
         }
 
         private void FillCombos()
         {
+            FillComboLevelGroup();
             FillComboFaculty();
             FillComboBasis();
             FillComboRegion();
+        }
+        private void FillComboLevelGroup()
+        {
+            using (PriemEntities context = new PriemEntities())
+            {
+                List<KeyValuePair<string, string>> bind =
+                    (from x in context.qEntry
+                     join GR in context.StudyLevelGroup on x.StudyLevelGroupId equals GR.Id
+                     select new
+                     {
+                         x.StudyLevelGroupId,
+                         GR.Name
+                     }
+                    ).Distinct().ToList().Select(x => new KeyValuePair<string, string>(x.StudyLevelGroupId.ToString(), x.Name)).ToList();
+                ComboServ.FillCombo(cbStudyLevelGroup, bind, false, true);
+            }
         }
         private void FillComboFaculty()
         {
@@ -144,16 +172,16 @@ namespace Priem
 
                 var dates = (from ab in context.qAbitAll
                              where ab.DocInsertDate != null && ab.DocInsertDate > dtpStart.Value && ab.DocInsertDate <= dtpEnd.Value
-                             && ab.StudyLevelGroupId == MainClass.studyLevelGroupId && (FacultyId.HasValue ? (ab.FacultyId == FacultyId.Value) : (true))
-                            select ab.DocInsertDate.Value).ToList().Select(x => x.Date).Distinct().OrderBy(x => x);
+                             && ab.StudyLevelGroupId == StudyLevelGroupId && (FacultyId.HasValue ? (ab.FacultyId == FacultyId.Value) : (true))
+                            select ab.DocInsertDate).ToList().Select(x => x.Date).Distinct().OrderBy(x => x);
 
                 string query = string.Format(@"SELECT DISTINCT LicenseProgramId, LicenseProgramCode + ' ' + LicenseProgramName AS Profession, 
             ObrazProgramId, ObrazProgramCrypt + ' ' + ObrazProgramName AS ObrazProgram, ProfileId, ProfileName, convert(date, DocInsertDate) AS Date, COUNT(extAbit.Id) AS CNT
             FROM ed.extAbit
             INNER JOIN ed.Person ON Person.Id = extAbit.PersonId
             WHERE StudyLevelGroupId='{0}' AND DocInsertDate IS NOT NULL AND convert(date, DocInsertDate)>=@DateStart AND convert(date, DocInsertDate)<=@DateEnd {1} {2} {3}
-            GROUP BY LicenseProgramId, LicenseProgramCode, LicenseProgramName, ObrazProgramId, ObrazProgramCrypt, ObrazProgramName, ProfileId, ProfileName, convert(date, DocInsertDate)", 
-            iStudyLevelGroupId.ToString(), FacultyId == null ? "" : " AND FacultyId='" + FacultyId.ToString() + "' ",
+            GROUP BY LicenseProgramId, LicenseProgramCode, LicenseProgramName, ObrazProgramId, ObrazProgramCrypt, ObrazProgramName, ProfileId, ProfileName, convert(date, DocInsertDate)",
+            StudyLevelGroupId.ToString(), FacultyId == null ? "" : " AND FacultyId='" + FacultyId.ToString() + "' ",
             StudyBasisId == null ? "" : " AND StudyBasisId='" + StudyBasisId.ToString() + "' ", 
             RegionId.HasValue ? " AND Person.RegionId='" + RegionId.Value.ToString() + "' " : "");
                 System.Data.DataTable tblStatRaw = MainClass.Bdc.GetDataSet(query,
@@ -163,7 +191,7 @@ namespace Priem
                 query = string.Format(@"SELECT LicenseProgramId, ObrazProgramId, ProfileId, SUM(KCP) AS KCP
         FROM ed.qEntry
         WHERE StudyLevelGroupId='{0}' {1} {2}
-        GROUP BY LicenseProgramId, ObrazProgramId, ProfileId", iStudyLevelGroupId.ToString(),
+        GROUP BY LicenseProgramId, ObrazProgramId, ProfileId", StudyLevelGroupId.ToString(),
                 FacultyId == null ? "" : " AND FacultyId='" + FacultyId.ToString() + "' ",
                 StudyBasisId == null ? "" : " AND StudyBasisId='" + StudyBasisId.ToString() + "' ");
                 System.Data.DataTable tblKC = MainClass.Bdc.GetDataSet(query).Tables[0];
@@ -172,8 +200,8 @@ namespace Priem
         FROM ed.extAbit
         INNER JOIN ed.Person ON Person.Id = extAbit.PersonId
         WHERE StudyLevelGroupId='{0}' {1} {2} {3}
-        GROUP BY LicenseProgramId, ObrazProgramId, ProfileId", 
-                iStudyLevelGroupId.ToString(),
+        GROUP BY LicenseProgramId, ObrazProgramId, ProfileId",
+                StudyLevelGroupId.ToString(),
                 FacultyId == null ? "" : " AND FacultyId='" + FacultyId.ToString() + "' ",
                 StudyBasisId == null ? "" : " AND StudyBasisId='" + StudyBasisId.ToString() + "' ",
                 RegionId.HasValue ? " AND Person.RegionId='" + RegionId.Value.ToString() + "' " : "");
@@ -322,6 +350,10 @@ namespace Priem
             }
         }
 
+        void cbStudyLevelGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillComboFaculty();
+        }
         private void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillGrid();

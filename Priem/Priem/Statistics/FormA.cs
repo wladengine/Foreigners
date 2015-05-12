@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using WordOut;
 using EducServLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {

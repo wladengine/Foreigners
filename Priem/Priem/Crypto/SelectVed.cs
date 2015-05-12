@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Data.Objects;
 
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {

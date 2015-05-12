@@ -10,6 +10,7 @@ using System.Linq;
 using BDClassLib;
 using EducServLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -140,8 +141,8 @@ namespace Priem
                             select new
                             {
                                 ent.StudyFormId,
-                                ent.StudyForm.Name
-                            }).Distinct()).ToList().Select(x => new KeyValuePair<string, string>(x.StudyFormId.ToString(), x.Name)).ToList();
+                                ent.StudyFormName
+                            }).Distinct()).ToList().Select(x => new KeyValuePair<string, string>(x.StudyFormId.ToString(), x.StudyFormName)).ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, false);
             }

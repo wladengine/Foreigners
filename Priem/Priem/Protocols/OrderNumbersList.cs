@@ -10,6 +10,7 @@ using System.Linq;
 
 using BaseFormsLib;
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -128,7 +129,7 @@ namespace Priem
 
                 ent = ent.Where(c => c.IsSecond == IsSecond && c.IsReduced == IsReduced && c.IsParallel == IsParallel);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyForm.Name)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.StudyFormId.ToString(), u.StudyFormName)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbStudyForm, lst, false, false);
             }
@@ -147,7 +148,7 @@ namespace Priem
                 if (StudyFormId != null)
                     ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.SP_LicenseProgram.Name)).Distinct().ToList();
+                List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramName)).Distinct().ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, false);
             }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using EducServLib;
 using BDClassLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -87,7 +88,7 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.LicenseProgramId,
-                                                               Name = ent.SP_LicenseProgram.Code + " " + ent.SP_LicenseProgram.Name
+                                                               Name = ent.LicenseProgramCode + " " + ent.LicenseProgramName
                                                            }).Distinct()).ToList().OrderBy(x => x.Name).Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name)).ToList();
 
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, true);
@@ -105,8 +106,8 @@ namespace Priem
                                                            select new
                                                            {
                                                                Id = ent.ObrazProgramId,
-                                                               Name = ent.SP_ObrazProgram.Name,
-                                                               Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
+                                                               Name = ent.ObrazProgramName,
+                                                               Crypt = ent.ObrazProgramCrypt
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);
@@ -234,11 +235,11 @@ extForeignPerson.Nationality AS [Гражданство],
 extForeignPerson.[CountryName] AS [Страна проживания],
 qAbiturient.CommitNumber AS Barcode,
 (Case When EXISTS(SELECT Id FROM [Application] WHERE Application.CommitId = qAbiturient.CommitId) THEN CONVERT(bit, 1) ELSE CONVERT(bit, 0) END) AS IsGosLine,
-(Case When EXISTS(SELECT extAbitFiles_All.Id FROM extAbitFileNames extAbitFiles_All WHERE extAbitFiles_All.PersonId = extForeignPerson.Id) then 'да' else 'нет' end) AS Приложены_файлы,
-(SELECT Max(extAbitFiles_All.LoadDate) FROM extAbitFiles_All WHERE extAbitFiles_All.PersonId = extForeignPerson.Id AND (extAbitFiles_All.ApplicationId = qAbiturient.Id OR extAbitFiles_All.ApplicationId IS NULL)) AS Дата_обновления
+(Case When EXISTS(SELECT extAbitFileNames_All.Id FROM extAbitFileNames extAbitFileNames_All WHERE extAbitFileNames_All.PersonId = extForeignPerson.Id) then 'да' else 'нет' end) AS Приложены_файлы,
+(SELECT Max(extAbitFileNames_All.LoadDate) FROM extAbitFileNames_All WHERE extAbitFileNames_All.PersonId = extForeignPerson.Id AND (extAbitFileNames_All.ApplicationId = qAbiturient.Id OR extAbitFileNames_All.ApplicationId IS NULL)) AS Дата_обновления
 FROM qAbiturient INNER JOIN extForeignPerson ON qAbiturient.PersonId = extForeignPerson.Id
 INNER JOIN qForeignApplicationOnly ON qForeignApplicationOnly.Id = qAbiturient.Id
-WHERE qAbiturient.IsImported = 0 AND Enabled = 1 ";
+WHERE qAbiturient.IsImported = 0 AND Enabled = 1";
 
             HelpClass.FillDataGrid(dgvAbiturients, _bdcInet, _sQuery + GetFilterString(), _orderBy);
             dgvAbiturients.Columns["IsGosLine"].Visible = false;
@@ -328,9 +329,9 @@ WHERE qAbiturient.IsImported = 0 AND Enabled = 1 ";
 
                         tbAbitBarcode.Text = string.Empty;
 
-                        CardFromInet crd = new CardFromInet(code, false, null, null);
+                        CardFromInet crd = new CardFromInet(null, code, false);
                         
-                        crd.ToUpdateList += new UpdateListHandler(UpdateDataGrid);
+                        crd.ToUpdateList += UpdateDataGrid;
                         crd.Show();
                     }
                 }

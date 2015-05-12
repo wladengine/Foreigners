@@ -22,7 +22,8 @@ namespace Priem
 
         public static PriemType dbType;
         public static string connString;
-        public static string connStringOnline;        
+        public static string connStringOnline;
+        public static string connStringOnlineFiles;
         
         public static string directory;
         public static string dirTemplates;

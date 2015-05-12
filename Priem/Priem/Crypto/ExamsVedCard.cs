@@ -13,6 +13,7 @@ using System.Transactions;
 using EducServLib;
 using BDClassLib;
 using BaseFormsLib;
+using PriemLib;
 
 namespace Priem
 {
@@ -198,14 +199,14 @@ namespace Priem
             {
                 List<KeyValuePair<string, string>> lst = ((from ent in MainClass.GetEntry(context)
                                                            where ent.FacultyId == facultyId
-                                                           && ent.StudyLevel.LevelGroupId == studyLevelGroupId
+                                                           && ent.StudyLevelGroupId == studyLevelGroupId
                                                            && (cbStudyBasisId != null ? ent.StudyBasisId == cbStudyBasisId : true == true)
                                                            && (cbStudyFormId != null ? ent.StudyBasisId == cbStudyFormId : true == true)                                                           
                                                            select new
                                                            {
                                                                Id = ent.ObrazProgramId,
-                                                               Name = ent.SP_ObrazProgram.Name,
-                                                               Crypt = ent.StudyLevel.Acronym + "." + ent.SP_ObrazProgram.Number + "." + MainClass.PriemYear
+                                                               Name = ent.ObrazProgramName,
+                                                               Crypt = ent.ObrazProgramCrypt
                                                            }).Distinct()).ToList().Select(u => new KeyValuePair<string, string>(u.Id.ToString(), u.Name + ' ' + u.Crypt)).ToList();
 
                 ComboServ.FillCombo(cbObrazProgram, lst, false, true);

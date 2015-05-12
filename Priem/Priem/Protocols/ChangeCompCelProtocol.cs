@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Data.Objects;
 using System.Transactions;
 using System.Linq;
+using PriemLib;
 
 namespace Priem
 {

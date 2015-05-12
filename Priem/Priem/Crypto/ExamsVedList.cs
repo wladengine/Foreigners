@@ -18,6 +18,7 @@ using BaseFormsLib;
 
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using PriemLib;
 
 namespace Priem
 {

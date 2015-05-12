@@ -10,6 +10,7 @@ using System.Windows.Forms.DataVisualization;
 using System.Windows.Forms.DataVisualization.Charting;
 
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {

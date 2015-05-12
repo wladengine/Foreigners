@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 using EducServLib;
+using PriemLib;
 
 namespace Priem
 {

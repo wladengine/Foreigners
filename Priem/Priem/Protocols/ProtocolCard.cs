@@ -158,15 +158,15 @@ namespace Priem
             if (isNew)
             {
                 //строим номер протокола
-                string sProtNum = MainClass.studyLevelGroupId.ToString();
+                string sProtNum = StudyLevelGroupId.ToString();
 
                 sProtNum += (_facultyId > 9 ? "" : "0") + _facultyId.ToString();//номер факультета
                 sProtNum += DateTime.Now.Year.ToString().Substring(2);//год
 
                 try
                 {
-                    string sNum = MainClass.Bdc.GetStringValue(string.Format("SELECT ProtocolNum FROM ed.ProtocolNumbers WHERE FacultyId = {0} AND StudyLevelGroupId = {1}", 
-                        _facultyId, MainClass.studyLevelGroupId));
+                    string sNum = MainClass.Bdc.GetStringValue(string.Format("SELECT ProtocolNum FROM ed.ProtocolNumbers WHERE FacultyId = {0} AND StudyLevelGroupId = {1}",
+                        _facultyId, StudyLevelGroupId));
                     sNum = "0000" + sNum;
                     sProtNum += sNum.Substring(sNum.Length - 4);
                 }
@@ -288,7 +288,7 @@ namespace Priem
             foreach (DataGridViewRow row in dgv.Rows)
                 idList.Add(string.Format("'{0}'", row.Cells["Id"].Value.ToString()));
 
-            whereString = string.Format(" WHERE ed.extAbit.StudyLevelGroupId = {1} AND ed.extAbit.Id IN ({0}) ", Util.BuildStringWithCollection(idList), MainClass.studyLevelGroupId);
+            whereString = string.Format(" WHERE ed.extAbit.StudyLevelGroupId = {1} AND ed.extAbit.Id IN ({0}) ", Util.BuildStringWithCollection(idList), StudyLevelGroupId);
             dgv.Rows.Clear();
             FillGrid(dgvRight, sQuery, whereString, sOrderby);
         }
@@ -449,7 +449,7 @@ namespace Priem
                             ObjectParameter paramId = new ObjectParameter("id", typeof(Guid));
                             int iProtocolTypeId = ProtocolList.TypeToInt(_type);
 
-                            context.Protocol_InsertAll(MainClass.studyLevelGroupId,
+                            context.Protocol_InsertAll(StudyLevelGroupId,
                                 _facultyId, _licenseProgramId, _studyFormId, _studyBasisId, tbNum.Text, dtpDate.Value, iProtocolTypeId,
                                 string.Empty, !isNew, null, _isSecond, _isReduced, _isParallel, _isListener, paramId);
 

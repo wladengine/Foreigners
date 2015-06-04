@@ -55,7 +55,7 @@ namespace Priem
 
             string sFilter = string.Empty;
             sFilter += string.Format(" AND ed.extAbit.BackDoc = 0 AND ed.extAbit.NotEnabled=0 AND ed.extAbit.Id NOT IN (SELECT AbiturientId FROM ed.qProtocolHistory WHERE Excluded=0 AND ProtocolId IN (SELECT Id FROM ed.qProtocol WHERE ISOld=0 AND ProtocolTypeId=1 AND FacultyId ={0} AND StudyFormId = {1} AND StudyBasisId = {2}))", 
-                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString(), MainClass.studyLevelGroupId);
+                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString());
 
             if (chbFilter.Checked)
                 sFilter += " AND ed.extAbit.Checked > 0";

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RatingList));
             this.dgvAbits = new System.Windows.Forms.DataGridView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -39,7 +39,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbFIO = new System.Windows.Forms.TextBox();
             this.tbNumber = new System.Windows.Forms.TextBox();
-            this.chbCel = new System.Windows.Forms.CheckBox();
             this.lblSpecialization = new System.Windows.Forms.Label();
             this.lblSpeciality = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
@@ -67,7 +66,8 @@
             this.chbIsSecond = new System.Windows.Forms.CheckBox();
             this.btnUpdateGrid = new System.Windows.Forms.Button();
             this.btnFixieren = new System.Windows.Forms.Button();
-            this.chbWithOlymps = new System.Windows.Forms.CheckBox();
+            this.cbStudyLevelGroup = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbits)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.gbPasha.SuspendLayout();
@@ -102,38 +102,38 @@
             this.dgvAbits.AllowUserToAddRows = false;
             this.dgvAbits.AllowUserToDeleteRows = false;
             this.dgvAbits.AllowUserToResizeRows = false;
-            this.dgvAbits.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAbits.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvAbits.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAbits.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvAbits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAbits.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAbits.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvAbits.Location = new System.Drawing.Point(318, 56);
             this.dgvAbits.MultiSelect = false;
             this.dgvAbits.Name = "dgvAbits";
             this.dgvAbits.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAbits.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAbits.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvAbits.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAbits.Size = new System.Drawing.Size(518, 526);
             this.dgvAbits.TabIndex = 38;
@@ -193,21 +193,10 @@
             this.tbNumber.TabIndex = 70;
             this.tbNumber.TextChanged += new System.EventHandler(this.tbNumber_TextChanged);
             // 
-            // chbCel
-            // 
-            this.chbCel.AutoSize = true;
-            this.chbCel.Location = new System.Drawing.Point(17, 275);
-            this.chbCel.Name = "chbCel";
-            this.chbCel.Size = new System.Drawing.Size(76, 17);
-            this.chbCel.TabIndex = 87;
-            this.chbCel.Text = "Целевики";
-            this.chbCel.UseVisualStyleBackColor = true;
-            this.chbCel.CheckedChanged += new System.EventHandler(this.chbCel_CheckedChanged);
-            // 
             // lblSpecialization
             // 
             this.lblSpecialization.AutoSize = true;
-            this.lblSpecialization.Location = new System.Drawing.Point(14, 232);
+            this.lblSpecialization.Location = new System.Drawing.Point(14, 246);
             this.lblSpecialization.Name = "lblSpecialization";
             this.lblSpecialization.Size = new System.Drawing.Size(53, 13);
             this.lblSpecialization.TabIndex = 85;
@@ -216,7 +205,7 @@
             // lblSpeciality
             // 
             this.lblSpeciality.AutoSize = true;
-            this.lblSpeciality.Location = new System.Drawing.Point(14, 150);
+            this.lblSpeciality.Location = new System.Drawing.Point(14, 166);
             this.lblSpeciality.Name = "lblSpeciality";
             this.lblSpeciality.Size = new System.Drawing.Size(75, 13);
             this.lblSpeciality.TabIndex = 83;
@@ -225,7 +214,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(14, 21);
+            this.label36.Location = new System.Drawing.Point(14, 42);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(63, 13);
             this.label36.TabIndex = 80;
@@ -234,7 +223,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 48);
+            this.label3.Location = new System.Drawing.Point(13, 145);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 13);
             this.label3.TabIndex = 79;
@@ -243,7 +232,7 @@
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(14, 125);
+            this.label37.Location = new System.Drawing.Point(14, 69);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(93, 13);
             this.label37.TabIndex = 77;
@@ -350,7 +339,7 @@
             // chbFix
             // 
             this.chbFix.AutoSize = true;
-            this.chbFix.Location = new System.Drawing.Point(237, 321);
+            this.chbFix.Location = new System.Drawing.Point(234, 318);
             this.chbFix.Name = "chbFix";
             this.chbFix.Size = new System.Drawing.Size(68, 17);
             this.chbFix.TabIndex = 90;
@@ -360,7 +349,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 190);
+            this.label1.Location = new System.Drawing.Point(14, 206);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(158, 13);
             this.label1.TabIndex = 92;
@@ -372,7 +361,7 @@
             this.cbFaculty.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbFaculty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFaculty.FormattingEnabled = true;
-            this.cbFaculty.Location = new System.Drawing.Point(79, 18);
+            this.cbFaculty.Location = new System.Drawing.Point(79, 39);
             this.cbFaculty.Name = "cbFaculty";
             this.cbFaculty.Size = new System.Drawing.Size(233, 21);
             this.cbFaculty.TabIndex = 126;
@@ -383,7 +372,7 @@
             this.cbLicenseProgram.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbLicenseProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLicenseProgram.FormattingEnabled = true;
-            this.cbLicenseProgram.Location = new System.Drawing.Point(17, 166);
+            this.cbLicenseProgram.Location = new System.Drawing.Point(17, 182);
             this.cbLicenseProgram.Name = "cbLicenseProgram";
             this.cbLicenseProgram.Size = new System.Drawing.Size(295, 21);
             this.cbLicenseProgram.TabIndex = 127;
@@ -394,7 +383,7 @@
             this.cbStudyBasis.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyBasis.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyBasis.FormattingEnabled = true;
-            this.cbStudyBasis.Location = new System.Drawing.Point(113, 45);
+            this.cbStudyBasis.Location = new System.Drawing.Point(113, 142);
             this.cbStudyBasis.Name = "cbStudyBasis";
             this.cbStudyBasis.Size = new System.Drawing.Size(199, 21);
             this.cbStudyBasis.TabIndex = 128;
@@ -405,7 +394,7 @@
             this.cbStudyForm.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyForm.FormattingEnabled = true;
-            this.cbStudyForm.Location = new System.Drawing.Point(113, 122);
+            this.cbStudyForm.Location = new System.Drawing.Point(113, 66);
             this.cbStudyForm.Name = "cbStudyForm";
             this.cbStudyForm.Size = new System.Drawing.Size(199, 21);
             this.cbStudyForm.TabIndex = 129;
@@ -416,7 +405,7 @@
             this.cbObrazProgram.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbObrazProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbObrazProgram.FormattingEnabled = true;
-            this.cbObrazProgram.Location = new System.Drawing.Point(17, 206);
+            this.cbObrazProgram.Location = new System.Drawing.Point(17, 222);
             this.cbObrazProgram.Name = "cbObrazProgram";
             this.cbObrazProgram.Size = new System.Drawing.Size(295, 21);
             this.cbObrazProgram.TabIndex = 130;
@@ -427,7 +416,7 @@
             this.cbProfile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbProfile.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProfile.FormattingEnabled = true;
-            this.cbProfile.Location = new System.Drawing.Point(17, 248);
+            this.cbProfile.Location = new System.Drawing.Point(17, 262);
             this.cbProfile.Name = "cbProfile";
             this.cbProfile.Size = new System.Drawing.Size(295, 21);
             this.cbProfile.TabIndex = 131;
@@ -435,7 +424,7 @@
             // chbIsParallel
             // 
             this.chbIsParallel.AutoSize = true;
-            this.chbIsParallel.Location = new System.Drawing.Point(130, 74);
+            this.chbIsParallel.Location = new System.Drawing.Point(17, 122);
             this.chbIsParallel.Name = "chbIsParallel";
             this.chbIsParallel.Size = new System.Drawing.Size(98, 17);
             this.chbIsParallel.TabIndex = 132;
@@ -446,18 +435,18 @@
             // chbIsReduced
             // 
             this.chbIsReduced.AutoSize = true;
-            this.chbIsReduced.Location = new System.Drawing.Point(17, 74);
+            this.chbIsReduced.Location = new System.Drawing.Point(16, 99);
             this.chbIsReduced.Name = "chbIsReduced";
             this.chbIsReduced.Size = new System.Drawing.Size(95, 17);
             this.chbIsReduced.TabIndex = 133;
-            this.chbIsReduced.Text = "сокращенная";
+            this.chbIsReduced.Text = "сокращённая";
             this.chbIsReduced.UseVisualStyleBackColor = true;
             this.chbIsReduced.CheckedChanged += new System.EventHandler(this.chbIsReduced_CheckedChanged);
             // 
             // chbIsSecond
             // 
             this.chbIsSecond.AutoSize = true;
-            this.chbIsSecond.Location = new System.Drawing.Point(17, 97);
+            this.chbIsSecond.Location = new System.Drawing.Point(175, 99);
             this.chbIsSecond.Name = "chbIsSecond";
             this.chbIsSecond.Size = new System.Drawing.Size(137, 17);
             this.chbIsSecond.TabIndex = 134;
@@ -486,22 +475,33 @@
             this.btnFixieren.UseVisualStyleBackColor = true;
             this.btnFixieren.Click += new System.EventHandler(this.btnFixieren_Click);
             // 
-            // chbWithOlymps
+            // cbStudyLevelGroup
             // 
-            this.chbWithOlymps.AutoSize = true;
-            this.chbWithOlymps.Location = new System.Drawing.Point(17, 311);
-            this.chbWithOlymps.Name = "chbWithOlymps";
-            this.chbWithOlymps.Size = new System.Drawing.Size(105, 17);
-            this.chbWithOlymps.TabIndex = 138;
-            this.chbWithOlymps.Text = "c олимпиадами";
-            this.chbWithOlymps.UseVisualStyleBackColor = true;
+            this.cbStudyLevelGroup.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbStudyLevelGroup.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStudyLevelGroup.FormattingEnabled = true;
+            this.cbStudyLevelGroup.Location = new System.Drawing.Point(79, 12);
+            this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
+            this.cbStudyLevelGroup.Size = new System.Drawing.Size(233, 21);
+            this.cbStudyLevelGroup.TabIndex = 139;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(14, 15);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(51, 13);
+            this.label5.TabIndex = 138;
+            this.label5.Text = "Уровень";
             // 
             // RatingList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(848, 633);
-            this.Controls.Add(this.chbWithOlymps);
+            this.Controls.Add(this.cbStudyLevelGroup);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.btnFixieren);
             this.Controls.Add(this.btnUpdateGrid);
             this.Controls.Add(this.chbIsSecond);
@@ -517,7 +517,6 @@
             this.Controls.Add(this.chbFix);
             this.Controls.Add(this.gbPasha);
             this.Controls.Add(this.btnWord);
-            this.Controls.Add(this.chbCel);
             this.Controls.Add(this.lblSpecialization);
             this.Controls.Add(this.lblSpeciality);
             this.Controls.Add(this.label36);
@@ -549,7 +548,6 @@
             this.Controls.SetChildIndex(this.label36, 0);
             this.Controls.SetChildIndex(this.lblSpeciality, 0);
             this.Controls.SetChildIndex(this.lblSpecialization, 0);
-            this.Controls.SetChildIndex(this.chbCel, 0);
             this.Controls.SetChildIndex(this.btnWord, 0);
             this.Controls.SetChildIndex(this.gbPasha, 0);
             this.Controls.SetChildIndex(this.chbFix, 0);
@@ -565,7 +563,8 @@
             this.Controls.SetChildIndex(this.chbIsSecond, 0);
             this.Controls.SetChildIndex(this.btnUpdateGrid, 0);
             this.Controls.SetChildIndex(this.btnFixieren, 0);
-            this.Controls.SetChildIndex(this.chbWithOlymps, 0);
+            this.Controls.SetChildIndex(this.label5, 0);
+            this.Controls.SetChildIndex(this.cbStudyLevelGroup, 0);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAbits)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.gbPasha.ResumeLayout(false);
@@ -582,8 +581,7 @@
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbFIO;
-        private System.Windows.Forms.TextBox tbNumber;
-        private System.Windows.Forms.CheckBox chbCel;        
+        private System.Windows.Forms.TextBox tbNumber;        
         private System.Windows.Forms.Label lblSpecialization;       
         private System.Windows.Forms.Label lblSpeciality;       
         private System.Windows.Forms.Label label36;
@@ -611,6 +609,7 @@
         private System.Windows.Forms.CheckBox chbIsSecond;
         private System.Windows.Forms.Button btnUpdateGrid;
         private System.Windows.Forms.Button btnFixieren;
-        private System.Windows.Forms.CheckBox chbWithOlymps;
+        private System.Windows.Forms.ComboBox cbStudyLevelGroup;
+        private System.Windows.Forms.Label label5;
     }
 }

@@ -51,9 +51,6 @@ namespace Priem
                     ed.extPerson.Email + ', '+ ed.extPerson.Phone + ', ' +ed.extPerson.Mobiles AS 'Контакты',
                     (CASE WHEN hlpEntryWithAddExams.EntryId IS NULL THEN hlpAbiturientProf.Prof ELSE hlpAbiturientProfAdd.ProfAdd END) AS DopOrProfSort"; 
  
-            _queryOlymps = MainClass.studyLevelGroupId == 1 ? @", (SELECT TOP(1) ed.extOlympiads.OlympValueAcr + '-' + ed.extOlympiads.OlympName FROM ed.extOlympiads 
-                           WHERE ed.extOlympiads.AbiturientId = ed.qAbiturient.Id AND ed.extOlympiads.OlympTypeId = 3 order by ed.extOlympiads.sortOrder) as 'Олимпиада' " : "";
-             
             _queryFrom = @" FROM ed.qAbiturient 
                     INNER JOIN ed.extPerson ON ed.extPerson.Id = ed.qAbiturient.PersonId                    
                     INNER JOIN ed.Competition ON ed.Competition.Id = ed.qAbiturient.CompetitionId 
@@ -102,35 +99,34 @@ namespace Priem
             ComboServ.FillCombo(cbStudyBasis, HelpClass.GetComboListByTable("ed.StudyBasis", "ORDER BY Name"), false, false);
 
             cbStudyBasis.SelectedIndex = 0;
+
+            FillStudyLevelGroup();
             FillStudyForm();
             FillLicenseProgram();
             FillObrazProgram();
             FillProfile();
-
-            chbCel.Visible = false;
-
-            if (MainClass.dbType == PriemType.PriemMag)
-                chbWithOlymps.Visible = false;
         }
 
+        public int? StudyLevelGroupId
+        {
+            get { return ComboServ.GetComboIdInt(cbStudyLevelGroup); }
+            set { ComboServ.SetComboId(cbStudyLevelGroup, value); }
+        }
         public int? FacultyId
         {
             get { return ComboServ.GetComboIdInt(cbFaculty); }
             set { ComboServ.SetComboId(cbFaculty, value); }
         }
-
         public int? LicenseProgramId
         {
             get { return ComboServ.GetComboIdInt(cbLicenseProgram); }
             set { ComboServ.SetComboId(cbLicenseProgram, value); }
         }
-
         public int? ObrazProgramId
         {
             get { return ComboServ.GetComboIdInt(cbObrazProgram); }
             set { ComboServ.SetComboId(cbObrazProgram, value); }
         }
-
         public int? ProfileId
         {
             get
@@ -151,37 +147,26 @@ namespace Priem
             get { return ComboServ.GetComboIdInt(cbStudyBasis); }
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
-
         public int? StudyFormId
         {
             get { return ComboServ.GetComboIdInt(cbStudyForm); }
             set { ComboServ.SetComboId(cbStudyForm, value); }
         }
-
         public bool IsSecond
         {
             get { return chbIsSecond.Checked; }
             set { chbIsSecond.Checked = value; }
         }
-
         public bool IsReduced
         {
             get { return chbIsReduced.Checked; }
             set { chbIsReduced.Checked = value; }
         }
-
         public bool IsParallel
         {
             get { return chbIsParallel.Checked; }
             set { chbIsParallel.Checked = value; }
         }
-
-        public bool IsCel
-        {
-            get { return chbCel.Checked; }
-            set { chbCel.Checked = value; }
-        }
-
         public Guid? EntryId
         {
             get
@@ -194,7 +179,7 @@ namespace Priem
                                        where ent.IsSecond == IsSecond && ent.IsParallel == IsParallel && ent.IsReduced == IsReduced
                                        && ent.LicenseProgramId == LicenseProgramId
                                        && ent.ObrazProgramId == ObrazProgramId
-                                       && (ProfileId == null ? ent.ProfileId == null : ent.ProfileId == ProfileId)
+                                       && (ProfileId == null ? ent.ProfileId == 0 : ent.ProfileId == ProfileId)
                                        && ent.StudyFormId == StudyFormId
                                        && ent.StudyBasisId == StudyBasisId
                                        select ent.Id).FirstOrDefault();
@@ -208,6 +193,17 @@ namespace Priem
             }            
         }
 
+        private void FillStudyLevelGroup()
+        {
+            using (PriemEntities context = new PriemEntities())
+            {
+                var ent = MainClass.GetEntry(context).Select(x => new { x.StudyLevelGroupId, x.StudyLevelGroupName }).ToList();
+
+                List<KeyValuePair<string, string>> lst = ent.Select(u => new KeyValuePair<string, string>(u.StudyLevelGroupId.ToString(), u.StudyLevelGroupName)).Distinct().ToList();
+
+                ComboServ.FillCombo(cbStudyLevelGroup, lst, false, false);
+            }
+        }
         private void FillStudyForm()
         {
             using (PriemEntities context = new PriemEntities())
@@ -221,12 +217,11 @@ namespace Priem
                 ComboServ.FillCombo(cbStudyForm, lst, false, false);                
             }
         }
-
         private void FillLicenseProgram()
         {
             using (PriemEntities context = new PriemEntities())
             {
-                var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
+                var ent = MainClass.GetEntry(context).Where(x => x.StudyLevelGroupId == StudyLevelGroupId).Where(c => c.FacultyId == FacultyId);
 
                 ent = ent.Where(c => c.IsSecond == IsSecond && c.IsReduced == IsReduced && c.IsParallel == IsParallel);
 
@@ -240,7 +235,6 @@ namespace Priem
                 ComboServ.FillCombo(cbLicenseProgram, lst, false, false);                
             }
         }
-
         private void FillObrazProgram()
         {
             using (PriemEntities context = new PriemEntities())
@@ -261,7 +255,6 @@ namespace Priem
                 ComboServ.FillCombo(cbObrazProgram, lst, false, false);
             }
         }
-
         private void FillProfile()
         {
             using (PriemEntities context = new PriemEntities())
@@ -309,7 +302,8 @@ namespace Priem
             cbStudyBasis.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);
             cbLicenseProgram.SelectedIndexChanged += new EventHandler(cbLicenseProgram_SelectedIndexChanged);
             cbObrazProgram.SelectedIndexChanged += new EventHandler(cbObrazProgram_SelectedIndexChanged);
-            
+            cbStudyLevelGroup.SelectedIndexChanged += cbFaculty_SelectedIndexChanged;
+
             chbFix.CheckedChanged += new EventHandler(chbFix_CheckedChanged);
         }
 
@@ -318,31 +312,26 @@ namespace Priem
             FillStudyForm();
             NullDataGrid();
         }
-
         void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillStudyForm();
             NullDataGrid();
         }
-
         void cbStudyForm_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillLicenseProgram();
             NullDataGrid();
         }        
-
         void cbLicenseProgram_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillObrazProgram();
             NullDataGrid();
         }
-
         void cbObrazProgram_SelectedIndexChanged(object sender, EventArgs e)
         {           
             FillProfile();
             NullDataGrid();
         }       
-        
         private void chbFix_CheckedChanged(object sender, EventArgs e)
         {
             if (chbFix.Checked)
@@ -354,7 +343,6 @@ namespace Priem
         }
  
         #endregion
-
         
         protected override void OpenCard(string id, BaseFormsLib.BaseFormEx formOwner, int? index)
         {
@@ -371,7 +359,7 @@ namespace Priem
                        where ent.IsReduced == IsReduced && ent.IsParallel == IsParallel && ent.IsSecond == IsSecond 
                        && ent.FacultyId == FacultyId && ent.LicenseProgramId == LicenseProgramId
                        && ent.ObrazProgramId == ObrazProgramId
-                       && (ProfileId == null ? ent.ProfileId == null : ent.ProfileId == ProfileId)
+                       && (ProfileId == null ? ent.ProfileId == 0 : ent.ProfileId == ProfileId)
                        && ent.StudyFormId == StudyFormId
                        && ent.StudyBasisId == StudyBasisId
                        select ent).FirstOrDefault();
@@ -397,11 +385,8 @@ namespace Priem
                               select ab).Count();
                
                 CheckLockAndPasha(context);
-
-                if (IsCel)                
-                    return planCel - enteredCel;                
-                else                
-                    return plan - planCel - entered;                
+                
+                return plan - planCel - entered;                
             }
         }
 
@@ -409,13 +394,13 @@ namespace Priem
         {
             //лочит кнопку 
             FixierenView fixView = (from fv in context.FixierenView
-                           where fv.StudyLevelGroupId == MainClass.studyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
+                           where fv.StudyLevelGroupId == StudyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                            && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                            && fv.ObrazProgramId == ObrazProgramId
                            && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
                            && fv.StudyFormId == StudyFormId
                            && fv.StudyBasisId == StudyBasisId
-                           && fv.IsCel == IsCel
+                           && fv.IsCel == false
                            select fv).FirstOrDefault();
             
             string DocNum = string.Empty;
@@ -443,40 +428,19 @@ namespace Priem
         }
                 
         //обновление грида
-        int plan = 0;
+        int iPlanValue = 0;
         public override void UpdateDataGrid()
         {
             try
             {                
                 string sOrderBy = string.Empty;
                 if (MainClass.dbType == PriemType.PriemMag)
-                {
-                    sOrderBy =
-                        chbCel.Checked ?
-                        " ORDER BY ed.qAbiturient.Coefficient, comp , noexamssort desc, ed.extAbitMarksSum.TotalSum desc, ed.extAbitMarksSum.TotalCount desc, ФИО"
-                        :
-                        " ORDER BY comp , noexamssort, ed.extAbitMarksSum.TotalSum desc, preimsort desc, ed.qAbiturient.Coefficient, ed.extAbitMarksSum.TotalCount desc, ФИО"
-                        ;                    
-                }
+                    sOrderBy = " ORDER BY comp , noexamssort, ed.extAbitMarksSum.TotalSum desc, preimsort desc, ed.qAbiturient.Coefficient, ed.extAbitMarksSum.TotalCount desc, ФИО";                    
                 else
-                {
-                    sOrderBy =
-                        //chbCel.Checked ?
-                        //" ORDER BY ed.qAbiturient.Coefficient , comp , noexamssort desc, ed.extAbitMarksSum.TotalSum desc, 'Проф. экзамен' desc, ed.extAbitMarksSum.TotalCount desc, ФИО"
-                        //:
-                        //" ORDER BY comp , noexamssort, ed.extAbitMarksSum.TotalSum desc, preimsort desc, 'Проф. экзамен' desc, olymp, attestat, attAvg desc, ed.qAbiturient.Coefficient, ed.extAbitMarksSum.TotalCount desc, ФИО"
-                        //;
-                        chbCel.Checked ?
-                        " ORDER BY ed.qAbiturient.Coefficient , comp , noexamssort desc, ed.extAbitMarksSum.TotalSum desc, DopOrProfSort desc, ed.extAbitMarksSum.TotalCount desc, ФИО"
-                        :
-                        " ORDER BY comp , noexamssort, ed.extAbitMarksSum.TotalSum desc, preimsort desc, DopOrProfSort desc, olymp, attestat, attAvg desc, ed.qAbiturient.Coefficient, ed.extAbitMarksSum.TotalCount desc, ФИО"
-                        ;
-
-                }
-                string totalQuery = null;
-
+                    sOrderBy = " ORDER BY comp , noexamssort, ed.extAbitMarksSum.TotalSum desc, preimsort desc, DopOrProfSort desc, olymp, attestat, attAvg desc, ed.qAbiturient.Coefficient, ed.extAbitMarksSum.TotalCount desc, ФИО";
                 
-                plan = GetPlanValueAndCheckLock();
+                string totalQuery = null;
+                iPlanValue = GetPlanValueAndCheckLock();
 
                 if (chbFix.Checked)
                 {
@@ -500,23 +464,14 @@ namespace Priem
                                                     AND ed.FixierenView.LicenseProgramId={3} AND ed.FixierenView.ObrazProgramId={4} {5} AND ed.FixierenView.IsCel = {6}
                                                     AND ed.FixierenView.IsSecond = {7} AND ed.FixierenView.IsReduced = {8} AND ed.FixierenView.IsParallel = {9} ",
                         StudyFormId, StudyBasisId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId == null ? " AND ed.FixierenView.ProfileId IS NULL" : "AND ed.FixierenView.ProfileId='" + ProfileId + "'", 
-                        QueryServ.StringParseFromBool(IsCel), QueryServ.StringParseFromBool(IsSecond), QueryServ.StringParseFromBool(IsReduced), QueryServ.StringParseFromBool(IsParallel), MainClass.studyLevelGroupId);
+                        QueryServ.StringParseFromBool(false), QueryServ.StringParseFromBool(IsSecond), QueryServ.StringParseFromBool(IsReduced), QueryServ.StringParseFromBool(IsParallel), StudyLevelGroupId);
                     
-                    //sOrderBy = " ORDER BY Fixieren.Number ";
-
                     totalQuery = queryFix + whereFix + sOrderBy;
                 }
                 else
                 {
                     string sFilters = GetFilterString();
                     
-                    //целевики?
-                    //if (chbCel.Checked)
-                    //    sFilters += " AND ed.qAbiturient.CompetitionId IN (6) ";
-                    // в общем списке выводить всех 
-                    //else
-                    //    sFilters += " AND ed.qAbiturient.CompetitionId NOT IN (6) ";
-                                        
                     //не забрали доки
                     sFilters += " AND (ed.qAbiturient.BackDoc=0) ";
                     sFilters += " AND ed.qAbiturient.Id NOT IN (select abiturientid from ed.extentryview) ";                    
@@ -550,7 +505,7 @@ namespace Priem
                                            AND ed.qAbiturient.Id NOT IN (SELECT abiturientid from ed.Mark where IsFromEge = 1) and ed.extPerson.EgeInSPbgu = 0 and ed.qAbiturient.IsSecond = 0 and ed.qAbiturient.IsReduced = 0 and ed.qAbiturient.IsParallel = 0) 
                                         OR ed.extAbitMarksSum.TotalCount = " + examsCnt + " ) ";
 
-                        totalQuery = _queryBody + (chbWithOlymps.Checked ? _queryOlymps : "") + _queryOrange + _queryFrom + sFilters + sOrderBy;
+                        totalQuery = _queryBody + _queryOrange + _queryFrom + sFilters + sOrderBy;
                     }                    
                 }
 
@@ -582,18 +537,18 @@ namespace Priem
                     column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 }
 
-                lblCount.Text = dgvAbits.RowCount.ToString() + "             Cвободных мест: "+plan;
+                lblCount.Text = dgvAbits.RowCount.ToString() + "             Cвободных мест: "+iPlanValue;
             }
             catch (Exception ex)
             {
-                WinFormsServ.Error("Ошибка при обновлении списка.");
+                WinFormsServ.Error("Ошибка при обновлении списка.", ex);
             }
         }
       
         private string GetFilterString()
         {
             string s = " WHERE 1=1 ";
-            s += " AND ed.qAbiturient.StudyLevelGroupId = " + MainClass.studyLevelGroupId;  
+            s += " AND ed.qAbiturient.StudyLevelGroupId = " + StudyLevelGroupId;  
             
             //s += " AND ed.qAbiturient.DocDate>='20120813'"; 
 
@@ -638,7 +593,7 @@ namespace Priem
                 e.Value = string.Format("{0}", e.RowIndex + 1);
             }
 
-            if (e.RowIndex < plan)
+            if (e.RowIndex < iPlanValue)
             {
                 if (e.ColumnIndex != dgvAbits.Columns["ФИО"].Index)//сперва подкрасим не-фио
                     dgvAbits[e.ColumnIndex, e.RowIndex].Style.BackColor = System.Drawing.Color.LightGreen;
@@ -653,17 +608,14 @@ namespace Priem
                 dgvAbits["ФИО", e.RowIndex].Style.BackColor = System.Drawing.Color.Orange;
             }            
         }
-
         private void tbNumber_TextChanged(object sender, EventArgs e)
         {
             WinFormsServ.Search(this.dgvAbits, "Рег_номер", tbNumber.Text);
         }
-
         private void tbFIO_TextChanged(object sender, EventArgs e)
         {
             WinFormsServ.Search(this.dgvAbits, "ФИО", tbFIO.Text);
         }
-
         private void btnFixieren_Click(object sender, EventArgs e)
         {
             Fixieren();
@@ -681,13 +633,13 @@ namespace Priem
                     try
                     {
                         Guid? fixViewId = (from fv in context.FixierenView
-                                           where fv.StudyLevelGroupId == MainClass.studyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
+                                           where fv.StudyLevelGroupId == StudyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                                            && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                                            && fv.ObrazProgramId == ObrazProgramId
                                            && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
                                            && fv.StudyFormId == StudyFormId
                                            && fv.StudyBasisId == StudyBasisId
-                                           && fv.IsCel == IsCel
+                                           && fv.IsCel == false
                                            select fv.Id).FirstOrDefault();
 
                         if (fixViewId != null)
@@ -709,7 +661,7 @@ namespace Priem
                         int rand = new Random().Next(10000, 99999);
 
                         ObjectParameter fvId = new ObjectParameter("id", typeof(Guid));
-                        context.FixierenView_Insert(MainClass.studyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, IsCel, rand, false, false, false, fvId);
+                        context.FixierenView_Insert(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, rand, false, false, false, fvId);
                         Guid? viewId = (Guid?)fvId.Value;
 
                         int counter = 0;
@@ -739,8 +691,8 @@ namespace Priem
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "ADOBE Pdf files|*.pdf";
             if (sfd.ShowDialog() == DialogResult.OK)
-                Print.PrintRatingProtocol(StudyFormId, StudyBasisId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, IsCel,  
-                    plan, sfd.FileName, IsSecond, IsReduced, IsParallel);
+                Print.PrintRatingProtocol(StudyFormId, StudyBasisId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, false,  
+                    iPlanValue, sfd.FileName, IsSecond, IsReduced, IsParallel);
         }        
 
         private void btnWord_Click(object sender, EventArgs e)
@@ -857,7 +809,7 @@ namespace Priem
             {
                 using (PriemEntities context = new PriemEntities())
                 {
-                    context.FixierenView_UpdateLocked(MainClass.studyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, IsCel, locked);
+                    context.FixierenView_UpdateLocked(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, locked);
                     
                     lblLocked.Text = locked ? "ЗАЛОЧЕНА" : "НЕ залочена";
                 }
@@ -888,17 +840,17 @@ namespace Priem
                     using (TransactionScope transaction = new TransactionScope(TransactionScopeOption.RequiresNew))
                     {
                         Guid? fixViewId = (from fv in context.FixierenView
-                                           where fv.StudyLevelGroupId == MainClass.studyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
+                                           where fv.StudyLevelGroupId == StudyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                                            && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                                            && fv.ObrazProgramId == ObrazProgramId
                                            && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
                                            && fv.StudyFormId == StudyFormId
                                            && fv.StudyBasisId == StudyBasisId
-                                           && fv.IsCel == IsCel
+                                           && fv.IsCel == false
                                            select fv.Id).FirstOrDefault();
 
                         Guid? entryId = (from fv in context.qEntry
-                                           where fv.StudyLevelGroupId == MainClass.studyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
+                                           where fv.StudyLevelGroupId == StudyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                                            && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                                            && fv.ObrazProgramId == ObrazProgramId
                                            && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
@@ -907,7 +859,7 @@ namespace Priem
                                            select fv.Id).FirstOrDefault();
                         
                         //удалили старое
-                        context.FirstWave_DELETE(entryId, IsCel, false);
+                        context.FirstWave_DELETE(entryId, false, false);
 
                         var fix = from fx in context.Fixieren
                                   where fx.FixierenViewId == fixViewId
@@ -945,7 +897,8 @@ namespace Priem
                 using (PriemEntities context = new PriemEntities())
                 {
                     Guid? entryId = (from fv in context.qEntry
-                                         where fv.StudyLevelGroupId == MainClass.studyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
+                                         where fv.StudyLevelGroupId == StudyLevelGroupId 
+                                         && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                                          && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                                          && fv.ObrazProgramId == ObrazProgramId
                                          && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
@@ -954,7 +907,7 @@ namespace Priem
                                          select fv.Id).FirstOrDefault();
                     
                     //удалили
-                    context.FirstWave_DELETE(entryId, IsCel, false);
+                    context.FirstWave_DELETE(entryId, false, false);
                 }
             }
             catch (Exception ex)
@@ -1018,14 +971,5 @@ namespace Priem
             FillStudyForm();
             NullDataGrid();
         }
-
-        private void chbCel_CheckedChanged(object sender, EventArgs e)
-        {
-            NullDataGrid();
-            if (IsCel)
-                btnFixierenWeb.Enabled = false;
-            else
-                btnFixierenWeb.Enabled = true;
-        }             
     }
 }

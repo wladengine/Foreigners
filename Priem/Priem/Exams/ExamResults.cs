@@ -58,15 +58,6 @@ namespace Priem
                     
                     ComboServ.FillCombo(cbCompetition, HelpClass.GetComboListByTable("ed.Competition", "ORDER BY Name"), false, true);
                     FillExams();
-
-                    chbEGE.Checked = false;
-                    chbOlymps.Checked = false;
-
-                    if (MainClass.dbType == PriemType.PriemMag)
-                    {
-                        chbEGE.Visible = false;
-                        chbOlymps.Visible = false;
-                    }
                 }
             }
             catch (Exception exc)
@@ -229,9 +220,6 @@ namespace Priem
             cbStudyBasis.SelectedIndexChanged += new EventHandler(cbStudyBasis_SelectedIndexChanged);
             cbCompetition.SelectedIndexChanged += new EventHandler(cbCompetition_SelectedIndexChanged);
             cbExam.SelectedIndexChanged += new EventHandler(cbExam_SelectedIndexChanged);
-
-            chbEGE.CheckStateChanged += new System.EventHandler(this.chbEGE_CheckStateChanged);
-            chbOlymps.CheckStateChanged += new System.EventHandler(this.chbOlymps_CheckStateChanged);
         }
 
         void cbFaculty_SelectedIndexChanged(object sender, EventArgs e)
@@ -300,13 +288,13 @@ namespace Priem
 
         public override void UpdateDataGrid()
         {
-            FillGridMarks(GetAbitFilterString(), GetExamFilterString(), chbEGE.Checked, chbOlymps.Checked);          
+            FillGridMarks(GetAbitFilterString(), GetExamFilterString());          
 
             lblCount.Text = "Всего: " + Dgv.Rows.Count.ToString();
             btnCard.Enabled = !(Dgv.RowCount == 0);
         }
         
-        private void FillGridMarks(string abitFilters, string examFilters, bool isEge, bool isOlymp)
+        private void FillGridMarks(string abitFilters, string examFilters)
         {
             DataTable examTable = new DataTable();
             DataSet ds;
@@ -381,21 +369,8 @@ namespace Priem
                 clm = new DataColumn();
                 clm.ColumnName = de.Value.ToString() + "IsOlymp";
                 examTable.Columns.Add(clm);
-
-//                examsFields += string.Format(@"
-//                        , (SELECT SUM(Value) FROM ed.qMark INNER JOIN ed.extExamInEntry ON qMark.ExamInEntryId = ed.extExamInEntry.Id WHERE ed.extExamInEntry.ExamId={0} AND ed.qMark.AbiturientId=ed.extAbit.Id AND ed.extExamInEntry.FacultyId = {1}) as '{2}'
-//                        , (SELECT Top 1 IsFromEge FROM ed.qMark INNER JOIN ed.extExamInEntry ON qMark.ExamInEntryId = ed.extExamInEntry.Id WHERE ed.extExamInEntry.ExamId={0} AND ed.qMark.AbiturientId=ed.extAbit.Id AND ed.extExamInEntry.FacultyId = {1}) as '{2}IsEge'
-//                        , (SELECT Top 1 IsFromOlymp FROM ed.qMark INNER JOIN ed.extExamInEntry ON qMark.ExamInEntryId = ed.extExamInEntry.Id WHERE ed.extExamInEntry.ExamId={0} AND ed.qMark.AbiturientId=ed.extAbit.Id AND ed.extExamInEntry.FacultyId = {1}) as '{2}IsOlymp'",
-//                    de.Key, FacultyId, de.Key);
             }
 
-//            sQueryAbit = string.Format(@"SELECT DISTINCT ed.extAbit.Id as Id, extPerson.PersonNum as Ид_номер, ed.extAbit.RegNum as Рег_номер, ed.extAbitMarksSum.TotalSum AS Sum, ed.extPerson.FIO as ФИО, 
-//                        ed.extAbit.StudyFormName AS StudyForm, ed.extAbit.StudyBasisName AS StudyBasis, ed.extAbit.ObrazProgramCrypt + ' ' +(Case when NOT ed.extAbit.ProfileId IS NULL then ed.extAbit.ProfileName else ed.extAbit.ObrazProgramName end) as Spec, 
-//                        Competition.Name AS CompName {0} 
-//                        FROM ed.extAbit LEFT JOIN ed.extPerson ON ed.extAbit.PersonId = ed.extPerson.Id 
-//                        LEFT JOIN ed.Competition ON ed.extAbit.CompetitionId = ed.Competition.Id LEFT JOIN ed.extAbitMarksSum ON ed.extAbitMarksSum.Id = ed.extAbit.Id 
-//                        {1} ORDER BY ФИО ", examsFields, abitFilters);
-            
             NewWatch wc = new NewWatch();
             wc.Show();
             wc.SetText("Получение данных по абитуриентам...");
@@ -501,30 +476,6 @@ ORDER BY ФИО", abitFilters);
             }
 
             wc.Close();
-            /*
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                string colName;
-                sQuery = string.Format("SELECT qMark.Id, qMark.AbiturientId AS AbitId, qMark.Value AS Mark, extExamInProgram.ExamNameId AS ExamId, qMark.IsFromEge, qMark.IsFromOlymp FROM qMark LEFT JOIN extExamInProgram ON qMark.ExamInProgramId = extExamInProgram.Id WHERE qMark.AbiturientId IN ({0}) {1}", Util.BuildStringWithCollection(lstIds), examFilters);
-                ds = _bdc.GetDataSet(sQuery);
-
-                foreach (DataRow dsRow in ds.Tables[0].Rows)
-                {
-                    for (int i = 0; i < examTable.Rows.Count; i++)
-                    {
-                        if (examTable.Rows[i]["Id"].ToString() == dsRow["AbitId"].ToString())
-                        {
-                            colName = dsRow["ExamId"].ToString();
-                            if (dsRow["Mark"] != null && dsRow["Mark"].ToString() != "")
-                                examTable.Rows[i][colName] = dsRow["Mark"].ToString();
-                            if (bool.Parse(dsRow["IsFromEge"].ToString()))
-                                egeList.Add(new ListItem(i, colName));
-                            if (bool.Parse(dsRow["IsFromOlymp"].ToString()))
-                                olympList.Add(new ListItem(i, colName));
-                        }
-                    }
-                }
-            } */      
 
             DataView dv = new DataView(examTable);
             dv.AllowNew = false;
@@ -560,7 +511,7 @@ ORDER BY ФИО", abitFilters);
         {
             string s = " WHERE 1=1 ";
 
-            s += " AND ed.extAbit.StudyLevelGroupId = " + MainClass.studyLevelGroupId;
+            s += " AND ed.extAbit.StudyLevelGroupId = " + StudyLevelGroupId;
 
             //обработали форму обучения  
             if (StudyFormId != null)
@@ -599,8 +550,8 @@ ORDER BY ФИО", abitFilters);
             string s = "";
             string defQuery = "SELECT DISTINCT ed.extExamInEntry.ExamId AS Id, ed.extExamInEntry.ExamName AS Name FROM ed.extExamInEntry WHERE 1=1";
 
-            s += " AND ed.extExamInEntry.StudyLevelGroupId = " + MainClass.studyLevelGroupId;
-            defQuery += " AND ed.extExamInEntry.StudyLevelGroupId = " + MainClass.studyLevelGroupId;
+            s += " AND ed.extExamInEntry.StudyLevelGroupId = " + StudyLevelGroupId;
+            defQuery += " AND ed.extExamInEntry.StudyLevelGroupId = " + StudyLevelGroupId;
 
             if (ExamId != null)
             {
@@ -681,14 +632,6 @@ ORDER BY ФИО", abitFilters);
             WinFormsServ.Search(this.dgvMarks, "ФИО", tbFIO.Text);
         }
         
-        private void chbEGE_CheckStateChanged(object sender, EventArgs e)
-        {            
-            dgvMarks.Refresh();
-        }
-        private void chbOlymps_CheckStateChanged(object sender, EventArgs e)
-        {            
-            dgvMarks.Refresh();
-        }       
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try
@@ -786,36 +729,6 @@ ORDER BY ФИО", abitFilters);
         }
         private void dgvMarks_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            try
-            {
-                foreach (DictionaryEntry de in examsId)
-                {
-                    if (e.ColumnIndex == dgvMarks.Columns[de.Value.ToString()].Index)
-                    {
-                        if (chbEGE.Checked)
-                        {
-                            if (dgvMarks[de.Value.ToString() + "IsEge", e.RowIndex].Value.ToString() == "True")
-                                dgvMarks[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.LightGreen;
-                            else
-                                dgvMarks[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
-                        }
-                        else if (chbOlymps.Checked)
-                        {
-                            if (dgvMarks[de.Value.ToString() + "IsOlymp", e.RowIndex].Value.ToString() == "True")
-                                dgvMarks[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.LightBlue;
-                            else
-                                dgvMarks[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
-                        }
-                        else
-                            dgvMarks[e.ColumnIndex, e.RowIndex].Style.BackColor = Color.White;
-                        break;
-                    }
-
-                }
-            }
-            catch
-            {
-            }
         }
         protected override void Dgv_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -824,7 +737,5 @@ ORDER BY ФИО", abitFilters);
             else
                 _orderBy = "it." + Dgv.Columns[e.ColumnIndex].Name;
         }
-
-        
     }
 }

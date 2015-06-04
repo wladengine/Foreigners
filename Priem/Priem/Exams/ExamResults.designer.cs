@@ -28,9 +28,9 @@ namespace Priem
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExamResults));
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,12 +41,10 @@ namespace Priem
             this.tbNumber = new System.Windows.Forms.TextBox();
             this.dgvMarks = new System.Windows.Forms.DataGridView();
             this.label5 = new System.Windows.Forms.Label();
-            this.chbEGE = new System.Windows.Forms.CheckBox();
             this.dtDateExam = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
             this.lblSpeciality = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.chbOlymps = new System.Windows.Forms.CheckBox();
             this.btnPrint = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.lblSpecialization = new System.Windows.Forms.Label();
@@ -93,7 +91,7 @@ namespace Priem
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(222, 236);
+            this.label4.Location = new System.Drawing.Point(222, 175);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(34, 13);
             this.label4.TabIndex = 24;
@@ -102,7 +100,7 @@ namespace Priem
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(251, 18);
+            this.label3.Location = new System.Drawing.Point(698, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 13);
             this.label3.TabIndex = 23;
@@ -111,7 +109,7 @@ namespace Priem
             // lblSearch
             // 
             this.lblSearch.AutoSize = true;
-            this.lblSearch.Location = new System.Drawing.Point(12, 257);
+            this.lblSearch.Location = new System.Drawing.Point(12, 196);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(39, 13);
             this.lblSearch.TabIndex = 21;
@@ -120,7 +118,7 @@ namespace Priem
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(54, 236);
+            this.label2.Location = new System.Drawing.Point(54, 175);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 22;
@@ -129,7 +127,7 @@ namespace Priem
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 18);
+            this.label1.Location = new System.Drawing.Point(350, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 13);
             this.label1.TabIndex = 20;
@@ -137,7 +135,7 @@ namespace Priem
             // 
             // tbFIO
             // 
-            this.tbFIO.Location = new System.Drawing.Point(224, 252);
+            this.tbFIO.Location = new System.Drawing.Point(224, 191);
             this.tbFIO.Name = "tbFIO";
             this.tbFIO.Size = new System.Drawing.Size(185, 20);
             this.tbFIO.TabIndex = 19;
@@ -145,7 +143,7 @@ namespace Priem
             // 
             // tbNumber
             // 
-            this.tbNumber.Location = new System.Drawing.Point(57, 252);
+            this.tbNumber.Location = new System.Drawing.Point(57, 191);
             this.tbNumber.Name = "tbNumber";
             this.tbNumber.Size = new System.Drawing.Size(144, 20);
             this.tbNumber.TabIndex = 18;
@@ -160,63 +158,52 @@ namespace Priem
             this.dgvMarks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMarks.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMarks.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvMarks.ColumnHeadersHeight = 40;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMarks.DefaultCellStyle = dataGridViewCellStyle8;
-            this.dgvMarks.Location = new System.Drawing.Point(12, 281);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMarks.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvMarks.Location = new System.Drawing.Point(12, 217);
             this.dgvMarks.MultiSelect = false;
             this.dgvMarks.Name = "dgvMarks";
             this.dgvMarks.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMarks.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
-            this.dgvMarks.Size = new System.Drawing.Size(846, 210);
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMarks.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvMarks.Size = new System.Drawing.Size(846, 274);
             this.dgvMarks.TabIndex = 17;
             this.dgvMarks.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMarks_CellFormatting);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(534, 18);
+            this.label5.Location = new System.Drawing.Point(697, 89);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(76, 13);
             this.label5.TabIndex = 33;
             this.label5.Text = "Тип конкурса";
             // 
-            // chbEGE
-            // 
-            this.chbEGE.AutoSize = true;
-            this.chbEGE.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbEGE.Location = new System.Drawing.Point(533, 130);
-            this.chbEGE.Name = "chbEGE";
-            this.chbEGE.Size = new System.Drawing.Size(46, 17);
-            this.chbEGE.TabIndex = 36;
-            this.chbEGE.Text = "ЕГЭ";
-            this.chbEGE.UseVisualStyleBackColor = true;
-            // 
             // dtDateExam
             // 
             this.dtDateExam.Checked = false;
-            this.dtDateExam.Location = new System.Drawing.Point(427, 183);
+            this.dtDateExam.Location = new System.Drawing.Point(353, 151);
             this.dtDateExam.Name = "dtDateExam";
             this.dtDateExam.ShowCheckBox = true;
             this.dtDateExam.Size = new System.Drawing.Size(152, 20);
@@ -226,7 +213,7 @@ namespace Priem
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(424, 167);
+            this.label6.Location = new System.Drawing.Point(350, 135);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 38;
@@ -236,7 +223,7 @@ namespace Priem
             // lblSpeciality
             // 
             this.lblSpeciality.AutoSize = true;
-            this.lblSpeciality.Location = new System.Drawing.Point(12, 68);
+            this.lblSpeciality.Location = new System.Drawing.Point(12, 49);
             this.lblSpeciality.Name = "lblSpeciality";
             this.lblSpeciality.Size = new System.Drawing.Size(75, 13);
             this.lblSpeciality.TabIndex = 39;
@@ -245,22 +232,11 @@ namespace Priem
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 167);
+            this.label8.Location = new System.Drawing.Point(14, 129);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(52, 13);
             this.label8.TabIndex = 40;
             this.label8.Text = "Экзамен";
-            // 
-            // chbOlymps
-            // 
-            this.chbOlymps.AutoSize = true;
-            this.chbOlymps.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chbOlymps.Location = new System.Drawing.Point(493, 153);
-            this.chbOlymps.Name = "chbOlymps";
-            this.chbOlymps.Size = new System.Drawing.Size(86, 17);
-            this.chbOlymps.TabIndex = 41;
-            this.chbOlymps.Text = "Олимпиады";
-            this.chbOlymps.UseVisualStyleBackColor = true;
             // 
             // btnPrint
             // 
@@ -276,7 +252,7 @@ namespace Priem
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(395, 18);
+            this.label9.Location = new System.Drawing.Point(697, 49);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(94, 13);
             this.label9.TabIndex = 44;
@@ -285,7 +261,7 @@ namespace Priem
             // lblSpecialization
             // 
             this.lblSpecialization.AutoSize = true;
-            this.lblSpecialization.Location = new System.Drawing.Point(14, 114);
+            this.lblSpecialization.Location = new System.Drawing.Point(352, 89);
             this.lblSpecialization.Name = "lblSpecialization";
             this.lblSpecialization.Size = new System.Drawing.Size(53, 13);
             this.lblSpecialization.TabIndex = 51;
@@ -294,7 +270,7 @@ namespace Priem
             // btnUpdate
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdate.Location = new System.Drawing.Point(783, 252);
+            this.btnUpdate.Location = new System.Drawing.Point(783, 188);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(75, 23);
             this.btnUpdate.TabIndex = 53;
@@ -306,7 +282,7 @@ namespace Priem
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(415, 252);
+            this.pictureBox1.Location = new System.Drawing.Point(415, 191);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(36, 19);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -316,7 +292,7 @@ namespace Priem
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(347, 68);
+            this.label7.Location = new System.Drawing.Point(14, 89);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(158, 13);
             this.label7.TabIndex = 56;
@@ -328,9 +304,9 @@ namespace Priem
             this.cbStudyForm.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyForm.FormattingEnabled = true;
-            this.cbStudyForm.Location = new System.Drawing.Point(253, 34);
+            this.cbStudyForm.Location = new System.Drawing.Point(700, 25);
             this.cbStudyForm.Name = "cbStudyForm";
-            this.cbStudyForm.Size = new System.Drawing.Size(136, 21);
+            this.cbStudyForm.Size = new System.Drawing.Size(157, 21);
             this.cbStudyForm.TabIndex = 136;
             // 
             // cbLicenseProgram
@@ -339,7 +315,7 @@ namespace Priem
             this.cbLicenseProgram.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbLicenseProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLicenseProgram.FormattingEnabled = true;
-            this.cbLicenseProgram.Location = new System.Drawing.Point(15, 84);
+            this.cbLicenseProgram.Location = new System.Drawing.Point(15, 65);
             this.cbLicenseProgram.Name = "cbLicenseProgram";
             this.cbLicenseProgram.Size = new System.Drawing.Size(329, 21);
             this.cbLicenseProgram.TabIndex = 135;
@@ -350,9 +326,9 @@ namespace Priem
             this.cbObrazProgram.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbObrazProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbObrazProgram.FormattingEnabled = true;
-            this.cbObrazProgram.Location = new System.Drawing.Point(350, 84);
+            this.cbObrazProgram.Location = new System.Drawing.Point(15, 105);
             this.cbObrazProgram.Name = "cbObrazProgram";
-            this.cbObrazProgram.Size = new System.Drawing.Size(366, 21);
+            this.cbObrazProgram.Size = new System.Drawing.Size(329, 21);
             this.cbObrazProgram.TabIndex = 134;
             // 
             // cbFaculty
@@ -361,9 +337,9 @@ namespace Priem
             this.cbFaculty.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbFaculty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFaculty.FormattingEnabled = true;
-            this.cbFaculty.Location = new System.Drawing.Point(15, 34);
+            this.cbFaculty.Location = new System.Drawing.Point(353, 25);
             this.cbFaculty.Name = "cbFaculty";
-            this.cbFaculty.Size = new System.Drawing.Size(232, 21);
+            this.cbFaculty.Size = new System.Drawing.Size(329, 21);
             this.cbFaculty.TabIndex = 133;
             // 
             // cbCompetition
@@ -372,9 +348,9 @@ namespace Priem
             this.cbCompetition.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbCompetition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCompetition.FormattingEnabled = true;
-            this.cbCompetition.Location = new System.Drawing.Point(537, 34);
+            this.cbCompetition.Location = new System.Drawing.Point(700, 105);
             this.cbCompetition.Name = "cbCompetition";
-            this.cbCompetition.Size = new System.Drawing.Size(136, 21);
+            this.cbCompetition.Size = new System.Drawing.Size(158, 21);
             this.cbCompetition.TabIndex = 137;
             // 
             // cbStudyBasis
@@ -383,9 +359,9 @@ namespace Priem
             this.cbStudyBasis.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyBasis.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyBasis.FormattingEnabled = true;
-            this.cbStudyBasis.Location = new System.Drawing.Point(395, 34);
+            this.cbStudyBasis.Location = new System.Drawing.Point(700, 65);
             this.cbStudyBasis.Name = "cbStudyBasis";
-            this.cbStudyBasis.Size = new System.Drawing.Size(136, 21);
+            this.cbStudyBasis.Size = new System.Drawing.Size(157, 21);
             this.cbStudyBasis.TabIndex = 138;
             // 
             // cbProfile
@@ -394,7 +370,7 @@ namespace Priem
             this.cbProfile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbProfile.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProfile.FormattingEnabled = true;
-            this.cbProfile.Location = new System.Drawing.Point(15, 130);
+            this.cbProfile.Location = new System.Drawing.Point(353, 105);
             this.cbProfile.Name = "cbProfile";
             this.cbProfile.Size = new System.Drawing.Size(329, 21);
             this.cbProfile.TabIndex = 139;
@@ -405,7 +381,7 @@ namespace Priem
             this.cbExam.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbExam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbExam.FormattingEnabled = true;
-            this.cbExam.Location = new System.Drawing.Point(15, 183);
+            this.cbExam.Location = new System.Drawing.Point(15, 145);
             this.cbExam.Name = "cbExam";
             this.cbExam.Size = new System.Drawing.Size(329, 21);
             this.cbExam.TabIndex = 140;
@@ -416,16 +392,16 @@ namespace Priem
             this.cbStudyLevelGroup.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyLevelGroup.FormattingEnabled = true;
-            this.cbStudyLevelGroup.Location = new System.Drawing.Point(679, 34);
+            this.cbStudyLevelGroup.Location = new System.Drawing.Point(15, 25);
             this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
-            this.cbStudyLevelGroup.Size = new System.Drawing.Size(136, 21);
+            this.cbStudyLevelGroup.Size = new System.Drawing.Size(329, 21);
             this.cbStudyLevelGroup.TabIndex = 142;
             this.cbStudyLevelGroup.SelectedValueChanged += new System.EventHandler(this.cbStudyLevelGroup_SelectedValueChanged);
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(676, 18);
+            this.label10.Location = new System.Drawing.Point(12, 9);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(51, 13);
             this.label10.TabIndex = 141;
@@ -452,12 +428,10 @@ namespace Priem
             this.Controls.Add(this.lblSpecialization);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.btnPrint);
-            this.Controls.Add(this.chbOlymps);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.lblSpeciality);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dtDateExam);
-            this.Controls.Add(this.chbEGE);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -479,12 +453,10 @@ namespace Priem
             this.Controls.SetChildIndex(this.label3, 0);
             this.Controls.SetChildIndex(this.label4, 0);
             this.Controls.SetChildIndex(this.label5, 0);
-            this.Controls.SetChildIndex(this.chbEGE, 0);
             this.Controls.SetChildIndex(this.dtDateExam, 0);
             this.Controls.SetChildIndex(this.label6, 0);
             this.Controls.SetChildIndex(this.lblSpeciality, 0);
             this.Controls.SetChildIndex(this.label8, 0);
-            this.Controls.SetChildIndex(this.chbOlymps, 0);
             this.Controls.SetChildIndex(this.btnPrint, 0);
             this.Controls.SetChildIndex(this.label9, 0);
             this.Controls.SetChildIndex(this.lblSpecialization, 0);
@@ -522,14 +494,12 @@ namespace Priem
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbFIO;
         private System.Windows.Forms.TextBox tbNumber;
-        private System.Windows.Forms.DataGridView dgvMarks;       
-        private System.Windows.Forms.Label label5;       
-        private System.Windows.Forms.CheckBox chbEGE;
+        private System.Windows.Forms.DataGridView dgvMarks;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DateTimePicker dtDateExam;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblSpeciality;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckBox chbOlymps;
         private System.Windows.Forms.Button btnPrint;       
         private System.Windows.Forms.Label label9;        
         private System.Windows.Forms.Label lblSpecialization;

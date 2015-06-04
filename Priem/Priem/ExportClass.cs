@@ -28,16 +28,18 @@ namespace Priem
             {
                 //взять максимум номера, если еще ничего не назначено
                 string num = (from ab in context.extAbit
-                              where ab.StudyLevelGroupId == MainClass.studyLevelGroupId
+                              where MainClass.lstStudyLevelGroupId.Contains(ab.StudyLevelGroupId)
                               select ab.StudyNumber).Max();
                
 
                 var abits = from ab in context.extAbit
                             join ev in context.extEntryView
                             on ab.Id equals ev.AbiturientId
-                            where ab.StudyLevelGroupId == MainClass.studyLevelGroupId && (ab.StudyNumber == null || ab.StudyNumber.Length == 0)
+                            where MainClass.lstStudyLevelGroupId.Contains(ab.StudyLevelGroupId) && (ab.StudyNumber == null || ab.StudyNumber.Length == 0)
                             orderby ab.FacultyId, ab.FIO
                             select ab;
+
+
 
                 List<Guid> lstAbits = (from a in abits select a.Id).ToList();
 
@@ -52,7 +54,7 @@ namespace Priem
                 {
                     string sNum = "0000" + stNum.ToString();
                     sNum = sNum.Substring(sNum.Length - 4, 4);
-                    sNum = "12" + MainClass.studyLevelGroupId + sNum;                
+                    sNum = "15" + "9" + sNum;                
 
                     context.Abiturient_UpdateStudyNumber(sNum, abitId);                    
                     stNum++;
@@ -134,7 +136,7 @@ inner join ed.person on ed.person.id=ed.extabit.personid
 inner join ed.country as nation on nation.id=ed.person.nationalityid
 inner join ed.passporttype on ed.passporttype.id=ed.person.passporttypeid
 left join ed.region on ed.region.id=ed.person.regionid
-where ed.extentryview.studyformid=1 and ed.extentryview.studybasisid=1 and ed.extabit.studylevelgroupid = " + MainClass.studyLevelGroupId;
+where ed.extentryview.studyformid=1 and ed.extentryview.studybasisid=1 and ed.extabit.studylevelgroupid IN (" + Util.BuildStringWithCollection(MainClass.lstStudyLevelGroupId) + ")";
 
 
                     DataSet ds = MainClass.Bdc.GetDataSet(query);
@@ -263,7 +265,7 @@ inner join ed.person on ed.person.id=ed.extabit.personid
 inner join ed.country as nation on nation.id=ed.person.nationalityid
 inner join ed.passporttype on ed.passporttype.id=ed.person.passporttypeid
 left join ed.region on ed.region.id=ed.person.regionid
-where ed.extentryview.studyformid=1 and ed.extentryview.studybasisid=1 and ed.extabit.studylevelgroupid = " + MainClass.studyLevelGroupId;
+where ed.extentryview.studyformid=1 and ed.extentryview.studybasisid=1 and ed.extabit.studylevelgroupid IN (" + Util.BuildStringWithCollection(MainClass.lstStudyLevelGroupId) + ")";
 
 
                     DataSet ds = MainClass.Bdc.GetDataSet(query);

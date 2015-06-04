@@ -675,7 +675,7 @@ namespace Priem
             using (FileStream fs = new FileStream(savePath, FileMode.Create))
             using (BinaryWriter bw = new BinaryWriter(fs))
             {
-                byte[] buffer = PriemLib.Print.GetApplication_Aspirant(PersonId.Value, MainClass.dirTemplates);
+                byte[] buffer = PriemLib.Print.GetApplicationPDF_Aspirant(PersonId.Value, MainClass.dirTemplates);
                 fs.Write(buffer, 0, buffer.Length);
                 fs.Flush();
                 fs.Close();
@@ -4484,14 +4484,13 @@ namespace Priem
                      INNER JOIN ed.Competition ON ed.Competition.Id = ed.extAbit.CompetitionId 
                      LEFT JOIN ed.extAbitMarksSum ON ed.extAbit.Id = ed.extAbitMarksSum.Id";
 
-                string where = " WHERE ed.extDisEntryView.Id = @protocolId AND extDisEntryView.StudyLevelGroupId=@StudyLevelGroupId";
+                string where = " WHERE ed.extDisEntryView.Id = @protocolId ";
                 where += " AND ed.extPerson.NationalityId" + (isRus ? "=1 " : "<>1 ");
                 string orderby = " ORDER BY ed.extAbit.ProfileName, NameRod ,ФИО ";
 
                 SortedList<string, object> slDel = new SortedList<string, object>();
 
                 slDel.Add("@protocolId", protocolId);
-                slDel.Add("@StudyLevelGroupId", MainClass.studyLevelGroupId);
 
                 DataSet ds = MainClass.Bdc.GetDataSet(query + where + orderby, slDel);
 
@@ -4683,7 +4682,7 @@ namespace Priem
                      INNER JOIN ed.Competition ON ed.Competition.Id = ed.extAbit.CompetitionId 
                      LEFT JOIN ed.extAbitMarksSum ON ed.extAbit.Id = ed.extAbitMarksSum.Id";
 
-                string where = " WHERE extDisEntryView.Id = @protocolId AND extDisEntryView.StudyLevelGroupId=@StudyLevelGroupId";
+                string where = " WHERE extDisEntryView.Id = @protocolId ";
                 string orderby = " ORDER BY extAbit.ProfileName, NameRod, ФИО ";
 
                 DateTime protocolDate = (DateTime)MainClass.Bdc.GetValue(string.Format("SELECT Protocol.Date FROM ed.Protocol WHERE Protocol.Id='{0}'", protocolId));
@@ -4692,7 +4691,6 @@ namespace Priem
                 SortedList<string, object> slDel = new SortedList<string, object>();
 
                 slDel.Add("@protocolId", protocolId);
-                slDel.Add("@StudyLevelGroupId", MainClass.studyLevelGroupId);
 
                 DataSet ds = MainClass.Bdc.GetDataSet(query + where + orderby, slDel);
 

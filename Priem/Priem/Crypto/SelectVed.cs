@@ -90,7 +90,7 @@ namespace Priem
                 using (PriemEntities context = new PriemEntities())
                 {
                     var exVed = (from ev in context.extExamsVed
-                                 where ev.Number == vedNum && ev.StudyLevelGroupId == MainClass.studyLevelGroupId
+                                 where ev.Number == vedNum && MainClass.lstStudyLevelGroupId.Contains(ev.StudyLevelGroupId)
                                  select ev).FirstOrDefault();
 
                     vedId = exVed.Id;

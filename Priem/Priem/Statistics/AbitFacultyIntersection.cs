@@ -79,7 +79,7 @@ namespace Priem
             {
                 var src = (from x in context.qEntry
                            orderby x.LicenseProgramCode
-                           where x.FacultyId == FacultyId && x.StudyLevelGroupId == MainClass.studyLevelGroupId
+                           where x.FacultyId == FacultyId && MainClass.lstStudyLevelGroupId.Contains(x.StudyLevelGroupId)
                            select new
                            {
                                x.LicenseProgramId,

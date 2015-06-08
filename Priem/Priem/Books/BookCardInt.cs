@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.Objects;
 using System.Transactions;
 using PriemLib;
+using System.Data.Entity.Core.Objects;
 
 namespace Priem
 {

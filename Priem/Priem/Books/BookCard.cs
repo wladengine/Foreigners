@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Transactions;
-using System.Data.Objects;
 
 using BaseFormsLib;
 using EducServLib;
 using PriemLib;
+using System.Data.Entity.Core.Objects;
 
 namespace Priem
 {

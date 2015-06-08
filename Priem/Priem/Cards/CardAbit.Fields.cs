@@ -19,13 +19,15 @@ namespace Priem
                     using (PriemEntities context = new PriemEntities())
                     {                        
                         Guid? entId = (from ent in context.qEntry
-                                                 where ent.IsSecond == IsSecond && ent.IsParallel == IsParallel && ent.IsReduced == IsReduced
-                                                 && ent.LicenseProgramId == LicenseProgramId
-                                                 && ent.ObrazProgramId == ObrazProgramId
-                                                 && (ProfileId == null ? ent.ProfileId == null : ent.ProfileId == ProfileId)   
-                                                 && ent.StudyFormId == StudyFormId
-                                                 && ent.StudyBasisId == StudyBasisId
-                                                 select ent.Id).FirstOrDefault();
+                                       where ent.IsSecond == IsSecond && ent.IsParallel == IsParallel && ent.IsReduced == IsReduced
+                                       && ent.LicenseProgramId == LicenseProgramId
+                                       && ent.ObrazProgramId == ObrazProgramId
+                                       && (ProfileId == null ? ent.ProfileId == null : ent.ProfileId == ProfileId)   
+                                       && ent.StudyFormId == StudyFormId
+                                       && ent.StudyBasisId == StudyBasisId
+                                       && ent.IsForeign == IsForeign
+                                       && ent.IsCrimea == false
+                                       select ent.Id).FirstOrDefault();
                         return entId;
                     }
                 }
@@ -87,10 +89,10 @@ namespace Priem
             set { ComboServ.SetComboId(cbStudyBasis, value); }
         }
 
-        public bool IsGosLine
+        public bool IsForeign
         {
-            get { return chbIsGosLine.Checked; }
-            set { chbIsGosLine.Checked = value; }
+            get { return chbIsForeign.Checked; }
+            set { chbIsForeign.Checked = value; }
         }
 
         public int? CompetitionId
@@ -275,12 +277,6 @@ namespace Priem
         {
             get { return chbHasOriginals.Checked; }
             set { chbHasOriginals.Checked = value; }
-        }
-
-        public bool IsCommonRussianCompetition
-        {
-            get { return chbIsCommonRussianCompetition.Checked; }
-            set { chbIsCommonRussianCompetition.Checked = value; }
         }
 
         public double? Priority

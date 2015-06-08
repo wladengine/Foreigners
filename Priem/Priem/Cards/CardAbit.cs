@@ -10,11 +10,11 @@ using System.Collections;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Data.Objects;
 
 using BaseFormsLib;
 using EducServLib;
 using PriemLib;
+using System.Data.Entity.Core.Objects;
 
 namespace Priem
 {
@@ -123,7 +123,7 @@ namespace Priem
                     chbChecked.Checked = false;
                     chbChecked.Enabled = false;
                     chbNotEnabled.Checked = false;
-                    chbIsGosLine.Checked = false;
+                    chbIsForeign.Checked = false;
                     dtDocInsertDate.Enabled = false;
                     btnDocInventory.Visible = false;
 
@@ -214,22 +214,10 @@ namespace Priem
                     FillStudyBasis();
                     
                     StudyBasisId = abit.StudyBasisId;
-                    if (StudyBasisId == 1)
-                    {
-                        chbIsCommonRussianCompetition.Visible = false;
-                        chbIsGosLine.Visible = true;
-                        chbIsGosLine.Enabled = true;
-                    }
-                    else
-                        if (StudyBasisId == 2)
-                        {
-                            chbIsGosLine.Visible = false;
-                            chbIsCommonRussianCompetition.Visible = true;
-                            chbIsCommonRussianCompetition.Enabled = true;
-                        }
+                    
                     FillCompetition();
 
-                    IsGosLine = abit.IsGosLine;
+                    IsForeign = abit.IsForeign;
                     CompetitionId = abit.CompetitionId;
                     OtherCompetitionId = abit.OtherCompetitionId;
                     CelCompetitionId = abit.CelCompetitionId;
@@ -248,14 +236,6 @@ namespace Priem
                     HasOriginals = abit.HasOriginals;
                     Priority = abit.Priority;
                     abitBarcode = abit.Barcode;
-
-                    if (StudyBasisId == 2)
-                        chbIsCommonRussianCompetition.Visible = true;
-                    else
-                        chbIsCommonRussianCompetition.Visible = false;
-
-                    IsCommonRussianCompetition = abit.IsCommonRussianCompetition;
-
 
                     FillProtocols(context);
                     UpdateDataGridOlymp();
@@ -430,8 +410,7 @@ namespace Priem
                 chbBackDoc.Enabled = true;
 
             chbIsPaid.Enabled = true;
-            chbIsGosLine.Enabled = true;
-            chbIsCommonRussianCompetition.Enabled = true;
+            chbIsForeign.Enabled = true;
             cbLanguage.Enabled = true;
             cbCelCompetition.Enabled = true;
             tbCelCompetitionText.Enabled = true;
@@ -662,19 +641,6 @@ namespace Priem
         void cbStudyBasis_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillCompetition();
-            if (ComboServ.GetComboIdInt(cbStudyBasis) == 1)
-            {
-                chbIsCommonRussianCompetition.Visible = false;
-                chbIsGosLine.Visible = true;
-                chbIsGosLine.Enabled = true;
-            }
-            else
-                if (ComboServ.GetComboIdInt(cbStudyBasis) == 2)
-                {
-                    chbIsGosLine.Visible = false;
-                    chbIsCommonRussianCompetition.Visible = true;
-                    chbIsCommonRussianCompetition.Enabled = true; 
-                }
         }
         void cbCompetition_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1186,9 +1152,9 @@ namespace Priem
             ObjectParameter boolPar = new ObjectParameter("result", typeof(bool));
 
             if (_Id == null)
-                context.CheckAbitIdentWithGosLine(_personId, EntryId, IsGosLine, boolPar);
+                context.CheckAbitIdentWithGosLine(_personId, EntryId, IsForeign, boolPar);
             else
-                context.CheckAbitIdentWithIdAndGosLine(GuidId, _personId, EntryId, IsGosLine, boolPar);
+                context.CheckAbitIdentWithIdAndGosLine(GuidId, _personId, EntryId, IsForeign, boolPar);
 
             return Convert.ToBoolean(boolPar.Value);
         }
@@ -1202,11 +1168,10 @@ namespace Priem
         {
             context.Abiturient_Insert(_personId, EntryId, CompetitionId, IsListener, false, IsPaid, BackDoc, BackDocDate, DocDate, DateTime.Now, 
                 Checked, NotEnabled, Coefficient, OtherCompetitionId, CelCompetitionId, CelCompetitionText, LanguageId, HasOriginals, 
-                Priority, abitBarcode, null, null, IsGosLine, idParam);
+                Priority, abitBarcode, null, null, idParam);
 
             Guid AppId = (Guid)idParam.Value;
 
-            context.Abiturient_UpdateIsCommonRussianCompetition(IsCommonRussianCompetition, AppId);
         }
 
         protected override void UpdateRec(PriemEntities context, Guid id)
@@ -1217,8 +1182,7 @@ namespace Priem
 
             //если есть права на изменение конкурса 
             context.Abiturient_UpdateEntry(EntryId, id);
-            context.Abiturient_UpdateIsGosLine(IsGosLine, id);
-            context.Abiturient_UpdateIsCommonRussianCompetition(IsCommonRussianCompetition, id);
+            //context.Abiturient_UpdateIsGosLine(IsForeign, id);
         }
 
         protected override void OnSave()

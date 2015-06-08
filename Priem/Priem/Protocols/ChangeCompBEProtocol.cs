@@ -6,7 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.Objects;
+using System.Data.Entity.Core.Objects;
 using System.Transactions;
 using System.Linq;
 using PriemLib;

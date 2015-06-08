@@ -276,7 +276,7 @@ namespace Priem
             }
         }
 
-        protected override void InsertRec(PriemEntities context, System.Data.Objects.ObjectParameter idParam)
+        protected override void InsertRec(PriemEntities context, System.Data.Entity.Core.Objects.ObjectParameter idParam)
         {
             context.PaidData_Insert(DogovorNum, DogovorDate, DogovorTypeId, ProrektorId, Qualification, Srok, 
                 DateStart, DateFinish, SumFirstYear, PayPeriodId, SumFirstPeriod, AbitFIORod, AbitParent, null, 

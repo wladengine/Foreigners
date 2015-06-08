@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Data;
-using System.Data.Objects;
+using System.Data.Entity.Core.Objects;
 using WordOut;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -710,7 +710,7 @@ namespace Priem
                                     EntryType = (Entry.StudyLevelId == 17 ? 2 : 1),
                                     Entry.StudyLevelId,
                                     x.Priority,
-                                    x.IsGosLine,
+                                    x.Entry.IsForeign,
                                     Entry.CommissionId,
                                     ComissionAddress = Entry.CommissionId
                                 }).OrderBy(x => x.Priority).ToList();
@@ -3825,7 +3825,8 @@ namespace Priem
                                    ObrazProgramInEntryObrazProgramId = extabit.InnerEntryInEntryObrazProgramId,
                                    ProfileInObrazProgramInEntryName = extabit.InnerEntryInEntryProfileName,
                                    extperson.ForeignNationality,
-                                   extabit.IsGosLine
+                                   extabit.IsForeign,
+                                   IsGosLine = extabit.StudyBasisId == 1
                                }).ToList().Distinct().Select(x =>
                                    new
                                    {
@@ -3851,6 +3852,7 @@ namespace Priem
                                        x.ForeignNationality,
                                        x.NationalityId,
                                        x.HasTRKI,
+                                       x.IsForeign,
                                        x.IsGosLine,
                                        x.country_live
                                    }
@@ -4077,7 +4079,7 @@ namespace Priem
                         curRow++;
                         td[0, curRow] = string.Format("\t\t1.{0}. {1} {2} {3}", counter, v.ФИО, balls + ballToStr, string.IsNullOrEmpty(Motivation) ? "" : ("\n\n\t\t" + tmpMotiv + "\n"));
 
-                        if (v.IsGosLine)
+                        if (v.IsForeign && v.IsGosLine)
                         {
                             td.AddRow(1);
                             curRow++;

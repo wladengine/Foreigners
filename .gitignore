@@ -235,3 +235,6 @@ Priem/packages/EntityFramework.5.0.0/tools/init.ps1
 Priem/packages/EntityFramework.5.0.0/tools/about_EntityFramework.help.txt
 Priem/packages/EntityFramework.5.0.0/tools/EntityFramework.psm1
 Priem/packages/EntityFramework.5.0.0/tools/Redirect.config
+Priem/packages/EntityFramework.6.1.3/lib/net40/EntityFramework.SqlServer.xml
+Priem/packages/EntityFramework.6.1.3/lib/net40/EntityFramework.xml
+Priem/packages/EntityFramework.6.1.3/lib/net45/EntityFramework.SqlServer.xml

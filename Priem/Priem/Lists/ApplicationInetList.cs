@@ -239,7 +239,7 @@ qAbiturient.CommitNumber AS Barcode,
 (SELECT Max(extAbitFileNames_All.LoadDate) FROM extAbitFileNames_All WHERE extAbitFileNames_All.PersonId = extForeignPerson.Id AND (extAbitFileNames_All.ApplicationId = qAbiturient.Id OR extAbitFileNames_All.ApplicationId IS NULL)) AS Дата_обновления
 FROM qAbiturient INNER JOIN extForeignPerson ON qAbiturient.PersonId = extForeignPerson.Id
 INNER JOIN qForeignApplicationOnly ON qForeignApplicationOnly.Id = qAbiturient.Id
-WHERE qAbiturient.IsImported = 0 AND Enabled = 1";
+WHERE qAbiturient.IsImported = 0 AND SemesterId = 1 AND Enabled = 1";
 
             HelpClass.FillDataGrid(dgvAbiturients, _bdcInet, _sQuery + GetFilterString(), _orderBy);
             dgvAbiturients.Columns["IsGosLine"].Visible = false;

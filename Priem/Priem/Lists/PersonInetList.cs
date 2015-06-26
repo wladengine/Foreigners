@@ -209,5 +209,38 @@ LEFT JOIN ed.StudyLevel ON StudyLevel.Id=Entry.StudyLevelId ";
             //    e.CellStyle.SelectionBackColor = Color.Coral;
             //}
         }
+
+        protected override void DeleteSelectedRows(string sId)
+        {
+            if (MainClass.IsPasha())
+            {
+                //foreach (DataGridViewRow dgvr in Dgv.SelectedRows)
+                //{
+                //    string itemId = dgvr.Cells["Id"].Value.ToString();
+                Guid g = Guid.Empty;
+                Guid.TryParse(sId, out g);
+                DeletePerson(g);
+                //}
+                MainClass.DataRefresh();
+            }
+        }
+
+        private void DeletePerson(Guid g)
+        {
+            if (MainClass.IsPasha())
+            {
+                try
+                {
+                    using (PriemEntities context = new PriemEntities())
+                    {
+                        context.Person_deleteAllInfo(g);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WinFormsServ.Error("Ошибка удаления данных", ex);
+                }
+            }
+        }
     }
 }

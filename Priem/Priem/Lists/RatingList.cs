@@ -809,7 +809,7 @@ namespace Priem
             {
                 using (PriemEntities context = new PriemEntities())
                 {
-                    context.FixierenView_UpdateLocked(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, locked);
+                    context.FixierenView_UpdateLocked(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, false, locked);
                     
                     lblLocked.Text = locked ? "ЗАЛОЧЕНА" : "НЕ залочена";
                 }

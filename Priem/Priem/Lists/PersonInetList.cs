@@ -61,18 +61,19 @@ namespace Priem
 
         protected override void GetSource()
         {
-            _sQuery = @"SELECT DISTINCT extForeignPerson.Id, extForeignPerson.PersonTypeId, extForeignPerson.PersonNum, extForeignPerson.FIO, extForeignPerson.PassportData, extForeignPerson.NationalityName, extForeignPerson.CountryName, extForeignPerson.EducDocument 
-FROM ed.extForeignPerson ";
+            _sQuery = @"SELECT DISTINCT extPerson.Id, extPerson.PersonNum, extPerson.FIO, extPerson.PassportData, extPerson.ForeignNationality AS NationalityName, extPerson.ForeignCountry AS CountryName, extPerson.EducDocument 
+FROM ed.extPerson ";
             string join = "";
 
             if (!chbShowAll.Checked)
             {
-                join = @" LEFT JOIN ed.Abiturient ON Abiturient.PersonId = extForeignPerson.Id 
+                join = @" LEFT JOIN ed.Abiturient ON Abiturient.PersonId = extPerson.Id 
 LEFT JOIN ed.Entry ON Entry.Id=Abiturient.EntryId 
-LEFT JOIN ed.StudyLevel ON StudyLevel.Id=Entry.StudyLevelId ";
+LEFT JOIN ed.StudyLevel ON StudyLevel.Id=Entry.StudyLevelId 
+WHERE Entry.IsForeign = 1 OR (Entry.Id IS NULL AND extPerson.NationalityId <> 1)";
             }
 
-            HelpClass.FillDataGrid(Dgv, _bdc, _sQuery + join, "", " ORDER BY PersonTypeId DESC, FIO");
+            HelpClass.FillDataGrid(Dgv, _bdc, _sQuery + join, "", " ORDER BY FIO");
             SetVisibleColumnsAndNameColumns();
         }
 

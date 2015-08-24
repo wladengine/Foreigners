@@ -361,7 +361,7 @@ namespace Priem
 
                         context.Protocol_InsertAll(StudyLevelGroupId,
                                   _facultyId, _licenseProgramId, _studyFormId, _studyBasisId, tbNum.Text, dtpDate.Value, iProtocolTypeId,
-                                  string.Empty, !isNew, null, _isSecond, _isReduced, _isParallel, _isListener, paramId);
+                                  string.Empty, !isNew, null, _isSecond, _isReduced, _isParallel, _isListener, MainClass.dbType == PriemType.PriemForeigners, paramId);
 
                         protocolId = (Guid)paramId.Value;                        
 

@@ -185,7 +185,7 @@ namespace Priem
                     {
                         var protocolInfo = context.qProtocol.Where(x => x.Id == _id.Value).Select(x => new { x.Number, x.Date }).FirstOrDefault();
                         ProtocolName = protocolInfo.Number;
-                        dtpDate.Value = protocolInfo.Date.Value;
+                        dtpDate.Value = protocolInfo.Date;
                     }                    
                 }
                 catch (Exception ex)
@@ -301,8 +301,8 @@ namespace Priem
         //возвращает строку фильтров
         protected virtual string GetWhereClause(string sTable)
         {
-            string rez = string.Format(" WHERE {3}.FacultyId = {0} AND {3}.StudyFormId = {1} AND {3}.StudyBasisId = {2}  ", 
-                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString(), sTable);
+            string rez = string.Format(" WHERE {3}.FacultyId = {0} AND {3}.StudyFormId = {1} AND {3}.StudyBasisId = {2} AND {3}.IsForeign = '{4}' ", 
+                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString(), sTable, Util.ToStr(MainClass.dbType == PriemType.PriemForeigners));
 
             return rez;
         }
@@ -451,7 +451,7 @@ namespace Priem
 
                             context.Protocol_InsertAll(StudyLevelGroupId,
                                 _facultyId, _licenseProgramId, _studyFormId, _studyBasisId, tbNum.Text, dtpDate.Value, iProtocolTypeId,
-                                string.Empty, !isNew, null, _isSecond, _isReduced, _isParallel, _isListener, paramId);
+                                string.Empty, !isNew, null, _isSecond, _isReduced, _isParallel, _isListener, MainClass.dbType == PriemType.PriemForeigners, paramId);
 
                             ProtocolId = (Guid)paramId.Value;
                             //сохраняем людей в протоколе

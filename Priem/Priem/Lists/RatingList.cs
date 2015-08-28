@@ -859,7 +859,7 @@ namespace Priem
                                            select fv.Id).FirstOrDefault();
                         
                         //удалили старое
-                        context.FirstWave_DELETE(entryId, false, false);
+                        context.FirstWave_DELETE(entryId, false, false, false);
 
                         var fix = from fx in context.Fixieren
                                   where fx.FixierenViewId == fixViewId
@@ -907,7 +907,7 @@ namespace Priem
                                          select fv.Id).FirstOrDefault();
                     
                     //удалили
-                    context.FirstWave_DELETE(entryId, false, false);
+                    context.FirstWave_DELETE(entryId, false, false, false);
                 }
             }
             catch (Exception ex)

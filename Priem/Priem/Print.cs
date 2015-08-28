@@ -3764,12 +3764,12 @@ namespace Priem
                 wd.SetFields("Слушатель", list);
                 wd.SetFields("Сокращ", sec);
 
-                wd.SetFields("ДатаПриказа", docDate.ToShortDateString());
-                wd.SetFields("НомерПриказа", docNum);
+                //wd.SetFields("ДатаПриказа", docDate.ToShortDateString());
+                //wd.SetFields("НомерПриказа", docNum);
 
-                wd.SetFields("DogovorDoc", dogovorDoc);
-                wd.SetFields("EducDoc", educDoc);
-
+                //wd.SetFields("DogovorDoc", dogovorDoc);
+                //wd.SetFields("EducDoc", educDoc);
+                
                 int curRow = 4, counter = 0;
                 string curProfileName = "нет";
                 string curObProg = "-";
@@ -3778,6 +3778,8 @@ namespace Priem
                 string curLPHeader = "-";
                 string curMotivation = "-";
                 string Motivation = string.Empty;
+
+                bool bHasGosLine = false;
 
                 using (PriemEntities ctx = new PriemEntities())
                 {
@@ -3869,10 +3871,9 @@ namespace Priem
                                           {
                                               Mrk.ExamName,
                                               Mrk.Value,
-                                              OrderNumber = Mrk.OrderNumber ?? 10
+                                              OrderNumber = Mrk.OrderNumber
                                           }
                                         ).OrderBy(x => x.OrderNumber).ThenBy(x => x.ExamName).ToList();
-
 
                         ++counter;
 
@@ -3983,7 +3984,7 @@ namespace Priem
                         string tmp = "";
                         if (v.HasTRKI)
                                 tmp += "ТРКИ-2";
-                        int ExamPortfolio = 0;
+                        decimal ExamPortfolio = 0;
                         bool HasPortfolio = false;
                         string ExamNamePortfolio = "";
                         foreach (var x in ExamsMarks)
@@ -4081,9 +4082,7 @@ namespace Priem
 
                         if (v.IsForeign && v.IsGosLine)
                         {
-                            td.AddRow(1);
-                            curRow++;
-                            td[0, curRow] = string.Format("ОСНОВАНИЕ: направление Минобрнауки России от _______________ №_________________, личные заявления, документы об образовании, оформленные в установленном порядке.");
+                            bHasGosLine = true;
                         }
                     }
                 }
@@ -4101,7 +4100,15 @@ namespace Priem
 
                     td.AddRow(1);
                     curRow++;
-                    td[0, curRow] = "\r\n2.    Назначить лицам, указанным в п. 1 настоящего приказа, стипендию в размере 1340 рублей ежемесячно с 01.09.2014 по 31.01.2015.";
+                    td[0, curRow] = "\r\n2.    Назначить лицам, указанным в п. 1 настоящего приказа, стипендию в размере 1407 рублей ежемесячно с 01.09.2015 по 31.01.2016.";
+
+                    td.AddRow(1);
+                    curRow++;
+
+                    if (bHasGosLine)
+                        td[0, curRow] = string.Format("ОСНОВАНИЕ: направление Минобрнауки России от _______________ №_________________, личные заявления, документы об образовании, оформленные в установленном порядке.");
+                    else
+                        td[0, curRow] = string.Format("ОСНОВАНИЕ: личные заявления, документы об образовании, оформленные в установленном порядке.");
                 }
             }
             catch (WordException we)

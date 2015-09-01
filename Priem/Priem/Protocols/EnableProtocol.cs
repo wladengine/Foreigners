@@ -13,8 +13,8 @@ namespace Priem
     public class EnableProtocol : ProtocolCard
     {
         //конструктор         
-        public EnableProtocol(ProtocolList owner, int iFacultyId, int iStudyBasisId, int iStudyFormId)
-            : base(owner, iFacultyId, iStudyBasisId, iStudyFormId)
+        public EnableProtocol(ProtocolList owner, int StudyLevelGroupId, int iFacultyId, int iStudyBasisId, int iStudyFormId)
+            : base(owner, StudyLevelGroupId, iFacultyId, iStudyBasisId, iStudyFormId)
         {
             _type = ProtocolTypes.EnableProtocol;
         }
@@ -28,7 +28,7 @@ namespace Priem
         protected override void InitControls()
         {
             sQuery = @"SELECT DISTINCT ed.extAbit.Sum, ed.extPerson.AttestatSeries, ed.extPerson.AttestatNum, ed.extAbit.Id as Id, ed.extAbit.BAckDoc as backdoc, 
-             (ed.extAbit.BAckDoc | ed.extAbit.NotEnabled | case when (NOT ed.hlpMinEgeAbiturient.Id IS NULL) then 'true' else 'false' end) as Red, ed.extAbit.RegNum as Рег_Номер, 
+             (ed.extAbit.BAckDoc | ed.extAbit.NotEnabled) then 'true' else 'false' end) as Red, ed.extAbit.RegNum as Рег_Номер, 
              ed.extPerson.FIO as ФИО, 
              ed.extPerson.EducDocument as Документ_об_образовании, 
              ed.extPerson.PassportSeries + ' №' + ed.extPerson.PassportNumber as Паспорт, 
@@ -36,8 +36,6 @@ namespace Priem
              Competition.NAme as Конкурс, extAbit.BackDoc 
              FROM ed.extAbit 
              INNER JOIN ed.extPerson ON ed.extAbit.PersonId = ed.extPerson.Id   
-             INNER JOIN ed.qAbiturientForeignApplicationsOnly qqq ON qqq.Id = extAbit.Id
-             LEFT JOIN ed.hlpMinEgeAbiturient ON ed.hlpMinEgeAbiturient.Id = ed.extAbit.Id 
              LEFT JOIN ed.Competition ON ed.Competition.Id = ed.extAbit.CompetitionId";
 
             base.InitControls();
@@ -54,8 +52,8 @@ namespace Priem
             base.InitAndFillGrids();
 
             string sFilter = string.Empty;
-            sFilter += string.Format(" AND ed.extAbit.BackDoc = 0 AND ed.extAbit.NotEnabled=0 AND ed.extAbit.Id NOT IN (SELECT AbiturientId FROM ed.qProtocolHistory WHERE Excluded=0 AND ProtocolId IN (SELECT Id FROM ed.qProtocol WHERE ISOld=0 AND ProtocolTypeId=1 AND FacultyId ={0} AND StudyFormId = {1} AND StudyBasisId = {2}))", 
-                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString());
+            sFilter += string.Format(" AND extAbit.StudyLevelGroupId = {3} AND extAbit.BackDoc = 0 AND extAbit.NotEnabled=0 AND extAbit.Id NOT IN (SELECT AbiturientId FROM ed.qProtocolHistory WHERE Excluded=0 AND ProtocolId IN (SELECT Id FROM ed.qProtocol WHERE ISOld=0 AND ProtocolTypeId=1 AND FacultyId ={0} AND StudyFormId = {1} AND StudyBasisId = {2}))", 
+                _facultyId.ToString(), _studyFormId.ToString(), _studyBasisId.ToString(), _studyLevelGroupId);
 
             if (chbFilter.Checked)
                 sFilter += " AND ed.extAbit.Checked > 0";

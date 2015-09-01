@@ -47,6 +47,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblLanguage = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.cbStudyLevelGroup = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvViews)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,9 +75,9 @@
             // btnCreate
             // 
             this.btnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCreate.Location = new System.Drawing.Point(230, 416);
+            this.btnCreate.Location = new System.Drawing.Point(250, 430);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(121, 52);
+            this.btnCreate.Size = new System.Drawing.Size(101, 52);
             this.btnCreate.TabIndex = 99;
             this.btnCreate.Text = "Создать представление на отчисление";
             this.btnCreate.UseVisualStyleBackColor = true;
@@ -86,14 +88,14 @@
             this.dgvViews.AllowUserToAddRows = false;
             this.dgvViews.AllowUserToDeleteRows = false;
             this.dgvViews.AllowUserToResizeRows = false;
-            this.dgvViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvViews.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvViews.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvViews.Location = new System.Drawing.Point(12, 255);
+            this.dgvViews.Location = new System.Drawing.Point(12, 240);
             this.dgvViews.Name = "dgvViews";
             this.dgvViews.ReadOnly = true;
-            this.dgvViews.Size = new System.Drawing.Size(339, 154);
+            this.dgvViews.Size = new System.Drawing.Size(339, 184);
             this.dgvViews.TabIndex = 98;
             // 
             // btnPrintOrder
@@ -110,7 +112,7 @@
             // btnPrint
             // 
             this.btnPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPrint.Location = new System.Drawing.Point(12, 415);
+            this.btnPrint.Location = new System.Drawing.Point(12, 430);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(121, 40);
             this.btnPrint.TabIndex = 104;
@@ -132,7 +134,7 @@
             // chbIsSecond
             // 
             this.chbIsSecond.AutoSize = true;
-            this.chbIsSecond.Location = new System.Drawing.Point(217, 109);
+            this.chbIsSecond.Location = new System.Drawing.Point(206, 153);
             this.chbIsSecond.Name = "chbIsSecond";
             this.chbIsSecond.Size = new System.Drawing.Size(137, 17);
             this.chbIsSecond.TabIndex = 162;
@@ -142,7 +144,7 @@
             // chbIsReduced
             // 
             this.chbIsReduced.AutoSize = true;
-            this.chbIsReduced.Location = new System.Drawing.Point(12, 109);
+            this.chbIsReduced.Location = new System.Drawing.Point(206, 107);
             this.chbIsReduced.Name = "chbIsReduced";
             this.chbIsReduced.Size = new System.Drawing.Size(95, 17);
             this.chbIsReduced.TabIndex = 161;
@@ -152,7 +154,7 @@
             // chbIsParallel
             // 
             this.chbIsParallel.AutoSize = true;
-            this.chbIsParallel.Location = new System.Drawing.Point(113, 109);
+            this.chbIsParallel.Location = new System.Drawing.Point(206, 130);
             this.chbIsParallel.Name = "chbIsParallel";
             this.chbIsParallel.Size = new System.Drawing.Size(98, 17);
             this.chbIsParallel.TabIndex = 160;
@@ -165,7 +167,7 @@
             this.cbStudyForm.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyForm.FormattingEnabled = true;
-            this.cbStudyForm.Location = new System.Drawing.Point(12, 151);
+            this.cbStudyForm.Location = new System.Drawing.Point(12, 145);
             this.cbStudyForm.Name = "cbStudyForm";
             this.cbStudyForm.Size = new System.Drawing.Size(170, 21);
             this.cbStudyForm.TabIndex = 159;
@@ -176,9 +178,9 @@
             this.cbStudyBasis.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbStudyBasis.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStudyBasis.FormattingEnabled = true;
-            this.cbStudyBasis.Location = new System.Drawing.Point(12, 72);
+            this.cbStudyBasis.Location = new System.Drawing.Point(12, 105);
             this.cbStudyBasis.Name = "cbStudyBasis";
-            this.cbStudyBasis.Size = new System.Drawing.Size(156, 21);
+            this.cbStudyBasis.Size = new System.Drawing.Size(170, 21);
             this.cbStudyBasis.TabIndex = 158;
             // 
             // cbLicenseProgram
@@ -187,7 +189,7 @@
             this.cbLicenseProgram.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbLicenseProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLicenseProgram.FormattingEnabled = true;
-            this.cbLicenseProgram.Location = new System.Drawing.Point(12, 196);
+            this.cbLicenseProgram.Location = new System.Drawing.Point(12, 190);
             this.cbLicenseProgram.Name = "cbLicenseProgram";
             this.cbLicenseProgram.Size = new System.Drawing.Size(342, 21);
             this.cbLicenseProgram.TabIndex = 157;
@@ -198,7 +200,7 @@
             this.cbFaculty.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbFaculty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFaculty.FormattingEnabled = true;
-            this.cbFaculty.Location = new System.Drawing.Point(12, 25);
+            this.cbFaculty.Location = new System.Drawing.Point(12, 65);
             this.cbFaculty.Name = "cbFaculty";
             this.cbFaculty.Size = new System.Drawing.Size(342, 21);
             this.cbFaculty.TabIndex = 156;
@@ -206,7 +208,7 @@
             // chbIsListener
             // 
             this.chbIsListener.AutoSize = true;
-            this.chbIsListener.Location = new System.Drawing.Point(12, 232);
+            this.chbIsListener.Location = new System.Drawing.Point(12, 217);
             this.chbIsListener.Name = "chbIsListener";
             this.chbIsListener.Size = new System.Drawing.Size(80, 17);
             this.chbIsListener.TabIndex = 155;
@@ -216,7 +218,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 180);
+            this.label1.Location = new System.Drawing.Point(6, 174);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(152, 13);
             this.label1.TabIndex = 154;
@@ -225,7 +227,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 9);
+            this.label2.Location = new System.Drawing.Point(9, 49);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 153;
@@ -234,7 +236,7 @@
             // lblLanguage
             // 
             this.lblLanguage.AutoSize = true;
-            this.lblLanguage.Location = new System.Drawing.Point(9, 56);
+            this.lblLanguage.Location = new System.Drawing.Point(9, 89);
             this.lblLanguage.Name = "lblLanguage";
             this.lblLanguage.Size = new System.Drawing.Size(94, 13);
             this.lblLanguage.TabIndex = 152;
@@ -243,17 +245,39 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 135);
+            this.label3.Location = new System.Drawing.Point(9, 129);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 13);
             this.label3.TabIndex = 151;
             this.label3.Text = "Форма обучения";
+            // 
+            // cbStudyLevelGroup
+            // 
+            this.cbStudyLevelGroup.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbStudyLevelGroup.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbStudyLevelGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStudyLevelGroup.FormattingEnabled = true;
+            this.cbStudyLevelGroup.Location = new System.Drawing.Point(12, 25);
+            this.cbStudyLevelGroup.Name = "cbStudyLevelGroup";
+            this.cbStudyLevelGroup.Size = new System.Drawing.Size(342, 21);
+            this.cbStudyLevelGroup.TabIndex = 164;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 9);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(51, 13);
+            this.label4.TabIndex = 163;
+            this.label4.Text = "Уровень";
             // 
             // DisEntryViewList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(365, 544);
+            this.Controls.Add(this.cbStudyLevelGroup);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.chbIsSecond);
             this.Controls.Add(this.chbIsReduced);
             this.Controls.Add(this.chbIsParallel);
@@ -303,6 +327,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblLanguage;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbStudyLevelGroup;
+        private System.Windows.Forms.Label label4;
 
     }
 }

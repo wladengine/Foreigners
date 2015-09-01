@@ -16,14 +16,14 @@ namespace Priem
     public class ChangeCompCelProtocol : ProtocolCard
     {
         //конструктор 
-        public ChangeCompCelProtocol(ProtocolList owner, int iFacultyId, int iStudyBasisId, int iStudyFormId)
-            : this(owner, iFacultyId, iStudyBasisId, iStudyFormId, null)
+        public ChangeCompCelProtocol(ProtocolList owner, int iStudyLevelGroupId, int iFacultyId, int iStudyBasisId, int iStudyFormId)
+            : this(owner, iStudyLevelGroupId, iFacultyId, iStudyBasisId, iStudyFormId, null)
         {
         }
 
         //конструктор 
-        public ChangeCompCelProtocol(ProtocolList owner, int iFacultyId, int iStudyBasisId, int iStudyFormId, Guid? ProtocolId)
-            : base(owner, iFacultyId, iStudyBasisId, iStudyFormId, ProtocolId)
+        public ChangeCompCelProtocol(ProtocolList owner, int iStudyLevelGroupId, int iFacultyId, int iStudyBasisId, int iStudyFormId, Guid? ProtocolId)
+            : base(owner, iStudyLevelGroupId, iFacultyId, iStudyBasisId, iStudyFormId, ProtocolId)
         {
             _type = ProtocolTypes.ChangeCompCelProtocol;
             base.sQuery = this.sQuery;
@@ -34,9 +34,9 @@ namespace Priem
         {
             sQuery = @"SELECT DISTINCT ed.extAbit.Sum, ed.extPerson.AttestatSeries, ed.extPerson.AttestatNum, ed.extAbit.Id as Id, ed.extAbit.BAckDoc as backdoc, 
              (ed.extAbit.BAckDoc | ed.extAbit.NotEnabled) as Red, ed.extAbit.RegNum as Рег_Номер, 
-             ed.extPerson.FIO as ФИО, 
-             ed.extPerson.EducDocument as Документ_об_образовании, 
-             ed.extPerson.PassportSeries + ' №' + ed.extPerson.PassportNumber as Паспорт, 
+             extPerson.FIO as ФИО, 
+             extPerson.EducDocument as Документ_об_образовании, 
+             extPerson.PassportSeries + ' №' + ed.extPerson.PassportNumber as Паспорт, 
              extAbit.ObrazProgramNameEx + ' ' + (Case when extAbit.ProfileId IS NULL then '' else extAbit.ProfileName end) as Направление, 
              Competition.NAme as Конкурс, extAbit.BackDoc 
              FROM ed.extAbit INNER JOIN ed.extPerson ON ed.extAbit.PersonId = ed.extPerson.Id                

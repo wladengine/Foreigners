@@ -11,14 +11,14 @@ namespace Priem
 {
     public class DisEnableProtocol : ProtocolCard
     {
-        public DisEnableProtocol(ProtocolList owner, int iFacultyId, int iStudyFormId, int iStudyBasisId)
-            : this(owner, iFacultyId, iStudyBasisId, iStudyFormId, null)
+        public DisEnableProtocol(ProtocolList owner, int iStudyLevelGroupId, int iFacultyId, int iStudyFormId, int iStudyBasisId)
+            : this(owner, iStudyLevelGroupId, iFacultyId, iStudyBasisId, iStudyFormId, null)
         {
         }
 
         //конструктор 
-        public DisEnableProtocol(ProtocolList owner, int iFacultyId, int iStudyFormId, int iStudyBasisId, Guid? id)
-            : base(owner, iFacultyId, iStudyBasisId, iStudyFormId, id)
+        public DisEnableProtocol(ProtocolList owner, int iStudyLevelGroupId, int iFacultyId, int iStudyFormId, int iStudyBasisId, Guid? id)
+            : base(owner, iStudyLevelGroupId, iFacultyId, iStudyBasisId, iStudyFormId, id)
         {
             _type = ProtocolTypes.DisEnableProtocol;
             base.sQuery = this.sQuery;

@@ -16,39 +16,43 @@ using PriemLib;
 namespace Priem
 {
     public partial class DisEntryViewProtocol : ProtocolCard
-    { 
-        public DisEntryViewProtocol(ProtocolList owner, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList)
-            : this(owner, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, null)
+    {
+        public DisEntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool isSec, bool isReduced, bool isParal, bool isList)
+            : this(owner, iStudyLevelGroupId, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, null)
         {
         }
 
         //конструктор 
-        public DisEntryViewProtocol(ProtocolList owner, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList, Guid? sProtocol)
-            : base(owner,sFac,sSection,sForm,sProf, isSec, isReduced, isParal, isList, sProtocol)
+        public DisEntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool isSec, bool isReduced, bool isParal, bool isList, Guid? sProtocol)
+            : base(owner, iStudyLevelGroupId, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, sProtocol)
         {
             _type = ProtocolTypes.DisEntryView;                      
         }
 
         //дополнительная инициализация
-        protected override void  InitControls()
+        protected override void InitControls()
         {
-            sQuery = string.Format("SELECT DISTINCT ed.extAbitMarksSum.TotalSum as Sum, ed.extPerson.AttestatSeries, ed.extPerson.AttestatNum, ed.extAbit.Id as Id, ed.extAbit.BAckDoc as backdoc, " +
-            " 'false' as Red, ed.extAbit.RegNum as Рег_Номер, " +
-            " ed.extPerson.FIO as ФИО, " +
-            " (case when ed.extPerson.SchoolTypeId = 1 then ed.extPerson.AttestatRegion + ' ' + ed.extPerson.AttestatSeries + '  №' + ed.extPerson.AttestatNum else ed.extPerson.DiplomSeries + '  №' + ed.extPerson.DiplomNum end) as Документ_об_образовании, " +
-            " ed.extPerson.PassportSeries + ' №' + ed.extPerson.PassportNumber as Паспорт, " +
-            " ed.extAbit.ObrazProgramName + ' ' +(Case when ed.extAbit.ProfileName IS NULL then '' else ed.extAbit.ProfileName end) as Направление, " +
-            " ed.Competition.NAme as Конкурс, ed.extAbit.BackDoc " +
-            " FROM ed.extAbit INNER JOIN ed.extPErson ON ed.extAbit.PErsonId = ed.extPerson.Id " +
-            " INNER JOIN ed.extEnableProtocol ON ed.extAbit.Id=ed.extEnableProtocol.AbiturientId " +
-            " INNER JOIN ed.extEntryView ON ed.extAbit.Id=ed.extEntryView.AbiturientId " +
-            " INNER JOIN ed.extAbitMarksSum ON ed.extAbit.Id=ed.extAbitMarksSum.Id " +
-            " LEFT JOIN ed.Competition ON ed.Competition.Id = ed.extAbit.CompetitionId ");
- 
+            sQuery = string.Format("SELECT DISTINCT extAbitMarksSum.TotalSum as Sum, extAbit.Id as Id, extAbit.BAckDoc as backdoc, " +
+            " 'false' as Red, extAbit.RegNum as Рег_Номер, " +
+            " extPerson.FIO as ФИО, " +
+            " extPerson.EducDocument as Документ_об_образовании, " +
+            " extPerson.PassportSeries + ' №' + extPerson.PassportNumber as Паспорт, " +
+            " extAbit.ObrazProgramName + ' ' + (Case when extAbit.ProfileName IS NULL then '' else extAbit.ProfileName end) as Направление, " +
+            " Competition.NAme as Конкурс, extAbit.BackDoc " +
+            " FROM ed.extAbit INNER JOIN ed.extPerson ON extAbit.PersonId = extPerson.Id " +
+            " INNER JOIN ed.extEnableProtocol ON extAbit.Id = extEnableProtocol.AbiturientId " +
+            " INNER JOIN ed.extEntryView ON extAbit.Id = extEntryView.AbiturientId " +
+            " INNER JOIN ed.extAbitMarksSum ON extAbit.Id = extAbitMarksSum.Id " +
+            " LEFT JOIN ed.Competition ON Competition.Id = extAbit.CompetitionId ");
           
-            string q = string.Format("SELECT DISTINCT CONVERT(varchar(100), Id) AS Id, Number as Name FROM ed.extEntryView WHERE Excluded=0 AND IsOld=0 AND FacultyId ={0} AND StudyFormId = {1} AND StudyBasisId = {2} AND LicenseProgramId = {3} AND IsSecond = {4} AND IsReduced = {5} AND IsParallel = {6} AND IsListener = {7}", _facultyId, _studyFormId, _studyBasisId, _licenseProgramId, QueryServ.StringParseFromBool(_isSecond.Value), QueryServ.StringParseFromBool(_isReduced.Value), QueryServ.StringParseFromBool(_isParallel.Value), QueryServ.StringParseFromBool(_isListener.Value));
+            string q = string.Format(@"SELECT DISTINCT CONVERT(varchar(100), Id) AS Id, Number as Name FROM ed.extEntryView WHERE IsForeign = 1 AND Excluded=0 AND IsOld=0 
+AND FacultyId ={0} AND StudyFormId = {1} AND StudyBasisId = {2} {3} AND IsSecond = {4} AND IsReduced = {5} AND IsParallel = {6} AND IsListener = {7} AND StudyLevelGroupId = {8}", 
+_facultyId, _studyFormId, _studyBasisId, 
+_licenseProgramId.HasValue ? string.Format("AND LicenseProgramId = {0}", _licenseProgramId) : "", 
+QueryServ.StringParseFromBool(_isSecond), 
+QueryServ.StringParseFromBool(_isReduced), QueryServ.StringParseFromBool(_isParallel), QueryServ.StringParseFromBool(_isListener), _studyLevelGroupId);
             ComboServ.FillCombo(cbHeaders, HelpClass.GetComboListByQuery(q), false, false);
-      
+
             cbHeaders.Visible = true;
             lblHeaderText.Text = "Из представления к зачислению №";            
             chbInostr.Visible = true;
@@ -66,6 +70,10 @@ namespace Priem
 
         void cbHeaders_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Guid gId = Guid.NewGuid();
+            if (Guid.TryParse(HeaderId, out gId))
+                _parentProtocolId = gId;
+
             UpdateGrids();
         }
 
@@ -114,7 +122,7 @@ namespace Priem
             }
 
             string sFilter = string.Empty;
-            sFilter = string.Format(" AND ed.extEntryView.Id = '{0}' {1}", HeaderId, chbInostr.Checked ? " AND ed.extPerson.NationalityId <> 1 " : " AND ed.extPerson.NationalityId = 1 ");
+            sFilter = string.Format(" AND ed.extEntryView.Id = '{0}' ", HeaderId);
             FillGrid(dgvRight, sQuery, GetWhereClause("ed.extAbit") + sFilter, sOrderby);
         }        
 

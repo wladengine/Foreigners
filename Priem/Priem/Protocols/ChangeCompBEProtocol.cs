@@ -17,13 +17,13 @@ namespace Priem
     {
         //поскольку сейчас любые льготники обязанны положить аттестат вместе со льготами, то при перекладывании аттестата тип конкурса должен автоматически переходить на "общий"
         //для этой цели был придуман протокол "о смене конкурса с "льготного" на общий"
-        public ChangeCompBEProtocol(ProtocolList owner, int iFacultyId, int iStudyBasisId, int iStudyFormId)
-            : this(owner, iFacultyId, iStudyBasisId, iStudyFormId, null)
+        public ChangeCompBEProtocol(ProtocolList owner, int iStudyLevelGroupId, int iFacultyId, int iStudyBasisId, int iStudyFormId)
+            : this(owner, iStudyLevelGroupId, iFacultyId, iStudyBasisId, iStudyFormId, null)
         {
         }
 
-        public ChangeCompBEProtocol(ProtocolList owner, int iFacultyId, int iStudyBasisId, int iStudyFormId, Guid? ProtocolId)
-            : base(owner, iFacultyId, iStudyBasisId, iStudyFormId, ProtocolId)
+        public ChangeCompBEProtocol(ProtocolList owner, int iStudyLevelGroupId, int iFacultyId, int iStudyBasisId, int iStudyFormId, Guid? ProtocolId)
+            : base(owner, iStudyLevelGroupId, iFacultyId, iStudyBasisId, iStudyFormId, ProtocolId)
         {
             _type = ProtocolTypes.ChangeCompBEProtocol;
             base.sQuery = this.sQuery;

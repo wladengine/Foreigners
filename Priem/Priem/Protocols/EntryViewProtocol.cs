@@ -19,18 +19,16 @@ namespace Priem
     public class EntryViewProtocol : ProtocolCard
     {
         Dictionary<int?, List<string>> lstSelected;
-        //private int StudyLevelGroupId;
 
-        public EntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList, bool isCel)
+        public EntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool isSec, bool isReduced, bool isParal, bool isList, bool isCel)
             : this(owner, iStudyLevelGroupId, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, isCel, null)
         {
         }
 
         //конструктор 
-        public EntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool? isSec, bool? isReduced, bool? isParal, bool? isList, bool isCel, Guid? sProtocol)
+        public EntryViewProtocol(ProtocolList owner, int iStudyLevelGroupId, int sFac, int sSection, int sForm, int? sProf, bool isSec, bool isReduced, bool isParal, bool isList, bool isCel, Guid? sProtocol)
             : base(owner, iStudyLevelGroupId, sFac, sSection, sForm, sProf, isSec, isReduced, isParal, isList, isCel, sProtocol)
         {
-            //StudyLevelGroupId = iStudyLevelGroupId;
             _type = ProtocolTypes.EntryView;                      
         }
 
@@ -41,7 +39,7 @@ namespace Priem
             {
                string ehQuery = string.Empty; 
                 
-                if (_isCel.Value)
+                if (_isCel)
                    ehQuery = "SELECT CONVERT(varchar(100), Id) AS Id, Acronym as Name FROM ed.EntryHeader WHERE Id IN (7) ORDER BY Id";
                 else
                 {
@@ -96,16 +94,12 @@ namespace Priem
             if (_licenseProgramId != null)
                 sFilter += " AND ed.qAbiturient.LicenseProgramId = " + _licenseProgramId;
                         
-            if (_isSecond.HasValue)           
-                sFilter += " AND qAbiturient.IsSecond = " + QueryServ.StringParseFromBool(_isSecond.Value);
-            if (_isReduced.HasValue)
-                sFilter += " AND qAbiturient.IsReduced = " + QueryServ.StringParseFromBool(_isReduced.Value);
-            if (_isParallel.HasValue)
-                sFilter += " AND qAbiturient.IsParallel = " + QueryServ.StringParseFromBool(_isParallel.Value);
+                sFilter += " AND qAbiturient.IsSecond = " + QueryServ.StringParseFromBool(_isSecond);
+                sFilter += " AND qAbiturient.IsReduced = " + QueryServ.StringParseFromBool(_isReduced);
+                sFilter += " AND qAbiturient.IsParallel = " + QueryServ.StringParseFromBool(_isParallel);
 
             //обработали слушатель           
-            if (_isListener.HasValue)
-                sFilter += " AND qAbiturient.IsListener = " + QueryServ.StringParseFromBool(_isListener.Value);
+                sFilter += " AND qAbiturient.IsListener = " + QueryServ.StringParseFromBool(_isListener);
 
             sFilter += " AND qAbiturient.BackDoc = 0 ";
 
@@ -246,7 +240,7 @@ namespace Priem
                     FROM ed.qEntry WHERE qEntry.IsForeign = 1 AND qEntry.StudyLevelGroupId = {7} AND qEntry.FacultyId={0} AND qEntry.StudyFormId={1} AND
                     qEntry.StudyBasisId={2} {3} AND qEntry.IsSecond = {4} AND qEntry.IsReduced = {5} AND qEntry.IsParallel = {6}",
                     _facultyId, _studyFormId, _studyBasisId, _licenseProgramId.HasValue ? string.Format(" AND ed.qEntry.LicenseProgramId='{0}'", _licenseProgramId.Value) : "", 
-                    QueryServ.StringParseFromBool(_isSecond.Value), QueryServ.StringParseFromBool(_isReduced.Value), QueryServ.StringParseFromBool(_isParallel.Value), StudyLevelGroupId);
+                    QueryServ.StringParseFromBool(_isSecond), QueryServ.StringParseFromBool(_isReduced), QueryServ.StringParseFromBool(_isParallel), _studyLevelGroupId);
 
             DataSet dsPrograms = MainClass.Bdc.GetDataSet(query);
 
@@ -337,7 +331,7 @@ namespace Priem
                         ObjectParameter paramId = new ObjectParameter("id", typeof(Guid));
                         int iProtocolTypeId = ProtocolList.TypeToInt(_type);
 
-                        context.Protocol_InsertAll(StudyLevelGroupId,
+                        context.Protocol_InsertAll(_studyLevelGroupId,
                                   _facultyId, _licenseProgramId, _studyFormId, _studyBasisId, tbNum.Text, dtpDate.Value, iProtocolTypeId,
                                   string.Empty, !isNew, null, _isSecond, _isReduced, _isParallel, _isListener, MainClass.dbType == PriemType.PriemForeigners, paramId);
 

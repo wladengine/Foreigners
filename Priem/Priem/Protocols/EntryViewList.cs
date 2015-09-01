@@ -37,13 +37,14 @@ namespace Priem
             if (MainClass.IsFacMain())
             {
                 btnCreate.Enabled = true;
+                btnPrintOrder.Visible = btnPrintOrder.Enabled = true;
             }
 
             if (MainClass.IsPasha())
             {                
                 btnPrintOrder.Visible = btnPrintOrder.Enabled = btnCancelView.Enabled = btnCancelView.Visible = true;
                 btnCreate.Enabled = true;
-            } 
+            }
 
             if (MainClass.IsPrintOrder())
             {
@@ -206,8 +207,15 @@ namespace Priem
 
             string query = string.Format(@"SELECT DISTINCT Id, Number + ' (' + CONVERT(nvarchar, Date, 104) + ')' as 'Номер представления' FROM ed.extEntryView 
 WHERE IsForeign = 1 AND StudyFormId={0} AND StudyBasisId={1} AND FacultyId= {2} {3} AND IsListener = {4} AND IsSecond = {5} AND IsReduced = {6} AND IsParallel = {7} AND StudyLevelGroupId = {8} order by 2", 
-StudyFormId, StudyBasisId, FacultyId, LicenseProgramId.HasValue ? "AND LicenseProgramId = " + LicenseProgramId.Value.ToString() : "", 
-QueryServ.StringParseFromBool(IsListener), QueryServ.StringParseFromBool(IsSecond), QueryServ.StringParseFromBool(IsReduced), QueryServ.StringParseFromBool(IsParallel), StudyLevelGroupId);
+                               StudyFormId, 
+                               StudyBasisId, 
+                               FacultyId, 
+                               LicenseProgramId.HasValue ? "AND LicenseProgramId = " + LicenseProgramId.Value.ToString() : "", 
+                               QueryServ.StringParseFromBool(IsListener), 
+                               QueryServ.StringParseFromBool(IsSecond), 
+                               QueryServ.StringParseFromBool(IsReduced), 
+                               QueryServ.StringParseFromBool(IsParallel), 
+                               StudyLevelGroupId);
             HelpClass.FillDataGrid(dgvViews, _bdc, query, "");
         }       
 

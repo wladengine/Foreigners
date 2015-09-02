@@ -191,6 +191,9 @@ namespace Priem
                 {
                     var ent = MainClass.GetEntry(context).Where(c => c.FacultyId == FacultyId);
 
+                    if (StudyLevelGroupId.HasValue)
+                        ent = ent.Where(x => x.StudyLevelGroupId == StudyLevelGroupId.Value);
+
                     ent = ent.Where(c => c.IsSecond == IsSecond && c.IsReduced == IsReduced && c.IsParallel == IsParallel);
 
                     if (StudyBasisId != null)
@@ -198,7 +201,10 @@ namespace Priem
                     if (StudyFormId != null)
                         ent = ent.Where(c => c.StudyFormId == StudyFormId);
 
-                    List<KeyValuePair<string, string>> lst = ent.ToList().Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramCode + " " + u.LicenseProgramName)).Distinct().ToList();
+                    List<KeyValuePair<string, string>> lst = ent.ToList()
+                        .Select(u => new KeyValuePair<string, string>(u.LicenseProgramId.ToString(), u.LicenseProgramCode + " " + u.LicenseProgramName))
+                        .Distinct()
+                        .ToList();
                     ComboServ.FillCombo(base.cbLicenseProgram, lst, false, true);
                 }
                 else
@@ -256,30 +262,30 @@ order by 2";
         //    if (sfd.ShowDialog() == DialogResult.OK)
         //        Print.PrintEntryView(dgvViews.CurrentRow.Cells["Id"].Value.ToString(), sfd.FileName);
         //}
-        //private void btnPrintOrder_Click(object sender, EventArgs e)
-        //{
-        //    if (dgvViews.CurrentRow == null)
-        //        return;
+        protected override void btnPrintOrder_Click(object sender, EventArgs e)
+        {
+            if (dgvViews.CurrentRow == null)
+                return;
 
-        //    if (dgvViews.CurrentRow.Index < 0)
-        //        return;
+            if (dgvViews.CurrentRow.Index < 0)
+                return;
 
-        //    Guid protocolId = (Guid)dgvViews.CurrentRow.Cells["Id"].Value;
+            Guid protocolId = (Guid)dgvViews.CurrentRow.Cells["Id"].Value;
 
-        //    Print.PrintOrder(protocolId, chbCel.Checked);
-        //}
-        //private void btnOrderReview_Click(object sender, EventArgs e)
-        //{
-        //    if (dgvViews.CurrentRow == null)
-        //        return;
+            Print.PrintOrder(protocolId, false);
+        }
+        protected override void btnOrderReview_Click(object sender, EventArgs e)
+        {
+            if (dgvViews.CurrentRow == null)
+                return;
 
-        //    if (dgvViews.CurrentRow.Index < 0)
-        //        return;
+            if (dgvViews.CurrentRow.Index < 0)
+                return;
 
-        //    Guid protocolId = (Guid)dgvViews.CurrentRow.Cells["Id"].Value;
+            Guid protocolId = (Guid)dgvViews.CurrentRow.Cells["Id"].Value;
 
-        //    Print.PrintOrderReview(protocolId);
-        //}
+            Print.PrintOrderReview(protocolId);
+        }
         //private void btnCancelView_Click(object sender, EventArgs e)
         //{
         //    if(!MainClass.IsPasha())

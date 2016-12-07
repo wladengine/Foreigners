@@ -191,7 +191,7 @@ namespace Priem
 
                     extPerson person = (from per in context.extPerson
                                         where per.Id == abit.PersonId
-                                        select per).FirstOrDefault();                   
+                                        select per).FirstOrDefault();
 
                     WordDoc wd = new WordDoc(string.Format(@"{0}\ExamSheet.dot", MainClass.dirTemplates), !forPrint);
                     TableDoc td = wd.Tables[0];
@@ -199,21 +199,21 @@ namespace Priem
                     td[0, 0] = abit.FacultyName;
                     td[0, 1] = abit.LicenseProgramName;
                     td[0, 2] = abit.ProfileName;
-                    td[1, 1] = MainClass.sPriemYear;                   
+                    td[1, 1] = MainClass.sPriemYear;
                     td[1, 0] = abit.StudyBasisName.Substring(0, 1).ToUpper() + abit.StudyFormOldName.Substring(0, 1).ToUpper();
                     td[0, 10] = person.Surname;
                     td[0, 11] = person.Name;
                     td[0, 12] = person.SecondName;
 
                     td[2, 13] = abit.RegNum;
-                    td[1, 14] = abit.FacultyAcr;    
+                    td[1, 14] = abit.FacultyAcr;
                     td[1, 10] = person.PassportSeries + "   " + person.PassportNumber;
 
                     // экзамены!!! 
                     int row = 4;
                     IEnumerable<extExamInEntry> exams = from ex in context.extExamInEntry
                                                         where ex.EntryId == abit.EntryId
-                                                        orderby ex.ExamName                     
+                                                        orderby ex.ExamName
                                                         select ex;
 
                     foreach (extExamInEntry ex in exams)
@@ -223,14 +223,14 @@ namespace Priem
                             sItem += string.Format(" ({0})", abit.LanguageName);
 
                         string mark = (from mrk in context.qMark
-                                       where mrk.AbiturientId == abit.Id && mrk.ExamInEntryId == ex.Id
+                                       where mrk.AbiturientId == abit.Id && mrk.ExamInEntryBlockUnitId == ex.Id
                                        select mrk.Value).FirstOrDefault().ToString();
 
                         td[0, row] = sItem;
                         td[1, row] = mark;
-                        row++; 
+                        row++;
                     }
-                    
+
                     if (forPrint)
                     {
                         wd.Print();
@@ -240,11 +240,11 @@ namespace Priem
             }
             catch (WordException we)
             {
-                WinFormsServ.Error(we.Message);
+                WinFormsServ.Error(we);
             }
             catch (Exception exc)
             {
-                WinFormsServ.Error(exc.Message);
+                WinFormsServ.Error(exc);
             }
         }
 
@@ -262,7 +262,7 @@ namespace Priem
 
                     extPerson person = (from per in context.extPerson
                                         where per.Id == abit.PersonId
-                                        select per).FirstOrDefault();                    
+                                        select per).FirstOrDefault();
 
                     using (FileStream fs = new FileStream(string.Format(@"{0}\ExamList.pdf", MainClass.dirTemplates), FileMode.Open, FileAccess.Read))
                     {
@@ -307,16 +307,16 @@ namespace Priem
                         acrFlds.SetField("Name", person.Name);
                         acrFlds.SetField("SecondName", person.SecondName);
                         acrFlds.SetField("RegNumber", abit.RegNum);
-                                               
+
                         acrFlds.SetField("FacultyAcr", abit.FacultyAcr);
                         acrFlds.SetField("Passport", person.PassportSeries + "   " + person.PassportNumber);
 
                         // экзамены!!! 
                         int i = 1;
                         IEnumerable<extExamInEntry> exams = from ex in context.extExamInEntry
-                                                        where ex.EntryId == abit.EntryId
-                                                        orderby ex.ExamName                     
-                                                        select ex;
+                                                            where ex.EntryId == abit.EntryId
+                                                            orderby ex.ExamName
+                                                            select ex;
 
                         foreach (extExamInEntry ex in exams)
                         {
@@ -325,14 +325,14 @@ namespace Priem
                                 sItem += string.Format(" ({0})", abit.LanguageName);
 
                             string mark = (from mrk in context.qMark
-                                           where mrk.AbiturientId == abit.Id && mrk.ExamInEntryId == ex.Id
+                                           where mrk.AbiturientId == abit.Id && mrk.ExamInEntryBlockUnitId == ex.Id
                                            select mrk.Value).FirstOrDefault().ToString();
 
                             acrFlds.SetField("Exam" + i, sItem);
                             acrFlds.SetField("Mark" + i, mark);
                             i++;
                         }
-                        
+
                         pdfStm.FormFlattening = true;
                         pdfStm.Close();
                         pdfRd.Close();
@@ -358,7 +358,7 @@ namespace Priem
 
             catch (Exception exc)
             {
-                WinFormsServ.Error(exc.Message);
+                WinFormsServ.Error(exc);
             }
             finally
             {

@@ -21,7 +21,14 @@ namespace Priem
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 mf = new MainForm();
-                Application.Run(mf);
+                try
+                {
+                    Application.Run(mf);
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    return;
+                }
             //}
             //catch (Exception exc)
             //{

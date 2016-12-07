@@ -229,15 +229,42 @@ namespace Priem
         protected override void GetSource()
         {
             _orderBy =" ORDER BY Приложены_файлы, Дата_обновления DESC, ФИО";
-            _sQuery = @"SELECT DISTINCT qAbiturient.CommitId AS Id, extForeignPerson.Surname + ' ' + extForeignPerson.Name + ' ' + extForeignPerson.SecondName as ФИО,
+            _sQuery = @"SELECT DISTINCT qAbiturient.CommitId AS Id, 
+extForeignPerson.Surname + ' ' + extForeignPerson.Name + ' ' + extForeignPerson.SecondName as ФИО,
 extForeignPerson.BirthDate AS Дата_рождения,
 extForeignPerson.Nationality AS [Гражданство], 
 extForeignPerson.[CountryName] AS [Страна проживания],
 qAbiturient.CommitNumber AS Barcode,
-(Case When EXISTS(SELECT Id FROM [Application] WHERE Application.CommitId = qAbiturient.CommitId) THEN CONVERT(bit, 1) ELSE CONVERT(bit, 0) END) AS IsGosLine,
-(Case When EXISTS(SELECT extAbitFileNames_All.Id FROM extAbitFileNames extAbitFileNames_All WHERE extAbitFileNames_All.PersonId = extForeignPerson.Id) then 'да' else 'нет' end) AS Приложены_файлы,
-(SELECT Max(extAbitFileNames_All.LoadDate) FROM extAbitFileNames_All WHERE extAbitFileNames_All.PersonId = extForeignPerson.Id AND (extAbitFileNames_All.ApplicationId = qAbiturient.Id OR extAbitFileNames_All.ApplicationId IS NULL)) AS Дата_обновления
-FROM qAbiturient INNER JOIN extForeignPerson ON qAbiturient.PersonId = extForeignPerson.Id
+(	
+	CASE WHEN EXISTS
+	(
+		SELECT Id 
+		FROM [Application] 
+		WHERE Application.CommitId = qAbiturient.CommitId
+	) 
+	THEN CONVERT(bit, 1) 
+	ELSE CONVERT(bit, 0) 
+	END
+) AS IsGosLine,
+(
+	CASE WHEN EXISTS
+	(
+		SELECT extAbitFileNames_All.Id 
+		FROM extAbitFileNames_All 
+		WHERE extAbitFileNames_All.PersonId = extForeignPerson.Id
+	) 
+	THEN 'да' 
+	ELSE 'нет' 
+	END
+) AS Приложены_файлы,
+(
+	SELECT MAX(extAbitFileNames_All.LoadDate) 
+	FROM extAbitFileNames_All 
+	WHERE extAbitFileNames_All.PersonId = extForeignPerson.Id 
+	AND (extAbitFileNames_All.ApplicationId = qAbiturient.Id OR extAbitFileNames_All.ApplicationId IS NULL)
+) AS Дата_обновления
+FROM qAbiturient 
+INNER JOIN extForeignPerson ON qAbiturient.PersonId = extForeignPerson.Id
 INNER JOIN qForeignApplicationOnly ON qForeignApplicationOnly.Id = qAbiturient.Id
 WHERE qAbiturient.IsImported = 0 AND SemesterId = 1 AND Enabled = 1";
 

@@ -245,23 +245,34 @@ order by 2";
                 ViewProtocolInfo();
             }
         }
-        //private void btnCreate_Click(object sender, EventArgs e)
-        //{
-        //    new EntryViewProtocol(null, StudyLevelGroupId, FacultyId.Value, StudyBasisId.Value, StudyFormId.Value, LicenseProgramId, IsSecond, IsReduced, IsParallel, IsListener, IsCel).Show();            
-        //}
-        //private void btnPrint_Click(object sender, EventArgs e)
-        //{  
-        //    if (dgvViews.CurrentRow == null)
-        //        return;
+        protected override void OpenCardProtocol()
+        {
+            new EntryViewProtocol(
+                null, 
+                StudyLevelGroupId.Value, 
+                FacultyId.Value, 
+                StudyBasisId.Value, 
+                StudyFormId.Value, 
+                LicenseProgramId, 
+                IsSecond, 
+                IsReduced, 
+                IsParallel, 
+                IsListener, 
+                false).Show();
+        }
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (dgvViews.CurrentRow == null)
+                return;
 
-        //    if (dgvViews.CurrentRow.Index < 0)
-        //        return;
+            if (dgvViews.CurrentRow.Index < 0)
+                return;
 
-        //    SaveFileDialog sfd = new SaveFileDialog();
-        //    sfd.Filter = "ADOBE Pdf files|*.pdf";
-        //    if (sfd.ShowDialog() == DialogResult.OK)
-        //        Print.PrintEntryView(dgvViews.CurrentRow.Cells["Id"].Value.ToString(), sfd.FileName);
-        //}
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "ADOBE Pdf files|*.pdf";
+            if (sfd.ShowDialog() == DialogResult.OK)
+                Print.PrintEntryView(dgvViews.CurrentRow.Cells["Id"].Value.ToString(), sfd.FileName);
+        }
         protected override void btnPrintOrder_Click(object sender, EventArgs e)
         {
             if (dgvViews.CurrentRow == null)

@@ -11,6 +11,8 @@ using System.Diagnostics;
 
 using EducServLib;
 using PriemLib;
+using System.IO;
+using System.Threading;
 
 namespace Priem
 {
@@ -18,6 +20,9 @@ namespace Priem
     {
         private DBPriem _bdc;
         private string _titleString;
+        private bool bFirstRun = true;
+        private bool bNewVersionWarningShowing = false;
+        BackgroundWorker bwChecker;
 
         public MainForm()
         {
@@ -34,13 +39,93 @@ namespace Priem
                 MainClass.Init(this);               
 
                 _bdc = MainClass.Bdc;
-                OpenHelp(string.Format("{0}; Пользователь: {1}", _titleString, MainClass.GetUserName()));
+                
+
+                //автоматическая проверка актуальной версии
+                bwChecker = new BackgroundWorker();
+                bwChecker.WorkerSupportsCancellation = true;
+                bwChecker.DoWork += (sender, e) =>
+                {
+                    int zz = 0;
+                    int treshHoldSeconds = 30;
+                    //3 min
+                    while (true && !e.Cancel)
+                    {
+                        zz++;
+                        Thread.Sleep(1000);
+                        if (zz >= treshHoldSeconds)
+                        {
+                            ((BackgroundWorker)sender).ReportProgress(0);
+                            //CheckActualVersion();
+                            zz = 0;
+                        }
+                    }
+                };
+                bwChecker.WorkerReportsProgress = true;
+                bwChecker.ProgressChanged += (sender, e) => { CheckActualVersion(); };
+
+                bwChecker.RunWorkerAsync();
             }
             catch (Exception exc)
             {
                 WinFormsServ.Error("Не удалось подключиться под вашей учетной записью  " + exc.Message);
                 msMainMenu.Enabled = false;
             }
+
+            CheckActualVersion();
+        }
+
+        public void CheckActualVersion()
+        {
+            if (bNewVersionWarningShowing)
+                return;
+
+            using (PriemEntities context = new PriemEntities())
+            {
+                string currPath = Application.StartupPath;
+
+                bool bIsDev = false;
+                if (currPath.IndexOf(@"\bin\", StringComparison.OrdinalIgnoreCase) >= 0)
+                    bIsDev = true;
+
+                string actualPath = context.C_AppSettings.Where(x => x.ParamKey == "CurrentDir_Foreigners")
+                    .Select(x => x.ParamValue).FirstOrDefault();
+
+                string sForceAutoOpenCurrentVer = context.C_AppSettings.Where(x => x.ParamKey == "ForceAutoOpenCurrentVer_Foreigners")
+                    .Select(x => x.ParamValue).FirstOrDefault();
+                bool bForceAutoOpenCurrentVer = "1".Equals(sForceAutoOpenCurrentVer, StringComparison.OrdinalIgnoreCase);
+
+                DateTime dtInfo = new FileInfo(Application.ExecutablePath).LastWriteTime;
+                string versionInfo = string.Format(" (версия от {0})", dtInfo.ToShortDateString() + " " + dtInfo.ToShortTimeString());
+                if (!bIsDev && !string.IsNullOrEmpty(actualPath) && !currPath.Equals(actualPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (bForceAutoOpenCurrentVer)
+                        OpenActualVersion(actualPath);
+                    else
+                    {
+                        string Message = "Вышла новая версия приложения. Запустить актуальную версию?";
+                        bNewVersionWarningShowing = true;
+                        var dr = MessageBox.Show(Message, "Контроль версий", MessageBoxButtons.YesNo);
+                        bNewVersionWarningShowing = false;
+                        if (dr == System.Windows.Forms.DialogResult.Yes)
+                            OpenActualVersion(actualPath);
+                        else if (bFirstRun)
+                            OpenHelp(string.Format("{0}; Пользователь: {1}", _titleString + versionInfo, MainClass.GetUserName()));
+                    }
+                }
+                else
+                {
+                    if (bFirstRun)
+                        OpenHelp(string.Format("{0}; Пользователь: {1}", _titleString + versionInfo, MainClass.GetUserName()));
+                }
+            }
+        }
+
+        public void OpenActualVersion(string path)
+        {
+            bwChecker.CancelAsync();
+            System.Diagnostics.Process.Start(path.TrimEnd('\\') + "\\Priem_foreigners.exe");
+            System.Environment.Exit(0);
         }
 
         private void SetDB()
@@ -84,6 +169,7 @@ namespace Priem
         {
             try
             {
+                bFirstRun = false;
                 // убирает все IsOpen для данного пользователя                
                 MainClass.DeleteAllOpenByHolder();
 
@@ -452,11 +538,6 @@ namespace Priem
 
         #endregion
 
-        private void импортОлимпиадToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SomeMethodsClass.FillOlymps();
-        }
-
         private void smiChangeCompCel_Click(object sender, EventArgs e)
         {
             new ChangeCompCelProtocolList().Show();
@@ -526,7 +607,7 @@ namespace Priem
         private void smiLoadMarks_Click(object sender, EventArgs e)
         {
             new SelectVedForLoad(false).Show();
-        }        
+        }
 
         private void smiEnterManual_Click(object sender, EventArgs e)
         {
@@ -590,7 +671,7 @@ namespace Priem
 
         private void smiOrderNumbers_Click(object sender, EventArgs e)
         {
-            new OrderNumbersList().Show();
+            new CardOrderNumbers().Show();
         }
 
         private void smiRatingBackUp_Click(object sender, EventArgs e)

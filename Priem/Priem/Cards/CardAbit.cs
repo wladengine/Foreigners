@@ -262,7 +262,7 @@ namespace Priem
 
             using (PriemEntities context = new PriemEntities())
             {
-                return context.ExecuteStoreQuery<int?>(string.Format("SELECT TotalSum FROM ed.extAbitMarksSum WHERE Id = '{0}'", abitId)).FirstOrDefault().ToString();
+                return context.extAbitMarksSum.Where(x => x.Id == GuidId).Select(x => x.TotalSum).DefaultIfEmpty(0m).First().ToString();
             }
         }
         
@@ -274,7 +274,7 @@ namespace Priem
                 WHERE ed.Abiturient.PersonId = '{0}' 
                 {1} 
                 AND ed.Abiturient.HasOriginals > 0) then 'true' else 'false' end ", _personId.ToString(), _Id == null ? "" : string.Format(" AND ed.Abiturient.Id <> '{0}'", _Id));
-            lockHasOrigin = bool.Parse(context.ExecuteStoreQuery<string>(queryForLock).FirstOrDefault());
+            lockHasOrigin = bool.Parse(context.Database.SqlQuery<string>(queryForLock).FirstOrDefault());
 
 
             if (lockHasOrigin)
@@ -1132,8 +1132,10 @@ namespace Priem
             if (StudyBasisId == 2)
                 return "3";
             // проверка на олимпиады 
-
-            int cntOl = context.ExecuteStoreQuery<int>(string.Format("SELECT Count(Olympiads.Id) FROM Olympiads WHERE Olympiads.AbiturientId = '{0}' AND ((Olympiads.OlympLevelId = 2 AND Olympiads.OlympValueId IN (1,2,3)) OR Olympiads.OlympLevelId = 1)", _Id)).FirstOrDefault();
+            List<int?> lstOlympsTmp = new List<int?>() { 1, 2, 3 };
+            int cntOl = context.Olympiads
+                .Where(x => x.AbiturientId == GuidId && (x.OlympLevelId == 1 || (x.OlympLevelId == 2 && lstOlympsTmp.Contains(x.OlympValueId))))
+                .Count();
             if (cntOl > 0)           
                 return "1";
             
@@ -1346,16 +1348,16 @@ namespace Priem
         // Грид Экзамены
         private void FillExams()
         {
-             try
+            try
             {
                 using (PriemEntities context = new PriemEntities())
                 {
-                    DataTable examTable = new DataTable();                    
+                    DataTable examTable = new DataTable();
 
                     DataColumn clm;
                     clm = new DataColumn();
                     clm.ColumnName = "ExamInEntryId";
-                    clm.DataType = typeof(int);
+                    clm.DataType = typeof(Guid);
                     examTable.Columns.Add(clm);
 
                     clm = new DataColumn();
@@ -1374,7 +1376,7 @@ namespace Priem
                     clm = new DataColumn();
                     clm.ColumnName = "Примечание";
                     examTable.Columns.Add(clm);
-                                        
+
                     IEnumerable<qMark> marks = from mrk in context.qMark
                                                where mrk.AbiturientId == GuidId
                                                select mrk;
@@ -1383,7 +1385,7 @@ namespace Priem
                     //qMark.IsFromEge, qMark.IsManual, qMark.ExamVedId 
                     //    FROM qMark LEFT JOIN (ExamInProgram LEFT JOIN ExamName ON ExamInProgram.ExamNameId = ExamName.Id) ON qMark.ExamInProgramId = ExamInProgram.Id 
                     //WHERE qMark.AbiturientId = '{0}' ", _Id);
-                                       
+
                     foreach (qMark abMark in marks)
                     {
                         DataRow newRow;
@@ -1395,7 +1397,28 @@ namespace Priem
                         if (abMark.IsFromEge)
                             newRow["Примечание"] = "Из ЕГЭ ";
                         else if (abMark.IsFromOlymp)
-                            newRow["Примечание"] = "Олимпиада";
+                        {
+                            string OlympName = "";
+                            if (abMark.OlympiadId.HasValue)
+                            {
+                                var Olymp = context.extOlympiads.Where(x => x.Id == abMark.OlympiadId).FirstOrDefault();
+                                if (Olymp == null)
+                                    OlympName = " (олимпиада не найдена!)";
+                                else
+                                {
+                                    if (Olymp.AbiturientId != GuidId)
+                                        OlympName = " (олимпиада не принадлежит заявлению!)";
+                                    else
+                                    {
+                                        OlympName = " (" + Olymp.OlympTypeName + "; " + Olymp.OlympName + "; " + Olymp.OlympSubjectName + "; " + Olymp.OlympValueName + ";)";
+                                    }
+                                }
+                            }
+                            else
+                                OlympName = " (олимпиада не указана!)";
+
+                            newRow["Примечание"] = "Олимпиада" + OlympName;
+                        }
                         else if (abMark.IsManual)
                             newRow["Примечание"] = "Ручной ввод";
                         else if (abMark.ExamVedId != null && MainClass.IsPasha())
@@ -1404,7 +1427,7 @@ namespace Priem
                             newRow["Примечание"] = "Ведомость № " + vedNum;
                         }
 
-                        newRow["ExamInEntryId"] = abMark.ExamInEntryId;
+                        newRow["ExamInEntryId"] = abMark.ExamInEntryBlockUnitId;
                         examTable.Rows.Add(newRow);
                     }
 
@@ -1416,13 +1439,13 @@ namespace Priem
                     dgvExams.Columns["ExamInEntryId"].Visible = false;
                     dgvExams.Columns["Id"].Visible = false;
                     dgvExams.Update();
-                }        
+                }
             }
             catch (DataException de)
             {
-                WinFormsServ.Error("Ошибка при заполнении формы " + de.Message);
+                WinFormsServ.Error("Ошибка при заполнении формы ", de);
             }
-        }        
+        }
 
         // Печать документов
         #region Print

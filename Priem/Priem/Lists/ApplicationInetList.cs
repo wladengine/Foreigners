@@ -193,7 +193,9 @@ namespace Priem
         //строим запрос фильтров
         private string GetFilterString()
         {
-            string s = string.Empty;            
+            string s = string.Empty;
+
+            s += string.Format("AND qAbiturient.CampaignYear = {0}", MainClass.iPriemYear);
 
             //обработали основу обучения 
             if (StudyBasisId != null)

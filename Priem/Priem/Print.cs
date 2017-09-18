@@ -689,8 +689,8 @@ namespace Priem
             using (PriemEntities context = new PriemEntities())
             {
                 var abitList = (from x in context.Abiturient
-                                join Entry in context.Entry on x.EntryId equals Entry.Id
-                                where Entry.StudyLevel.StudyLevelGroup.Id == 3
+                                join Entry in context.extEntry on x.EntryId equals Entry.Id
+                                where Entry.StudyLevelGroupId == 3
                                 //&& x.IsGosLine == false
                                 && x.PersonId == PersonId
                                 && x.BackDoc == false
@@ -699,20 +699,18 @@ namespace Priem
                                     x.Id,
                                     x.PersonId,
                                     x.Barcode,
-                                    Faculty = Entry.SP_Faculty.Name,
-                                    Profession = Entry.SP_LicenseProgram.Name,
-                                    ProfessionCode = Entry.SP_LicenseProgram.Code,
-                                    ObrazProgram = Entry.StudyLevel.Acronym + "." + Entry.SP_ObrazProgram.Number + "." + MainClass.sPriemYear + " " + Entry.SP_ObrazProgram.Name,
-                                    Specialization = Entry.SP_Profile.Name,
+                                    Faculty = Entry.FacultyName,
+                                    Profession = Entry.LicenseProgramName,
+                                    ProfessionCode = Entry.LicenseProgramCode,
+                                    ObrazProgram = Entry.ObrazProgramCrypt + " " + Entry.ObrazProgramName,
+                                    Specialization = Entry.ProfileName,
                                     Entry.StudyFormId,
-                                    Entry.StudyForm.Name,
+                                    Entry.StudyFormName,
                                     Entry.StudyBasisId,
                                     EntryType = (Entry.StudyLevelId == 17 ? 2 : 1),
                                     Entry.StudyLevelId,
                                     x.Priority,
                                     x.Entry.IsForeign,
-                                    Entry.CommissionId,
-                                    ComissionAddress = Entry.CommissionId
                                 }).OrderBy(x => x.Priority).ToList();
 
                 var person = (from x in context.Person
@@ -3794,8 +3792,6 @@ namespace Priem
                                from country_live in country_live2.DefaultIfEmpty()
 
                                join competition in ctx.Competition on extabit.CompetitionId equals competition.Id
-                               join extabitMarksSum in ctx.extAbitMarksSum on extabit.Id equals extabitMarksSum.Id into extabitMarksSum2
-                               from extabitMarksSum in extabitMarksSum2.DefaultIfEmpty()
                                join entryHeader in ctx.EntryHeader on extentryView.EntryHeaderId equals entryHeader.Id into entryHeader2
                                from entryHeader in entryHeader2.DefaultIfEmpty()
                                join celCompetition in ctx.CelCompetition on extabit.CelCompetitionId equals celCompetition.Id into celCompetition2
@@ -3808,7 +3804,7 @@ namespace Priem
                                    Рег_Номер = extabit.RegNum,
                                    Ид_номер = extabit.PersonNum,
                                    HasTRKI = PersAdd.HasTRKI,
-                                   TotalSum = (extabit.CompetitionId == 8 || extabit.CompetitionId == 1) ? null : extabitMarksSum.TotalSum,
+                                   TotalSum = (extabit.CompetitionId == 8 || extabit.CompetitionId == 1) ? null : extabit.Sum,
                                    ФИО = extabit.FIO,
                                    CelCompName = celCompetition.TvorName,
                                    LicenseProgramName = extabit.LicenseProgramName,
@@ -3906,9 +3902,9 @@ namespace Priem
                         string ObrazProgramId = v.ObrazProgramId.ToString();
                         string obProg = v.ObrazProgram;
 
-                        string obProgCode = (from entry in ctx.Entry
+                        string obProgCode = (from entry in ctx.extEntry
                                              where entry.ObrazProgramId == v.ObrazProgramId
-                                             select entry.StudyLevel.Acronym + "." + entry.SP_ObrazProgram.Number + "." + MainClass.sPriemYear).FirstOrDefault();
+                                             select entry.ObrazProgramCrypt).FirstOrDefault();
 
                         if (ObrazProgramId != curObProg)
                         {
@@ -4238,8 +4234,6 @@ namespace Priem
                                join competition in ctx.Competition on extabit.CompetitionId equals competition.Id
                                join entryHeader in ctx.EntryHeader on extentryView.EntryHeaderId equals entryHeader.Id into entryHeader2
                                from entryHeader in entryHeader2.DefaultIfEmpty()
-                               join extabitMarksSum in ctx.extAbitMarksSum on extabit.Id equals extabitMarksSum.Id into extabitMarksSum2
-                               from extabitMarksSum in extabitMarksSum2.DefaultIfEmpty()
                                where extentryView.Id == protocolId //&& (isRus ? extperson.NationalityId == 1 : extperson.NationalityId != 1)
                                orderby extabit.ObrazProgramName, extabit.ProfileName, country.NameRod, entryHeader.SortNum, extabit.FIO
                                select new
@@ -4247,7 +4241,7 @@ namespace Priem
                                    Id = extabit.Id,
                                    Рег_Номер = extabit.RegNum,
                                    Ид_номер = extabit.PersonNum,
-                                   TotalSum = extabitMarksSum.TotalSum,
+                                   TotalSum = extabit.Sum,
                                    ФИО = extabit.FIO,
                                    LicenseProgramCodeAndName = extabit.LicenseProgramCode + " " + extabit.LicenseProgramName,
                                    ProfileName = extabit.InnerEntryInEntryProfileName ?? extabit.ProfileName,

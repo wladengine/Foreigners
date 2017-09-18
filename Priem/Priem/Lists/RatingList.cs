@@ -661,7 +661,7 @@ namespace Priem
                         int rand = new Random().Next(10000, 99999);
 
                         ObjectParameter fvId = new ObjectParameter("id", typeof(Guid));
-                        context.FixierenView_Insert(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, rand, false, false, false, fvId);
+                        context.FixierenView_Insert(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, rand, false, false, fvId);
                         Guid? viewId = (Guid?)fvId.Value;
 
                         int counter = 0;
@@ -809,7 +809,7 @@ namespace Priem
             {
                 using (PriemEntities context = new PriemEntities())
                 {
-                    context.FixierenView_UpdateLocked(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, false, locked);
+                    context.FixierenView_UpdateLocked(StudyLevelGroupId, FacultyId, LicenseProgramId, ObrazProgramId, ProfileId, StudyBasisId, StudyFormId, IsSecond, IsReduced, IsParallel, false, locked);
                     
                     lblLocked.Text = locked ? "ЗАЛОЧЕНА" : "НЕ залочена";
                 }
@@ -843,7 +843,7 @@ namespace Priem
                                            where fv.StudyLevelGroupId == StudyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                                            && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                                            && fv.ObrazProgramId == ObrazProgramId
-                                           && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
+                                           && (ProfileId == null ? fv.ProfileId == 0 : fv.ProfileId == ProfileId)
                                            && fv.StudyFormId == StudyFormId
                                            && fv.StudyBasisId == StudyBasisId
                                            && fv.IsCel == false
@@ -853,13 +853,13 @@ namespace Priem
                                            where fv.StudyLevelGroupId == StudyLevelGroupId && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                                            && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                                            && fv.ObrazProgramId == ObrazProgramId
-                                           && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
+                                           && (ProfileId == null ? fv.ProfileId == 0 : fv.ProfileId == ProfileId)
                                            && fv.StudyFormId == StudyFormId
                                            && fv.StudyBasisId == StudyBasisId                                          
                                            select fv.Id).FirstOrDefault();
                         
                         //удалили старое
-                        context.FirstWave_DELETE(entryId, false, false, false);
+                        context.FirstWave_DELETE(entryId, false, false);
 
                         var fix = from fx in context.Fixieren
                                   where fx.FixierenViewId == fixViewId
@@ -901,13 +901,13 @@ namespace Priem
                                          && fv.IsReduced == IsReduced && fv.IsParallel == IsParallel && fv.IsSecond == IsSecond
                                          && fv.FacultyId == FacultyId && fv.LicenseProgramId == LicenseProgramId
                                          && fv.ObrazProgramId == ObrazProgramId
-                                         && (ProfileId == null ? fv.ProfileId == null : fv.ProfileId == ProfileId)
+                                         && (ProfileId == null ? fv.ProfileId == 0 : fv.ProfileId == ProfileId)
                                          && fv.StudyFormId == StudyFormId
                                          && fv.StudyBasisId == StudyBasisId
                                          select fv.Id).FirstOrDefault();
                     
                     //удалили
-                    context.FirstWave_DELETE(entryId, false, false, false);
+                    context.FirstWave_DELETE(entryId, false, false);
                 }
             }
             catch (Exception ex)

@@ -241,7 +241,7 @@ namespace Priem
                     UpdateDataGridOlymp();
 
                     FillExams();
-                    Sum = GetAbitSum(_Id);
+                    Sum = abit.Sum.HasValue ? abit.Sum.Value.ToString() : "";
 
                     inEnableProtocol = GetInEnableProtocol(context);
                     inEntryView = GetInEntryView(context);
@@ -255,17 +255,6 @@ namespace Priem
             }
         }
 
-        private string GetAbitSum(string abitId)
-        {
-            if (string.IsNullOrEmpty(abitId))
-                return null;
-
-            using (PriemEntities context = new PriemEntities())
-            {
-                return context.extAbitMarksSum.Where(x => x.Id == GuidId).Select(x => x.TotalSum).DefaultIfEmpty(0m).First().ToString();
-            }
-        }
-        
         // если подал подлинники на одно заявления - то писать об этом
         private void FillLockOrigin(PriemEntities context)
         {
